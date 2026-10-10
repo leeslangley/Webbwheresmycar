@@ -39,4 +39,5 @@ Write 40 newspaper headlines about general nonsense news from a silly British to
 - Change only the files in "Files you may change". Prove it with `git diff --stat dev...HEAD`.
 - Run `make test` and paste the real last lines of its output into your summary.
 - Self-review before you finish: re-read `git diff`, re-run every Acceptance command, try to break your code with bad or missing inputs, fix what you find. Commit in the worktree with the message `W18: Headlines pool: generic_a`.
+- Content rule for ALL text you write (jokes, names, headlines): no real brands, car marques, shops, newspapers, TV shows, real people or royals (write a changed-spelling parody instead, or leave the name out), no swearing, plain ASCII punctuation only (straight quotes ' and ", no curly quotes, no accents), affectionate British humour.
 - If something is ambiguous, or cannot pass without leaving scope, finish with `STATUS: BLOCKED` and the question. Do not guess.
