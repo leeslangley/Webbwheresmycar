@@ -127,3 +127,4 @@ A minimal Xcode project that hosts the game in a WKWebView, built with Xcode 27 
 - W30 auction.js: revealStat message is 'Max 2 reveals per lot.' (trailing period) while scene card W65 expects the exact toast 'Max 2 reveals per lot'; the scene should show the message returned by the function (note for W65).
 - W24 chatter.js polish: newmonth pool has no bills-flavoured line (suggest 'Boss, new month means bills. I hid them under the tea tin.'); a few weak lines; add chatterFor tests for 'toString' and '__proto__'.
 - W44 tests/fakectx.js: Proxy get uses `name in t.props`, which also matches inherited names (toString, constructor); switch to Object.prototype.hasOwnProperty.call(t.props, name).
+- W35 tests/garage.test.mjs line ~188: a pound sign in a comment (ASCII rule); change to 'GBP 1,200'.
