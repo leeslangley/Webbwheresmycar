@@ -27,7 +27,7 @@ export const JOBS_B = [
 		mishap: [
 			'The smoke machine set off the fire alarms and the shoot was cut short. {customer} still got the chorus, somehow.',
 			"The drummer used {car} as a drum riser. The roof survived. The drummer didn't get paid, and {customer} asks for a discount.",
-			"{customer}'s band mistook {car} for a props van and filled the boot with foam fingers. It took three hours to hoover out."
+			"{customer}'s band mistook {car} for a props van and filled the boot with foam fingers. It took three hours to vacuum out."
 		],
 		disaster: [
 			"The pyrotechnics went off early and scorched the paintwork. {car} now smells of burnt guitar strings, and {customer} has vanished behind a wall of dry ice.",
@@ -47,7 +47,7 @@ export const JOBS_B = [
 		blurbs: [
 			'{customer} has organised a stag do and wants a proper old car for a day of country lanes. What could possibly go wrong?',
 			"It's {customer}: eight chaps, one classic car, and a spirit level for the drinking games. We leave at dawn.",
-			"{customer} needs something sturdy for his brother's stag do. The best man has promised to behave. Nobody believes him."
+			"{customer} needs something sturdy for a brother's stag do. The best man has promised to behave. Nobody believes him."
 		],
 		success: [
 			'All eight of them came back with {car} intact and only mild sunburn. {customer} calls it the best day of the groom\'s life.',
@@ -56,7 +56,7 @@ export const JOBS_B = [
 		],
 		mishap: [
 			"The best man reversed {car} into a hedge while parking 'for a laugh'. The hedge came off worse, and so did his dignity.",
-			"{customer} lost the keys in a river for ten minutes, then found them in the groom's inside pocket. {car} waited patiently.",
+			"{customer} dropped the keys in a river, then found them in the groom's pocket. {car} waited patiently.",
 			'Someone fed the groom a pub chilli and the boot of {car} became an emergency. {customer} pays a little less and apologises a lot.'
 		],
 		disaster: [
@@ -80,8 +80,8 @@ export const JOBS_B = [
 			'{customer} needs something elegant for a school prom. The teenagers will be taking four hundred photographs, minimum.'
 		],
 		success: [
-			'{car} swept up to the school gates with the air of a film premiere, and {customer} says his teenager was voted best arrival.',
-			'The pupils applauded as {car} glided past, and {customer} says his daughter has finally forgiven him for the estate car.',
+			'{car} swept up to the school gates like a film premiere, and {customer} says the teenager was voted best arrival at prom, earning {car} a round of applause.',
+			'The pupils applauded as {car} glided past, and {customer} says the daughter has finally forgiven the family for the estate car.',
 			'Every photograph at the prom ended up featuring {car}. {customer} has had one framed and pays the fee with a thank-you card.'
 		],
 		mishap: [
