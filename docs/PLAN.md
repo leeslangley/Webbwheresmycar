@@ -138,3 +138,4 @@ A minimal Xcode project that hosts the game in a WKWebView, built with Xcode 27 
 - VISUAL (W50 cars): trike's far-side wheel looks muddy; check car proportions against the catalogue (limo/tourer very long); roadster hood line.
 - W56 hud.js: cash panel is 200px wide; a balance like -1,234,567 sticks out 10px (widen to 220). Cash text starts at x 28 inside a panel at x 16 (fine).
 - W53d speech.js: with 3 lines the text box bottom is about 92px vs bubble height 90; consider OFFICE.bubble.h 96. null/undefined text draws the words 'null'/'undefined' (harden to empty). Over-wide single words overflow (comment says hard break).
+- W53e characters.js line 2: an em dash in a comment (the ASCII-only rule is for player-visible text; the reviewer flagged it and the planner overruled it as cosmetic). Replace with ';' during a cleanup pass.
