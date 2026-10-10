@@ -1029,5 +1029,18 @@
    "src/art/cardraw.js",
    "tests/cardraw_wear.test.mjs"
   ]
+ },
+ {
+  "id": "B01",
+  "title": "Balance v1: fatter fees and easier requests",
+  "needs": [
+   "W41",
+   "W32"
+  ],
+  "file": "B01-balance-v1-fatter-fees-and-easier-reques.md",
+  "files": [
+   "src/sim/jobsim.js",
+   "tests/jobsim_requests.test.mjs"
+  ]
  }
 ]

@@ -356,3 +356,8 @@ tests/fakectx.js: makeCtx()->recording fake 2D context; helpers texts(ctx), coun
 Scene objects: `{id, enter(app,params), draw(ctx,app,t), pointer(app,type,x,y), key(app,key), leave(app)}` (enter/key/leave optional). Each scene file exports one object named `<name>Scene`. Scenes call sim actions ONLY through `app.act(() => sim.fn(app.state, ...))` which returns that function's `{ok,msg}`; when ok is true `app.act` also autosaves and plays the day transition (news screen). In tests `app.act` is a fake `fn => fn()`.
 `app = {state, w:1280, h:720, settings:{crt,sound,music}, scenes:{}, now, toasts:[], act, go, push, pop, current, toast, audio:{play(name)}}`.
 Colours: scenes use only `PALETTE` entries. Fonts: titles/buttons `font('title',px)` (Press Start 2P, use px 10-28); body `font('body',px)` (VT323, use px 20-40).
+
+## 10. Balance log (numbers chosen from `make playbot`, smart bot, 100 seeds)
+Baseline (rules as first built): smart bot average final net worth 22,484, 11% bankrupt, Fat Cat plate 0%, Household plate 76%; the naive bot (cheapest car) completes 0 jobs.
+Sweeps showed job fees and request requirements are the strongest levers (fee x1.4 alone is not enough; easing requirements by 1 lets starter cars do jobs).
+**Balance v1 (card B01):** job fee multiplier x1.4 (applied after the reputation factor in `generateRequests`); a request's `minDesirability` and `minReliability` are the job type's values minus 1 (never below 0); `minCondition` unchanged. Expected smart-bot result: net worth 92,285.5, 5% bankrupt, Fat Cat plate 39%, Household plate 96%, 143.4 jobs per year.
