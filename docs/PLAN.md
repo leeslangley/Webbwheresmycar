@@ -118,3 +118,4 @@ A minimal Xcode project that hosts the game in a WKWebView, built with Xcode 27 
 - W11 faults: replace curly apostrophes (U+2019) in the `batterydead` and `fuelpump` texts with plain `'` (the pixel fonts may lack the glyph); tighten flat jokes (`engine`, `crankshaft`, `differential`, `sparkplug`, `alternator`, `headgasket` comma splice); assert the `bad severity` error message in the test.
 - Check every data card for non-ASCII punctuation (curly quotes, en/em dashes) before the UI cards render them.
 - W10 names: owners.js `Petunia Grubb of the Co-op` (real retailer) -> use the Chippy or the Bowls Club; `Auntie Jean and the Morris` -> and the Old Banger; consider replacing LAST `Wilson` (random pairs can match real people).
+- W09 paint.js: code comments mention real brand/model words (lotus, healey, Alfa, countach, gulf, guard's); reword to plain colour names (never shown to players, low priority).
