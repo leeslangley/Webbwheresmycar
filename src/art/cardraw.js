@@ -1,12 +1,12 @@
-// Painted car drawer (cards W50 + W50b): draws a side-on car from its
-// profile. W50b adds the paint: body gradient and outline, roof repaint,
-// racing stripe, glass and chrome gradients, wheel arches and a rim ring
-// in opts.wheel. Rust and smoke come later (card W50c). Pure: no DOM, no
-// Date. Everything draws via the passed-in ctx, so it runs in tests with
-// tests/fakectx.js.
+// Painted car drawer (cards W50 + W50b + W50c): draws a side-on car from
+// its profile. W50b adds the paint: body gradient and outline, roof
+// repaint, racing stripe, glass and chrome gradients, wheel arches and a
+// rim ring in opts.wheel. W50c adds the wear: rust blotches and an exhaust
+// smoke puff for poor condition. Pure: no DOM, no Date. Everything draws
+// via the passed-in ctx, so it runs in tests with tests/fakectx.js.
 
 import { profileOf } from './profiles.js';
-import { roundedPoly, wheel, groundShadow, circle, vgrad } from './common.js';
+import { roundedPoly, wheel, groundShadow, circle, vgrad, rustBlotch, smokePuff } from './common.js';
 import { shade } from '../ui/theme.js';
 
 // yRange(pts): {minY, maxY} of a list of [x, y] points.
@@ -131,6 +131,16 @@ export function drawCar(ctx, archetype, x, y, scale, opts = {}) {
 	ctx.fill();
 	ctx.fillStyle = '#c0282d';
 	ctx.fillRect(p.tail.x - p.tail.w / 2, p.tail.y - p.tail.h / 2, p.tail.w, p.tail.h);
+	// 5) wear: rust blotches along the lower body for poor condition, and
+	// an exhaust smoke puff at the tail when it is very poor
+	if (o.cond < 4) {
+		rustBlotch(ctx, -30, 12, 2.2);
+		rustBlotch(ctx, 4, 9, 1.8);
+		rustBlotch(ctx, 32, 13, 2.0);
+	}
+	if (o.cond < 2) {
+		smokePuff(ctx, p.tail.x - 2, p.tail.y - 6, o.t, 0.18);
+	}
 	ctx.restore();
 }
 
