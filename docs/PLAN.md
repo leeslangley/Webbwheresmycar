@@ -131,3 +131,4 @@ A minimal Xcode project that hosts the game in a WKWebView, built with Xcode 27 
 - W44 tests/fakectx.js: Proxy get uses `name in t.props`, which also matches inherited names (toString, constructor); switch to Object.prototype.hasOwnProperty.call(t.props, name).
 - W35 tests/garage.test.mjs line ~188: a pound sign in a comment (ASCII rule); change to 'GBP 1,200'.
 - W34 tests/actions.test.mjs lines ~112, ~271: literal pound signs in strings; use money(...) instead.
+- Actions after game over: advertise (and probably other actions) still charge and return ok:true when flags.gameOver is true while advanceDay is a no-op; add a gameOver guard (return {ok:false,msg:'Game over'}) to all actions, or guard in the UI flow card W68.
