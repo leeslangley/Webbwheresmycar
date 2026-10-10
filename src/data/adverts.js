@@ -17,7 +17,7 @@ export const ADVERTS = [
 				buzz: 0,
 				rep: 0,
 				texts: [
-					'Your ad ran next to the fête notices and was used to line a budgie cage by Tuesday.',
+					'Your ad ran next to the fete notices and was used to line a budgie cage by Tuesday.',
 					'The Gazette printed your advert upside down. Readers assumed it was a typo and moved on.'
 				]
 			},
@@ -27,7 +27,7 @@ export const ADVERTS = [
 				buzz: 8,
 				rep: 0,
 				texts: [
-					'Your {medium} advert got a nod from the postman and two of his round.',
+					'Your {medium} advert got a nod from the postman and two of his regulars.',
 					'A kindly pensioner cut your {medium} ad out and stuck it on her fridge. Momentum.'
 				]
 			},
@@ -65,8 +65,8 @@ export const ADVERTS = [
 				buzz: 10,
 				rep: 0,
 				texts: [
-					'Your {medium} campaign got 40 clicks. Admittedly 39 were Dave, refreshing.',
-					'The {medium} banner did the rounds on a local motoring group. Mild approval.'
+					'Your {medium} got 40 clicks. Admittedly 39 were Dave, refreshing.',
+					'The {medium} did the rounds on a local motoring group. Mild approval.'
 				]
 			},
 			{
@@ -75,8 +75,8 @@ export const ADVERTS = [
 				buzz: 20,
 				rep: 0,
 				texts: [
-					'Your {medium} ads went semi-viral in the "Classic Motors of Lincolnshire" group.',
-					'Strangers started tagging their uncles under your {medium} banner. Traction!'
+					'Your {medium} went semi-viral in the "Classic Motors of Lincolnshire" group.',
+					'Strangers started tagging their uncles under your {medium}. Traction!'
 				]
 			},
 			{
@@ -85,8 +85,8 @@ export const ADVERTS = [
 				buzz: 60,
 				rep: 0,
 				texts: [
-					'Your {medium} banner got screenshotted onto a national motoring forum. Bedlam.',
-					'An influencer shared your {medium} ad with the caption "peak Britain". Insane reach.'
+					'Your {medium} got screenshotted onto a national motoring forum. Bedlam.',
+					'An influencer shared your {medium} with the caption "peak Britain". Insane reach.'
 				]
 			}
 		]
@@ -104,7 +104,7 @@ export const ADVERTS = [
 				rep: 0,
 				texts: [
 					'Your {medium} ad was printed on the page that sticks to the perfume sample.',
-					'The magazine misspelled "Webb" as "Web". Calls have slowed to a trickle.'
+					'The magazine misspelled "Webb" as "Web". Nobody called. The phone sulked.'
 				]
 			},
 			{
@@ -114,7 +114,7 @@ export const ADVERTS = [
 				rep: 0,
 				texts: [
 					'A tidy quarter-page in the {medium} has the readers squinting thoughtfully.',
-					'Your {medium} ad sits nicely between an oil advert and a Morris Minor dodger club.'
+					'Your {medium} ad sits nicely between an oil advert and a club for people who talk to their carburettors.'
 				]
 			},
 			{
@@ -133,7 +133,7 @@ export const ADVERTS = [
 				buzz: 45,
 				rep: 0,
 				texts: [
-					'The {medium} ran your ad opposite the centre-fold MGB. The phone has not stopped.',
+					'The {medium} ran your ad opposite the centre-fold Em-Gee Beeeee. The phone has not stopped.',
 					'Your {medium} advert won "Ad of the Month". Readers are cutting it out and framing it.'
 				]
 			}
@@ -151,8 +151,8 @@ export const ADVERTS = [
 				buzz: 0,
 				rep: -3,
 				texts: [
-					'Your {medium} video ends with you trapping your thumb in the bonnet. 1.2m views, all mocking.',
-					'The {medium} video\'s background music is 40 seconds of you humming. The comments are merciless.'
+					'Your {medium} ends with you trapping your thumb in the bonnet. 1.2m views, all mocking.',
+					'The {medium}\'s background music is 40 seconds of you humming. The comments are merciless.'
 				]
 			},
 			{
@@ -161,8 +161,8 @@ export const ADVERTS = [
 				buzz: 15,
 				rep: 0,
 				texts: [
-					'The {medium} video got a solid 200 views and one "not bad" comment.',
-					'Your {medium} upload survives without a single dislike. Small mercies.'
+					'The {medium} got a solid 200 views and one "not bad" comment.',
+					'Your {medium} survives without a single dislike. Small mercies.'
 				]
 			},
 			{
@@ -171,8 +171,8 @@ export const ADVERTS = [
 				buzz: 35,
 				rep: 0,
 				texts: [
-					'The {medium} video of Dave falling in the grease trap is genuinely charming people.',
-					'Your {medium} video got 3,000 views and a pinned comment from a bloke in Kent.'
+					'The {medium} of Dave falling in the grease trap is genuinely charming people.',
+					'Your {medium} got 3,000 views and a pinned comment from a bloke in Kent.'
 				]
 			},
 			{
@@ -181,8 +181,8 @@ export const ADVERTS = [
 				buzz: 80,
 				rep: 0,
 				texts: [
-					'Your {medium} video is on the front page of WheelTube. The phone is red hot.',
-					'Half a million views on {medium}! Two of them were the Queen\'s people. Allegedly.'
+					'Your {medium} is on the front page of WheelTube. The phone is red hot.',
+					'Half a million views on {medium}! Two of them were a bloke from the council. Allegedly.'
 				]
 			}
 		]
@@ -247,8 +247,8 @@ export const ADVERTS = [
 				buzz: 0,
 				rep: 0,
 				texts: [
-					'A lorry tore off your {medium} poster and it now flaps dramatically near the roundabout.',
-					'The {medium} board faces the wrong way. Cows have seen it. Cows do not drive.'
+					'A lorry clipped your {medium} and now half the poster flaps dramatically near the roundabout.',
+					'The {medium} faces the wrong way. Cows have seen it. Cows do not drive.'
 				]
 			},
 			{
@@ -257,7 +257,7 @@ export const ADVERTS = [
 				buzz: 28,
 				rep: 0,
 				texts: [
-					'Motorists are honking approvingly at your {medium} board. A few nearly slowed down.',
+					'Motorists are honking approvingly at your {medium}. A few nearly slowed down.',
 					'The {medium} advert is legible at 60mph, which is the entire point. Well done.'
 				]
 			},
@@ -267,8 +267,8 @@ export const ADVERTS = [
 				buzz: 40,
 				rep: 0,
 				texts: [
-					'Your {medium} board caused two near-misses and four new bookings. Worth every penny.',
-					'Someone photographed the {medium} billboard and put it on the telly news. Blimey.'
+					'Your {medium} caused two near-misses and four new bookings. Worth every penny.',
+					'Someone photographed the {medium} and put it on the telly news. Blimey.'
 				]
 			}
 		]
@@ -286,7 +286,7 @@ export const ADVERTS = [
 				rep: 0,
 				texts: [
 					'Your advert aired during a power cut. Only the cat saw it.',
-					'The {medium} spot ran at 3am against a test card. Somewhere, one insomniac is interested.'
+					'The {medium} ran at 3am against a test card. Somewhere, one insomniac is interested.'
 				]
 			},
 			{
@@ -296,7 +296,7 @@ export const ADVERTS = [
 				rep: 0,
 				texts: [
 					'The {medium} advert went out during the darts. Competent, warm, mildly memorable.',
-					'Your {medium} spot got the thumbs-up from Dave\'s mum, who is frankly a tough audience.'
+					'Your {medium} got the thumbs-up from Dave\'s mum, who is frankly a tough audience.'
 				]
 			},
 			{
@@ -316,7 +316,7 @@ export const ADVERTS = [
 				rep: 0,
 				texts: [
 					'Your {medium} advert ran just before the cup final. Webb\'s Wheels is now a household name.',
-					'The {medium} spot is being talked about at bus stops nationwide. Absolute television gold.'
+					'The {medium} is being talked about at bus stops nationwide. Absolute television gold.'
 				]
 			}
 		]
