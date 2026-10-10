@@ -644,19 +644,6 @@
   ]
  },
  {
-  "id": "W50",
-  "title": "Car drawer",
-  "needs": [
-   "W48",
-   "W49"
-  ],
-  "file": "W50-car-drawer.md",
-  "files": [
-   "src/art/cardraw.js",
-   "tests/cardraw.test.mjs"
-  ]
- },
- {
   "id": "W51",
   "title": "Browser page and boot code",
   "needs": [
@@ -753,7 +740,7 @@
    "W45",
    "W46",
    "W47",
-   "W50",
+   "W50c",
    "W44"
   ],
   "file": "W57-title-screen.md",
@@ -790,7 +777,7 @@
    "W45",
    "W46",
    "W47",
-   "W50",
+   "W50c",
    "W40",
    "W09"
   ],
@@ -807,7 +794,7 @@
    "W45",
    "W46",
    "W47",
-   "W50",
+   "W50c",
    "W40"
   ],
   "file": "W60-garage-scene.md",
@@ -823,7 +810,7 @@
    "W45",
    "W46",
    "W47",
-   "W50",
+   "W50c",
    "W40",
    "W12"
   ],
@@ -840,7 +827,7 @@
    "W45",
    "W46",
    "W47",
-   "W50",
+   "W50c",
    "W40",
    "W17"
   ],
@@ -887,7 +874,7 @@
    "W45",
    "W46",
    "W47",
-   "W50",
+   "W50c",
    "W40",
    "W38"
   ],
@@ -1004,6 +991,43 @@
   "files": [
    "src/art/crt.js",
    "tests/crt.test.mjs"
+  ]
+ },
+ {
+  "id": "W50",
+  "title": "Car drawer core: flat shapes",
+  "needs": [
+   "W48",
+   "W49"
+  ],
+  "file": "W50-car-drawer-core-flat-shapes.md",
+  "files": [
+   "src/art/cardraw.js",
+   "tests/cardraw.test.mjs"
+  ]
+ },
+ {
+  "id": "W50b",
+  "title": "Car drawer finish: paint, glass, arches",
+  "needs": [
+   "W50"
+  ],
+  "file": "W50b-car-drawer-finish-paint-glass-arches.md",
+  "files": [
+   "src/art/cardraw.js",
+   "tests/cardraw_finish.test.mjs"
+  ]
+ },
+ {
+  "id": "W50c",
+  "title": "Car drawer wear: rust and smoke",
+  "needs": [
+   "W50b"
+  ],
+  "file": "W50c-car-drawer-wear-rust-and-smoke.md",
+  "files": [
+   "src/art/cardraw.js",
+   "tests/cardraw_wear.test.mjs"
   ]
  }
 ]

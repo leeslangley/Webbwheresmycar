@@ -1,6 +1,6 @@
 # Project Plan: Webb, where's my car?
 
-Status: all 72 job cards written (W01-W72). Dispatch has started (W01 running). Later polish cards will be added after the visual review.
+Status: all 74 job cards written (W01-W72, with W50 split into W50, W50b, W50c). Dispatch has started (W01 running). Later polish cards will be added after the visual review.
 
 ## How the work is run
 - Every card is a Dawn-board card (`[Project: Webbwheresmycar]`, `# Task: [GLM-SPARK] ...`). The cards live in `cards/` (source of truth); a card is submitted to the board only when it is about to run (`dawn-card new`), so the shared board is not flooded.
@@ -46,11 +46,11 @@ Parallel track: W42-W56 (UI kit, car art, office art) can run as soon as W01 is 
 | W24 | Sidekick chatter lines | W01 |
 | W25 | Car stats and condition maths | W09, W02 |
 | W26 | Fault roll | W25, W11, W09 |
-| W27 | TV shop listings | W25, W10, W09, W02 |
+| W27 | TV shop listings | W25, W10, W09, W02, W05 |
 | W28 | Headline chooser | W23, W04, W02 |
 | W29 | Goals, net worth and ranks | W25, W05, W03 |
 | W30 | Auction lots and stat reveal | W25, W09, W02, W03 |
-| W31 | Month-end bills | W25, W26, W30 |
+| W31 | Month-end bills | W25, W26, W30, W05 |
 | W32 | Customer request generator | W17, W10, W25, W02 |
 | W33 | The day clock: advanceDay | W26, W27, W28, W29, W31, W32 |
 | W34 | Buy, rent, sell actions | W33, W27 |
@@ -73,25 +73,27 @@ Parallel track: W42-W56 (UI kit, car art, office art) can run as soon as W01 is 
 | W47 | Scene stack and app object | W44, W45 |
 | W48 | Art helpers | W43, W44 |
 | W49 | Car profile data | W01 |
-| W50 | Car drawer | W48, W49 |
 | W51 | Browser page and boot code | W42, W43, W47 |
 | W52 | Office layout and static background | W43, W44, W48 |
 | W53 | Characters: Mark Webb and Dave | W48, W43, W44 |
 | W54 | Animated props: TV, phone, laptop, newspaper, kettle | W48, W43, W44 |
 | W55 | Wall calendar | W48, W43, W44, W03 |
 | W56 | HUD strip | W43, W44, W04, W05, W29 |
-| W57 | Title screen | W45, W46, W47, W50, W44 |
+| W57 | Title screen | W45, W46, W47, W50c, W44 |
 | W58 | Office hub scene | W45, W46, W47, W52, W53, W54, W55, W56, W24, W40 |
-| W59 | TV shop scene | W45, W46, W47, W50, W40, W09 |
-| W60 | Garage scene | W45, W46, W47, W50, W40 |
-| W61 | Advertising scene | W45, W46, W47, W50, W40, W12 |
-| W62 | Bookings scene (the phone) | W45, W46, W47, W50, W40, W17 |
+| W59 | TV shop scene | W45, W46, W47, W50c, W40, W09 |
+| W60 | Garage scene | W45, W46, W47, W50c, W40 |
+| W61 | Advertising scene | W45, W46, W47, W50c, W40, W12 |
+| W62 | Bookings scene (the phone) | W45, W46, W47, W50c, W40, W17 |
 | W63 | Newspaper and month report scene | W45, W47, W40 |
 | W64 | Ledger and workshop scene | W45, W47, W29, W34, W40 |
-| W65 | Auction scene | W45, W46, W47, W50, W40, W38 |
+| W65 | Auction scene | W45, W46, W47, W50c, W40, W38 |
 | W66 | Year end and game over scene | W45, W47, W29, W40 |
 | W67 | Settings scene | W45, W47 |
 | W68 | Game flow: wiring everything together | W51, W57, W58, W59, W60, W61, W62, W63, W64, W65, W66, W67, W39, W40 |
+| W50 | Car drawer core: flat shapes | W48, W49 |
+| W50b | Car drawer finish: paint, glass, arches | W50 |
+| W50c | Car drawer wear: rust and smoke | W50b |
 
 ### Phase 3: sound, polish, shipping
 | Card | Title | Needs |
