@@ -44,7 +44,6 @@ export const titleScene = {
 		// matches what is on screen (DESIGN.md 9.7).
 		const hits = makeHits();
 		this.hits = hits;
-		this.pressed = null;
 
 		// Night-sky gradient: ink at the top fading to blue at the bottom.
 		const sky = ctx.createLinearGradient(0, 0, 0, ROAD_BOTTOM);
@@ -127,16 +126,20 @@ export const titleScene = {
 	},
 
 	// 'down' presses a button, 'up' commits the tap when it lands on the
-	// same hit as the down (tap = same hit on down and up).
+	// same hit as the down (tap = same hit on down and up). The pressed
+	// state remembers the hit ID, not the entry object: draw rebuilds the
+	// hit list every frame, so between a down and its up the entries are
+	// new objects but the IDs are stable.
 	pointer: function (app, type, x, y) {
 		if (!this.hits) return;
 		if (type === 'down') {
-			this.pressed = this.hits.hit(x, y);
+			const h = this.hits.hit(x, y);
+			this.pressed = h ? h.id : null;
 			return;
 		}
 		if (type === 'up') {
 			const e = this.hits.hit(x, y);
-			if (e && e === this.pressed && typeof e.onTap === 'function') {
+			if (e && this.pressed !== null && e.id === this.pressed && typeof e.onTap === 'function') {
 				e.onTap(e);
 			}
 			this.pressed = null;

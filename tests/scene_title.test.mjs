@@ -1,9 +1,10 @@
 // Tests for the title screen scene (card W57), run under `jsc -m`.
 
 import { test, eq, ok, done } from './harness.js';
-import { makeCtx, texts, reset } from './fakectx.js';
+import { makeCtx, texts, reset, anySet } from './fakectx.js';
 import { makeApp } from './fakeapp.js';
 import { titleScene, LAYOUT } from '../src/ui/scenes/title.js';
+import { PALETTE } from '../src/ui/theme.js';
 
 // Centre of a layout rect: where a tap lands.
 function centre(r) {
@@ -133,6 +134,65 @@ test('the drawn car cycles archetypes every 6 seconds', () => {
 		titleScene.draw(ctx, app, k * 6 + 1);
 	}
 	ok(true, 'all four archetype cycles draw without throwing');
+});
+
+// A tap survives an intervening draw: the hit list is rebuilt every frame,
+// so the pressed state must be remembered by ID, not by entry object.
+test('a tap fires when draw runs between down and up', () => {
+	const app = makeApp();
+	const ctx = makeCtx();
+	titleScene.draw(ctx, app, 0);
+	const c = centre(LAYOUT.newGame);
+	titleScene.pointer(app, 'down', c.x, c.y);
+	titleScene.draw(ctx, app, 0.5);
+	titleScene.pointer(app, 'up', c.x, c.y);
+	eq(app.calls, [['newGame']], 'tap fires across a redraw');
+});
+
+test('down on one button and up on another does nothing', () => {
+	const app = makeApp();
+	const ctx = makeCtx();
+	titleScene.draw(ctx, app, 0);
+	const ng = centre(LAYOUT.newGame);
+	const st = centre(LAYOUT.settings);
+	titleScene.pointer(app, 'down', ng.x, ng.y);
+	titleScene.pointer(app, 'up', st.x, st.y);
+	eq(app.calls, [], 'mismatched down and up is a no-op');
+});
+
+test('an up with no earlier down does nothing', () => {
+	const app = makeApp();
+	const ctx = makeCtx();
+	titleScene.draw(ctx, app, 0);
+	const c = centre(LAYOUT.newGame);
+	titleScene.pointer(app, 'up', c.x, c.y);
+	eq(app.calls, [], 'orphan up is a no-op');
+});
+
+test('a move between down and up neither adds calls nor breaks the tap', () => {
+	const app = makeApp();
+	const ctx = makeCtx();
+	titleScene.draw(ctx, app, 0);
+	const c = centre(LAYOUT.newGame);
+	titleScene.pointer(app, 'down', c.x, c.y);
+	titleScene.pointer(app, 'move', c.x - 20, c.y - 10);
+	titleScene.pointer(app, 'up', c.x, c.y);
+	eq(app.calls, [['newGame']], 'move is ignored and the tap fires once');
+});
+
+test('an enabled CONTINUE draws without the disabled grey and taps through a draw', () => {
+	const app = makeApp();
+	app.hasSave = function () {
+		return true;
+	};
+	const ctx = makeCtx();
+	titleScene.draw(ctx, app, 0);
+	ok(!anySet(ctx, 'fillStyle', PALETTE.midgrey), 'enabled CONTINUE is not midgrey');
+	const c = centre(LAYOUT.continueBtn);
+	titleScene.pointer(app, 'down', c.x, c.y);
+	titleScene.draw(ctx, app, 0.5);
+	titleScene.pointer(app, 'up', c.x, c.y);
+	eq(app.calls, [['continueGame']], 'continueGame recorded across a draw');
 });
 
 done();
