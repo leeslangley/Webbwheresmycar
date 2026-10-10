@@ -539,5 +539,469 @@
    "tools/playbot.mjs",
    "Makefile"
   ]
+ },
+ {
+  "id": "W42",
+  "title": "Canvas fit and pointer mapping",
+  "needs": [
+   "W01"
+  ],
+  "file": "W42-canvas-fit-and-pointer-mapping.md",
+  "files": [
+   "src/ui/canvas.js",
+   "tests/canvas.test.mjs"
+  ]
+ },
+ {
+  "id": "W43",
+  "title": "Theme: palette, fonts, colour helpers",
+  "needs": [
+   "W01"
+  ],
+  "file": "W43-theme-palette-fonts-colour-helpers.md",
+  "files": [
+   "src/ui/theme.js",
+   "tests/theme.test.mjs"
+  ]
+ },
+ {
+  "id": "W44",
+  "title": "Fake canvas and fake app for tests",
+  "needs": [
+   "W01"
+  ],
+  "file": "W44-fake-canvas-and-fake-app-for-tests.md",
+  "files": [
+   "tests/fakectx.js",
+   "tests/fakeapp.js",
+   "tests/fakectx.test.mjs"
+  ]
+ },
+ {
+  "id": "W45",
+  "title": "UI kit: drawing helpers",
+  "needs": [
+   "W43",
+   "W44",
+   "W04"
+  ],
+  "file": "W45-ui-kit-drawing-helpers.md",
+  "files": [
+   "src/ui/kit_draw.js",
+   "tests/kit_draw.test.mjs"
+  ]
+ },
+ {
+  "id": "W46",
+  "title": "UI kit: hit areas and scrolling lists",
+  "needs": [
+   "W01"
+  ],
+  "file": "W46-ui-kit-hit-areas-and-scrolling-lists.md",
+  "files": [
+   "src/ui/kit_hits.js",
+   "tests/kit_hits.test.mjs"
+  ]
+ },
+ {
+  "id": "W47",
+  "title": "Scene stack and app object",
+  "needs": [
+   "W44",
+   "W45"
+  ],
+  "file": "W47-scene-stack-and-app-object.md",
+  "files": [
+   "src/ui/scenes.js",
+   "tests/scenes.test.mjs"
+  ]
+ },
+ {
+  "id": "W48",
+  "title": "Art helpers",
+  "needs": [
+   "W43",
+   "W44"
+  ],
+  "file": "W48-art-helpers.md",
+  "files": [
+   "src/art/common.js",
+   "tests/art_common.test.mjs"
+  ]
+ },
+ {
+  "id": "W49",
+  "title": "Car profile data",
+  "needs": [
+   "W01"
+  ],
+  "file": "W49-car-profile-data.md",
+  "files": [
+   "src/art/profiles.js",
+   "tests/profiles.test.mjs"
+  ]
+ },
+ {
+  "id": "W50",
+  "title": "Car drawer",
+  "needs": [
+   "W48",
+   "W49"
+  ],
+  "file": "W50-car-drawer.md",
+  "files": [
+   "src/art/cardraw.js",
+   "tests/cardraw.test.mjs"
+  ]
+ },
+ {
+  "id": "W51",
+  "title": "Browser page and boot code",
+  "needs": [
+   "W42",
+   "W43",
+   "W47"
+  ],
+  "file": "W51-browser-page-and-boot-code.md",
+  "files": [
+   "index.html",
+   "src/boot.js",
+   "src/main.js",
+   "tests/boot.test.mjs"
+  ]
+ },
+ {
+  "id": "W52",
+  "title": "Office layout and static background",
+  "needs": [
+   "W43",
+   "W44",
+   "W48"
+  ],
+  "file": "W52-office-layout-and-static-background.md",
+  "files": [
+   "src/art/officelayout.js",
+   "src/art/office.js",
+   "tests/office_art.test.mjs"
+  ]
+ },
+ {
+  "id": "W53",
+  "title": "Characters: Mark Webb and Dave",
+  "needs": [
+   "W48",
+   "W43",
+   "W44"
+  ],
+  "file": "W53-characters-mark-webb-and-dave.md",
+  "files": [
+   "src/art/characters.js",
+   "tests/characters.test.mjs"
+  ]
+ },
+ {
+  "id": "W54",
+  "title": "Animated props: TV, phone, laptop, newspaper, kettle",
+  "needs": [
+   "W48",
+   "W43",
+   "W44"
+  ],
+  "file": "W54-animated-props-tv-phone-laptop-newspaper.md",
+  "files": [
+   "src/art/props.js",
+   "tests/props.test.mjs"
+  ]
+ },
+ {
+  "id": "W55",
+  "title": "Wall calendar",
+  "needs": [
+   "W48",
+   "W43",
+   "W44",
+   "W03"
+  ],
+  "file": "W55-wall-calendar.md",
+  "files": [
+   "src/art/calendar.js",
+   "tests/calendar_art.test.mjs"
+  ]
+ },
+ {
+  "id": "W56",
+  "title": "HUD strip",
+  "needs": [
+   "W43",
+   "W44",
+   "W04",
+   "W05",
+   "W29"
+  ],
+  "file": "W56-hud-strip.md",
+  "files": [
+   "src/art/hud.js",
+   "tests/hud.test.mjs"
+  ]
+ },
+ {
+  "id": "W57",
+  "title": "Title screen",
+  "needs": [
+   "W45",
+   "W46",
+   "W47",
+   "W50",
+   "W44"
+  ],
+  "file": "W57-title-screen.md",
+  "files": [
+   "src/ui/scenes/title.js",
+   "tests/scene_title.test.mjs"
+  ]
+ },
+ {
+  "id": "W58",
+  "title": "Office hub scene",
+  "needs": [
+   "W45",
+   "W46",
+   "W47",
+   "W52",
+   "W53",
+   "W54",
+   "W55",
+   "W56",
+   "W24",
+   "W40"
+  ],
+  "file": "W58-office-hub-scene.md",
+  "files": [
+   "src/ui/scenes/office.js",
+   "tests/scene_office.test.mjs"
+  ]
+ },
+ {
+  "id": "W59",
+  "title": "TV shop scene",
+  "needs": [
+   "W45",
+   "W46",
+   "W47",
+   "W50",
+   "W40",
+   "W09"
+  ],
+  "file": "W59-tv-shop-scene.md",
+  "files": [
+   "src/ui/scenes/tvshop.js",
+   "tests/scene_tvshop.test.mjs"
+  ]
+ },
+ {
+  "id": "W60",
+  "title": "Garage scene",
+  "needs": [
+   "W45",
+   "W46",
+   "W47",
+   "W50",
+   "W40"
+  ],
+  "file": "W60-garage-scene.md",
+  "files": [
+   "src/ui/scenes/garage.js",
+   "tests/scene_garage.test.mjs"
+  ]
+ },
+ {
+  "id": "W61",
+  "title": "Advertising scene",
+  "needs": [
+   "W45",
+   "W46",
+   "W47",
+   "W50",
+   "W40",
+   "W12"
+  ],
+  "file": "W61-advertising-scene.md",
+  "files": [
+   "src/ui/scenes/adverts.js",
+   "tests/scene_adverts.test.mjs"
+  ]
+ },
+ {
+  "id": "W62",
+  "title": "Bookings scene (the phone)",
+  "needs": [
+   "W45",
+   "W46",
+   "W47",
+   "W50",
+   "W40",
+   "W17"
+  ],
+  "file": "W62-bookings-scene-the-phone.md",
+  "files": [
+   "src/ui/scenes/bookings.js",
+   "tests/scene_bookings.test.mjs"
+  ]
+ },
+ {
+  "id": "W63",
+  "title": "Newspaper and month report scene",
+  "needs": [
+   "W45",
+   "W47",
+   "W40"
+  ],
+  "file": "W63-newspaper-and-month-report-scene.md",
+  "files": [
+   "src/ui/scenes/news.js",
+   "tests/scene_news.test.mjs"
+  ]
+ },
+ {
+  "id": "W64",
+  "title": "Ledger and workshop scene",
+  "needs": [
+   "W45",
+   "W47",
+   "W29",
+   "W34",
+   "W40"
+  ],
+  "file": "W64-ledger-and-workshop-scene.md",
+  "files": [
+   "src/ui/scenes/ledger.js",
+   "tests/scene_ledger.test.mjs"
+  ]
+ },
+ {
+  "id": "W65",
+  "title": "Auction scene",
+  "needs": [
+   "W45",
+   "W46",
+   "W47",
+   "W50",
+   "W40",
+   "W38"
+  ],
+  "file": "W65-auction-scene.md",
+  "files": [
+   "src/ui/scenes/auction.js",
+   "tests/scene_auction.test.mjs"
+  ]
+ },
+ {
+  "id": "W66",
+  "title": "Year end and game over scene",
+  "needs": [
+   "W45",
+   "W47",
+   "W29",
+   "W40"
+  ],
+  "file": "W66-year-end-and-game-over-scene.md",
+  "files": [
+   "src/ui/scenes/endgame.js",
+   "tests/scene_endgame.test.mjs"
+  ]
+ },
+ {
+  "id": "W67",
+  "title": "Settings scene",
+  "needs": [
+   "W45",
+   "W47"
+  ],
+  "file": "W67-settings-scene.md",
+  "files": [
+   "src/ui/scenes/settings.js",
+   "tests/scene_settings.test.mjs"
+  ]
+ },
+ {
+  "id": "W68",
+  "title": "Game flow: wiring everything together",
+  "needs": [
+   "W51",
+   "W57",
+   "W58",
+   "W59",
+   "W60",
+   "W61",
+   "W62",
+   "W63",
+   "W64",
+   "W65",
+   "W66",
+   "W67",
+   "W39",
+   "W40"
+  ],
+  "file": "W68-game-flow-wiring-everything-together.md",
+  "files": [
+   "src/game.js",
+   "src/boot.js",
+   "tests/game.test.mjs"
+  ]
+ },
+ {
+  "id": "W69",
+  "title": "Sound effects engine",
+  "needs": [
+   "W01"
+  ],
+  "file": "W69-sound-effects-engine.md",
+  "files": [
+   "src/audio/sfx.js",
+   "tests/sfx.test.mjs"
+  ]
+ },
+ {
+  "id": "W70",
+  "title": "Chip-tune music",
+  "needs": [
+   "W69"
+  ],
+  "file": "W70-chip-tune-music.md",
+  "files": [
+   "src/audio/music.js",
+   "tests/music.test.mjs"
+  ]
+ },
+ {
+  "id": "W71",
+  "title": "Installable web app (PWA) files",
+  "needs": [
+   "W51"
+  ],
+  "file": "W71-installable-web-app-pwa-files.md",
+  "files": [
+   "manifest.webmanifest",
+   "sw.js",
+   "tools/make_icons.py",
+   "assets/icons/icon-192.png",
+   "assets/icons/icon-512.png",
+   "assets/icons/apple-touch-icon.png",
+   "index.html",
+   "tests/pwa.test.mjs"
+  ]
+ },
+ {
+  "id": "W72",
+  "title": "CRT filter overlay",
+  "needs": [
+   "W44",
+   "W43"
+  ],
+  "file": "W72-crt-filter-overlay.md",
+  "files": [
+   "src/art/crt.js",
+   "tests/crt.test.mjs"
+  ]
  }
 ]
