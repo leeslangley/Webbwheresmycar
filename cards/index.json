@@ -675,20 +675,6 @@
   ]
  },
  {
-  "id": "W53",
-  "title": "Characters: Mark Webb and Dave",
-  "needs": [
-   "W48",
-   "W43",
-   "W44"
-  ],
-  "file": "W53-characters-mark-webb-and-dave.md",
-  "files": [
-   "src/art/characters.js",
-   "tests/characters.test.mjs"
-  ]
- },
- {
   "id": "W54",
   "title": "Animated props: TV, phone, laptop, newspaper, kettle",
   "needs": [
@@ -757,7 +743,7 @@
    "W46",
    "W47",
    "W52",
-   "W53",
+   "W53e",
    "W54",
    "W55",
    "W56",
@@ -1028,6 +1014,73 @@
   "files": [
    "src/art/cardraw.js",
    "tests/cardraw_wear.test.mjs"
+  ]
+ },
+ {
+  "id": "W53",
+  "title": "Mark Webb head: hair, glasses, face",
+  "needs": [
+   "W48",
+   "W43",
+   "W44"
+  ],
+  "file": "W53-mark-webb-head-hair-glasses-face.md",
+  "files": [
+   "src/art/characters_mark.js",
+   "tests/mark_head.test.mjs"
+  ]
+ },
+ {
+  "id": "W53b",
+  "title": "Mark Webb body, arm and outfits",
+  "needs": [
+   "W53"
+  ],
+  "file": "W53b-mark-webb-body-arm-and-outfits.md",
+  "files": [
+   "src/art/characters_mark.js",
+   "tests/mark_body.test.mjs"
+  ]
+ },
+ {
+  "id": "W53c",
+  "title": "Dave the mechanic",
+  "needs": [
+   "W48",
+   "W43",
+   "W44"
+  ],
+  "file": "W53c-dave-the-mechanic.md",
+  "files": [
+   "src/art/characters_dave.js",
+   "tests/dave.test.mjs"
+  ]
+ },
+ {
+  "id": "W53d",
+  "title": "Speech bubble",
+  "needs": [
+   "W43",
+   "W44"
+  ],
+  "file": "W53d-speech-bubble.md",
+  "files": [
+   "src/art/speech.js",
+   "tests/speech.test.mjs"
+  ]
+ },
+ {
+  "id": "W53e",
+  "title": "Characters module",
+  "needs": [
+   "W53b",
+   "W53c",
+   "W53d"
+  ],
+  "file": "W53e-characters-module.md",
+  "files": [
+   "src/art/characters.js",
+   "tests/characters.test.mjs"
   ]
  },
  {

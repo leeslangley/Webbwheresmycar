@@ -1,0 +1,44 @@
+[Project: Webbwheresmycar]
+# Task: [GLM-SPARK] GLM-5.3-Flash W53e Characters module
+
+From: Claude Code (Sonnet 5.5, Webbwheresmycar session on Lee's Mac)
+Source: Lee (10 Oct 2026): "create an iphone game, that could also play via a computer browser ... heavily inspired by the classic computer game Rockstar ate my hamster ... The title is Webb, wheres my car?"
+Priority: normal
+Card id: W53e
+Needs (already merged into `dev`): W53b, W53c, W53d
+Project folder: ~/Documents/WebbWheresmycar
+Working copy: ~/wt/webbwheresmycar/<stem> (branch card/<stem>), branched from `dev`
+Worker: GLM-SPARK (GLM-5.3-Flash via glm-worker). DawnBot/Grok: do not pick up.
+Reviewer: glm-reviewer (Sonnet 5.5)
+Commit: local only
+Deploy: no
+
+## Goal
+One import point for the three character pieces.
+
+## Read first
+- src/art/characters_mark.js, characters_dave.js, speech.js (existing)
+- tests/fakectx.js
+
+## Files you may change (and nothing else)
+- `src/art/characters.js`
+- `tests/characters.test.mjs`
+
+## Steps
+1. Create `src/art/characters.js` that re-exports: `export { drawMark, drawMarkBody, drawMarkHead } from './characters_mark.js'; export { drawDave } from './characters_dave.js'; export { speechBubble } from './speech.js';`.
+2. Write `tests/characters.test.mjs` (makeCtx, count): all five exports are functions; a combined scene call (`drawMark(ctx, 740, 440, 1, 1.0, 'happy', 'hoodie'); drawDave(ctx, 1048, 510, 1, 1.0); speechBubble(ctx, {x: 900, y: 200, w: 300, h: 90}, 'Boss, the kettle has a plan.', 1.0);`) runs without throwing on ONE ctx with balanced save/restore.
+
+## Acceptance (all must pass; exact commands)
+- `make test` last line starts with `ALL TESTS PASS`.
+
+## Out of scope (do not touch)
+- No new drawing code.
+
+## Rules for every card (do not skip)
+- Work only inside your worktree. Read `docs/DESIGN.md` (the sections named in "Read first") before you write anything.
+- Stack and purity rules are DESIGN.md section 9.1: plain ES modules; no DOM, `Math.random` or `Date` in `src/core`, `src/data`, `src/sim`, `src/save`; tests run on macOS `jsc -m` (no `console`, use `print()`).
+- Change only the files in "Files you may change". Prove it with `git diff --stat dev...HEAD`.
+- Run `make test` and paste the real last lines of its output into your summary.
+- Self-review before you finish: re-read `git diff`, re-run every Acceptance command, try to break your code with bad or missing inputs, fix what you find. Commit in the worktree with the message `W53e: Characters module`.
+- Content rule for ALL text you write (jokes, names, headlines): no real brands, car marques, shops, newspapers, TV shows, real people or royals (write a changed-spelling parody instead, or leave the name out), no swearing, plain ASCII punctuation only (straight quotes ' and ", no curly quotes, no accents), affectionate British humour. Customers can be any gender or a family, so NEVER use he/him/his/she/her for `{customer}` or any named person (use they/their, the, a, or repeat the name).
+- If something is ambiguous, or cannot pass without leaving scope, finish with `STATUS: BLOCKED` and the question. Do not guess.
