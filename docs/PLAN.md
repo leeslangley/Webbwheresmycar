@@ -113,3 +113,7 @@ A minimal Xcode project that hosts the game in a WKWebView, built with Xcode 27 
 - Balance: unknown until the bot reports; measure then tune.
 - Real people and brands: Mark Webb is real and the hero, so jokes stay gentle and Mark should see the game before it is public. All cars and companies are parodies.
 - Shared Sparks: the Rage of Christ queue also uses the Sparks, so cards may wait for a free slot (glm-worker exit 75).
+
+## Polish backlog (collected from reviews; turn into small cards after the logic is done)
+- W11 faults: replace curly apostrophes (U+2019) in the `batterydead` and `fuelpump` texts with plain `'` (the pixel fonts may lack the glyph); tighten flat jokes (`engine`, `crankshaft`, `differential`, `sparkplug`, `alternator`, `headgasket` comma splice); assert the `bad severity` error message in the test.
+- Check every data card for non-ASCII punctuation (curly quotes, en/em dashes) before the UI cards render them.
