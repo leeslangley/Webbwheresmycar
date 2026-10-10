@@ -1,13 +1,16 @@
-// Mark Webb's head (DESIGN.md 7.3): an affectionate cartoon caricature with
-// big tousled wavy light-brown hair, round dark-rimmed glasses, light
-// stubble, wide surprised eyes and a lopsided half-smile.
+// Mark Webb (DESIGN.md 7.3): head plus jacketed body behind the desk.
+// Head: an affectionate cartoon caricature with big tousled wavy light-brown
+// hair, round dark-rimmed glasses, light stubble, wide surprised eyes and a
+// lopsided half-smile. Body: dark denim jacket over a cream tee, or a maroon
+// zip hoodie over a yellow tee, with the right hand tapping on the desk.
 // All coordinates are LOCAL units: the origin (0,0) is the seat position at
 // the bottom centre, negative y is UP, and the head is drawn around (0,-132).
-// The caller does the ctx.translate/ctx.scale; this function does neither.
+// The caller does the ctx.translate/ctx.scale; these functions do not.
 // Pure: draws only via the passed-in ctx, so it runs in tests with
 // tests/fakectx.js.
 
 import { blink, circle } from './common.js';
+import { shade } from '../ui/theme.js';
 
 // drawMarkHead(ctx, t, mood): draw the head at local coordinates. t is the
 // time in seconds (drives the wandering pupils and the blink); mood is
@@ -174,5 +177,140 @@ export function drawMarkHead(ctx, t, mood = 'normal') {
 	}
 	ctx.stroke();
 
+	ctx.restore();
+}
+
+// Outfit palettes (DESIGN.md 7.3): a dark denim jacket over a cream ringer
+// tee, or a maroon zip hoodie over a yellow tee. Unknown names fall back
+// to denim.
+const OUTFITS = {
+	denim: { jacket: '#232f4a', tee: '#f4e9c8' },
+	hoodie: { jacket: '#6a1f2b', tee: '#e8d44a' },
+};
+
+// drawMarkBody(ctx, t, outfit): draw the jacketed torso behind the desk at
+// local coordinates. t is the time in seconds (drives the breathing bob and
+// the finger tap); outfit is 'denim' (default) or 'hoodie'.
+export function drawMarkBody(ctx, t, outfit = 'denim') {
+	const o = OUTFITS[outfit] || OUTFITS.denim;
+	const hoodie = o === OUTFITS.hoodie;
+	const jacket = o.jacket;
+	const bob = Math.sin(t * 1.6) * 1.5;
+
+	ctx.save();
+
+	// Shoulders and torso: one jacket polygon with a curved top.
+	ctx.fillStyle = jacket;
+	ctx.beginPath();
+	ctx.moveTo(-52, -92 + bob);
+	ctx.lineTo(-58, -60);
+	ctx.lineTo(-50, 0);
+	ctx.lineTo(50, 0);
+	ctx.lineTo(58, -60);
+	ctx.lineTo(52, -92 + bob);
+	ctx.quadraticCurveTo(0, -100 + bob, -52, -92 + bob);
+	ctx.fill();
+
+	// Tee: a V-shaped panel in the middle.
+	ctx.fillStyle = o.tee;
+	ctx.beginPath();
+	ctx.moveTo(-14, -94 + bob);
+	ctx.lineTo(14, -94 + bob);
+	ctx.lineTo(0, -56 + bob);
+	ctx.closePath();
+	ctx.fill();
+
+	if (!hoodie) {
+		// Ringer neckline on the tee.
+		ctx.strokeStyle = '#14102a';
+		ctx.lineWidth = 3;
+		ctx.beginPath();
+		ctx.moveTo(-14, -94 + bob);
+		ctx.lineTo(0, -84 + bob);
+		ctx.lineTo(14, -94 + bob);
+		ctx.stroke();
+	}
+
+	// Collar: two small triangles in a lighter jacket shade.
+	ctx.fillStyle = shade(jacket, 0.2);
+	ctx.beginPath();
+	ctx.moveTo(-14, -94 + bob);
+	ctx.lineTo(-6, -94 + bob);
+	ctx.lineTo(-10, -86 + bob);
+	ctx.closePath();
+	ctx.fill();
+	ctx.beginPath();
+	ctx.moveTo(14, -94 + bob);
+	ctx.lineTo(6, -94 + bob);
+	ctx.lineTo(10, -86 + bob);
+	ctx.closePath();
+	ctx.fill();
+
+	// Seam lines down the jacket front.
+	ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+	ctx.lineWidth = 1.5;
+	ctx.beginPath();
+	ctx.moveTo(-30, -80);
+	ctx.lineTo(-34, -10);
+	ctx.moveTo(30, -80);
+	ctx.lineTo(34, -10);
+	ctx.stroke();
+
+	if (hoodie) {
+		// Zip down the middle and a pair of drawstrings at the neck.
+		ctx.strokeStyle = '#d9c6a0';
+		ctx.lineWidth = 2;
+		ctx.beginPath();
+		ctx.moveTo(0, -56 + bob);
+		ctx.lineTo(0, 0);
+		ctx.stroke();
+		ctx.beginPath();
+		ctx.moveTo(-3, -90 + bob);
+		ctx.lineTo(-5, -80 + bob);
+		ctx.moveTo(3, -90 + bob);
+		ctx.lineTo(5, -80 + bob);
+		ctx.stroke();
+	}
+
+	// Right arm resting on the desk: upper arm, then forearm to the wrist.
+	ctx.strokeStyle = jacket;
+	ctx.lineWidth = 22;
+	ctx.lineCap = 'round';
+	ctx.beginPath();
+	ctx.moveTo(46, -88 + bob);
+	ctx.lineTo(74, -40);
+	ctx.stroke();
+	ctx.beginPath();
+	ctx.moveTo(74, -40);
+	ctx.lineTo(100, -34);
+	ctx.stroke();
+
+	// Tapping hand: the fingers drum on the desk with t.
+	const tap = Math.max(0, Math.sin(t * 5)) * 3;
+	ctx.fillStyle = '#f1c9a5';
+	ctx.beginPath();
+	ctx.ellipse(108, -34 - tap, 11, 7, 0, 0, Math.PI * 2);
+	ctx.fill();
+	ctx.strokeStyle = '#e2b88f';
+	ctx.lineWidth = 2.5;
+	for (let i = 0; i < 4; i++) {
+		const a = 1.1 + i * 0.32;
+		ctx.beginPath();
+		ctx.moveTo(108 + Math.cos(a) * 6, -34 - tap + Math.sin(a) * 4);
+		ctx.lineTo(108 + Math.cos(a) * 15, -34 - tap + Math.sin(a) * 11);
+		ctx.stroke();
+	}
+
+	ctx.restore();
+}
+
+// drawMark(ctx, x, y, s, t, mood, outfit): draw the whole figure with its
+// origin at (x, y) scaled by s. Body first, then the head on top.
+export function drawMark(ctx, x, y, s, t, mood = 'normal', outfit = 'denim') {
+	ctx.save();
+	ctx.translate(x, y);
+	ctx.scale(s, s);
+	drawMarkBody(ctx, t, outfit);
+	drawMarkHead(ctx, t, mood);
 	ctx.restore();
 }
