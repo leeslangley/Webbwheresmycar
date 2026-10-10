@@ -1,0 +1,36 @@
+// Daily Sprocket headlines: carworld pool A (DESIGN.md 8.4). Tabloid puns
+// about classic-car silliness: rallies, garages, MOT testers, concours drama.
+// Printable ASCII only; marques are parodies per DESIGN.md section 6.
+
+export const HEADLINES_CARWORLD_A = [
+	'MOT tester faints at sight of rust-free Austen Allergy',
+	'Village fete ends in tears as jam falls off Maurice Minor',
+	'Spanner found in gearbox 40 years later; family overjoyed',
+	'Oil leak declared heritage asset by proud parish council',
+	'Car boot sale chaos as shopper boots the wrong car',
+	'Concours judge docked points for sneezing on the chrome',
+	'Rally team loses map, wins trophy anyway, baffles everyone',
+	'Retired bus spotter weds mechanic under the arches; pigeons object',
+	'Daily Sprocket van breaks down outside own offices; staff smug',
+	'Classic rally halted by sheep with strong views on honking',
+	'Garage cat promoted to manager after sitting on invoices',
+	'Man buys spare wheelbarrow to push home Lanzia Fulvio',
+	'Volksbeagle Bug survives flood, mud and one very bad idea',
+	'Local duo drive to Spain in van held together with hope',
+	'Auction hammer sticks mid-bid; entire room holds its breath',
+	'Mystery squeak cured by turning radio up, experts confirm',
+	'Rust never sleeps but it did nap in the boot',
+	'Chroming bill so steep that greenhouse gets sold instead',
+	'Traffic warden forgives Dutsun 24-Zed, citing general cuteness',
+	'Council bans honking after brass band takes it personally',
+	'Furrari Dino-sore stalls at crossing; lollipop lady takes charge',
+	'Grandad\'s shed yields two Fjord Escortes and one confused ferret',
+	'Petrol station cat now rates engines on a scale of purr',
+	'Spare parts man knows the exact bolt; refuses to say which',
+	'Carburettor cleaned with tea; engine now runs on pure gossip',
+	'Nan\'s first driving lesson in the Morgin ends amicably in hedge',
+	'Concours defeat blamed on wrong type of sunshine, committee insists',
+	'MOT man passes Trumph TR-Sixish, then fails the ashtray',
+	'Village green rally postponed: too many spanners, not enough cars',
+	'Man trades tie collection for Fjord Capriccio; family approves',
+];
