@@ -128,3 +128,4 @@ A minimal Xcode project that hosts the game in a WKWebView, built with Xcode 27 
 - W24 chatter.js polish: newmonth pool has no bills-flavoured line (suggest 'Boss, new month means bills. I hid them under the tea tin.'); a few weak lines; add chatterFor tests for 'toString' and '__proto__'.
 - W44 tests/fakectx.js: Proxy get uses `name in t.props`, which also matches inherited names (toString, constructor); switch to Object.prototype.hasOwnProperty.call(t.props, name).
 - W35 tests/garage.test.mjs line ~188: a pound sign in a comment (ASCII rule); change to 'GBP 1,200'.
+- W34 tests/actions.test.mjs lines ~112, ~271: literal pound signs in strings; use money(...) instead.
