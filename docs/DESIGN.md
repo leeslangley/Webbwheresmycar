@@ -339,3 +339,20 @@ app   = { state, scenes, go(sceneId,params), toast(text), now, settings, audio }
 
 ### 9.6 Testing conventions
 `tests/harness.js` exports `test(name,fn)`, `eq(a,b,msg)`, `ok(cond,msg)`, `near(a,b,eps,msg)`, `throws(fn,msg)`, `done()` (prints `PASS <file>: <n> tests` or throws). Every `*.test.mjs` ends with `done()`. `make test` runs all and prints the last line `ALL TESTS PASS (<n> files)`.
+
+### 9.7 UI contracts (exact)
+```
+ui/canvas.js:   LOGICAL_W=1280  LOGICAL_H=720  fitLayout(winW,winH)->{scale,offX,offY,viewW,viewH}
+                toLogical(layout,clientX,clientY)->{x,y}|null (null when outside the game rectangle)  isPortrait(winW,winH)->bool
+                applyLayout(canvas,win)->{layout,dpr,ctx}  (win = {innerWidth,innerHeight,devicePixelRatio})
+ui/theme.js:    PALETTE (named colours incl. the 16 C64 colours + cream, lamp, shadow)  font(kind,px)->css font string (kind 'title'|'body')
+                shade(hex,amount)->hex (amount -1..1: + mixes toward white, - toward black)  rgba(hex,alpha)->'rgba(r,g,b,a)'
+ui/kit_draw.js: panel(ctx,x,y,w,h,opts)  label(ctx,text,x,y,opts)  wrapLines(ctx,text,maxW,fontStr)->string[]  paragraph(ctx,text,x,y,maxW,opts)->bottomY
+                button(ctx,b)  bar(ctx,x,y,w,h,value,max,color)  moneyText(n)->string (uses core/format money)
+ui/kit_hits.js: makeHits()->{list,add(id,x,y,w,h,onTap,opts),clear(),hit(x,y)->entry|null}   ScrollList (pure scrolling model for lists)
+ui/scenes.js:   createApp(env)->app  (app.go, app.push, app.pop, app.current, app.toast, app.pointer, app.key, app.draw)
+tests/fakectx.js: makeCtx()->recording fake 2D context; helpers texts(ctx), count(ctx,name)
+```
+Scene objects: `{id, enter(app,params), draw(ctx,app,t), pointer(app,type,x,y), key(app,key), leave(app)}` (enter/key/leave optional). Each scene file exports one object named `<name>Scene`. Scenes call sim actions ONLY through `app.act(() => sim.fn(app.state, ...))` which returns that function's `{ok,msg}`; when ok is true `app.act` also autosaves and plays the day transition (news screen). In tests `app.act` is a fake `fn => fn()`.
+`app = {state, w:1280, h:720, settings:{crt,sound,music}, scenes:{}, now, toasts:[], act, go, push, pop, current, toast, audio:{play(name)}}`.
+Colours: scenes use only `PALETTE` entries. Fonts: titles/buttons `font('title',px)` (Press Start 2P, use px 10-28); body `font('body',px)` (VT323, use px 20-40).
