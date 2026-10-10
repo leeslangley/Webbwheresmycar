@@ -37,7 +37,7 @@ export const HEADLINES_GENERIC_B = [
 	'Gnome census miscounted; council blames sneaky garden migration',
 	'Bakery queue now serves tea; nobody dares lose their place',
 	'Village green mowed into message visible from the moon',
-	'School raffle first prize: a fortnight in the bike shed',
+	'School raffle first prize: a fortnight in the stationery cupboard',
 	'Tombola at fete yields live eel; committee calls it "a win"',
 	'Teenager sets record for walking to the shop and forgetting why',
 	'Parish newsletter prints a correction about its own correction',
