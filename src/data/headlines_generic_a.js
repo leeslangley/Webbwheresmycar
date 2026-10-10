@@ -1,6 +1,6 @@
 // Daily Sprocket headline pool: generic_a (40 strings).
 // Nonsense news from a silly British town: cats, councils, cake, weather,
-// pigeons and village fetes. Tabloid puns, 6-14 words each. No cars here —
+// pigeons and village fetes. Tabloid puns, 6-14 words each. No cars here -
 // those live in the carworld pool. Pure data, no randomness (DESIGN.md 8.4).
 
 export const HEADLINES_GENERIC_A = [
@@ -10,14 +10,14 @@ export const HEADLINES_GENERIC_A = [
 	'Pigeon steals mayor\'s hat mid-speech; council calls emergency meeting',
 	'Cat elected to parish council after nobody else turned up',
 	'Bakery\'s prize scone triggers queue stretching three villages deep',
-	'Weather van points at chippy; forecasters baffled but quietly hopeful',
+	'Hailstone the size of a pea declared local delicacy by children',
 	'Bin collection delayed by goose standoff on the village green',
 	'Local rambler walks into lamppost; lamppost declared the winner',
-	'Council spends £4,000 studying why the roundabout confuses everybody',
+	'Council spends 4,000 quid studying why the roundabout confuses everybody',
 	'Hedge grows six inches overnight; neighbourhood watch mobilises',
 	'Pie eating contest abandoned after contestant eats the trophy',
 	'Village shop introduces "sensible crisps" aisle; riot follows by teatime',
-	'Fog lifts to reveal second, smaller high street; tourists thrilled',
+	'Village green hosts annual staring contest; pigeons win again',
 	'Welly boot thefts double; police suspect a very committed rambler',
 	'Parish newsletter outs local ghost as "quite shy, actually"',
 	'Storm Mildred blows shed into next county; owner entirely unbothered',
@@ -26,7 +26,7 @@ export const HEADLINES_GENERIC_A = [
 	'Squirrel cult suspected after every bird feeder vanishes overnight',
 	'Allotment pumpkins grow faces; growers deny witchcraft, admit fertiliser',
 	'Village bingo caller loses voice; crowd calls numbers and wins anyway',
-	'Charity jumble sale raises £12 and one very confused ferret',
+	'Charity jumble sale raises 12 quid and one very confused ferret',
 	'Postbox painted gold by mistake; paint shop disowns the apprentice',
 	'Whist drive ends in stalemate; neither player will blink first',
 	'Town\'s only escalator declared "a bit much"; stairs restored to glory',
@@ -34,7 +34,7 @@ export const HEADLINES_GENERIC_A = [
 	'Scones declared weapons of mass deliciousness by parish council',
 	'Reservoir of gravy discovered beneath village hall kitchen floor',
 	'Gossip storm rages through the village for eleven straight days',
-	'Cows escape field, form an orderly queue at the milk float parade',
+	'Cows escape field and queue politely outside the village shop',
 	'Drizzle enters ninth month; locals teach themselves to swim to work',
 	'Gnome army found rearranged overnight; gardener demands a tribunal',
 	'Parish clock strikes thirteen; everyone agrees it had earned it',

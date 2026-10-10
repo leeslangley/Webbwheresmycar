@@ -50,4 +50,12 @@ test('no headline ends with a space', () => {
 	}
 });
 
+test('every headline is printable ASCII only', () => {
+	const ascii = /^[\x20-\x7e]+$/;
+	for (let i = 0; i < HEADLINES_GENERIC_A.length; i++) {
+		ok(ascii.test(HEADLINES_GENERIC_A[i]),
+			'headline ' + i + ' is printable ASCII: "' + HEADLINES_GENERIC_A[i] + '"');
+	}
+});
+
 done();
