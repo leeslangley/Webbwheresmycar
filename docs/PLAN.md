@@ -136,3 +136,4 @@ A minimal Xcode project that hosts the game in a WKWebView, built with Xcode 27 
 - W38 auction.js: literal pound sign at ~line 188 (string) and ~205 (comment); use money(0) / words to keep sim source ASCII (endgame.js and a few tests have the same precedent).
 - VISUAL (W52 office background, checked in browser 10 Oct): coherent but bare. Poster line '24th of every month' overflows the poster width (shrink/wrap); rug is a plain rounded rect (add pattern/fringe); desk and TV unit need detail (wood grain, items on desk, wires, cables); wall is flat (add dado rail, picture frames, a plant, skirting detail); consider more warmth/contrast so it reads less dim.
 - VISUAL (W50 cars): trike's far-side wheel looks muddy; check car proportions against the catalogue (limo/tourer very long); roadster hood line.
+- W56 hud.js: cash panel is 200px wide; a balance like -1,234,567 sticks out 10px (widen to 220). Cash text starts at x 28 inside a panel at x 16 (fine).
