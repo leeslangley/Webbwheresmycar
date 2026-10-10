@@ -81,6 +81,24 @@ test('the sun moves with t but the amount of text stays the same', () => {
 	eq(count(a, 'fillText'), count(b, 'fillText'), 'same fillText count');
 });
 
+test('the poster date line fits on the poster paper', () => {
+	// Body font advance is 0.4 em, so 19 chars at 14px is about 106px wide.
+	ok('24th of every month'.length * 0.4 * 14 <= OFFICE.poster.w,
+		'poster date line fits the ' + OFFICE.poster.w + 'px paper');
+	const ctx = makeCtx();
+	drawOfficeStatic(ctx, 0);
+	// The font set just before that line's fillText must be 14px.
+	let f = '';
+	for (let i = 0; i < ctx.calls.length; i++) {
+		if (ctx.calls[i][0] === 'set:font') {
+			f = ctx.calls[i][1][0];
+		} else if (ctx.calls[i][0] === 'fillText' && ctx.calls[i][1][0] === '24th of every month') {
+			break;
+		}
+	}
+	ok(f.indexOf('14px') !== -1, 'poster date line uses a 14px font: ' + f);
+});
+
 test('t defaults to 0 and does not throw', () => {
 	const ctx = makeCtx();
 	drawOfficeStatic(ctx);

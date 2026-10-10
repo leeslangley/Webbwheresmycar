@@ -71,7 +71,7 @@ function poster(ctx) {
 	const cx = r.x + r.w / 2;
 	centreText(ctx, 'CLASSIC CAR', cx, r.y + 36, 'title', 9, PALETTE.ink);
 	centreText(ctx, 'AUCTION', cx, r.y + 72, 'title', 14, PALETTE.bad);
-	centreText(ctx, '24th of every month', cx, r.y + 112, 'body', 20, PALETTE.ink);
+	centreText(ctx, '24th of every month', cx, r.y + 112, 'body', 14, PALETTE.ink);
 }
 
 function cabinet(ctx) {
