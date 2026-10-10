@@ -1,0 +1,543 @@
+[
+ {
+  "id": "W01",
+  "title": "Test harness and Makefile",
+  "needs": [],
+  "file": "W01-test-harness-and-makefile.md",
+  "files": [
+   "Makefile",
+   "tools/run_tests.sh",
+   "tools/serve.sh",
+   "tests/harness.js",
+   "tests/harness.test.mjs"
+  ]
+ },
+ {
+  "id": "W02",
+  "title": "Seeded random number module",
+  "needs": [
+   "W01"
+  ],
+  "file": "W02-seeded-random-number-module.md",
+  "files": [
+   "src/core/rng.js",
+   "tests/rng.test.mjs"
+  ]
+ },
+ {
+  "id": "W03",
+  "title": "Calendar module",
+  "needs": [
+   "W01"
+  ],
+  "file": "W03-calendar-module.md",
+  "files": [
+   "src/core/clock.js",
+   "tests/clock.test.mjs"
+  ]
+ },
+ {
+  "id": "W04",
+  "title": "Text formatting helpers",
+  "needs": [
+   "W01"
+  ],
+  "file": "W04-text-formatting-helpers.md",
+  "files": [
+   "src/core/format.js",
+   "tests/format.test.mjs"
+  ]
+ },
+ {
+  "id": "W05",
+  "title": "New game state",
+  "needs": [
+   "W02",
+   "W03"
+  ],
+  "file": "W05-new-game-state.md",
+  "files": [
+   "src/core/state.js",
+   "tests/state.test.mjs"
+  ]
+ },
+ {
+  "id": "W06",
+  "title": "Car catalogue data: Tier 1 (bangers)",
+  "needs": [
+   "W01"
+  ],
+  "file": "W06-car-catalogue-data-tier-1-bangers.md",
+  "files": [
+   "src/data/cars_t1.js",
+   "tests/cars_t1.test.mjs"
+  ]
+ },
+ {
+  "id": "W07",
+  "title": "Car catalogue data: Tier 2 (proper classics)",
+  "needs": [
+   "W01"
+  ],
+  "file": "W07-car-catalogue-data-tier-2-proper-classic.md",
+  "files": [
+   "src/data/cars_t2.js",
+   "tests/cars_t2.test.mjs"
+  ]
+ },
+ {
+  "id": "W08",
+  "title": "Car catalogue data: Tier 3 (dream machines)",
+  "needs": [
+   "W01"
+  ],
+  "file": "W08-car-catalogue-data-tier-3-dream-machines.md",
+  "files": [
+   "src/data/cars_t3.js",
+   "tests/cars_t3.test.mjs"
+  ]
+ },
+ {
+  "id": "W09",
+  "title": "Car catalogue aggregator and paint",
+  "needs": [
+   "W06",
+   "W07",
+   "W08"
+  ],
+  "file": "W09-car-catalogue-aggregator-and-paint.md",
+  "files": [
+   "src/data/cars.js",
+   "src/data/paint.js",
+   "tests/cars.test.mjs"
+  ]
+ },
+ {
+  "id": "W10",
+  "title": "Owner and customer name lists",
+  "needs": [
+   "W02"
+  ],
+  "file": "W10-owner-and-customer-name-lists.md",
+  "files": [
+   "src/data/owners.js",
+   "src/data/names.js",
+   "tests/names.test.mjs"
+  ]
+ },
+ {
+  "id": "W11",
+  "title": "Faults data",
+  "needs": [
+   "W01"
+  ],
+  "file": "W11-faults-data.md",
+  "files": [
+   "src/data/faults.js",
+   "tests/faults.test.mjs"
+  ]
+ },
+ {
+  "id": "W12",
+  "title": "Advertising media data",
+  "needs": [
+   "W01"
+  ],
+  "file": "W12-advertising-media-data.md",
+  "files": [
+   "src/data/adverts.js",
+   "tests/adverts.test.mjs"
+  ]
+ },
+ {
+  "id": "W13",
+  "title": "Customer job types data, set A",
+  "needs": [
+   "W01"
+  ],
+  "file": "W13-customer-job-types-data-set-a.md",
+  "files": [
+   "src/data/jobs_a.js",
+   "tests/jobs_a.test.mjs"
+  ]
+ },
+ {
+  "id": "W14",
+  "title": "Customer job types data, set B",
+  "needs": [
+   "W01"
+  ],
+  "file": "W14-customer-job-types-data-set-b.md",
+  "files": [
+   "src/data/jobs_b.js",
+   "tests/jobs_b.test.mjs"
+  ]
+ },
+ {
+  "id": "W15",
+  "title": "Customer job types data, set C",
+  "needs": [
+   "W01"
+  ],
+  "file": "W15-customer-job-types-data-set-c.md",
+  "files": [
+   "src/data/jobs_c.js",
+   "tests/jobs_c.test.mjs"
+  ]
+ },
+ {
+  "id": "W16",
+  "title": "Customer job types data, set D",
+  "needs": [
+   "W01"
+  ],
+  "file": "W16-customer-job-types-data-set-d.md",
+  "files": [
+   "src/data/jobs_d.js",
+   "tests/jobs_d.test.mjs"
+  ]
+ },
+ {
+  "id": "W17",
+  "title": "Job types aggregator",
+  "needs": [
+   "W13",
+   "W14",
+   "W15",
+   "W16"
+  ],
+  "file": "W17-job-types-aggregator.md",
+  "files": [
+   "src/data/jobtypes.js",
+   "tests/jobtypes.test.mjs"
+  ]
+ },
+ {
+  "id": "W18",
+  "title": "Headlines pool: generic_a",
+  "needs": [
+   "W01"
+  ],
+  "file": "W18-headlines-pool-generic-a.md",
+  "files": [
+   "src/data/headlines_generic_a.js",
+   "tests/headlines_generic_a.test.mjs"
+  ]
+ },
+ {
+  "id": "W19",
+  "title": "Headlines pool: generic_b",
+  "needs": [
+   "W01"
+  ],
+  "file": "W19-headlines-pool-generic-b.md",
+  "files": [
+   "src/data/headlines_generic_b.js",
+   "tests/headlines_generic_b.test.mjs"
+  ]
+ },
+ {
+  "id": "W20",
+  "title": "Headlines pool: carworld_a",
+  "needs": [
+   "W01"
+  ],
+  "file": "W20-headlines-pool-carworld-a.md",
+  "files": [
+   "src/data/headlines_carworld_a.js",
+   "tests/headlines_carworld_a.test.mjs"
+  ]
+ },
+ {
+  "id": "W21",
+  "title": "Headlines pool: carworld_b",
+  "needs": [
+   "W01"
+  ],
+  "file": "W21-headlines-pool-carworld-b.md",
+  "files": [
+   "src/data/headlines_carworld_b.js",
+   "tests/headlines_carworld_b.test.mjs"
+  ]
+ },
+ {
+  "id": "W22",
+  "title": "Reactive headline templates",
+  "needs": [
+   "W01"
+  ],
+  "file": "W22-reactive-headline-templates.md",
+  "files": [
+   "src/data/headlines_reactive.js",
+   "tests/headlines_reactive.test.mjs"
+  ]
+ },
+ {
+  "id": "W23",
+  "title": "Headlines aggregator",
+  "needs": [
+   "W18",
+   "W19",
+   "W20",
+   "W21",
+   "W22"
+  ],
+  "file": "W23-headlines-aggregator.md",
+  "files": [
+   "src/data/headlines.js",
+   "tests/headlines.test.mjs"
+  ]
+ },
+ {
+  "id": "W24",
+  "title": "Sidekick chatter lines",
+  "needs": [
+   "W01"
+  ],
+  "file": "W24-sidekick-chatter-lines.md",
+  "files": [
+   "src/data/chatter.js",
+   "tests/chatter.test.mjs"
+  ]
+ },
+ {
+  "id": "W25",
+  "title": "Car stats and condition maths",
+  "needs": [
+   "W09",
+   "W02"
+  ],
+  "file": "W25-car-stats-and-condition-maths.md",
+  "files": [
+   "src/sim/carstats.js",
+   "tests/carstats.test.mjs"
+  ]
+ },
+ {
+  "id": "W26",
+  "title": "Fault roll",
+  "needs": [
+   "W25",
+   "W11",
+   "W09"
+  ],
+  "file": "W26-fault-roll.md",
+  "files": [
+   "src/sim/faultsim.js",
+   "tests/faultsim.test.mjs"
+  ]
+ },
+ {
+  "id": "W27",
+  "title": "TV shop listings",
+  "needs": [
+   "W25",
+   "W10",
+   "W09",
+   "W02"
+  ],
+  "file": "W27-tv-shop-listings.md",
+  "files": [
+   "src/sim/shop.js",
+   "tests/shop.test.mjs"
+  ]
+ },
+ {
+  "id": "W28",
+  "title": "Headline chooser",
+  "needs": [
+   "W23",
+   "W04",
+   "W02"
+  ],
+  "file": "W28-headline-chooser.md",
+  "files": [
+   "src/sim/news.js",
+   "tests/news.test.mjs"
+  ]
+ },
+ {
+  "id": "W29",
+  "title": "Goals, net worth and ranks",
+  "needs": [
+   "W25",
+   "W05",
+   "W03"
+  ],
+  "file": "W29-goals-net-worth-and-ranks.md",
+  "files": [
+   "src/sim/endgame.js",
+   "tests/endgame.test.mjs"
+  ]
+ },
+ {
+  "id": "W30",
+  "title": "Auction lots and stat reveal",
+  "needs": [
+   "W25",
+   "W09",
+   "W02",
+   "W03"
+  ],
+  "file": "W30-auction-lots-and-stat-reveal.md",
+  "files": [
+   "src/sim/auction.js",
+   "tests/auction_lots.test.mjs"
+  ]
+ },
+ {
+  "id": "W31",
+  "title": "Month-end bills",
+  "needs": [
+   "W25",
+   "W26",
+   "W30"
+  ],
+  "file": "W31-month-end-bills.md",
+  "files": [
+   "src/sim/month.js",
+   "tests/month.test.mjs"
+  ]
+ },
+ {
+  "id": "W32",
+  "title": "Customer request generator",
+  "needs": [
+   "W17",
+   "W10",
+   "W25",
+   "W02"
+  ],
+  "file": "W32-customer-request-generator.md",
+  "files": [
+   "src/sim/jobsim.js",
+   "tests/jobsim_requests.test.mjs"
+  ]
+ },
+ {
+  "id": "W33",
+  "title": "The day clock: advanceDay",
+  "needs": [
+   "W26",
+   "W27",
+   "W28",
+   "W29",
+   "W31",
+   "W32"
+  ],
+  "file": "W33-the-day-clock-advanceday.md",
+  "files": [
+   "src/sim/advance.js",
+   "tests/advance.test.mjs"
+  ]
+ },
+ {
+  "id": "W34",
+  "title": "Buy, rent, sell actions",
+  "needs": [
+   "W33",
+   "W27"
+  ],
+  "file": "W34-buy-rent-sell-actions.md",
+  "files": [
+   "src/sim/actions.js",
+   "tests/actions.test.mjs"
+  ]
+ },
+ {
+  "id": "W35",
+  "title": "Garage actions: service and repair",
+  "needs": [
+   "W33",
+   "W25"
+  ],
+  "file": "W35-garage-actions-service-and-repair.md",
+  "files": [
+   "src/sim/garage.js",
+   "tests/garage.test.mjs"
+  ]
+ },
+ {
+  "id": "W36",
+  "title": "Advertising gamble",
+  "needs": [
+   "W33",
+   "W12"
+  ],
+  "file": "W36-advertising-gamble.md",
+  "files": [
+   "src/sim/adsim.js",
+   "tests/adsim.test.mjs"
+  ]
+ },
+ {
+  "id": "W37",
+  "title": "Accept and resolve a customer job",
+  "needs": [
+   "W32",
+   "W33",
+   "W26",
+   "W17"
+  ],
+  "file": "W37-accept-and-resolve-a-customer-job.md",
+  "files": [
+   "src/sim/jobresolve.js",
+   "tests/jobresolve.test.mjs"
+  ]
+ },
+ {
+  "id": "W38",
+  "title": "Auction bidding and sales",
+  "needs": [
+   "W30",
+   "W33",
+   "W34"
+  ],
+  "file": "W38-auction-bidding-and-sales.md",
+  "files": [
+   "src/sim/auction.js",
+   "tests/auction_bids.test.mjs"
+  ]
+ },
+ {
+  "id": "W39",
+  "title": "Save and load",
+  "needs": [
+   "W05"
+  ],
+  "file": "W39-save-and-load.md",
+  "files": [
+   "src/save/save.js",
+   "tests/save.test.mjs"
+  ]
+ },
+ {
+  "id": "W40",
+  "title": "Start a game and bot playthrough test",
+  "needs": [
+   "W34",
+   "W35",
+   "W36",
+   "W37",
+   "W38",
+   "W39"
+  ],
+  "file": "W40-start-a-game-and-bot-playthrough-test.md",
+  "files": [
+   "src/sim/newgame.js",
+   "tests/playthrough.test.mjs"
+  ]
+ },
+ {
+  "id": "W41",
+  "title": "Playbot balance report tool",
+  "needs": [
+   "W40"
+  ],
+  "file": "W41-playbot-balance-report-tool.md",
+  "files": [
+   "tools/playbot.mjs",
+   "Makefile"
+  ]
+ }
+]
