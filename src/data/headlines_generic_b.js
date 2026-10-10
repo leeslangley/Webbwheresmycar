@@ -4,7 +4,7 @@
 // nothing about cars, no real people or brands, plain ASCII punctuation.
 
 export const HEADLINES_GENERIC_B = [
-	'Village fete cake judged "too moist" by furious judges',
+	'Village fete trifle declared "dangerously wobbly" by the safety committee',
 	'Gnome stolen from front garden; neighbour admits keeping it fed',
 	'Sports day sack race ends in dead heat; judges blinded by sand',
 	'Supermarket queue stretches to next village; two shoppers refuse to budge',
@@ -26,7 +26,7 @@ export const HEADLINES_GENERIC_B = [
 	'Fancy dress judge disqualified for arriving dressed as another judge',
 	'Tea urn at fete boils dry; two pensioners refuse to move',
 	'Local band\'s new single made entirely of shed door sounds',
-	'Roundabout painted with helpful arrows; traffic now circles happily',
+	'Village green painted with helpful arrows; ramblers now circle happily',
 	'Darts team celebrates promotion; pub closes in confusion',
 	'Weather forecast says drizzle; village prepares for three weeks',
 	'Village sign stolen twice in one week; thief leaves note of apology',
@@ -39,7 +39,7 @@ export const HEADLINES_GENERIC_B = [
 	'Village green mowed into message visible from the moon',
 	'School raffle first prize: a fortnight in the bike shed',
 	'Tombola at fete yields live eel; committee calls it "a win"',
-	'Youth sets record for walking to shop and forgetting why',
+	'Teenager sets record for walking to the shop and forgetting why',
 	'Parish newsletter prints a correction about its own correction',
 	'Hedge trimmed to look like the mayor; mayor delighted',
 	'Village quiz ends in a tie after both teams cheat identically',

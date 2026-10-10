@@ -51,4 +51,10 @@ test('every headline is 6-14 words', () => {
 	}
 });
 
+test('every headline is printable ASCII only', () => {
+	for (let i = 0; i < HEADLINES_GENERIC_B.length; i++) {
+		ok(/^[ -~]+$/.test(HEADLINES_GENERIC_B[i]), 'headline ' + i + ' is printable ASCII');
+	}
+});
+
 done();
