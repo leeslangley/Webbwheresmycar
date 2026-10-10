@@ -43,4 +43,5 @@ The strip along the top of the screen: cash, reputation, buzz, the date, and the
 - Change only the files in "Files you may change". Prove it with `git diff --stat dev...HEAD`.
 - Run `make test` and paste the real last lines of its output into your summary.
 - Self-review before you finish: re-read `git diff`, re-run every Acceptance command, try to break your code with bad or missing inputs, fix what you find. Commit in the worktree with the message `W56: HUD strip`.
+- Content rule for ALL text you write (jokes, names, headlines): no real brands, car marques, shops, newspapers, TV shows, real people or royals (write a changed-spelling parody instead, or leave the name out), no swearing, plain ASCII punctuation only (straight quotes ' and ", no curly quotes, no accents), affectionate British humour.
 - If something is ambiguous, or cannot pass without leaving scope, finish with `STATUS: BLOCKED` and the question. Do not guess.
