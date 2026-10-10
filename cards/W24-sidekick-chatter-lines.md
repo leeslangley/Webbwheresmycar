@@ -1,5 +1,5 @@
 [Project: Webbwheresmycar]
-# Task: [GLM-SPARK] W24 Sidekick chatter lines
+# Task: [GLM-SPARK] GLM-5.3-Flash W24 Sidekick chatter lines
 
 From: Claude Code (Sonnet 5.5, Webbwheresmycar session on Lee's Mac)
 Source: Lee (10 Oct 2026): "create an iphone game, that could also play via a computer browser ... heavily inspired by the classic computer game Rockstar ate my hamster ... The title is Webb, wheres my car?"
