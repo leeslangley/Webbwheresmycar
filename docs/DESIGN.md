@@ -216,7 +216,7 @@ Archetypes (the car drawer must support all of them): `micro` (tiny saloon), `sa
 Layered: wall and wallpaper, skirting, floor boards, window with a moving sky, TV set on stand, desk with phone, laptop, newspaper, mug; ledger cabinet; garage door at right; calendar at left; kettle table; lamp glow; rug. Static layers cached to an offscreen canvas; animated props drawn on top.
 
 ### 7.3 Characters
-Mark Webb: stylised cartoon man, smart blazer, open collar, slightly worried grin; Dave "Spanner" Dobbs: overalls, tea mug. Both vector-drawn with idle animation (blink every 3-5 s, head bob, mug steam).
+Mark Webb: affectionate cartoon caricature: big tousled wavy light-brown hair, round dark-rimmed glasses, light stubble, wide surprised eyes, lopsided half-smile, dark denim jacket over a cream tee (alternative outfit: maroon zip hoodie over a yellow tee); Dave "Spanner" Dobbs: overalls, tea mug. Both vector-drawn with idle animation (blink every 3-5 s, head bob, mug steam).
 
 ### 7.4 Scenes
 Title, Office, TV Shop, Garage, Advertising, Bookings, Newspaper, Ledger, Auction, Month Report, Year End, Settings. Each is a Scene object (Section 9.5).
