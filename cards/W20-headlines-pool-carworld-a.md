@@ -24,8 +24,8 @@ Write 30 newspaper headlines about classic-car world silliness (rallies, garages
 - `tests/headlines_carworld_a.test.mjs`
 
 ## Steps
-1. Create `src/data/headlines_carworld_a.js` exporting `HEADLINES_CARWORLD_A` (array of exactly 30 unique strings). Style: tabloid newspaper headlines (this is the Daily Sprocket), pun-driven, daft, British, 6-14 words each (20-110 characters), no swearing, no real people, real politicians, real brands or celebrities. Examples of the tone (write NEW ones, do not reuse these): `Vicar's Vauxhall Vanishes: Verger Vexed`, `Local man marries Mini; guests blame carburettor`, `Roundabout declared a nation by confused villagers`.
-2. Write `tests/headlines_carworld_a.test.mjs`: the array has exactly 30 entries; all unique (case-insensitive); each is 20-110 characters; none contains the characters `{` or `}`; none is purely upper case; no entry ends with a space.
+1. Create `src/data/headlines_carworld_a.js` exporting `HEADLINES_CARWORLD_A` (array of exactly 30 unique strings). Style: tabloid newspaper headlines (this is the Daily Sprocket), pun-driven, daft, British, 6-14 words each (20-110 characters), no swearing, no real people, real politicians, real brands or celebrities. Printable ASCII ONLY: no pound sign (write quid or pounds in words), no curly quotes, no dashes other than a plain hyphen. Examples of the tone (write NEW ones, do not reuse these): `Vicar's Vauxhall Vanishes: Verger Vexed`, `Local man marries Mini; guests blame carburettor`, `Roundabout declared a nation by confused villagers`.
+2. Write `tests/headlines_carworld_a.test.mjs`: the array has exactly 30 entries; all unique (case-insensitive); each is 20-110 characters; none contains the characters `{` or `}`; none is purely upper case; no entry ends with a space; every entry matches `/^[ -~]+$/` (printable ASCII only).
 
 ## Acceptance (all must pass; exact commands)
 - `make test` last line starts with `ALL TESTS PASS`.
