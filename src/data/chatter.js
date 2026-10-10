@@ -1,0 +1,94 @@
+// One-line comments from Dave "Spanner" Dobbs, Mark Webb's sidekick
+// (DESIGN.md section 5: the speech bubble shows one line per day).
+// Dave is a cheerful, unreliable mechanic who loves tea and says
+// "Boss" a lot. Keys are office situations; chatterFor picks by state.
+// Pure data: no DOM, no Math.random, no Date (DESIGN.md section 9.1).
+
+import { pick } from '../core/rng.js';
+
+export const CHATTER = {
+	idle: [
+		"Boss, the kettle's on. This day is already a triumph.",
+		"Boss, I buffed the desk. It was not the car, mind.",
+		"Boss, I made a flyer. It says Honk For Motors on it.",
+		"Boss, I named all the spanners after minor nobility.",
+		"Boss, I think the phone is judging us both right now.",
+		"Boss, I read the manual cover to cover. Great naps in it.",
+		"Boss, I sorted the tools Z to A. My system, my rules.",
+		"Boss, that pigeon outside drives better than me, eh.",
+		"Boss, I put tea in the radiator. It seemed thirsty.",
+		"Boss, the calendar winked at me. I winked straight back.",
+		"Boss, I oiled the squeaky chair. You owe me a biscuit.",
+		"Boss, I have a plan. Step one is a nice fresh brew.",
+		"Boss, I dreamt the cars could talk. They were all rude.",
+		"Boss, I swept the garage twice. There is no floor left.",
+		"Boss, my horoscope said buy a van. I say ignore it.",
+		"Boss, I counted the biscuit tin. The results are grim.",
+		"Boss, the laptop hums when I hum. We are a duo now.",
+		"Boss, I practised my firm handshake on the coat stand.",
+		"Boss, the radio only plays songs about lorries today.",
+		"Boss, I stacked the old tyres into a lovely little throne."
+	],
+	broke: [
+		"Boss, we are so skint the moths have filed a complaint.",
+		"Boss, the bank rang. I told them you were out. Again.",
+		"Boss, we are down to mystery tins. I labelled them all.",
+		"Boss, I checked the pot twice. It checked back. Empty.",
+		"Boss, the till hisses at me now, so I hiss straight back.",
+		"Boss, can we pay the leccy bill in teabags? Just asking."
+	],
+	rich: [
+		"Boss, the ledger is so fat it needs its own chair now.",
+		"Boss, I priced a solid gold spanner. Strictly research.",
+		"Boss, we can afford the posh tea bags! Pinch me, Boss.",
+		"Boss, the money pot glitters, so I keep polishing it.",
+		"Boss, at this rate I get a second biscuit tin, right?",
+		"Boss, the safe hums a happy tune. I hum along, Boss."
+	],
+	newmonth: [
+		"Boss, a fresh month! I turned the calendar page all fancy.",
+		"Boss, new month, new me. Same spanners, mind, Boss.",
+		"Boss, I ripped off the old calendar page with real drama.",
+		"Boss, the month turned. The kettle aged a year with it.",
+		"Boss, new month resolutions: more tea, far fewer fires.",
+		"Boss, a new month! I lost count of the days already."
+	],
+	auctionday: [
+		"Boss, auction day! Wear the tie that frightens them.",
+		"Boss, the auction poster is glowing. That means money.",
+		"Boss, I polished my lucky spanner ready for the bidding.",
+		"Boss, auction day. I have warmed up my paddle arm, Boss.",
+		"Boss, bring the big wallet and a very mean stare, Boss.",
+		"Boss, the auction lot smells of adventure and old petrol."
+	],
+	breakdown: [
+		"Boss, a car gave up on the way here. Tragic old stuff.",
+		"Boss, one made a sad noise then stopped being a car.",
+		"Boss, a car coughed, shivered and quit the road, Boss.",
+		"Boss, a car retired mid-journey without giving notice.",
+		"Boss, something clanged, rattled and gave up, Boss.",
+		"Boss, a motor gave up by the gate. Kettle first, eh?"
+	],
+	fullgarage: [
+		"Boss, the garage is packed like a sardine tin, Boss.",
+		"Boss, no room left, so I am parking one in my dreams.",
+		"Boss, the cars are queueing up for the kettle in there.",
+		"Boss, the garage is full. Even the tool drawer snores."
+	],
+	emptygarage: [
+		"Boss, the garage is empty and it has a proper sad echo.",
+		"Boss, nowt in the garage but me and my mug, Boss.",
+		"Boss, the garage is bare. A spider in there looks lonely.",
+		"Boss, not one car in there. My spanner wept, Boss."
+	]
+};
+
+// One line for the current situation. A known situation key picks from
+// that list; anything else (including 'idle' and unknown or missing
+// values) falls back to the idle chatter.
+export function chatterFor(state, sit) {
+	if (sit !== 'idle' && Object.prototype.hasOwnProperty.call(CHATTER, sit)) {
+		return pick(state, CHATTER[sit]);
+	}
+	return pick(state, CHATTER.idle);
+}
