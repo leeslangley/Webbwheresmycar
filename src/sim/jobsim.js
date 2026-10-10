@@ -10,6 +10,13 @@ import { customerName } from '../data/names.js';
 // Maximum number of requests the board holds at once (DESIGN.md 4.7).
 const MAX_REQUESTS = 6;
 
+// Balance v1 (DESIGN.md section 10, card B01): job fees come out 40% fatter
+// and request requirements are one point easier on style and reliability, so
+// a starter car can actually earn money.
+export const FEE_MULT = 1.4;
+export const EASE_DESIRABILITY = 1;
+export const EASE_RELIABILITY = 1;
+
 // Remove requests whose time on the board is up: anything with
 // expiresDay < today goes; one expiring today still shows. Returns the
 // number removed.
@@ -49,15 +56,15 @@ export function generateRequests(state) {
 		const customer = customerName(state);
 		const fee = Math.round(
 			(job.feeMin + rand(state) * (job.feeMax - job.feeMin)) *
-			(0.85 + 0.30 * state.reputation / 100)
+			(0.85 + 0.30 * state.reputation / 100) * FEE_MULT
 		);
 		state.requests.push({
 			id: 'Q' + state.nextId++,
 			jobTypeId: job.id,
 			customer: customer,
 			fee: fee,
-			minDesirability: job.minD,
-			minReliability: job.minR,
+			minDesirability: Math.max(0, job.minD - EASE_DESIRABILITY),
+			minReliability: Math.max(0, job.minR - EASE_RELIABILITY),
 			minCondition: job.minCond,
 			expiresDay: state.day + randInt(state, 4, 9),
 			blurb: fillText(pick(state, job.blurbs), { customer: customer })

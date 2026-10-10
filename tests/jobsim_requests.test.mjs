@@ -2,7 +2,7 @@
 
 import { newGameState } from '../src/core/state.js';
 import { JOB_TYPES, JOB_BY_ID } from '../src/data/jobtypes.js';
-import { generateRequests, expireRequests } from '../src/sim/jobsim.js';
+import { generateRequests, expireRequests, FEE_MULT, EASE_DESIRABILITY, EASE_RELIABILITY } from '../src/sim/jobsim.js';
 import { test, eq, ok, done } from './harness.js';
 
 // Run generateRequests `calls` times on a fresh seeded state, resetting the
@@ -73,16 +73,24 @@ test('request fields match the card rules', function () {
 		const job = JOB_BY_ID[r.jobTypeId];
 		ok(job !== undefined, label + ': jobTypeId resolves');
 		ok(Number.isInteger(r.fee) && r.fee > 0, label + ': fee is a positive integer');
-		ok(r.fee >= Math.floor(job.feeMin * 0.85) && r.fee <= Math.ceil(job.feeMax * 1.15),
+		ok(r.fee >= Math.round(job.feeMin * 0.85 * FEE_MULT) && r.fee <= Math.round(job.feeMax * 1.15 * FEE_MULT),
 			label + ': fee ' + r.fee + ' outside scaled range ' + job.feeMin + '-' + job.feeMax);
 		ok(r.expiresDay >= state.day + 4 && r.expiresDay <= state.day + 9,
 			label + ': expiresDay ' + r.expiresDay + ' not in day+4..day+9');
 		ok(r.blurb.indexOf('{') === -1, label + ': blurb still has a placeholder');
 		ok(r.blurb.indexOf(r.customer) !== -1, label + ': blurb missing the customer name');
-		eq(r.minDesirability, job.minD, label + ': minDesirability');
-		eq(r.minReliability, job.minR, label + ': minReliability');
+		eq(r.minDesirability, Math.max(0, job.minD - EASE_DESIRABILITY), label + ': minDesirability');
+		eq(r.minReliability, Math.max(0, job.minR - EASE_RELIABILITY), label + ': minReliability');
 		eq(r.minCondition, job.minCond, label + ': minCondition');
 	}
+});
+
+// (d2) Balance v1 constants (card B01): the fee multiplier and the two
+// requirement easings have their intended values.
+test('balance v1 constants are 1.4, 1, 1', function () {
+	eq(FEE_MULT, 1.4, 'FEE_MULT');
+	eq(EASE_DESIRABILITY, 1, 'EASE_DESIRABILITY');
+	eq(EASE_RELIABILITY, 1, 'EASE_RELIABILITY');
 });
 
 // (e) Expiry removes exactly the requests with expiresDay < day.
