@@ -119,3 +119,4 @@ A minimal Xcode project that hosts the game in a WKWebView, built with Xcode 27 
 - Check every data card for non-ASCII punctuation (curly quotes, en/em dashes) before the UI cards render them.
 - W10 names: owners.js `Petunia Grubb of the Co-op` (real retailer) -> use the Chippy or the Bowls Club; `Auntie Jean and the Morris` -> and the Old Banger; consider replacing LAST `Wilson` (random pairs can match real people).
 - W09 paint.js: code comments mention real brand/model words (lotus, healey, Alfa, countach, gulf, guard's); reword to plain colour names (never shown to players, low priority).
+- W12 adverts: four texts read clunky after substitution ("TV spot advert", "billboard advert"); drop the trailing word "advert" at adverts.js lines ~261, 298, 308, 318.
