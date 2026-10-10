@@ -334,7 +334,8 @@
    "W25",
    "W10",
    "W09",
-   "W02"
+   "W02",
+   "W05"
   ],
   "file": "W27-tv-shop-listings.md",
   "files": [
@@ -391,7 +392,8 @@
   "needs": [
    "W25",
    "W26",
-   "W30"
+   "W30",
+   "W05"
   ],
   "file": "W31-month-end-bills.md",
   "files": [
