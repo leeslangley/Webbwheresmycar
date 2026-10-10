@@ -66,13 +66,14 @@ test('one tyre fill per wheel (3 for trike with its dim wheel, 2 for the rest)',
 	}
 });
 
-test('body defaults to #9a2a2a and honours opts.body', () => {
+test('body colour is baked into a gradient (W50b), honours opts.body', () => {
 	const ctx = makeCtx();
 	drawCar(ctx, 'saloon', 400, 300, 1, {});
-	ok(anySet(ctx, 'fillStyle', '#9a2a2a'), 'default body colour used');
+	ok(!anySet(ctx, 'fillStyle', '#9a2a2a'), 'default body is a gradient, not a flat colour');
+	ok(count(ctx, 'createLinearGradient') >= 2, 'default body gradient created');
 	const ctx2 = makeCtx();
 	drawCar(ctx2, 'saloon', 400, 300, 1, { body: '#112233' });
-	ok(anySet(ctx2, 'fillStyle', '#112233'), 'opts.body colour used');
+	ok(!anySet(ctx2, 'fillStyle', '#112233'), 'opts.body baked into the gradient, not flat');
 	ok(!anySet(ctx2, 'fillStyle', '#9a2a2a'), 'default body colour replaced');
 });
 
@@ -117,13 +118,13 @@ test('odd opts do not break drawing: extra keys, t, null opts, scale 0', () => {
 	ok(true, 'null opts and scale 0 do not throw');
 });
 
-test('flat colours only: no gradients and no clips', () => {
+test('paint pass: linear gradients, arch clips per wheel, no radial gradients (W50b)', () => {
 	for (const a of ARCHETYPES) {
 		const ctx = makeCtx();
 		drawCar(ctx, a, 400, 300, 1, {});
-		eq(count(ctx, 'createLinearGradient'), 0, a + ': no linear gradients');
+		ok(count(ctx, 'createLinearGradient') >= 2, a + ': linear gradients for body/glass');
 		eq(count(ctx, 'createRadialGradient'), 0, a + ': no radial gradients');
-		eq(count(ctx, 'clip'), 0, a + ': no clip');
+		eq(count(ctx, 'clip'), a === 'trike' ? 3 : 2, a + ': one arch clip per wheel');
 	}
 });
 
