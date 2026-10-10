@@ -18,7 +18,7 @@ export const JOBS_A = [
 		blurbs: [
 			'{customer} needs something posh for a wedding, and the bride is forty minutes late already.',
 			'{customer} has booked the church, the cake and the band, but the wedding car firm has folded.',
-			'{customer} wants a grand arrival that will make Aunt Jean put her tea down.'
+			'{customer} wants a grand arrival that will make Aunt Jean put down the tea.',
 		],
 		success: [
 			'{car} swept up to the church as the bells rang, and {customer} wept into a very good hankie.',
@@ -32,7 +32,7 @@ export const JOBS_A = [
 		],
 		disaster: [
 			'A startled flock of churchyard pigeons used {car} as a confetti cannon, and {customer} has cancelled the reception.',
-			'{customer}\'s Uncle Nigel hitched the trailer to {car} and the bull has now seen the world.'
+			'{customer}\'s Uncle Nigel towed a trailer with {car}, and the bull inside has now seen the whole village.'
 		]
 	},
 	{
@@ -53,7 +53,7 @@ export const JOBS_A = [
 		success: [
 			'The photographer circled {car} for an hour and declared it the muse of the season.',
 			'{customer} got the cover shot, mostly thanks to {car} catching the light just so.',
-			'The stylist only repainted her lips twice, and {car} looks briefly immortal in print.'
+			'The stylist only retouched the lipstick twice, and {car} looks briefly immortal in print.',
 		],
 		mishap: [
 			'{customer} parked {car} in the tractor calendar shoot\'s spot, and there is now a scheduling war.',
