@@ -1133,5 +1133,31 @@
    "tools/art/blender_car.py",
    "assets/art/preview/roadster_flat.png"
   ]
+ },
+ {
+  "id": "A03",
+  "title": "Blender car: richer paint, lighting and shape polish",
+  "needs": [
+   "A02"
+  ],
+  "file": "A03-blender-car-richer-paint-lighting-and-sh.md",
+  "files": [
+   "tools/art/blender_car.py",
+   "assets/art/preview/roadster_v2.png"
+  ]
+ },
+ {
+  "id": "A04",
+  "title": "Pixel-art stage: turn a render into limited-palette pixel art",
+  "needs": [
+   "A02"
+  ],
+  "file": "A04-pixel-art-stage-turn-a-render-into-limit.md",
+  "files": [
+   "tools/art/pixelate.py",
+   "tools/art/check_sprite.py",
+   "assets/art/preview/roadster_px.png",
+   "assets/art/preview/roadster_px_x4.png"
+  ]
  }
 ]
