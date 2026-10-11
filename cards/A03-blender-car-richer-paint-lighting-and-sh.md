@@ -1,5 +1,5 @@
 [Project: Webbwheresmycar]
-# Task: [GLM-SPARK] Sparks-alias-glm-5.3-flash A03 Blender car: richer paint, lighting and shape polish
+# Task: [GLM-SPARK] DeepSeek-V4.1-Flash A03 Blender car: richer paint, lighting and shape polish
 
 From: Claude Code (Sonnet 5.5, Webbwheresmycar session on Lee's Mac)
 Source: Lee (10 Oct 2026): "create an iphone game, that could also play via a computer browser ... heavily inspired by the classic computer game Rockstar ate my hamster ... The title is Webb, wheres my car?"
@@ -8,7 +8,7 @@ Card id: A03
 Needs (already merged into `dev`): A02
 Project folder: ~/Documents/WebbWheresmycar
 Working copy: ~/wt/webbwheresmycar/<stem> (branch card/<stem>), branched from `dev`
-Worker: GLM-SPARK (Sparks-alias-glm-5.3-flash via glm-worker). DawnBot/Grok: do not pick up.
+Worker: GLM-SPARK (DeepSeek-V4.1-Flash via glm-worker). DawnBot/Grok: do not pick up.
 Reviewer: glm-reviewer (Sonnet 5.5)
 Commit: local only
 Deploy: no

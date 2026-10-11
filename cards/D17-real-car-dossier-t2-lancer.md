@@ -1,5 +1,5 @@
 [Project: Webbwheresmycar]
-# Task: [GLM-SPARK] Sparks-alias-glm-5.3-flash D17 Real-car dossier: t2_lancer
+# Task: [GLM-SPARK] DeepSeek-V4.1-Flash D17 Real-car dossier: t2_lancer
 
 From: Claude Code (Sonnet 5.5, Webbwheresmycar session on Lee's Mac)
 Source: Lee (10 Oct 2026): "create an iphone game, that could also play via a computer browser ... heavily inspired by the classic computer game Rockstar ate my hamster ... The title is Webb, wheres my car?"
@@ -8,7 +8,7 @@ Card id: D17
 Needs (already merged into `dev`): R00
 Project folder: ~/Documents/WebbWheresmycar
 Working copy: ~/wt/webbwheresmycar/<stem> (branch card/<stem>), branched from `dev`
-Worker: GLM-SPARK (Sparks-alias-glm-5.3-flash via glm-worker). DawnBot/Grok: do not pick up.
+Worker: GLM-SPARK (DeepSeek-V4.1-Flash via glm-worker). DawnBot/Grok: do not pick up.
 Reviewer: glm-reviewer (Sonnet 5.5)
 Commit: local only
 Deploy: no
@@ -27,7 +27,7 @@ Write ONE real-car dossier file, `docs/cars/t2_lancer.json`, so the 3D model of 
 
 ## Steps
 1. Recall the real car's figures: overall length, width, height, wheelbase, track, tyre overall diameter in mm. You have no web access; use what you reliably know and set `dims_confidence` to `medium` or `low` (never `high` without a figure you are sure of) and say in `notes` which figures are estimates.
-2. WRITE THE JSON FILE DIRECTLY BY HAND with the Write tool. Do NOT write Python or other scripts to generate curves or points (an earlier attempt burned 45 minutes doing that and wrote nothing). Work out each outline point by simple arithmetic: unit = overall length / 100, so a car 4000 mm long and 1200 mm high is 30 units high. Use 24 to 32 side_profile points that follow the real shape (nose, bonnet, windscreen base, roof, rear window, tail, rear bumper, sill line), and a greenhouse polygon for the window area.
+2. WRITE THE JSON FILE DIRECTLY BY HAND with the Write tool. Do NOT write Python or other scripts to generate curves or points (an earlier attempt burned 45 minutes doing that and wrote nothing). Work out each outline point by simple arithmetic: unit = overall length / 100, so a car 4000 mm long and 1200 mm high is 30 units high. Use 20 to 24 side_profile points (the checker needs at least 20; do not use more, the model is slow) that follow the real shape (nose, bonnet, windscreen base, roof, rear window, tail, rear bumper, sill line), and ONE greenhouse polygon of 4 to 8 points for the window area. Keep your reasoning short: decide the numbers quickly, write the file, let the checker find mistakes.
 3. Run `python3 tools/check_dossier.py docs/cars/t2_lancer.json`. If it prints FAIL, fix the numbers in the file (usually the height, wheelbase or width) and run it again until it prints `DOSSIER OK t2_lancer`.
 4. Commit as soon as it prints OK (message `D17: t2_lancer dossier`). Then re-read the file once as a car enthusiast would: does the outline have the right nose, roofline and tail for this exact car? Fix anything wrong, run the checker again, commit again.
 5. In your final summary give: the real car, dims_confidence, and each figure you were not sure of.
