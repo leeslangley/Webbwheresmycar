@@ -153,3 +153,8 @@ A minimal Xcode project that hosts the game in a WKWebView, built with Xcode 27 
 ### Polish backlog additions (A02 review)
 - blender_car.py: `--archetype/--color/--out` with no value still raise IndexError (guard i+1 < len(argv), exit 2).
 - Trike lights sit at Y=+/-8 and bumpers are 30 wide (sensible for a 30-wide body); fine unless the dossier-driven builder replaces the archetypes.
+
+### Polish backlog: dossiers (night 11 Oct review)
+- t1_allergy: dims_mm.length 3860 is probably ~6% long (real Allegro ~3620-3650); rescale outline x and wheel x (about -33/+33.5) in a small Spark card.
+- t1_chimp: rear window rake 37 deg vs real ~25-30 deg; notes say 13 inch wheels (real 12 inch).
+- t1_maurice: `special` empty; overhang split slightly rear-heavy.
