@@ -1095,5 +1095,31 @@
    "src/sim/jobsim.js",
    "tests/jobsim_requests.test.mjs"
   ]
+ },
+ {
+  "id": "A01",
+  "title": "Export car outlines to JSON for Blender",
+  "needs": [
+   "W49"
+  ],
+  "file": "A01-export-car-outlines-to-json-for-blender.md",
+  "files": [
+   "tools/art/export_profiles.mjs",
+   "tools/art/profiles.json",
+   "Makefile",
+   "tests/art_profiles_json.test.mjs"
+  ]
+ },
+ {
+  "id": "A02",
+  "title": "Blender: build a 3D car from an outline and render it",
+  "needs": [
+   "A01"
+  ],
+  "file": "A02-blender-build-a-3d-car-from-an-outline-a.md",
+  "files": [
+   "tools/art/blender_car.py",
+   "assets/art/preview/roadster_flat.png"
+  ]
  }
 ]
