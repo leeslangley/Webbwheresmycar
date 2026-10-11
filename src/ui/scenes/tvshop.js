@@ -203,25 +203,8 @@ export const tvshopScene = {
 		hits.add('back', LAYOUT.back.x, LAYOUT.back.y, LAYOUT.back.w, LAYOUT.back.h, function () {});
 	},
 
-	// Tap bookkeeping per the card's TAP RULE: remember the hit ID on
-	// 'down', commit on 'up' only when the same hit is under the finger.
-	// The onTap handlers are no-ops until W59b, so nothing happens yet.
-	pointer: function (app, type, x, y) {
-		if (!this.hits) return;
-		if (type === 'down') {
-			const h = this.hits.hit(x, y);
-			this.pressed = h ? h.id : null;
-			return;
-		}
-		if (type === 'up') {
-			const e = this.hits.hit(x, y);
-			if (e && this.pressed !== null && e.id === this.pressed && typeof e.onTap === 'function') {
-				e.onTap(e);
-			}
-			this.pressed = null;
-		}
-	},
+	// No tapping or keyboard yet: card W59b fills these in.
+	pointer: function (app, type, x, y) {},
 
-	// No keyboard yet (card W59b).
 	key: function (app, key) {},
 };
