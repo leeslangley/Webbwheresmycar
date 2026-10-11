@@ -1,0 +1,22 @@
+{
+ "id": "t1_allergy",
+ "real_car": "Austin Allegro 1976 (Series 2, 4-door saloon)",
+ "game_name": "Webb, wheres my car?",
+ "dims_mm": {"length": 3860, "width": 1610, "height": 1395, "wheelbase": 2388, "track_front": 1295, "track_rear": 1280, "tyre_overall_diameter": 580},
+ "dims_confidence": "medium",
+ "body_style": "4-door saloon (squashed-cuboid wedge)",
+ "doors": 4,
+ "wheels": [{"x": -30.5, "r": 7.5, "style": "steel"}, {"x": 31.3, "r": 7.5, "style": "steel"}],
+ "wheel_arch": "round",
+ "side_profile": [[-50, 0], [-50, 8], [-49, 25.5], [-44, 26.3], [-27, 27.2], [-23, 34.5], [-20, 35.9], [-14, 36.1], [6, 36.1], [9, 35.4], [15, 31.0], [19, 27.0], [38, 26.0], [46, 25.4], [50, 20.0], [50, 0], [48, 0], [46, 5.5], [36, 6.0], [-36, 6.0], [-46, 5.5], [-48, 0]],
+ "greenhouse": [[-25, 26.9], [-21, 35.3], [8, 35.2], [14, 31.0], [18, 26.9], [-25, 26.9]],
+ "roof": {"type": "hard", "colour_split": false},
+ "plan": {"width_units": 41.7, "nose_width_pct": 88, "tail_width_pct": 90, "tumblehome": "medium", "waist_pinch": false},
+ "front": {"grille": "wide flat horizontal-slat grille, 22 units wide by 3 units high, at x 49 y 11", "headlamps": {"count": 2, "shape": "round", "x": 48, "y": 15, "r": 1.8, "y_offset_from_centre": 6.5}, "bumper": "chrome strip 2 units high across the nose at y 7", "extras": ["small round lamp low in each front corner"]},
+ "rear": {"taillamps": "two upright rectangular lamps, 4 units wide by 3 units high, at x -49 y 13", "bumper": "chrome strip 2 units high across the tail at y 7", "exhaust": "one", "extras": ["flat boot lid, no rear spoiler"]},
+ "side_features": ["body-side crease running x -46..46 at y 20", "chrome sill strip x -36..36 at y 6", "side windows with chrome surround x -25..19 at y 27..36", "steel wheels with small chrome centre caps, r 7.5"],
+ "special": ["squashed-cuboid wedge body: blunt nose, flat roof, short squared boot", "four doors with chrome window surrounds"],
+ "typical_paint": ["#d9a520", "#3a5f8a", "#7a3b2e", "#e8e4d8"],
+ "ref_urls": ["https://en.wikipedia.org/wiki/Austin_Allegro", "https://commons.wikimedia.org/wiki/Category:Austin_Allegro"],
+ "notes": "Estimates: length, wheelbase, tracks and tyre size are from memory of period road tests, not a confirmed spec sheet, so dims_confidence is medium; treat height 1395 mm and width 1610 mm as the most reliable figures. Wheelbase 2388 mm is the figure I am least sure of (some sources quote more); it drives the front/rear axle positions, which are the proportion that matters most along with the flat roof and the blunt nose."
+}
