@@ -261,4 +261,22 @@ test('buying the last listing leaves an empty telly, without crashing', () => {
 	ok(got.indexOf('Nothing on the telly. Try again next week.') !== -1, 'empty-shop message drawn');
 });
 
+test('an empty board takes keys and taps without crashing or acting', () => {
+	const app = makeCtxApp();
+	app.state.shop.listings = [];
+	tvshopScene.enter(app);
+	tvshopScene.key(app, 'ArrowDown');
+	tvshopScene.key(app, 'ArrowUp');
+	tvshopScene.key(app, 'Enter');
+	tap(app, BUY[0], BUY[1]);
+	tap(app, RENT[0], RENT[1]);
+	eq(tvshopScene.selected, 0, 'selection stays at 0');
+	eq(app.state.cars.length, 0, 'nothing bought on an empty board');
+	eq(app.state.day, 1, 'the day did not move');
+	ok(tvshopScene.scroll.offset === 0, 'nothing to scroll');
+	const ctx = makeCtx();
+	tvshopScene.draw(ctx, app, 0);
+	ok(texts(ctx).indexOf('Nothing on the telly. Try again next week.') !== -1, 'empty-shop message drawn');
+});
+
 done();
