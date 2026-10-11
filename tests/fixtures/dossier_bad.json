@@ -1,0 +1,22 @@
+{
+ "id": "dossier_bad",
+ "real_car": "Test Car 1970",
+ "game_name": "Webb, wheres my car?",
+ "dims_mm": {"length": 4000, "width": 1600, "height": 2000, "wheelbase": 2400, "track_front": 1300, "track_rear": 1340, "tyre_overall_diameter": 640},
+ "dims_confidence": "high",
+ "body_style": "2-door saloon",
+ "doors": 2,
+ "wheels": [{"x": -30.0, "r": 8.0, "style": "steel"}, {"x": 30.0, "r": 8.0, "style": "steel"}],
+ "wheel_arch": "round",
+ "side_profile": [[-50, 0], [-50, 10], [-49, 24], [-46, 26], [-30, 26.5], [-20, 27], [-16, 29], [-12, 30], [8, 30], [12, 29], [16, 27], [24, 26.5], [40, 26], [46, 25], [50, 20], [50, 0], [48, 0], [46, 0], [46, 5], [34, 6], [-34, 6], [-46, 5], [-46, 0], [-48, 0]],
+ "greenhouse": [[-12, 26.5], [-9, 29], [6, 29], [10, 26.5]],
+ "roof": {"type": "hard", "colour_split": false},
+ "plan": {"width_units": 40, "nose_width_pct": 85, "tail_width_pct": 90, "tumblehome": "low", "waist_pinch": false},
+ "front": {"grille": "flat rectangle 6 units wide by 3 units high at x 50 y 8", "headlamps": {"count": 2, "shape": "round", "x": 47, "y": 16, "r": 1.5, "y_offset_from_centre": 5}, "bumper": "plain chrome strip 2 units high at y 6", "extras": []},
+ "rear": {"taillamps": "small round lamps at x -50 y 14", "bumper": "plain chrome strip 2 units high at y 6", "exhaust": "one", "extras": []},
+ "side_features": ["chrome sill strip x -34..34 y 5"],
+ "special": [],
+ "typical_paint": ["#808080", "#404040", "#7a1f1f", "#1f3a5f"],
+ "ref_urls": ["https://example.org/side-view", "https://example.org/front-quarter"],
+ "notes": "Same test car with a wrong height and a café character in the notes on purpose."
+}
