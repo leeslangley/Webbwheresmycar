@@ -142,3 +142,10 @@ A minimal Xcode project that hosts the game in a WKWebView, built with Xcode 27 
 - W56 hud.js: cash panel is 200px wide; a balance like -1,234,567 sticks out 10px (widen to 220). Cash text starts at x 28 inside a panel at x 16 (fine).
 - W53d speech.js: with 3 lines the text box bottom is about 92px vs bubble height 90; consider OFFICE.bubble.h 96. null/undefined text draws the words 'null'/'undefined' (harden to empty). Over-wide single words overflow (comment says hard break).
 - W53e characters.js line 2: an em dash in a comment (the ASCII-only rule is for player-visible text; the reviewer flagged it and the planner overruled it as cosmetic). Replace with ';' during a cleanup pass.
+
+## CAR LIKENESS REQUIREMENT (Lee, 11 Oct 2026)
+"The car models MUST accurately resemble the cars they are based on, however call them by nearly the same name (Rolls Boyce etc)."
+- So the 13 shared archetypes are NOT enough for the final art: every one of the 31 cars needs its own model that is recognisably the real car (proportions from real dimensions, correct roofline, nose/tail, lights, grille, wheels, special features such as gullwing doors, Kamm tail, tail fins, three wheels, fabric hood).
+- Names stay parody spellings (one or two letters changed, still instantly recognisable). Review all 31 names for being "nearly the same" as the real ones (e.g. Rolls-Roice -> Rolls Boyce if Lee prefers).
+- Real-car mapping and dimension/feature dossiers live in `docs/cars/<id>.json` (research, one file per car). The Blender builder is driven by these specs.
+- Reference photos are for looking at only; never committed to the repo.
