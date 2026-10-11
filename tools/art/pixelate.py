@@ -97,10 +97,12 @@ def parse_hex(text):
     if len(value) != 6:
         raise SystemExit("pixelate: --outline wants #rrggbb or auto, got %r" % text)
     try:
-        return np.array([int(value[i:i + 2], 16) / 255.0 for i in (0, 2, 4)],
+        # The pipeline works in linear RGB, so convert the sRGB hex on the way in.
+        srgb = np.array([int(value[i:i + 2], 16) / 255.0 for i in (0, 2, 4)],
                         dtype=np.float64)
     except ValueError:
         raise SystemExit("pixelate: --outline wants #rrggbb or auto, got %r" % text)
+    return srgb_to_linear(srgb)
 
 
 # ------------------------------------------------------------------ image ---
@@ -130,7 +132,9 @@ def save_rgba(path, rgba):
     image = bpy.data.images.new(os.path.basename(path), width=w, height=h,
                                alpha=True)
     image.colorspace_settings.name = "Non-Color"
-    image.pixels.foreach_set(out[::-1].reshape(-1))  # back to bottom-to-top
+    # foreach_set wants a contiguous float32 buffer, not float64.
+    buffer = np.ascontiguousarray(out[::-1].reshape(-1), dtype=np.float32)
+    image.pixels.foreach_set(buffer)  # back to bottom-to-top
     image.file_format = "PNG"
     image.filepath_raw = path
     image.save()
@@ -160,7 +164,8 @@ def resize_premultiplied(src, out_w, out_h):
     h, w = src.shape[0], src.shape[1]
     wx = box_weights(w, out_w)
     wy = box_weights(h, out_h)
-    mid = np.tensordot(src, wx, axes=([1], [1]))    # (h, out_w, 4)
+    # src (h, w, 4) x wx.T (w, out_w) -> (h, 4, out_w), then back to (h, out_w, 4)
+    mid = np.tensordot(src, wx.T, axes=([1], [0])).transpose(0, 2, 1)
     return np.tensordot(wy, mid, axes=([1], [0]))   # (out_h, out_w, 4)
 
 
@@ -208,7 +213,7 @@ def nearest(data, centres):
 def apply_dither(rgb, strength):
     """Nudge luminance with a 4x4 Bayer matrix; 0 strength means no change."""
     if strength <= 0.0:
-        return rgb
+        return rgb.copy()
     h, w = rgb.shape[0], rgb.shape[1]
     rows = np.arange(h)[:, None] % 4
     cols = np.arange(w)[None, :] % 4
@@ -262,9 +267,10 @@ def main(argv):
     opaque = alpha >= 0.5
     if opaque.any():
         pixels = rgb[opaque]
-        data = apply_dither(pixels, opts["dither"])
-        centres = kmeans(data, opts["colors"])
-        labels = nearest(data, centres)
+        centres = kmeans(pixels, opts["colors"])
+        # The 4x4 Bayer mask needs the pixel's position on the sprite grid, so the
+        # dither is applied to the whole grid before the opaque pixels are assigned.
+        labels = nearest(apply_dither(rgb, opts["dither"])[opaque], centres)
         palette = centres[labels]
         rgb[:] = 0.0
         rgb[opaque] = palette
