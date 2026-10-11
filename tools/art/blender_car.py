@@ -1,5 +1,6 @@
 # A02: build a 3D toy-style car from an outline (profiles.json) and render it.
-# Run headless: blender --background --python tools/art/blender_car.py -- <args>
+# Run headless:
+#   blender --background --python tools/art/blender_car.py --python-exit-code 1 -- <args>
 # Args after --: --archetype <name>  --color <#rrggbb>  --out <png path>
 #                --w <int> (default 1024)  --h <int> (default 512)
 import bpy
@@ -26,11 +27,13 @@ def parse_args(argv):
         elif a == '--out':
             args['out'] = argv[i + 1]
             i += 2
-        elif a == '--w':
-            args['w'] = int(argv[i + 1])
-            i += 2
-        elif a == '--h':
-            args['h'] = int(argv[i + 1])
+        elif a in ('--w', '--h'):
+            try:
+                args[a[2:]] = int(argv[i + 1])
+            except (ValueError, IndexError):
+                print('Bad value for %s: %r, expected an integer' %
+                      (a, argv[i + 1] if i + 1 < len(argv) else None))
+                sys.exit(2)
             i += 2
         else:
             print('Unknown argument: %s' % a)
@@ -46,7 +49,11 @@ def hex_to_rgb(s):
     if len(s) != 6:
         print('Bad colour %r, expected #rrggbb' % s)
         sys.exit(2)
-    return tuple(int(s[j:j + 2], 16) / 255.0 for j in (0, 2, 4))
+    try:
+        return tuple(int(s[j:j + 2], 16) / 255.0 for j in (0, 2, 4))
+    except ValueError:
+        print('Bad colour %r, expected #rrggbb' % s)
+        sys.exit(2)
 
 
 def set_socket(node, name, value):
@@ -153,7 +160,7 @@ def build_car(profile, mats):
             location=(x * U, 0, 8 * U))
         b = bpy.context.active_object
         b.name = 'bumper'
-        b.scale = (1.5 * U, width * U, 2.0 * U)
+        b.scale = (1.5 * U, width / 2.0 * U, 2.0 * U)
         b.data.materials.append(mats['chrome'])
     # Headlights: emissive spheres each side. Tail lights: red boxes.
     y_light = (width / 2.0 - 7) * U
@@ -175,7 +182,7 @@ def build_car(profile, mats):
                           (tail['y'] + tail['h'] / 2.0) * U))
             t = bpy.context.active_object
             t.name = 'taillight'
-            t.scale = (tail['w'] * U, 2.0 * U, tail['h'] * U)
+            t.scale = (tail['w'] / 2.0 * U, 1.0 * U, tail['h'] / 2.0 * U)
             t.data.materials.append(mats['taillight'])
 
 
