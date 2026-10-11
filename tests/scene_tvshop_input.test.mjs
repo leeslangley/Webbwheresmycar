@@ -255,7 +255,9 @@ test('buying the last listing leaves an empty telly, without crashing', () => {
 	tap(app, BUY[0], BUY[1]);
 	eq(app.state.shop.listings.length, 0, 'the board is empty');
 	eq(tvshopScene.selected, 0, 'selection stayed in range');
-	const got = texts(tvshopScene.draw(makeCtx(), app, 1));
+	const ctx = makeCtx();
+	tvshopScene.draw(ctx, app, 1);
+	const got = texts(ctx);
 	ok(got.indexOf('Nothing on the telly. Try again next week.') !== -1, 'empty-shop message drawn');
 });
 
