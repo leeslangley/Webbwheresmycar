@@ -3,7 +3,7 @@
 // car that meets its needs and accepts. Pure UI: no DOM, no Math.random,
 // no Date; the job is accepted only through app.act around acceptJob.
 
-import { PALETTE, font } from '../theme.js';
+import { PALETTE } from '../theme.js';
 import { makeHits, ScrollList } from '../kit_hits.js';
 import { panel, label, button, paragraph } from '../kit_draw.js';
 import { drawCar } from '../../art/cardraw.js';
@@ -98,6 +98,7 @@ export const bookingsScene = {
 
 	enter: function (app, params) {
 		this._pressed = null;
+		this.hits = null;
 		this.dragArea = null;
 		this.selReq = params && params.requestId ? params.requestId : null;
 		this.selCar = null;
