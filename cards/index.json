@@ -837,38 +837,6 @@
   ]
  },
  {
-  "id": "W65",
-  "title": "Auction scene",
-  "needs": [
-   "W45",
-   "W46",
-   "W47",
-   "W50c",
-   "W40",
-   "W38"
-  ],
-  "file": "W65-auction-scene.md",
-  "files": [
-   "src/ui/scenes/auction.js",
-   "tests/scene_auction.test.mjs"
-  ]
- },
- {
-  "id": "W66",
-  "title": "Year end and game over scene",
-  "needs": [
-   "W45",
-   "W47",
-   "W29",
-   "W40"
-  ],
-  "file": "W66-year-end-and-game-over-scene.md",
-  "files": [
-   "src/ui/scenes/endgame.js",
-   "tests/scene_endgame.test.mjs"
-  ]
- },
- {
   "id": "W67",
   "title": "Settings scene",
   "needs": [
@@ -879,32 +847,6 @@
   "files": [
    "src/ui/scenes/settings.js",
    "tests/scene_settings.test.mjs"
-  ]
- },
- {
-  "id": "W68",
-  "title": "Game flow: wiring everything together",
-  "needs": [
-   "W51",
-   "W57",
-   "W58",
-   "W59b",
-   "W60",
-   "W61",
-   "W62",
-   "W63",
-   "W64",
-   "W65",
-   "W66",
-   "W67",
-   "W39",
-   "W40"
-  ],
-  "file": "W68-game-flow-wiring-everything-together.md",
-  "files": [
-   "src/game.js",
-   "src/boot.js",
-   "tests/game.test.mjs"
   ]
  },
  {
@@ -929,24 +871,6 @@
   "files": [
    "src/audio/music.js",
    "tests/music.test.mjs"
-  ]
- },
- {
-  "id": "W71",
-  "title": "Installable web app (PWA) files",
-  "needs": [
-   "W51"
-  ],
-  "file": "W71-installable-web-app-pwa-files.md",
-  "files": [
-   "manifest.webmanifest",
-   "sw.js",
-   "tools/make_icons.py",
-   "assets/icons/icon-192.png",
-   "assets/icons/icon-512.png",
-   "assets/icons/apple-touch-icon.png",
-   "index.html",
-   "tests/pwa.test.mjs"
   ]
  },
  {
@@ -1132,18 +1056,6 @@
   "files": [
    "tools/art/blender_car.py",
    "assets/art/preview/roadster_flat.png"
-  ]
- },
- {
-  "id": "A03",
-  "title": "Blender car: richer paint, lighting and shape polish",
-  "needs": [
-   "A02"
-  ],
-  "file": "A03-blender-car-richer-paint-lighting-and-sh.md",
-  "files": [
-   "tools/art/blender_car.py",
-   "assets/art/preview/roadster_v2.png"
   ]
  },
  {
@@ -1514,6 +1426,320 @@
   "file": "D31-real-car-dossier-t3-aston.md",
   "files": [
    "docs/cars/t3_aston.json"
+  ]
+ },
+ {
+  "id": "W64a",
+  "title": "Ledger tab drawing",
+  "needs": [
+   "W45",
+   "W47",
+   "W29",
+   "W34",
+   "W40"
+  ],
+  "file": "W64a-ledger-tab-drawing.md",
+  "files": [
+   "src/ui/scenes/ledger.js",
+   "tests/scene_ledger_draw.test.mjs"
+  ]
+ },
+ {
+  "id": "W64b",
+  "title": "Ledger tabs, workshop and buying a slot",
+  "needs": [
+   "W64a"
+  ],
+  "file": "W64b-ledger-tabs-workshop-and-buying-a-slot.md",
+  "files": [
+   "src/ui/scenes/ledger.js",
+   "tests/scene_ledger_input.test.mjs"
+  ]
+ },
+ {
+  "id": "W65a",
+  "title": "Auction hall, lot header and browsing",
+  "needs": [
+   "W45",
+   "W46",
+   "W47",
+   "W50c",
+   "W40",
+   "W38"
+  ],
+  "file": "W65a-auction-hall-lot-header-and-browsing.md",
+  "files": [
+   "src/ui/scenes/auction.js",
+   "tests/scene_auction_a.test.mjs"
+  ]
+ },
+ {
+  "id": "W65b",
+  "title": "Auction hidden stats and reveal buttons",
+  "needs": [
+   "W65a"
+  ],
+  "file": "W65b-auction-hidden-stats-and-reveal-buttons.md",
+  "files": [
+   "src/ui/scenes/auction.js",
+   "tests/scene_auction_b.test.mjs"
+  ]
+ },
+ {
+  "id": "W65c",
+  "title": "Auction bidding",
+  "needs": [
+   "W65b"
+  ],
+  "file": "W65c-auction-bidding.md",
+  "files": [
+   "src/ui/scenes/auction.js",
+   "tests/scene_auction_c.test.mjs"
+  ]
+ },
+ {
+  "id": "W65d",
+  "title": "Auction your lots, leave and settle",
+  "needs": [
+   "W65c"
+  ],
+  "file": "W65d-auction-your-lots-leave-and-settle.md",
+  "files": [
+   "src/ui/scenes/auction.js",
+   "tests/scene_auction_d.test.mjs"
+  ]
+ },
+ {
+  "id": "W66a",
+  "title": "End screen drawing",
+  "needs": [
+   "W45",
+   "W47",
+   "W29",
+   "W40"
+  ],
+  "file": "W66a-end-screen-drawing.md",
+  "files": [
+   "src/ui/scenes/endgame.js",
+   "tests/scene_endgame_draw.test.mjs"
+  ]
+ },
+ {
+  "id": "W66b",
+  "title": "End screen buttons and confetti",
+  "needs": [
+   "W66a"
+  ],
+  "file": "W66b-end-screen-buttons-and-confetti.md",
+  "files": [
+   "src/ui/scenes/endgame.js",
+   "tests/scene_endgame_input.test.mjs"
+  ]
+ },
+ {
+  "id": "W67",
+  "title": "Settings scene",
+  "needs": [
+   "W45",
+   "W47"
+  ],
+  "file": "W67-settings-scene.md",
+  "files": [
+   "src/ui/scenes/settings.js",
+   "tests/scene_settings.test.mjs"
+  ]
+ },
+ {
+  "id": "W68a",
+  "title": "Game object: scenes, settings, new game, continue",
+  "needs": [
+   "W51",
+   "W57",
+   "W58",
+   "W59b",
+   "W60",
+   "W61",
+   "W62",
+   "W63",
+   "W64b",
+   "W65d",
+   "W66b",
+   "W67"
+  ],
+  "file": "W68a-game-object-scenes-settings-new-game-con.md",
+  "files": [
+   "src/game.js",
+   "tests/game_a.test.mjs"
+  ]
+ },
+ {
+  "id": "W68b",
+  "title": "Actions that cost a day: save and newspaper",
+  "needs": [
+   "W68a"
+  ],
+  "file": "W68b-actions-that-cost-a-day-save-and-newspap.md",
+  "files": [
+   "src/game.js",
+   "tests/game_b.test.mjs"
+  ]
+ },
+ {
+  "id": "W68c",
+  "title": "Game over goes to the end screen",
+  "needs": [
+   "W68b"
+  ],
+  "file": "W68c-game-over-goes-to-the-end-screen.md",
+  "files": [
+   "src/game.js",
+   "tests/game_c.test.mjs"
+  ]
+ },
+ {
+  "id": "W68d",
+  "title": "Boot uses the real game",
+  "needs": [
+   "W68c"
+  ],
+  "file": "W68d-boot-uses-the-real-game.md",
+  "files": [
+   "src/boot.js",
+   "tests/boot.test.mjs"
+  ]
+ },
+ {
+  "id": "W71a",
+  "title": "App icons script",
+  "needs": [
+   "W51"
+  ],
+  "file": "W71a-app-icons-script.md",
+  "files": [
+   "tools/make_icons.py",
+   "assets/icons/icon-192.png",
+   "assets/icons/icon-512.png",
+   "assets/icons/apple-touch-icon.png"
+  ]
+ },
+ {
+  "id": "W71b",
+  "title": "Manifest, service worker and index links",
+  "needs": [
+   "W71a"
+  ],
+  "file": "W71b-manifest-service-worker-and-index-links.md",
+  "files": [
+   "manifest.webmanifest",
+   "sw.js",
+   "index.html",
+   "tests/pwa.test.mjs"
+  ]
+ },
+ {
+  "id": "V01",
+  "title": "Blender car v2: body from a dossier",
+  "needs": [
+   "A02",
+   "R00"
+  ],
+  "file": "V01-blender-car-v2-body-from-a-dossier.md",
+  "files": [
+   "tools/art/carlib.py",
+   "tools/art/blender_car2.py",
+   "tests/run_blender_car2.sh"
+  ]
+ },
+ {
+  "id": "V02",
+  "title": "Blender car v2: body shape",
+  "needs": [
+   "V01"
+  ],
+  "file": "V02-blender-car-v2-body-shape.md",
+  "files": [
+   "tools/art/carlib.py",
+   "tools/art/blender_car2.py",
+   "tests/fixtures/dossier_taper.json",
+   "tests/run_blender_car2b.sh"
+  ]
+ },
+ {
+  "id": "V03",
+  "title": "Blender car v2: glass",
+  "needs": [
+   "V02"
+  ],
+  "file": "V03-blender-car-v2-glass.md",
+  "files": [
+   "tools/art/carlib.py",
+   "tools/art/blender_car2.py",
+   "tests/run_blender_car2c.sh"
+  ]
+ },
+ {
+  "id": "V04",
+  "title": "Blender car v2: wheels",
+  "needs": [
+   "V03"
+  ],
+  "file": "V04-blender-car-v2-wheels.md",
+  "files": [
+   "tools/art/carlib.py",
+   "tools/art/blender_car2.py",
+   "tests/run_blender_car2d.sh"
+  ]
+ },
+ {
+  "id": "V05",
+  "title": "Blender car v2: lamps and plates",
+  "needs": [
+   "V04"
+  ],
+  "file": "V05-blender-car-v2-lamps-and-plates.md",
+  "files": [
+   "tools/art/carlib.py",
+   "tools/art/blender_car2.py",
+   "tests/run_blender_car2e.sh"
+  ]
+ },
+ {
+  "id": "V06",
+  "title": "Blender car v2: paint, light and camera polish",
+  "needs": [
+   "V05"
+  ],
+  "file": "V06-blender-car-v2-paint-light-and-camera-po.md",
+  "files": [
+   "tools/art/carlib.py",
+   "tools/art/blender_car2.py",
+   "tests/run_blender_car2f.sh"
+  ]
+ },
+ {
+  "id": "V07",
+  "title": "Render and pixelate every car",
+  "needs": [
+   "V06",
+   "A04"
+  ],
+  "file": "V07-render-and-pixelate-every-car.md",
+  "files": [
+   "tools/art/render_all.sh",
+   ".gitignore",
+   "tests/run_render_all.sh"
+  ]
+ },
+ {
+  "id": "S01",
+  "title": "Game side: sprite loader and drawer",
+  "needs": [
+   "W51"
+  ],
+  "file": "S01-game-side-sprite-loader-and-drawer.md",
+  "files": [
+   "src/art/sprites.js",
+   "tests/sprites.test.mjs"
   ]
  }
 ]
