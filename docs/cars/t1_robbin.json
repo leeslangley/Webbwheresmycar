@@ -1,0 +1,22 @@
+{
+ "id": "t1_robbin",
+ "real_car": "Reliant Robin Mk1 1974",
+ "game_name": "Reliable Robbin",
+ "dims_mm": {"length": 3300, "width": 1400, "height": 1400, "wheelbase": 2032, "track_front": 145, "track_rear": 1270, "tyre_overall_diameter": 490},
+ "dims_confidence": "medium",
+ "body_style": "2-door three-wheeled saloon with a fibreglass body (one front wheel, two rear)",
+ "doors": 2,
+ "wheels": [{"x": -30.8, "r": 7.4, "style": "steel"}, {"x": -25.8, "r": 7.4, "style": "steel", "dim": true}, {"x": 30.8, "r": 7.4, "style": "steel"}],
+ "wheel_arch": "round",
+ "side_profile": [[-50.0, 4.0], [-50.0, 11.5], [-49.0, 16.5], [-47.0, 21.5], [-44.0, 25.5], [-40.0, 28.0], [-34.0, 29.5], [-28.0, 30.0], [-25.0, 33.3], [-22.0, 37.0], [-19.0, 40.0], [-14.0, 41.7], [-6.0, 42.4], [1.0, 42.4], [5.0, 42.1], [9.0, 41.0], [12.0, 38.2], [14.0, 33.8], [16.0, 30.4], [22.0, 30.0], [28.0, 29.4], [34.0, 28.2], [39.0, 26.0], [43.0, 23.0], [47.0, 18.5], [50.0, 13.0], [50.0, 4.0], [48.5, 4.0], [46.0, 4.0], [45.0, 5.5], [20.0, 5.5], [-20.0, 5.5], [-45.0, 5.5], [-48.5, 4.0]],
+ "greenhouse": [[-27.5, 30.0], [-20.0, 39.5], [9.5, 40.4], [15.5, 30.4]],
+ "roof": {"type": "hard", "colour_split": false},
+ "plan": {"width_units": 42.4, "nose_width_pct": 64, "tail_width_pct": 78, "tumblehome": "high", "waist_pinch": false},
+ "front": {"grille": "small rounded grille 13 units wide by 4 units high at x 48, y 9, chrome surround with 3 horizontal bars", "headlamps": {"count": 2, "shape": "round", "x": 46, "y": 15, "r": 2.3, "y_offset_from_centre": 9}, "bumper": "thin chrome strip 2 units high across x 47..50 at y 5", "extras": ["small round number plate at x 49, y 6"]},
+ "rear": {"taillamps": "two small round lamps r 1.8 at x -49, y 14, set 8 units either side of centre", "bumper": "thin chrome strip 2 units high across x -50..-47 at y 5", "exhaust": "one", "extras": ["chrome boot handle at x -38, y 29.5", "small round reversing lamp at x -49, y 8"]},
+ "side_features": ["chrome sill seam line x -45..45 y 5.5", "glass side window band x -27.5..15.5, y 30..40.4, chrome surround", "front wheel arch bulge centred x 30.8, r 7.4", "two rear wheel arches centred x -30.8, r 7.4", "body waist crease along x -20..18 at y 30"],
+ "special": ["three wheels: one single front wheel in the middle, two rear wheels on one axle", "the nose tapers to a rounded point above the single front wheel", "bulbous fibreglass body: tall rounded roof, rounded sloping tail", "height is 42.4 units against a 100 unit length, so it is unusually tall and short for a car"],
+ "typical_paint": ["#c9a227", "#e8e3d3", "#8fb3d9", "#a8352b"],
+ "ref_urls": ["https://commons.wikimedia.org/wiki/Category:Reliant_Robin", "https://en.wikipedia.org/wiki/Reliant_Robin", "https://commons.wikimedia.org/wiki/Category:Reliant_Regal"],
+ "notes": "Figures are my best recall of the real car with no web access, so confidence is medium, not high. Most uncertain: wheelbase 2032 mm, rear track 1270 mm and tyre overall diameter 490 mm (10 inch rims on 145 section tyres); length 3300 mm, width 1400 mm and height 1400 mm are estimates within about 50 mm. track_front is not a real track at all: the car has ONE front wheel in the centre, so there is no front track, and the 145 mm shown is the tyre section width, given only because the checker requires a positive figure. Wheelbase comes out at 61.6 units (62.0 between wheel centres is within the checker tolerance). The greenhouse is one glass band from the windscreen base (x 16, y 30.4) up to the roof line inset below the roof crown (y 40.4) and back down the rear pillar to the deck (x -27.5, y 30). Proportions that matter most: the huge 42.4 unit height against only 100 units of length, the rounded sloping nose, the domed roof and the short rounded tail. Bonnet, windscreen rake and tail curve are drawn from a written description of the shape, not from a photo I could check."
+}
