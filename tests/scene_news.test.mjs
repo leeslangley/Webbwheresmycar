@@ -52,11 +52,14 @@ function tap(app, x, y) {
 	newsScene.pointer(app, 'up', x, y);
 }
 
-// True when the recorded texts contain text, either whole or as wrapped
-// pieces drawn on consecutive lines (joined with spaces they equal text).
+// True when the recorded texts contain text: as a substring of any one line,
+// or as wrapped pieces drawn on consecutive lines (joined with spaces they
+// equal text).
 function hasText(got, text) {
-	if (got.indexOf(text) !== -1) {
-		return true;
+	for (let i = 0; i < got.length; i++) {
+		if (String(got[i]).indexOf(text) !== -1) {
+			return true;
+		}
 	}
 	const words = text.split(' ');
 	for (let i = 0; i <= got.length - words.length; i++) {
@@ -240,6 +243,22 @@ test('drawing twice does not double-fire or corrupt the hit list', () => {
 	drawOnce(app);
 	tap(app, 640, 360);
 	eq(pops(app), 1, 'still exactly one pop after two draws');
+});
+
+test('missing headline, events or month report fields do not throw', () => {
+	const state = { day: 5, today: {}, flags: { gameOver: false } };
+	const app = freshApp(state);
+	const ctx = drawOnce(app);
+	ok(hasText(texts(ctx), 'THE DAILY SPROCKET'), 'empty today still draws the masthead');
+	state.today.monthReport = {};
+	const app2 = freshApp(state);
+	drawOnce(app2);
+	newsScene.key(app2, 'Enter');
+	const ctx2 = drawOnce(app2);
+	ok(hasText(texts(ctx2), 'MONTH END: '), 'empty month report still draws page 2');
+	ok(hasText(texts(ctx2), 'TOTAL £0'), 'missing total prints £0');
+	tap(app2, 640, 360);
+	eq(pops(app2), 1, 'page 2 with no report fields still pops on tap');
 });
 
 done();
