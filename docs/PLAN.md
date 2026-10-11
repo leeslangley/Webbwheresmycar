@@ -149,3 +149,7 @@ A minimal Xcode project that hosts the game in a WKWebView, built with Xcode 27 
 - Names stay parody spellings (one or two letters changed, still instantly recognisable). Review all 31 names for being "nearly the same" as the real ones (e.g. Rolls-Roice -> Rolls Boyce if Lee prefers).
 - Real-car mapping and dimension/feature dossiers live in `docs/cars/<id>.json` (research, one file per car). The Blender builder is driven by these specs.
 - Reference photos are for looking at only; never committed to the repo.
+
+### Polish backlog additions (A02 review)
+- blender_car.py: `--archetype/--color/--out` with no value still raise IndexError (guard i+1 < len(argv), exit 2).
+- Trike lights sit at Y=+/-8 and bumpers are 30 wide (sensible for a 30-wide body); fine unless the dossier-driven builder replaces the archetypes.
