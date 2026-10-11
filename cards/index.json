@@ -757,23 +757,6 @@
   ]
  },
  {
-  "id": "W59",
-  "title": "TV shop scene",
-  "needs": [
-   "W45",
-   "W46",
-   "W47",
-   "W50c",
-   "W40",
-   "W09"
-  ],
-  "file": "W59-tv-shop-scene.md",
-  "files": [
-   "src/ui/scenes/tvshop.js",
-   "tests/scene_tvshop.test.mjs"
-  ]
- },
- {
   "id": "W60",
   "title": "Garage scene",
   "needs": [
@@ -905,7 +888,7 @@
    "W51",
    "W57",
    "W58",
-   "W59",
+   "W59b",
    "W60",
    "W61",
    "W62",
@@ -1081,6 +1064,35 @@
   "files": [
    "src/art/characters.js",
    "tests/characters.test.mjs"
+  ]
+ },
+ {
+  "id": "W59",
+  "title": "TV shop scene: layout and drawing",
+  "needs": [
+   "W45",
+   "W46",
+   "W47",
+   "W50c",
+   "W40",
+   "W09"
+  ],
+  "file": "W59-tv-shop-scene-layout-and-drawing.md",
+  "files": [
+   "src/ui/scenes/tvshop.js",
+   "tests/scene_tvshop_draw.test.mjs"
+  ]
+ },
+ {
+  "id": "W59b",
+  "title": "TV shop scene: taps, scrolling and buying",
+  "needs": [
+   "W59"
+  ],
+  "file": "W59b-tv-shop-scene-taps-scrolling-and-buying.md",
+  "files": [
+   "src/ui/scenes/tvshop.js",
+   "tests/scene_tvshop_input.test.mjs"
   ]
  },
  {
