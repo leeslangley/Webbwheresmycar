@@ -1159,5 +1159,131 @@
    "assets/art/preview/roadster_px.png",
    "assets/art/preview/roadster_px_x4.png"
   ]
+ },
+ {
+  "id": "R00",
+  "title": "Dossier checker for real-car spec files",
+  "needs": [
+   "A01"
+  ],
+  "file": "R00-dossier-checker-for-real-car-spec-files.md",
+  "files": [
+   "tools/check_dossier.py",
+   "tests/fixtures/dossier_ok.json",
+   "tests/fixtures/dossier_bad.json",
+   "tests/run_dossier_check.sh",
+   "Makefile"
+  ]
+ },
+ {
+  "id": "R01",
+  "title": "Real-car dossiers 1 of 8 (t1_allergy .. t1_maurice)",
+  "needs": [
+   "R00"
+  ],
+  "file": "R01-real-car-dossiers-1-of-8-t1-allergy-t1-m.md",
+  "files": [
+   "docs/cars/t1_allergy.json",
+   "docs/cars/t1_robbin.json",
+   "docs/cars/t1_chimp.json",
+   "docs/cars/t1_maurice.json"
+  ]
+ },
+ {
+  "id": "R02",
+  "title": "Real-car dossiers 2 of 8 (t1_volksbeagle .. t1_fjord)",
+  "needs": [
+   "R00"
+  ],
+  "file": "R02-real-car-dossiers-2-of-8-t1-volksbeagle-.md",
+  "files": [
+   "docs/cars/t1_volksbeagle.json",
+   "docs/cars/t1_trumpet.json",
+   "docs/cars/t1_cooker.json",
+   "docs/cars/t1_fjord.json"
+  ]
+ },
+ {
+  "id": "R03",
+  "title": "Real-car dossiers 3 of 8 (t1_mgbee .. t2_trsixish)",
+  "needs": [
+   "R00"
+  ],
+  "file": "R03-real-car-dossiers-3-of-8-t1-mgbee-t2-trs.md",
+  "files": [
+   "docs/cars/t1_mgbee.json",
+   "docs/cars/t1_alpaca.json",
+   "docs/cars/t2_fjordcapri.json",
+   "docs/cars/t2_trsixish.json"
+  ]
+ },
+ {
+  "id": "R04",
+  "title": "Real-car dossiers 4 of 8 (t2_spyder .. t2_eclair)",
+  "needs": [
+   "R00"
+  ],
+  "file": "R04-real-car-dossiers-4-of-8-t2-spyder-t2-ec.md",
+  "files": [
+   "docs/cars/t2_spyder.json",
+   "docs/cars/t2_serious.json",
+   "docs/cars/t2_zed.json",
+   "docs/cars/t2_eclair.json"
+  ]
+ },
+ {
+  "id": "R05",
+  "title": "Real-car dossiers 5 of 8 (t2_lancer .. t2_dees)",
+  "needs": [
+   "R00"
+  ],
+  "file": "R05-real-car-dossiers-5-of-8-t2-lancer-t2-de.md",
+  "files": [
+   "docs/cars/t2_lancer.json",
+   "docs/cars/t2_healthy.json",
+   "docs/cars/t2_morganish.json",
+   "docs/cars/t2_dees.json"
+  ]
+ },
+ {
+  "id": "R06",
+  "title": "Real-car dossiers 6 of 8 (t3_mercedez .. t3_jagwar)",
+  "needs": [
+   "R00"
+  ],
+  "file": "R06-real-car-dossiers-6-of-8-t3-mercedez-t3-.md",
+  "files": [
+   "docs/cars/t3_mercedez.json",
+   "docs/cars/t3_porshe.json",
+   "docs/cars/t3_delorean.json",
+   "docs/cars/t3_jagwar.json"
+  ]
+ },
+ {
+  "id": "R07",
+  "title": "Real-car dossiers 7 of 8 (t3_cloudy .. t3_lamborgonzo)",
+  "needs": [
+   "R00"
+  ],
+  "file": "R07-real-car-dossiers-7-of-8-t3-cloudy-t3-la.md",
+  "files": [
+   "docs/cars/t3_cloudy.json",
+   "docs/cars/t3_cobbra.json",
+   "docs/cars/t3_dinosore.json",
+   "docs/cars/t3_lamborgonzo.json"
+  ]
+ },
+ {
+  "id": "R08",
+  "title": "Real-car dossiers 8 of 8 (t3_gtforty .. t3_aston)",
+  "needs": [
+   "R00"
+  ],
+  "file": "R08-real-car-dossiers-8-of-8-t3-gtforty-t3-a.md",
+  "files": [
+   "docs/cars/t3_gtforty.json",
+   "docs/cars/t3_blowhard.json",
+   "docs/cars/t3_aston.json"
+  ]
  }
 ]
