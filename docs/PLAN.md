@@ -103,6 +103,9 @@ Parallel track: W42-W56 (UI kit, car art, office art) can run as soon as W01 is 
 | W71 | Installable web app (PWA) files | W51 |
 | W72 | CRT filter overlay | W44, W43 |
 
+## ART PIVOT (11 Oct 2026)
+Lee rejected the code-drawn vector art. New route: Blender-rendered modern HD pixel art (see docs/ART_BIBLE.md). Cards A01+ build the render pipeline and the assets; the screens keep their drawing interfaces, and the old code-drawn art modules are replaced by sprite-based ones once the assets exist. Screen logic cards (W58 to W68) continue.
+
 ## Visual review loop (after W68)
 Open the game in the browser pane, screenshot every scene (desktop and iPhone-sized viewport), then write small exact polish cards (colours, spacing, animation timing, car shapes). Mark Webb's caricature is checked against Lee's reference photos (not stored in the repo).
 
