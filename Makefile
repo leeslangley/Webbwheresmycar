@@ -1,10 +1,13 @@
 JSC ?= /System/Library/Frameworks/JavaScriptCore.framework/Versions/Current/Helpers/jsc
 export JSC
 
-.PHONY: test serve playbot
+.PHONY: test serve playbot art-profiles
 
 test:
 	sh tools/run_tests.sh
+
+art-profiles:
+	$(JSC) -m tools/art/export_profiles.mjs > tools/art/profiles.json
 
 playbot:
 	$(JSC) -m tools/playbot.mjs
