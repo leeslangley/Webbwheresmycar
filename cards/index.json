@@ -1176,113 +1176,343 @@
   ]
  },
  {
-  "id": "R01",
-  "title": "Real-car dossiers 1 of 8 (t1_allergy .. t1_maurice)",
+  "id": "D01",
+  "title": "Real-car dossier: t1_allergy",
   "needs": [
    "R00"
   ],
-  "file": "R01-real-car-dossiers-1-of-8-t1-allergy-t1-m.md",
+  "file": "D01-real-car-dossier-t1-allergy.md",
   "files": [
-   "docs/cars/t1_allergy.json",
-   "docs/cars/t1_robbin.json",
-   "docs/cars/t1_chimp.json",
+   "docs/cars/t1_allergy.json"
+  ]
+ },
+ {
+  "id": "D02",
+  "title": "Real-car dossier: t1_robbin",
+  "needs": [
+   "R00"
+  ],
+  "file": "D02-real-car-dossier-t1-robbin.md",
+  "files": [
+   "docs/cars/t1_robbin.json"
+  ]
+ },
+ {
+  "id": "D03",
+  "title": "Real-car dossier: t1_chimp",
+  "needs": [
+   "R00"
+  ],
+  "file": "D03-real-car-dossier-t1-chimp.md",
+  "files": [
+   "docs/cars/t1_chimp.json"
+  ]
+ },
+ {
+  "id": "D04",
+  "title": "Real-car dossier: t1_maurice",
+  "needs": [
+   "R00"
+  ],
+  "file": "D04-real-car-dossier-t1-maurice.md",
+  "files": [
    "docs/cars/t1_maurice.json"
   ]
  },
  {
-  "id": "R02",
-  "title": "Real-car dossiers 2 of 8 (t1_volksbeagle .. t1_fjord)",
+  "id": "D05",
+  "title": "Real-car dossier: t1_volksbeagle",
   "needs": [
    "R00"
   ],
-  "file": "R02-real-car-dossiers-2-of-8-t1-volksbeagle-.md",
+  "file": "D05-real-car-dossier-t1-volksbeagle.md",
   "files": [
-   "docs/cars/t1_volksbeagle.json",
-   "docs/cars/t1_trumpet.json",
-   "docs/cars/t1_cooker.json",
+   "docs/cars/t1_volksbeagle.json"
+  ]
+ },
+ {
+  "id": "D06",
+  "title": "Real-car dossier: t1_trumpet",
+  "needs": [
+   "R00"
+  ],
+  "file": "D06-real-car-dossier-t1-trumpet.md",
+  "files": [
+   "docs/cars/t1_trumpet.json"
+  ]
+ },
+ {
+  "id": "D07",
+  "title": "Real-car dossier: t1_cooker",
+  "needs": [
+   "R00"
+  ],
+  "file": "D07-real-car-dossier-t1-cooker.md",
+  "files": [
+   "docs/cars/t1_cooker.json"
+  ]
+ },
+ {
+  "id": "D08",
+  "title": "Real-car dossier: t1_fjord",
+  "needs": [
+   "R00"
+  ],
+  "file": "D08-real-car-dossier-t1-fjord.md",
+  "files": [
    "docs/cars/t1_fjord.json"
   ]
  },
  {
-  "id": "R03",
-  "title": "Real-car dossiers 3 of 8 (t1_mgbee .. t2_trsixish)",
+  "id": "D09",
+  "title": "Real-car dossier: t1_mgbee",
   "needs": [
    "R00"
   ],
-  "file": "R03-real-car-dossiers-3-of-8-t1-mgbee-t2-trs.md",
+  "file": "D09-real-car-dossier-t1-mgbee.md",
   "files": [
-   "docs/cars/t1_mgbee.json",
-   "docs/cars/t1_alpaca.json",
-   "docs/cars/t2_fjordcapri.json",
+   "docs/cars/t1_mgbee.json"
+  ]
+ },
+ {
+  "id": "D10",
+  "title": "Real-car dossier: t1_alpaca",
+  "needs": [
+   "R00"
+  ],
+  "file": "D10-real-car-dossier-t1-alpaca.md",
+  "files": [
+   "docs/cars/t1_alpaca.json"
+  ]
+ },
+ {
+  "id": "D11",
+  "title": "Real-car dossier: t2_fjordcapri",
+  "needs": [
+   "R00"
+  ],
+  "file": "D11-real-car-dossier-t2-fjordcapri.md",
+  "files": [
+   "docs/cars/t2_fjordcapri.json"
+  ]
+ },
+ {
+  "id": "D12",
+  "title": "Real-car dossier: t2_trsixish",
+  "needs": [
+   "R00"
+  ],
+  "file": "D12-real-car-dossier-t2-trsixish.md",
+  "files": [
    "docs/cars/t2_trsixish.json"
   ]
  },
  {
-  "id": "R04",
-  "title": "Real-car dossiers 4 of 8 (t2_spyder .. t2_eclair)",
+  "id": "D13",
+  "title": "Real-car dossier: t2_spyder",
   "needs": [
    "R00"
   ],
-  "file": "R04-real-car-dossiers-4-of-8-t2-spyder-t2-ec.md",
+  "file": "D13-real-car-dossier-t2-spyder.md",
   "files": [
-   "docs/cars/t2_spyder.json",
-   "docs/cars/t2_serious.json",
-   "docs/cars/t2_zed.json",
+   "docs/cars/t2_spyder.json"
+  ]
+ },
+ {
+  "id": "D14",
+  "title": "Real-car dossier: t2_serious",
+  "needs": [
+   "R00"
+  ],
+  "file": "D14-real-car-dossier-t2-serious.md",
+  "files": [
+   "docs/cars/t2_serious.json"
+  ]
+ },
+ {
+  "id": "D15",
+  "title": "Real-car dossier: t2_zed",
+  "needs": [
+   "R00"
+  ],
+  "file": "D15-real-car-dossier-t2-zed.md",
+  "files": [
+   "docs/cars/t2_zed.json"
+  ]
+ },
+ {
+  "id": "D16",
+  "title": "Real-car dossier: t2_eclair",
+  "needs": [
+   "R00"
+  ],
+  "file": "D16-real-car-dossier-t2-eclair.md",
+  "files": [
    "docs/cars/t2_eclair.json"
   ]
  },
  {
-  "id": "R05",
-  "title": "Real-car dossiers 5 of 8 (t2_lancer .. t2_dees)",
+  "id": "D17",
+  "title": "Real-car dossier: t2_lancer",
   "needs": [
    "R00"
   ],
-  "file": "R05-real-car-dossiers-5-of-8-t2-lancer-t2-de.md",
+  "file": "D17-real-car-dossier-t2-lancer.md",
   "files": [
-   "docs/cars/t2_lancer.json",
-   "docs/cars/t2_healthy.json",
-   "docs/cars/t2_morganish.json",
+   "docs/cars/t2_lancer.json"
+  ]
+ },
+ {
+  "id": "D18",
+  "title": "Real-car dossier: t2_healthy",
+  "needs": [
+   "R00"
+  ],
+  "file": "D18-real-car-dossier-t2-healthy.md",
+  "files": [
+   "docs/cars/t2_healthy.json"
+  ]
+ },
+ {
+  "id": "D19",
+  "title": "Real-car dossier: t2_morganish",
+  "needs": [
+   "R00"
+  ],
+  "file": "D19-real-car-dossier-t2-morganish.md",
+  "files": [
+   "docs/cars/t2_morganish.json"
+  ]
+ },
+ {
+  "id": "D20",
+  "title": "Real-car dossier: t2_dees",
+  "needs": [
+   "R00"
+  ],
+  "file": "D20-real-car-dossier-t2-dees.md",
+  "files": [
    "docs/cars/t2_dees.json"
   ]
  },
  {
-  "id": "R06",
-  "title": "Real-car dossiers 6 of 8 (t3_mercedez .. t3_jagwar)",
+  "id": "D21",
+  "title": "Real-car dossier: t3_mercedez",
   "needs": [
    "R00"
   ],
-  "file": "R06-real-car-dossiers-6-of-8-t3-mercedez-t3-.md",
+  "file": "D21-real-car-dossier-t3-mercedez.md",
   "files": [
-   "docs/cars/t3_mercedez.json",
-   "docs/cars/t3_porshe.json",
-   "docs/cars/t3_delorean.json",
+   "docs/cars/t3_mercedez.json"
+  ]
+ },
+ {
+  "id": "D22",
+  "title": "Real-car dossier: t3_porshe",
+  "needs": [
+   "R00"
+  ],
+  "file": "D22-real-car-dossier-t3-porshe.md",
+  "files": [
+   "docs/cars/t3_porshe.json"
+  ]
+ },
+ {
+  "id": "D23",
+  "title": "Real-car dossier: t3_delorean",
+  "needs": [
+   "R00"
+  ],
+  "file": "D23-real-car-dossier-t3-delorean.md",
+  "files": [
+   "docs/cars/t3_delorean.json"
+  ]
+ },
+ {
+  "id": "D24",
+  "title": "Real-car dossier: t3_jagwar",
+  "needs": [
+   "R00"
+  ],
+  "file": "D24-real-car-dossier-t3-jagwar.md",
+  "files": [
    "docs/cars/t3_jagwar.json"
   ]
  },
  {
-  "id": "R07",
-  "title": "Real-car dossiers 7 of 8 (t3_cloudy .. t3_lamborgonzo)",
+  "id": "D25",
+  "title": "Real-car dossier: t3_cloudy",
   "needs": [
    "R00"
   ],
-  "file": "R07-real-car-dossiers-7-of-8-t3-cloudy-t3-la.md",
+  "file": "D25-real-car-dossier-t3-cloudy.md",
   "files": [
-   "docs/cars/t3_cloudy.json",
-   "docs/cars/t3_cobbra.json",
-   "docs/cars/t3_dinosore.json",
+   "docs/cars/t3_cloudy.json"
+  ]
+ },
+ {
+  "id": "D26",
+  "title": "Real-car dossier: t3_cobbra",
+  "needs": [
+   "R00"
+  ],
+  "file": "D26-real-car-dossier-t3-cobbra.md",
+  "files": [
+   "docs/cars/t3_cobbra.json"
+  ]
+ },
+ {
+  "id": "D27",
+  "title": "Real-car dossier: t3_dinosore",
+  "needs": [
+   "R00"
+  ],
+  "file": "D27-real-car-dossier-t3-dinosore.md",
+  "files": [
+   "docs/cars/t3_dinosore.json"
+  ]
+ },
+ {
+  "id": "D28",
+  "title": "Real-car dossier: t3_lamborgonzo",
+  "needs": [
+   "R00"
+  ],
+  "file": "D28-real-car-dossier-t3-lamborgonzo.md",
+  "files": [
    "docs/cars/t3_lamborgonzo.json"
   ]
  },
  {
-  "id": "R08",
-  "title": "Real-car dossiers 8 of 8 (t3_gtforty .. t3_aston)",
+  "id": "D29",
+  "title": "Real-car dossier: t3_gtforty",
   "needs": [
    "R00"
   ],
-  "file": "R08-real-car-dossiers-8-of-8-t3-gtforty-t3-a.md",
+  "file": "D29-real-car-dossier-t3-gtforty.md",
   "files": [
-   "docs/cars/t3_gtforty.json",
-   "docs/cars/t3_blowhard.json",
+   "docs/cars/t3_gtforty.json"
+  ]
+ },
+ {
+  "id": "D30",
+  "title": "Real-car dossier: t3_blowhard",
+  "needs": [
+   "R00"
+  ],
+  "file": "D30-real-car-dossier-t3-blowhard.md",
+  "files": [
+   "docs/cars/t3_blowhard.json"
+  ]
+ },
+ {
+  "id": "D31",
+  "title": "Real-car dossier: t3_aston",
+  "needs": [
+   "R00"
+  ],
+  "file": "D31-real-car-dossier-t3-aston.md",
+  "files": [
    "docs/cars/t3_aston.json"
   ]
  }
