@@ -4,6 +4,7 @@ export JSC
 .PHONY: test serve playbot art-profiles
 
 test:
+	sh tests/run_dossier_check.sh
 	sh tools/run_tests.sh
 
 art-profiles:
