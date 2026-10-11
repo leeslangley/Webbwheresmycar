@@ -1,9 +1,9 @@
-// TV shop scene, look only (card W59, DESIGN.md sections 4.3, 4.4, 5, 9.5,
+// TV shop scene (cards W59 and W59b, DESIGN.md sections 4.3, 4.4, 5, 9.5,
 // 9.7): a big old telly showing the week's listings, the selected car and
-// its details. No tapping or keyboard yet (card W59b): the hit entries
-// exist but their onTap handlers do nothing. Pure: no DOM, no Date,
-// everything drawn through the passed-in ctx so it runs in jsc tests with
-// tests/fakectx.js. draw() never touches app.state.
+// its details. Rows select by tap or arrow keys, the list scrolls by
+// dragging, BUY and RENT go through app.act, BACK pops. Pure: no DOM, no
+// Date, everything drawn through the passed-in ctx so it runs in jsc
+// tests with tests/fakectx.js. draw() never touches app.state.
 
 import { PALETTE, font, rgba } from '../theme.js';
 import { panel, label, paragraph, button, bar } from '../kit_draw.js';
@@ -12,6 +12,7 @@ import { drawCar } from '../../art/cardraw.js';
 import { paintOf } from '../../data/paint.js';
 import { modelOf } from '../../data/cars.js';
 import { money, oneDp } from '../../core/format.js';
+import { buyCar, rentCar } from '../../sim/actions.js';
 
 // Rectangles in logical 1280x720 coordinates.
 export const LAYOUT = {
@@ -101,6 +102,49 @@ function drawDetail(ctx, listing, t) {
 	}
 }
 
+// Why tapping BUY right now would do nothing, or null when it can go
+// ahead. Same order of refusals as sim/actions.js.
+function buyRefusal(state, listing) {
+	if (!listing || listing.mode !== 'sale') {
+		return 'That one is not for sale';
+	}
+	if (state.cars.length >= state.garageSlots) {
+		return 'No free garage slot';
+	}
+	if (state.cash < listing.price) {
+		return 'Not enough money';
+	}
+	return null;
+}
+
+// The same for RENT.
+function rentRefusal(state, listing) {
+	if (!listing || listing.mode !== 'rent') {
+		return 'That one is not for rent';
+	}
+	if (state.cars.length >= state.garageSlots) {
+		return 'No free garage slot';
+	}
+	if (state.cash < listing.price) {
+		return 'Not enough money';
+	}
+	return null;
+}
+
+// Which listing is selected and whether BUY and RENT may act right now.
+// Shared by the drawing and the hit list so the two can never disagree.
+function buttonStates(app) {
+	const listings = app.state.shop.listings;
+	const listing = tvshopScene.selected < listings.length ? listings[tvshopScene.selected] : null;
+	const canAfford = listing ? app.state.cash >= listing.price : false;
+	const hasRoom = app.state.cars.length < app.state.garageSlots;
+	return {
+		listing: listing,
+		buyOk: !!listing && listing.mode === 'sale' && canAfford && hasRoom,
+		rentOk: !!listing && listing.mode === 'rent' && canAfford && hasRoom,
+	};
+}
+
 export const tvshopScene = {
 	id: 'tvshop',
 	selected: 0,
@@ -114,15 +158,22 @@ export const tvshopScene = {
 		this.scroll = new ScrollList({ viewH: LAYOUT.list.h, rowH: LAYOUT.rowH, count: listings.length });
 		this.hits = makeHits();
 		this.pressed = null;
+		// Seed the hit list here too, so a tap that lands before the very
+		// first draw still works (the real app redraws every frame; tests
+		// may tap straight after enter).
+		this.buildHits(app, this.hits);
 	},
 
 	draw: function (ctx, app, t) {
+		// Coast a fling along, one step per frame.
+		this.scroll.update(16);
 		// Rebuild the hit list at the start of every draw so it always
 		// matches what is on screen (DESIGN.md 9.7). Never touch the
 		// pressed state here: it is managed by pointer() between the
 		// finger-down and its finger-up.
 		const hits = makeHits();
 		this.hits = hits;
+		this.buildHits(app, hits);
 		const listings = app.state.shop.listings;
 		const L = LAYOUT.list;
 
@@ -145,7 +196,8 @@ export const tvshopScene = {
 			shadow: true,
 		});
 
-		const listing = this.selected < listings.length ? listings[this.selected] : null;
+		const st = buttonStates(app);
+		const listing = st.listing;
 
 		// 3) The scrolling list of listings, clipped to the list area.
 		ctx.save();
@@ -172,39 +224,149 @@ export const tvshopScene = {
 		}
 
 		// 5) Buttons. BUY and RENT light up only when the selected listing
-		// matches their mode and the money and garage slots allow it; W59b
-		// wires the actual buying.
-		const canAfford = listing ? app.state.cash >= listing.price : false;
-		const hasRoom = app.state.cars.length < app.state.garageSlots;
-		const buyOk = !!listing && listing.mode === 'sale' && canAfford && hasRoom;
-		const rentOk = !!listing && listing.mode === 'rent' && canAfford && hasRoom;
+		// matches their mode and the money and garage slots allow it.
 		button(ctx, {
 			x: LAYOUT.buy.x, y: LAYOUT.buy.y, w: LAYOUT.buy.w, h: LAYOUT.buy.h,
-			label: 'BUY', kind: 'primary', enabled: buyOk,
+			label: 'BUY', kind: 'primary', enabled: st.buyOk,
 		});
 		button(ctx, {
 			x: LAYOUT.rent.x, y: LAYOUT.rent.y, w: LAYOUT.rent.w, h: LAYOUT.rent.h,
-			label: 'RENT', enabled: rentOk,
+			label: 'RENT', enabled: st.rentOk,
 		});
 		button(ctx, {
 			x: LAYOUT.back.x, y: LAYOUT.back.y, w: LAYOUT.back.w, h: LAYOUT.back.h,
 			label: 'BACK', enabled: true,
 		});
+	},
 
-		// Hit entries: rows, BUY, RENT, BACK. The handlers do nothing yet;
-		// card W59b fills them in.
+	// Rebuild a hit list: the visible rows, then BUY, RENT and BACK (added
+	// last so they win any overlap). Disabled BUY and RENT stay tappable:
+	// tapping one toasts why it will not act (DESIGN.md 9.7).
+	buildHits: function (app, hits) {
+		const scene = this;
+		const listings = app.state.shop.listings;
+		const L = LAYOUT.list;
+		const range = this.scroll.visibleRange();
 		for (let i = range.first; i <= range.last; i++) {
 			if (!listings[i]) continue;
 			const y = L.y + i * LAYOUT.rowH - this.scroll.offset;
-			hits.add('row' + i, L.x, y, L.w, LAYOUT.rowH, function () {});
+			hits.add('row' + i, L.x, y, L.w, LAYOUT.rowH, function () {
+				scene.selected = Math.min(i, Math.max(0, listings.length - 1));
+			});
 		}
-		hits.add('buy', LAYOUT.buy.x, LAYOUT.buy.y, LAYOUT.buy.w, LAYOUT.buy.h, function () {}, { enabled: buyOk });
-		hits.add('rent', LAYOUT.rent.x, LAYOUT.rent.y, LAYOUT.rent.w, LAYOUT.rent.h, function () {}, { enabled: rentOk });
-		hits.add('back', LAYOUT.back.x, LAYOUT.back.y, LAYOUT.back.w, LAYOUT.back.h, function () {});
+		hits.add('buy', LAYOUT.buy.x, LAYOUT.buy.y, LAYOUT.buy.w, LAYOUT.buy.h, function () {
+			scene.actBuy(app);
+		});
+		hits.add('rent', LAYOUT.rent.x, LAYOUT.rent.y, LAYOUT.rent.w, LAYOUT.rent.h, function () {
+			scene.actRent(app);
+		});
+		hits.add('back', LAYOUT.back.x, LAYOUT.back.y, LAYOUT.back.w, LAYOUT.back.h, function () {
+			app.pop();
+		});
 	},
 
-	// No tapping or keyboard yet: card W59b fills these in.
-	pointer: function (app, type, x, y) {},
+	// Buy the selected listing through app.act; a refused tap toasts why.
+	actBuy: function (app) {
+		const listing = app.state.shop.listings[this.selected] || null;
+		const refusal = buyRefusal(app.state, listing);
+		if (refusal) {
+			app.toast(refusal);
+			return;
+		}
+		const r = app.act(function () { return buyCar(app.state, listing.listingId); });
+		if (r && r.ok) {
+			this.afterPurchase(app);
+		}
+	},
 
-	key: function (app, key) {},
+	// Rent the selected listing through app.act; a refused tap toasts why.
+	actRent: function (app) {
+		const listing = app.state.shop.listings[this.selected] || null;
+		const refusal = rentRefusal(app.state, listing);
+		if (refusal) {
+			app.toast(refusal);
+			return;
+		}
+		const r = app.act(function () { return rentCar(app.state, listing.listingId); });
+		if (r && r.ok) {
+			this.afterPurchase(app);
+		}
+	},
+
+	// After a buy or rent the board shrank: keep the selection and the
+	// scroll count honest.
+	afterPurchase: function (app) {
+		const n = app.state.shop.listings.length;
+		this.selected = Math.min(this.selected, Math.max(0, n - 1));
+		this.scroll.setCount(n);
+	},
+
+	pointer: function (app, type, x, y) {
+		const nowMs = typeof app.now === 'function' ? app.now() : (app.now || 0);
+		const L = LAYOUT.list;
+		if (type === 'down') {
+			// Tap rule: remember the hit's id, never the hit object, and
+			// never reset it inside draw().
+			const h = this.hits.hit(x, y);
+			this.pressed = h ? h.id : null;
+			// A drag only starts inside the list.
+			this.scrolling = x >= L.x && x < L.x + L.w && y >= L.y && y < L.y + L.h;
+			if (this.scrolling) {
+				this.scroll.beginDrag(y, nowMs);
+			}
+			return;
+		}
+		if (type === 'move') {
+			if (this.scrolling) {
+				this.scroll.dragTo(y, nowMs);
+			}
+			return;
+		}
+		if (type === 'up') {
+			const r = this.scroll.endDrag();
+			if (r.tapped) {
+				const e = this.hits.hit(x, y);
+				if (e && this.pressed !== null && e.id === this.pressed && typeof e.onTap === 'function') {
+					e.onTap(e);
+				}
+			}
+			this.pressed = null;
+			this.scrolling = false;
+		}
+	},
+
+	key: function (app, key) {
+		const listings = app.state.shop.listings;
+		if (key === 'ArrowDown') {
+			if (listings.length > 0) {
+				this.selected = Math.min(this.selected + 1, listings.length - 1);
+				this.scrollToSelected();
+			}
+		} else if (key === 'ArrowUp') {
+			this.selected = Math.max(this.selected - 1, 0);
+			this.scrollToSelected();
+		} else if (key === 'Enter') {
+			const l = listings[this.selected];
+			if (!l) {
+				return;
+			}
+			if (l.mode === 'sale') {
+				this.actBuy(app);
+			} else {
+				this.actRent(app);
+			}
+		} else if (key === 'Escape') {
+			app.pop();
+		}
+	},
+
+	// Nudge the scroll so the selected row sits inside the view.
+	scrollToSelected: function () {
+		const top = this.selected * LAYOUT.rowH;
+		if (top < this.scroll.offset) {
+			this.scroll.scrollBy(top - this.scroll.offset);
+		} else if (top + LAYOUT.rowH > this.scroll.offset + LAYOUT.list.h) {
+			this.scroll.scrollBy(top + LAYOUT.rowH - this.scroll.offset - LAYOUT.list.h);
+		}
+	},
 };
