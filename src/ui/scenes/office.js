@@ -85,10 +85,15 @@ export const officeScene = {
 	// what is on screen.
 	hits: null,
 
-	enter: function () {},
+	enter: function () {
+		this._pressed = null;
+		this.hits = null;
+		this.dayLine = { day: 0, line: '' };
+	},
 
-	// Which hit (if any) is currently pressed, for tap = same hit on
-	// down and up.
+	// Id of the hit (if any) pressed on 'down', for tap = same hit on down
+	// and up. An id, not the hit object: draw rebuilds the hit list every
+	// frame, so the up lands on a fresh object that must match by id.
 	_pressed: null,
 
 	draw: function (ctx, app, t) {
@@ -160,10 +165,11 @@ export const officeScene = {
 		ctx.textAlign = 'left';
 
 		// Wall calendar; the cross-out scribble runs for 700ms after a day
-		// passes (no dayChangedAt means no animation in progress).
+		// passes (no dayChangedAt means no animation in progress). The
+		// clock may be a function or a plain number (test fakes).
 		const anim = app.dayChangedAt === undefined
 			? 1
-			: Math.max(0, Math.min(1, (app.now() - app.dayChangedAt) / 700));
+			: Math.max(0, Math.min(1, ((typeof app.now === 'function' ? app.now() : app.now) - app.dayChangedAt) / 700));
 		drawWallCalendar(ctx, OFFICE.calendar, day, t, anim);
 
 		// Desk props.
@@ -203,14 +209,15 @@ export const officeScene = {
 			return;
 		}
 		if (type === 'down') {
-			this._pressed = this.hits.hit(x, y);
+			const h = this.hits.hit(x, y);
+			this._pressed = h ? h.id : null;
 			return;
 		}
 		if (type === 'up') {
 			const e = this.hits.hit(x, y);
 			const pressed = this._pressed;
 			this._pressed = null;
-			if (e && e === pressed && typeof e.onTap === 'function') {
+			if (e && pressed !== null && e.id === pressed && typeof e.onTap === 'function') {
 				e.onTap(e);
 			}
 		}

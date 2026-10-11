@@ -74,6 +74,44 @@ test('tapping each hotspot calls the right push', () => {
 	}
 });
 
+test('taps still fire after redraws: down, redraw, redraw, up on every hotspot', () => {
+	const pushExpected = {
+		tv: ['push', 'tvshop', undefined],
+		phone: ['push', 'bookings', undefined],
+		garageDoor: ['push', 'garage', undefined],
+		laptop: ['push', 'adverts', undefined],
+		newspaper: ['push', 'news', { readOnly: true }],
+		ledger: ['push', 'ledger', undefined],
+		workshop: ['push', 'ledger', { tab: 'workshop' }],
+		poster: ['push', 'auction', undefined],
+	};
+	const names = Object.keys(LAYOUT.hits);
+	for (let i = 0; i < names.length; i++) {
+		const name = names[i];
+		const f = freshApp();
+		if (name === 'poster') {
+			f.state.day = 24;
+		}
+		const r = LAYOUT.hits[name];
+		const x = r.x + r.w / 2;
+		const y = r.y + r.h / 2;
+		officeScene.draw(makeCtx(), f.app, 1);
+		officeScene.pointer(f.app, 'down', x, y);
+		officeScene.draw(makeCtx(), f.app, 1.5);
+		officeScene.draw(makeCtx(), f.app, 1.5);
+		officeScene.pointer(f.app, 'up', x, y);
+		if (name === 'kettle') {
+			eq(f.state.day, 2, name + ' tap after redraws waits a day');
+			eq(f.app.calls, [], name + ' tap after redraws pushes nothing');
+		} else if (pushExpected[name]) {
+			eq(f.app.calls, [pushExpected[name]], name + ' tap after redraws opens the right screen');
+		} else {
+			eq(f.app.calls, [], name + ' tap after redraws pushes nothing');
+			eq(f.app.toasts.length, 1, name + ' tap after redraws toasts exactly once');
+		}
+	}
+});
+
 test('tapping the kettle waits a day', () => {
 	const f = freshApp();
 	const ctx = makeCtx();
@@ -161,8 +199,14 @@ test('dayChangedAt unset still draws (no cross-out animation in progress)', () =
 test('dayChangedAt set drives the cross-out animation argument', () => {
 	const f = freshApp();
 	f.app.dayChangedAt = 5000;
+	// The fake app's clock is a plain number (real app: a function); both
+	// must draw without throwing.
+	ok(typeof f.app.now === 'number', 'fake app clock is a number');
+	let ctx = makeCtx();
+	officeScene.draw(ctx, f.app, 0);
+	ok(count(ctx, 'fillRect') > 0, 'draw works with a numeric clock');
 	f.app.now = function () { return 5200; };
-	const ctx = makeCtx();
+	ctx = makeCtx();
 	officeScene.draw(ctx, f.app, 0);
 	ok(count(ctx, 'fillRect') > 0, 'draw works mid-animation');
 
