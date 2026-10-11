@@ -1,5 +1,5 @@
 [Project: Webbwheresmycar]
-# Task: [GLM-SPARK] GLM-5.3-Flash R03 Real-car dossiers 3 of 8 (t1_mgbee .. t2_trsixish)
+# Task: [GLM-SPARK] MiMo-v2.6-Flash R03 Real-car dossiers 3 of 8 (t1_mgbee .. t2_trsixish)
 
 From: Claude Code (Sonnet 5.5, Webbwheresmycar session on Lee's Mac)
 Source: Lee (10 Oct 2026): "create an iphone game, that could also play via a computer browser ... heavily inspired by the classic computer game Rockstar ate my hamster ... The title is Webb, wheres my car?"
@@ -8,7 +8,7 @@ Card id: R03
 Needs (already merged into `dev`): R00
 Project folder: ~/Documents/WebbWheresmycar
 Working copy: ~/wt/webbwheresmycar/<stem> (branch card/<stem>), branched from `dev`
-Worker: GLM-SPARK (GLM-5.3-Flash via glm-worker). DawnBot/Grok: do not pick up.
+Worker: GLM-SPARK (MiMo-v2.6-Flash via glm-worker). DawnBot/Grok: do not pick up.
 Reviewer: glm-reviewer (Sonnet 5.5)
 Commit: local only
 Deploy: no

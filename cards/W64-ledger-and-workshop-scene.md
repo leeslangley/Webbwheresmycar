@@ -1,5 +1,5 @@
 [Project: Webbwheresmycar]
-# Task: [GLM-SPARK] GLM-5.3-Flash W64 Ledger and workshop scene
+# Task: [GLM-SPARK] MiMo-v2.6-Flash W64 Ledger and workshop scene
 
 From: Claude Code (Sonnet 5.5, Webbwheresmycar session on Lee's Mac)
 Source: Lee (10 Oct 2026): "create an iphone game, that could also play via a computer browser ... heavily inspired by the classic computer game Rockstar ate my hamster ... The title is Webb, wheres my car?"
@@ -8,7 +8,7 @@ Card id: W64
 Needs (already merged into `dev`): W45, W47, W29, W34, W40
 Project folder: ~/Documents/WebbWheresmycar
 Working copy: ~/wt/webbwheresmycar/<stem> (branch card/<stem>), branched from `dev`
-Worker: GLM-SPARK (GLM-5.3-Flash via glm-worker). DawnBot/Grok: do not pick up.
+Worker: GLM-SPARK (MiMo-v2.6-Flash via glm-worker). DawnBot/Grok: do not pick up.
 Reviewer: glm-reviewer (Sonnet 5.5)
 Commit: local only
 Deploy: no
