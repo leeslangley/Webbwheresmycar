@@ -63,6 +63,18 @@ function ownedCount(state) {
 	return n;
 }
 
+// Net worth with a fallback: the sim's netWorth throws on a car whose model id
+// is not in the catalogue, and a broken save must not crash the books. The
+// fallback is the same sum (cash plus the market value of owned cars) built
+// from the safe model lookup below.
+function safeNetWorth(state) {
+	try {
+		return netWorth(state);
+	} catch (e) {
+		return state.cash + stableValue(state);
+	}
+}
+
 // Market value of every owned car (rented cars count 0), rounded pounds.
 function stableValue(state) {
 	let total = 0;
@@ -106,7 +118,7 @@ function plateProgress(state, key) {
 		return 'WON';
 	}
 	if (key === 'fatcat') {
-		return money(netWorth(state)) + '/£100,000';
+		return money(safeNetWorth(state)) + '/£100,000';
 	}
 	if (key === 'stable') {
 		return ownedCount(state) + '/6 cars';
@@ -189,7 +201,7 @@ export const ledgerScene = {
 		// Rows: money first, then reputation and buzz.
 		const rows = [
 			'Cash ' + money(state.cash),
-			'Net worth ' + money(netWorth(state)),
+			'Net worth ' + money(safeNetWorth(state)),
 			'Stable value ' + money(stableValue(state)),
 			'Expected next bills ' + money(expectedBills(state)),
 			'Reputation ' + state.reputation + '/100',

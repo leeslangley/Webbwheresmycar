@@ -253,6 +253,52 @@ test('an unknown model id in the garage does not throw', () => {
 	ok(has(got, 'Expected next bills £860'), 'the bad car adds nothing');
 });
 
+test('BUY EXTRA SLOT: exactly £3,000 cash is enough', () => {
+	const { state, app } = drawn(1, { tab: 'workshop' });
+	state.cash = 3000;
+	ledgerScene.draw(makeCtx(), app, 0);
+	const c = centre(LAYOUT.buySlot);
+	tap(app, c.x, c.y);
+	eq(state.garageSlots, 4, 'the boundary case buys');
+	eq(state.cash, 0, 'cash drops to zero');
+	eq(app.toasts, [], 'no toast at the boundary');
+});
+
+test('BUY EXTRA SLOT: a penny short refuses at £2,999', () => {
+	const { state, app } = drawn(1, { tab: 'workshop' });
+	state.cash = 2999;
+	ledgerScene.draw(makeCtx(), app, 0);
+	const c = centre(LAYOUT.buySlot);
+	tap(app, c.x, c.y);
+	eq(state.garageSlots, 3, 'nothing bought');
+	eq(app.toasts, ['Not enough money'], 'toast explains the refusal');
+});
+
+test('the buy-slot hot spot is dead on the ledger tab', () => {
+	const { state, app } = drawn(1);
+	const c = centre(LAYOUT.buySlot);
+	tap(app, c.x, c.y);
+	eq(state.garageSlots, 3, 'no slot bought from the ledger tab');
+	eq(state.day, 1, 'no day passed');
+});
+
+test('a pointer event before the first draw is harmless', () => {
+	const state = startGame(1);
+	const app = makeApp(state);
+	ledgerScene.enter(app, {});
+	ledgerScene.pointer(app, 'down', 640, 360);
+	ledgerScene.pointer(app, 'up', 640, 360);
+	eq(state.day, 1, 'nothing happened');
+	eq(app.calls.length, 0, 'no navigation');
+	eq(ledgerScene.pressed, null, 'pressed stays clear');
+});
+
+test('a garage with no cars draws bays and £400 bills', () => {
+	const { state } = drawn(1, { tab: 'workshop' });
+	const { ctx } = show(state, { tab: 'ledger' });
+	ok(has(texts(ctx), 'Expected next bills £400'), 'the empty garage still owes the lease');
+});
+
 test('LAYOUT rects sit inside the 1280x720 screen', () => {
 	const rects = [LAYOUT.tabLedger, LAYOUT.tabWorkshop, LAYOUT.buySlot, LAYOUT.back];
 	for (let i = 0; i < rects.length; i++) {
