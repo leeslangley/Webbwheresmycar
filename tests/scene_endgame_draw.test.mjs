@@ -133,15 +133,15 @@ test('drawing at several t values never throws and never touches the state', () 
 	eq(JSON.stringify(app.state), before, 'app.state is unchanged by drawing');
 });
 
-test('a tap on either button does nothing yet', () => {
+test('a tap on either button fires its handler (W66b)', () => {
 	const app = endApp({ won: false, reason: 'year-end' });
 	drawOnce(app, 0);
-	// Down, a redraw with another t, then up: the tap rule must not fire a
-	// handler because no hit was registered.
+	// Down, a redraw with another t, then up: the tap rule remembers the hit's
+	// id across the redraw and fires it on release.
 	endgameScene.pointer(app, 'down', LAYOUT.again.x + 10, LAYOUT.again.y + 10);
 	drawOnce(app, 0.5);
 	endgameScene.pointer(app, 'up', LAYOUT.again.x + 10, LAYOUT.again.y + 10);
-	eq(app.calls, [], 'no navigation happened');
+	eq(app.calls, [['newGame']], 'PLAY AGAIN starts a new game');
 	eq(app.toasts, [], 'no toast happened');
 });
 
