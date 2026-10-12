@@ -1,0 +1,22 @@
+{
+ "id": "t1_volksbeagle",
+ "real_car": "Volkswagen Beetle Type 1, 1968 (1200/1300)",
+ "game_name": "Webb, wheres my car?",
+ "dims_mm": {"length": 4070, "width": 1550, "height": 1500, "wheelbase": 2400, "track_front": 1290, "track_rear": 1250, "tyre_overall_diameter": 640},
+ "dims_confidence": "medium",
+ "body_style": "2-door rear-engined saloon",
+ "doors": 2,
+ "wheels": [{"x": -29.0, "r": 7.9, "style": "steel"}, {"x": 30.0, "r": 7.9, "style": "steel"}],
+ "wheel_arch": "round",
+ "side_profile": [[-50.0, 5.6], [-50.0, 10.6], [-49.4, 13.8], [-48.4, 17.8], [-46.8, 21.6], [-44.5, 24.4], [-41.5, 25.9], [-37.5, 26.3], [-32.0, 26.4], [-27.0, 26.6], [-22.0, 29.2], [-17.0, 32.0], [-12.0, 34.4], [-7.0, 36.2], [-1.0, 36.8], [5.0, 36.8], [10.5, 36.5], [15.0, 35.8], [17.5, 35.4], [19.5, 33.0], [21.5, 29.4], [23.0, 25.4], [26.0, 24.6], [30.0, 23.4], [34.0, 22.2], [38.0, 20.9], [42.0, 19.6], [45.5, 18.3], [48.5, 17.3], [50.0, 16.4], [50.0, 10.6], [50.0, 5.6]],
+ "greenhouse": [[23.0, 25.0], [21.0, 28.6], [18.5, 32.0], [16.5, 34.6], [12.0, 35.9], [6.0, 36.2], [0.0, 36.3], [-6.0, 35.0], [-11.0, 33.0], [-16.0, 30.5], [-20.5, 28.0], [-24.5, 26.0]],
+ "roof": {"type": "hard", "colour_split": false},
+ "plan": {"width_units": 38.0, "nose_width_pct": 66, "tail_width_pct": 68, "tumblehome": "high", "waist_pinch": true},
+ "front": {"grille": "none - the car is rear-engined so there is no radiator grille; only a small pressed bonnet handle between the headlamps", "headlamps": {"count": 2, "shape": "round", "x": 47.5, "y": 20.0, "r": 2.4, "y_offset_from_centre": 12}, "bumper": "thin chrome blade x 48..50, y 8.8..10.6, with two small upright chrome over-riders at x 48.5, y 10..14", "extras": ["two upright round headlamps standing on top of the front wings, not set into a grille", "small round chrome bonnet handle on the nose above the bumper", "no front grille at all; a pressed louvre-free front panel"]},
+ "rear": {"taillamps": "two small round lamps about 2 units across on the rear wings at x -49 y 15", "bumper": "thin chrome blade x -50..-48, y 8.8..10.6, with two small chrome over-riders", "exhaust": "one", "extras": ["sloping engine lid filling the whole rear deck", "small round chrome engine-lid handle on the sloping tail", "no rear grille; engine cooling air comes through vents low on the rear wings"]},
+ "side_features": ["round wheel arches cut into the front and rear wings, radius about 9 units, centres x 30 and x -29 at y 7.9", "pressed wing seam (beading) running along the top of each wing from the headlamp back to the tail, x -50..47 y 18..24", "chrome sill strip along the lower body x -34..34 y 6", "upright door handle on the side x 12..13 y 22", "chrome window surround framing the greenhouse", "fuel filler flap on the right front wing x 34 y 21"],
+ "special": ["engine at the rear, so a long sloping bonnet at the front with no grille", "spare wheel carried upright in the front boot", "very rounded nose and tail; the whole car is egg-shaped from the side", "curved domed roof with a strong tumblehome, cabin set slightly toward the rear"],
+ "typical_paint": ["#8f2a20", "#3c5f8c", "#d8c48a", "#1b1b1b"],
+ "ref_urls": ["https://en.wikipedia.org/wiki/Volkswagen_Beetle", "https://commons.wikimedia.org/wiki/Category:Volkswagen_Type_1"],
+ "notes": "Figures I could not confirm to the millimetre: track_rear (1250 - swing-axle cars are narrower at the back than the 1290 front track; IRS cars are nearer 1300) and tyre_overall_diameter (640 mm for a 155SR15 radial; the older 5.60-15 crossply is nearer 660 mm, which would raise the wheel radius to about 8.1 units). Front overhang 815 mm and rear overhang 855 mm are my estimates from the 4070 mm length and 2400 mm wheelbase. Some sources quote length 4080 mm; 4070 fits 1968 cars better. Proportions that matter most: the egg-shaped nose-to-tail curve with a roof peak of 36.8 units reached only once and no flat bonnet anywhere, the 59-unit wheelbase (the wheels sit right under the wing crowns, not at the ends), and the tall upright windscreen rising from a cowl at y 25.4 up to the roof at y 35.4. The greenhouse is one continuous glass band: upright windscreen, side window, then the rear window slanting down the engine deck to a base at y 26."
+}
