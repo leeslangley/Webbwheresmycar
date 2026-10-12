@@ -93,7 +93,7 @@ function stableValue(state) {
 }
 
 // Expected next bills (DESIGN.md 4.9): rent of rented cars + running costs of
-// owned cars + the flat £400 garage lease.
+// owned cars + the flat 400 pound garage lease.
 function expectedBills(state) {
 	let total = 400;
 	const cars = state.cars;
@@ -118,7 +118,7 @@ function plateProgress(state, key) {
 		return 'WON';
 	}
 	if (key === 'fatcat') {
-		return money(safeNetWorth(state)) + '/£100,000';
+		return money(safeNetWorth(state)) + '/' + money(100000);
 	}
 	if (key === 'stable') {
 		return ownedCount(state) + '/6 cars';
@@ -126,7 +126,7 @@ function plateProgress(state, key) {
 	if (key === 'household') {
 		return state.reputation + '/85';
 	}
-	return 'best ' + money(state.stats.bestAuctionSale) + '/£100,000';
+	return 'best ' + money(state.stats.bestAuctionSale) + '/' + money(100000);
 }
 
 export const ledgerScene = {
