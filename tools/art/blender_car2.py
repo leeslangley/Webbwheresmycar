@@ -73,8 +73,11 @@ def main():
 
     paint = carlib.make_mat('paint', color, metallic=0.0, roughness=0.25,
                             coat=1.0, coat_rough=0.05)
-    carlib.extrude_polygon(d['side_profile'], d['plan']['width_units'],
-                           paint, 'body')
+    body = carlib.extrude_polygon(d['side_profile'], d['plan']['width_units'],
+                                  paint, 'body')
+    # Shape the raw mesh, then finish it (bevel, subsurf, smooth shading).
+    carlib.shape_body(body, d['plan'])
+    carlib.finish_mesh(body)
 
     # Shadow catcher plane under the car (renders only the shadow).
     bpy.ops.mesh.primitive_plane_add(size=40, location=(0, 0, 0))

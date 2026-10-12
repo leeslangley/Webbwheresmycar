@@ -73,14 +73,56 @@ def extrude_polygon(pts, width, mat, name):
     obj = bpy.data.objects.new(name, me)
     bpy.context.scene.collection.objects.link(obj)
     me.materials.append(mat)
+    return obj
+
+
+# V02 tumblehome: how much the body narrows towards the roof, by plan value.
+TUMBLEHOME_K = {'low': 0.04, 'medium': 0.10, 'high': 0.18}
+
+
+def finish_mesh(obj):
+    """Bevel the edges, smooth with Catmull-Clark and shade smooth (the finish
+    extrude_polygon used to apply itself). Call after any vertex shaping."""
     bevel = obj.modifiers.new('Bevel', 'BEVEL')
-    bevel.width = 0.9 * U
-    bevel.segments = 3
+    bevel.width = 1.2 * U
+    bevel.segments = 4
     sub = obj.modifiers.new('Subsurf', 'SUBSURF')
     sub.levels = 1
     sub.render_levels = 2
-    for p in me.polygons:
+    for p in obj.data.polygons:
         p.use_smooth = True
+    return obj
+
+
+def shape_body(obj, plan):
+    """V02: taper the body's width towards the nose and tail and pull the roof in
+    (tumblehome) so it reads as a car body instead of an extruded slab. The mesh
+    runs x from tail (-50) to nose (+50) and is centred on y; only y is scaled.
+    Call this straight after the body mesh is built, before any modifier."""
+    plan = plan or {}
+    verts = obj.data.vertices
+    if not verts:
+        return obj
+    xs = [v.co.x for v in verts]
+    zs = [v.co.z for v in verts]
+    xmin, xmax = min(xs), max(xs)
+    zmin, zmax = min(zs), max(zs)
+    span_x = xmax - xmin
+    span_z = zmax - zmin
+    nose_pct = plan.get('nose_width_pct', 100)
+    tail_pct = plan.get('tail_width_pct', 100)
+    k = TUMBLEHOME_K.get(plan.get('tumblehome', 'medium'), 0.10)
+    for v in verts:
+        t = (v.co.x - xmin) / span_x if span_x else 0.5
+        f = 1.0
+        if t < 0.25:
+            f *= 1 - (1 - tail_pct / 100.0) * (0.25 - t) / 0.25
+        if t > 0.75:
+            f *= 1 - (1 - nose_pct / 100.0) * (t - 0.75) / 0.25
+        h = (v.co.z - zmin) / span_z if span_z else 0.5
+        if h > 0.55:
+            f *= 1 - k
+        v.co.y *= f
     return obj
 
 
