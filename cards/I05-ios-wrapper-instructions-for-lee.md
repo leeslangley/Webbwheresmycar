@@ -18,7 +18,6 @@ A short, exact guide so Lee can put the game on his iPhone through TestFlight.
 
 ## Read first
 - tools/ios/testflight.sh and ios/ (previous cards)
-- ~/Documents/Christs of Rage/HANDOFF.md lines about TestFlight (how Lee ships Rage of Christ)
 
 ## Files you may change (and nothing else)
 - `docs/IOS.md`
