@@ -6,6 +6,8 @@ var out := ""
 func _init() -> void:
 	frames = int(OS.get_environment("GD_FRAMES"))
 	out = OS.get_environment("GD_OUT")
+func _add_scene() -> void:
+	# Autoloads (Data, Game, Sfx) only exist after _init, so the scene is loaded on the first frame.
 	var ps := load(OS.get_environment("GD_SCENE")) as PackedScene
 	if ps == null:
 		print("SHOT ERROR cannot load scene")
@@ -14,6 +16,9 @@ func _init() -> void:
 	root.add_child(ps.instantiate())
 func _process(_d: float) -> bool:
 	n += 1
+	if n == 1:
+		_add_scene()
+		return false
 	if n >= frames:
 		var img := root.get_viewport().get_texture().get_image()
 		img.save_png(out)
