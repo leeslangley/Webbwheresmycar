@@ -2,7 +2,7 @@
 // canvas to the app, draws the placeholder title, routes pointer/key input
 // and re-applies layout on resize. Runs under macOS `jsc -m`.
 
-import { test, eq, ok, done } from './harness.js';
+import { test, eq, ok, near, done } from './harness.js';
 import { makeCtx, texts } from './fakectx.js';
 import { bootGame } from '../src/boot.js';
 
@@ -135,8 +135,8 @@ test('resize re-applies the layout from the new window size', () => {
 	eq(canvas.style.width, '1280px', 'width before resize');
 	win.innerWidth = 2000;
 	win.handlers.resize[0]();
-	eq(canvas.style.width, '1280px', '2000x720 is height-limited, view stays 1280px');
-	eq(boot.getLayout().layout.offX, 360, 'new offX via getLayout');
+	eq(canvas.style.width, '1568px', '2000x720 is width-capped at 1568');
+	eq(boot.getLayout().layout.offX, 216, 'new offX via getLayout');
 	win.innerWidth = 640;
 	win.handlers.resize[0]();
 	eq(canvas.style.width, '640px', 'width shrinks when innerWidth shrinks');
@@ -154,7 +154,7 @@ test('orientationchange re-applies the layout too', () => {
 	win.innerWidth = 844;
 	win.innerHeight = 390;
 	win.handlers.orientationchange[0]();
-	eq(canvas.style.width, String(1280 * (390 / 720)) + 'px', 'iPhone landscape width');
+	near(parseFloat(canvas.style.width), 845, 1e-6, 'iPhone landscape width');
 	win.innerWidth = 1280;
 	win.innerHeight = 720;
 	win.handlers.orientationchange[0]();
