@@ -1,0 +1,43 @@
+{
+  "version": 2,
+  "id": "t1_chimp",
+  "belt_y": 25.2,
+  "window_frame": "chrome",
+  "caricature": {"eyes": 1.15, "mouth": 1.1, "wheels": 1.05, "bumper": 1.1},
+  "wheel": {"style": "steel", "hub": "chrome", "whitewall": false, "trim_ring": false, "hubcap_r": 2.5, "spokes": 0},
+  "roof": {"variant": "hard"},
+  "windows": [
+    [[20.6, 25.2], [17.4, 30.4], [13.8, 35.6], [10.0, 36.0], [-5.2, 36.0], [-5.2, 25.2]],
+    [[-2.8, 25.2], [-2.8, 36.0], [-16.5, 36.0], [-21.0, 35.5], [-24.9, 30.4], [-29.2, 25.2]]
+  ],
+  "pillars": [
+    {"poly": [[22.0, 25.2], [18.2, 31.0], [13.8, 37.0], [10.0, 37.4], [10.0, 36.0], [13.8, 35.6], [17.4, 30.4], [20.6, 25.2]], "lat_from": 0.82, "note": "A pillar: windscreen edge band"},
+    {"poly": [[-5.2, 25.2], [-2.8, 25.2], [-2.8, 37.3], [-5.2, 37.3]], "lat_from": 0.82, "note": "B pillar: band between the door glass and the quarter glass"}
+  ],
+  "parts": [
+    {"kind": "headlamp", "x": 48.6, "y": 17.5, "lat": 8.0, "r": 2.3, "shape": "round", "side": "both", "note": "two round headlamps set low and wide"},
+    {"kind": "bumper", "end": "front", "y": 9.5, "h": 1.6, "style": "blade", "note": "thin chrome blade across the full width, wraps the front corners"},
+    {"kind": "plate", "end": "front", "y": 6.5, "note": "number plate below the bumper, centre"},
+    {"kind": "strip", "x": 46.0, "x2": 50.0, "y": 16.0, "h": 0.5, "role": "sweep", "colour": "chrome", "side": "centre", "note": "small chrome trim strip across the nose face at y 16, lat -13..13"},
+    {"kind": "shutline", "role": "bonnet", "path": [[22.0, 23.5], [47.0, 24.6]], "side": "both", "note": "front luggage bonnet lid gap line"},
+    {"kind": "shutline", "role": "bonnet", "path": [[47.0, 21.0], [50.0, 23.0]], "side": "centre", "note": "front luggage bonnet lid gap line seen at the nose face"},
+    {"kind": "handle", "x": 22.0, "y": 21.5, "style": "flap", "side": "centre", "note": "chrome bonnet handle"},
+    {"kind": "taillamp", "x": -49.7, "y": 14.5, "lat": 4.0, "shape": "round", "w": 2.4, "h": 2.4, "side": "both", "note": "two small round rear lamps, radius 1.2, 8 units apart"},
+    {"kind": "bumper", "end": "rear", "y": 9.5, "h": 1.6, "style": "blade", "note": "thin chrome blade matching the front"},
+    {"kind": "plate", "end": "rear", "y": 6.5, "note": "number plate on the rear panel"},
+    {"kind": "exhaust", "style": "round", "x": -50.0, "y": 6.0, "lat": 6.0, "r": 1.0, "side": "near", "note": "one exhaust outlet"},
+    {"kind": "shutline", "role": "engine", "path": [[-46.5, 21.0], [-31.0, 25.0]], "side": "both", "note": "engine cover lid gap line up to the base of the rear window"},
+    {"kind": "vent", "where": "engine_lid", "x": -45.5, "x2": -41.5, "y": 23.0, "w": 1.0, "h": 3.0, "style": "louvre", "n": 5, "side": "both", "note": "five horizontal louvres on the engine cover"},
+    {"kind": "handle", "x": -34.0, "y": 24.5, "style": "boot", "side": "centre", "note": "chrome engine cover handle"},
+    {"kind": "fuelcap", "x": -27.0, "y": 22.0, "r": 1.0, "side": "near", "note": "fuel filler cap behind the rear side window"},
+    {"kind": "shutline", "role": "fuel", "path": [[-28.5, 21.0], [-25.5, 21.0], [-25.5, 23.0], [-28.5, 23.0], [-28.5, 21.0]], "side": "near", "note": "fuel flap outline round the filler cap"},
+    {"kind": "strip", "x": -36.0, "x2": 40.0, "y": 5.9, "role": "sill", "colour": "chrome", "side": "both", "note": "chrome sill strip"},
+    {"kind": "strip", "x": -30.0, "x2": 22.0, "y": 25.4, "role": "waist", "colour": "chrome", "side": "both", "note": "chrome waist trim strip"},
+    {"kind": "handle", "x": 20.0, "y": 25.4, "style": "flap", "side": "both", "note": "chrome door handle"},
+    {"kind": "shutline", "role": "door", "path": [[22.0, 5.8], [22.0, 25.2]], "side": "both", "note": "door front edge"},
+    {"kind": "shutline", "role": "door", "path": [[-4.0, 5.8], [-4.0, 25.2]], "side": "both", "note": "door rear edge at the B pillar"},
+    {"kind": "shutline", "role": "door", "path": [[-4.0, 7.6], [22.0, 7.6]], "side": "both", "note": "door bottom edge (estimate)"},
+    {"kind": "shutline", "role": "door", "path": [[-4.0, 25.2], [22.0, 25.2]], "side": "both", "note": "door top edge along the belt line"},
+    {"kind": "crease", "x": 22.0, "x2": 47.0, "y": 23.9, "depth": 0.15, "side": "both", "note": "bonnet shoulder crease following the low bonnet line. Dossier gives no mirrors, so none are added."}
+  ]
+}
