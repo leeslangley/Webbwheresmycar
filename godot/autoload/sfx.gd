@@ -51,11 +51,37 @@ const SOUNDS: Dictionary = {
 	"bid": [
 		{"type": "triangle", "freq": 660.0, "end_freq": 660.0, "start": 0.0, "dur": 0.08, "vol": 0.25},
 	],
+	"engine": [
+		{"type": "triangle", "freq": 55.0, "end_freq": 110.0, "start": 0.0, "dur": 0.6, "vol": 0.3},
+		{"type": "square", "freq": 82.0, "end_freq": 165.0, "start": 0.0, "dur": 0.6, "vol": 0.08},
+	],
+	"horn": [
+		{"type": "square", "freq": 440.0, "end_freq": 440.0, "start": 0.0, "dur": 0.35, "vol": 0.2},
+		{"type": "square", "freq": 554.0, "end_freq": 554.0, "start": 0.0, "dur": 0.35, "vol": 0.2},
+	],
+	"steam": [
+		{"type": "noise", "freq": 4000.0, "end_freq": 1500.0, "start": 0.0, "dur": 0.5, "vol": 0.2},
+	],
+	"door": [
+		{"type": "noise", "freq": 800.0, "end_freq": 100.0, "start": 0.0, "dur": 0.18, "vol": 0.4},
+		{"type": "triangle", "freq": 90.0, "end_freq": 50.0, "start": 0.0, "dur": 0.18, "vol": 0.3},
+	],
+	"chime": [
+		{"type": "triangle", "freq": 1047.0, "end_freq": 1047.0, "start": 0.0, "dur": 0.25, "vol": 0.2},
+		{"type": "triangle", "freq": 1319.0, "end_freq": 1319.0, "start": 0.12, "dur": 0.25, "vol": 0.2},
+		{"type": "triangle", "freq": 1568.0, "end_freq": 1568.0, "start": 0.24, "dur": 0.25, "vol": 0.2},
+	],
+	"thud": [
+		{"type": "triangle", "freq": 70.0, "end_freq": 35.0, "start": 0.0, "dur": 0.2, "vol": 0.5},
+	],
 }
+
+const POOL := 4
 
 var muted: bool = false
 var music_ducked: bool = false
-var _player: AudioStreamPlayer
+var _players: Array[AudioStreamPlayer] = []
+var _next := 0
 var _streams: Dictionary = {}
 
 
@@ -126,16 +152,41 @@ func _mix_event(samples: PackedFloat32Array, e: Dictionary) -> void:
 		phase += TAU * f / RATE
 
 
-func play(sound: String) -> bool:
+func _ensure_players() -> void:
+	if not _players.is_empty():
+		return
+	for i in range(POOL):
+		var p := AudioStreamPlayer.new()
+		add_child(p)
+		_players.append(p)
+
+
+# First idle player in the pool; if all are playing, the next one in turn is cut off.
+func _pick_player() -> AudioStreamPlayer:
+	_ensure_players()
+	for p in _players:
+		if not p.playing:
+			return p
+	var chosen: AudioStreamPlayer = _players[_next]
+	_next = (_next + 1) % POOL
+	return chosen
+
+
+# pitch is optional (clamped to 0.5..2.0). Returns false when nothing plays, including when the
+# Game setting "sound" is off.
+func play(sound: String, pitch: float = 1.0) -> bool:
 	if muted or not SOUNDS.has(sound) or not is_inside_tree():
 		return false
-	if _player == null:
-		_player = AudioStreamPlayer.new()
-		add_child(_player)
+	var g := get_node_or_null("/root/Game")
+	if g != null and "settings" in g and not bool(g.settings.get("sound", true)):
+		return false
+	var p := _pick_player()
 	if not _streams.has(sound):
 		_streams[sound] = build_stream(sound)
-	_player.stream = _streams[sound]
-	_player.play()
+	p.stream = _streams[sound]
+	p.pitch_scale = clampf(pitch, 0.5, 2.0)
+	p.volume_db = -8.0 if music_ducked else 0.0
+	p.play()
 	return true
 
 
