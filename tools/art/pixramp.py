@@ -89,3 +89,78 @@ def fixed_ramp(name):
         raise KeyError('pixramp: no fixed ramp named %r' % name)
     return np.array([srgb_to_linear(hex_rgb(h)) for h in FIXED_HEX[name]],
                     dtype=np.float64)
+
+
+# ------------------------------------------------------------ class map (CB12)
+
+# The 9 mask classes, in class-index order. MASK_FILE is cbmat.MASK_RGB / 255
+# (raw file values 0..1); tests/pixramp_class_test.py checks the two agree.
+CLASS_NAMES = ['paint', 'chrome', 'glass', 'tyre', 'wall', 'lamp', 'trim',
+               'tail', 'paint2']
+MASK_FILE = {
+    'paint': (255 / 255.0, 0 / 255.0, 0 / 255.0),
+    'chrome': (0 / 255.0, 255 / 255.0, 0 / 255.0),
+    'glass': (0 / 255.0, 0 / 255.0, 255 / 255.0),
+    'tyre': (255 / 255.0, 255 / 255.0, 0 / 255.0),
+    'wall': (255 / 255.0, 255 / 255.0, 255 / 255.0),
+    'lamp': (255 / 255.0, 0 / 255.0, 255 / 255.0),
+    'trim': (0 / 255.0, 255 / 255.0, 255 / 255.0),
+    'tail': (0 / 255.0, 0 / 255.0, 0 / 255.0),
+    'paint2': (128 / 255.0, 0 / 255.0, 0 / 255.0),
+}
+
+
+def box_weights(src_n, dst_n):
+    """Weights (dst_n, src_n) for a box-filter resize; every row sums to 1.
+    Same idea as box_weights in tools/art/pixelate.py (copied, not imported)."""
+    weights = np.zeros((dst_n, src_n), dtype=np.float64)
+    scale = src_n / float(dst_n)
+    for j in range(dst_n):
+        a = j * scale
+        b = a + scale
+        k0 = int(a) if a >= 0.0 else 0
+        k1 = min(int(np.ceil(b)), src_n)
+        for k in range(k0, k1):
+            lo = a if a > k else float(k)
+            hi = b if b < k + 1 else float(k + 1)
+            if hi > lo:
+                weights[j, k] = hi - lo
+    totals = weights.sum(axis=1, keepdims=True)
+    totals[totals == 0.0] = 1.0
+    return weights / totals
+
+
+def class_map(mask_rgba, out_w, out_h):
+    """Majority vote of the full-size game mask down to the sprite grid.
+
+    mask_rgba: (h, w, 4) float array of RAW file values 0..1, top row first.
+    Every source pixel with alpha >= 0.5 votes for its nearest class colour
+    (squared distance to MASK_FILE). The votes are area-averaged down to
+    (out_h, out_w) with box weights; each destination pixel takes the argmax.
+
+    Returns (classes, opaque): classes is an int array (out_h, out_w) of class
+    indexes into CLASS_NAMES, opaque a bool array (out_h, out_w) = the
+    area-averaged alpha >= 0.5. A class is only meaningful where opaque is True.
+    """
+    mask = np.asarray(mask_rgba, dtype=np.float64)
+    if mask.ndim != 3 or mask.shape[2] != 4:
+        raise ValueError('pixramp: class_map wants a (h, w, 4) array')
+    h, w = mask.shape[0], mask.shape[1]
+    palette = np.array([MASK_FILE[name] for name in CLASS_NAMES],
+                       dtype=np.float64)                       # (9, 3)
+    rgb = mask[:, :, :3]
+    dist = ((rgb[:, :, None, :] - palette[None, None, :, :]) ** 2).sum(axis=3)
+    nearest_class = np.argmin(dist, axis=2)                    # (h, w)
+
+    voters = mask[:, :, 3] >= 0.5
+    onehot = np.zeros((h, w, len(CLASS_NAMES)), dtype=np.float64)
+    ys, xs = np.nonzero(voters)
+    onehot[ys, xs, nearest_class[ys, xs]] = 1.0
+
+    wy = box_weights(h, out_h)                                 # (out_h, h)
+    wx = box_weights(w, out_w)                                 # (out_w, w)
+    across = np.einsum('hwc,xw->hxc', onehot, wx)              # (h, out_w, 9)
+    votes = np.einsum('yh,hxc->yxc', wy, across)               # (out_h, out_w, 9)
+    alpha = wy @ (mask[:, :, 3] @ wx.T)                        # (out_h, out_w)
+    classes = np.argmax(votes, axis=2).astype(np.int64)
+    return classes, alpha >= 0.5
