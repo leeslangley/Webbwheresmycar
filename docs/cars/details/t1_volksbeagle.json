@@ -17,7 +17,6 @@
  ],
  "parts": [
   {"kind": "headlamp", "x": 47.5, "y": 20.0, "lat": 12.0, "r": 2.4, "shape": "round", "bezel": "chrome", "side": "both", "note": "round lamps standing on top of the front wings; lat from y_offset_from_centre 12"},
-  {"kind": "grille", "x": 48.0, "y": 12.0, "w": 1.0, "h": 1.0, "style": "none", "end": "front", "note": "no grille on a rear-engined car; style none records that"},
   {"kind": "bumper", "end": "front", "style": "blade", "y": 8.8, "h": 1.8, "w": 0, "overriders": 2, "note": "thin chrome blade, full width; two upright overriders at x 48.5 y 10..14"},
   {"kind": "plate", "end": "front", "note": "default plate size"},
   {"kind": "handle", "x": 43.0, "y": 17.5, "style": "knob", "side": "centre", "note": "small round chrome bonnet handle on the nose"},
@@ -45,7 +44,6 @@
   {"kind": "handle", "x": -33.0, "y": 24.8, "style": "knob", "side": "centre", "note": "small round chrome engine-lid handle"},
   {"kind": "badge", "x": -28.0, "y": 25.6, "shape": "disc", "end": "rear", "size": 2, "colour": "chrome", "side": "centre", "note": "rear badge on the engine lid, position is my estimate"},
   {"kind": "vent", "where": "side", "x": -41.0, "x2": -31.0, "y": 8.5, "w": 0.6, "h": 3.0, "style": "louvre", "n": 5, "side": "both", "note": "cooling vents low on the rear wings; size is my estimate"},
-  {"kind": "spare", "mount": "bonnet", "x": 35.0, "y": 13.4, "r": 7.9, "cover": false, "side": "centre", "note": "spare wheel upright in the front boot; r is the wheel radius"},
-  {"kind": "running_board", "x": -19.0, "x2": 20.0, "y": 5.6, "w": 3.0, "colour": "black", "side": "both", "note": "narrow running board between the wheel arches; chrome edge is the sill strip"}
+  {"kind": "spare", "mount": "bonnet", "x": 35.0, "y": 13.4, "r": 7.9, "cover": false, "side": "centre", "note": "spare wheel upright in the front boot; r is the wheel radius"}
  ]
 }
