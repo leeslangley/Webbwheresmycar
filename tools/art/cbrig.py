@@ -84,3 +84,33 @@ def setup_studio_world(scene):
 
     scene.world = world
     return world
+
+
+# CB03: the studio light rig. Each entry: (name, hex colour, watts, size_x, size_y,
+# location, aim target). All six are RECTANGLE area lights (see docs/art/CB.md).
+STUDIO_LIGHTS = [
+    ('top', '#fff6e6', 900, 9.0, 1.6, (0, -1.0, 7.5), (0, 0, 1.2)),
+    ('key', '#ffe9cc', 1400, 4.5, 3.0, (-6.5, -8.5, 5.5), (0, 0, 1.5)),
+    ('rim', '#a9c6ff', 800, 7.0, 1.2, (7.5, 6.5, 4.5), (0, 0, 1.5)),
+    ('fill', '#dfe8ff', 220, 7.0, 1.5, (8.0, -7.5, 1.2), (0, 0, 1.5)),
+    ('stripL', '#ffffff', 400, 1.2, 5.0, (-10, -3, 2.0), (0, 0, 1.0)),
+    ('stripR', '#ffffff', 300, 1.2, 5.0, (10, -3, 2.0), (0, 0, 1.0)),
+]
+
+
+def setup_studio_lights(scene):
+    """Add the STUDIO_LIGHTS area lights to the scene, each aimed at its target."""
+    objs = []
+    for name, hexs, watts, size_x, size_y, loc, target in STUDIO_LIGHTS:
+        data = bpy.data.lights.new(name, 'AREA')
+        data.shape = 'RECTANGLE'
+        data.size = size_x
+        data.size_y = size_y
+        data.color = _lin(hexs)
+        data.energy = watts
+        obj = bpy.data.objects.new(name, data)
+        obj.location = loc
+        carlib.look_at(obj, target)
+        scene.collection.objects.link(obj)
+        objs.append(obj)
+    return objs
