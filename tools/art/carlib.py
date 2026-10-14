@@ -143,6 +143,263 @@ def build_glass(dossier, body_obj, mats):
     return objs
 
 
+def _add_cyl(name, radius, depth, loc, mat, rot=(0.0, 0.0, 0.0)):
+    """A cylinder primitive centred on loc; rot is an Euler triple. A plain
+    cylinder's axis is Z, so callers pass rot to lay it along another axis."""
+    bpy.ops.mesh.primitive_cylinder_add(vertices=32, radius=radius,
+                                        depth=depth, location=loc)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.rotation_euler = rot
+    obj.data.materials.append(mat)
+    return obj
+
+
+def _wheel_detail(style, pair, loc, s, r, depth, mats):
+    """V04: the centre detail that tells the wheel styles apart, added proud of
+    the rim's outer face (side s) so it shows from outside the wheel.
+    depth is the tyre depth in car units; loc is the wheel centre."""
+    face = (depth + 0.2) / 2.0  # rim outer face, car units from the wheel plane
+    objs = []
+    if style == 'wire':
+        # 24 thin spokes from hub to rim, lying in the wheel plane.
+        for k in range(24):
+            a = k * math.pi / 12.0
+            spoke = _add_cyl(
+                'spoke_%s_%d' % (pair, k), 0.05 * r * U, 0.62 * r * U,
+                (loc[0] + 0.31 * r * U * math.sin(a),
+                 loc[1] + s * (face + 0.025 * r) * U,
+                 loc[2] + 0.31 * r * U * math.cos(a)),
+                mats['chrome'], rot=(0.0, a, 0.0))
+            objs.append(spoke)
+    elif style == 'alloy':
+        # 5 box spokes.
+        for k in range(5):
+            a = k * 2.0 * math.pi / 5.0
+            bpy.ops.mesh.primitive_cube_add(
+                location=(loc[0] + 0.31 * r * U * math.cos(a),
+                          loc[1] + s * (face + 0.025 * r) * U,
+                          loc[2] - 0.31 * r * U * math.sin(a)))
+            obj = bpy.context.active_object
+            obj.name = 'spoke_%s_%d' % (pair, k)
+            obj.rotation_euler = (0.0, a, 0.0)
+            obj.dimensions = (0.62 * r * U, 0.05 * r * U, 0.16 * r * U)
+            obj.data.materials.append(mats['chrome'])
+            objs.append(obj)
+    elif style == 'knockoff':
+        # A centre-lock knock-off hub nut, apex pointing out of the wheel.
+        bpy.ops.mesh.primitive_cone_add(
+            vertices=24, radius1=0.16 * r * U, radius2=0.04 * r * U,
+            depth=0.24 * r * U,
+            location=(loc[0], loc[1] + s * (face + 0.12 * r) * U, loc[2]))
+        obj = bpy.context.active_object
+        obj.name = 'nut_' + pair
+        obj.rotation_euler.x = -s * math.pi / 2.0
+        obj.data.materials.append(mats['chrome'])
+        objs.append(obj)
+    else:
+        # steel and anything else: a chrome hub disc with a small dark centre.
+        objs.append(_add_cyl(
+            'hub_%s' % pair, 0.30 * r * U, 0.3 * U,
+            (loc[0], loc[1] + s * (face + 0.15) * U, loc[2]), mats['chrome']))
+        objs.append(_add_cyl(
+            'hub_centre_%s' % pair, 0.07 * r * U, 0.2 * U,
+            (loc[0], loc[1] + s * (face + 0.35) * U, loc[2]), mats['tyre']))
+    return objs
+
+
+def build_wheels(dossier, mats):
+    """V04: the wheels from the dossier's wheels list, one rim detail per
+    style. Each wheel gets a tyre and a rim on both sides of the car; in a
+    three-wheel dossier the single wheel (the one whose x is unique) sits only
+    on the centreline. Returns the new objects."""
+    width = dossier['plan']['width_units']
+    wheels = dossier.get('wheels') or []
+    # With three wheels, the one whose x differs from the other two is the solo.
+    solo = -1
+    if len(wheels) == 3:
+        xs = [w.get('x', 0.0) for w in wheels]
+        for i, x in enumerate(xs):
+            if xs.count(x) == 1:
+                solo = i
+    objs = []
+    for i, w in enumerate(wheels):
+        r = w['r']
+        depth = max(2.2, 0.8 * r)  # tyre depth in car units
+        style = w.get('style', 'steel')
+        for s in ([0] if i == solo else (-1, 1)):
+            loc = (w['x'] * U, s * (width / 2.0 - depth / 2.0 - 0.4) * U,
+                   r * U)
+            pair = '%d_%d' % (i, s)
+            tyre = _add_cyl('tyre_' + pair, r * U, depth * U, loc,
+                            mats['tyre'])
+            bev = tyre.modifiers.new('Bevel', 'BEVEL')
+            bev.width = 0.5 * U
+            objs.append(tyre)
+            # The rim is a little wider than the tyre so its face shows.
+            objs.append(_add_cyl('rim_' + pair, 0.62 * r * U,
+                                 (depth + 0.2) * U, loc, mats['chrome']))
+            objs += _wheel_detail(style, pair, loc, s, r, depth, mats)
+    return objs
+
+
+# --- V05: headlamps, tail lamps and number plates ---
+# Positions are in car units (x along the car, profile y is Z, width on Y);
+# each one is converted with U when it is placed in the Blender scene.
+
+HEADLAMP_SHAPES = ('round', 'square', 'oval', 'pop-up', 'slanted')
+
+
+def _number(d, key, default, positive=False):
+    """A finite number from d[key], or default when it is missing or unusable.
+    positive=True also rejects zero and negative numbers."""
+    v = d.get(key, default) if isinstance(d, dict) else default
+    if isinstance(v, bool) or not isinstance(v, (int, float)) or not math.isfinite(v):
+        return float(default)
+    if positive and v <= 0:
+        return float(default)
+    return float(v)
+
+
+def _profile_points(profile):
+    """The valid [x, y] pairs of a side profile, as float tuples."""
+    pts = []
+    for p in profile if isinstance(profile, list) else []:
+        if (isinstance(p, (list, tuple)) and len(p) == 2
+                and all(isinstance(v, (int, float)) and not isinstance(v, bool)
+                        and math.isfinite(v) for v in p)):
+            pts.append((float(p[0]), float(p[1])))
+    return pts
+
+
+def _headlamp_settings(dossier):
+    """The headlamp settings from front.headlamps, with the V05 defaults for any
+    field that is missing or unusable. Returns (count, shape, x, y, r, y_offset)."""
+    front = dossier.get('front')
+    h = front.get('headlamps') if isinstance(front, dict) else None
+    if not isinstance(h, dict):
+        h = {}
+    count = int(_number(h, 'count', 2))
+    if count not in (1, 2, 4):
+        count = 2
+    shape = h.get('shape', 'round')
+    if shape not in HEADLAMP_SHAPES:
+        shape = 'round'
+    return (count, shape,
+            _number(h, 'x', 47.0),
+            _number(h, 'y', 17.0),
+            _number(h, 'r', 2.6, positive=True),
+            _number(h, 'y_offset_from_centre', 11.0))
+
+
+def _headlamp_lateral(count, y_off):
+    """Sideways (Y) offsets in car units for each headlamp."""
+    if count == 1:
+        return [0.0]
+    if count == 2:
+        return [-y_off, y_off]
+    return [-y_off, y_off, -0.55 * y_off, 0.55 * y_off]
+
+
+def _smooth(obj):
+    for p in obj.data.polygons:
+        p.use_smooth = True
+    return obj
+
+
+def _lamp_box(name, loc, dims, mat, rot=(0.0, 0.0, 0.0)):
+    """A box of size dims (Blender units) centred on loc (Blender units)."""
+    bpy.ops.mesh.primitive_cube_add(size=1.0, location=loc)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.dimensions = dims
+    obj.rotation_euler = rot
+    obj.data.materials.append(mat)
+    return obj
+
+
+def _lamp_ring(name, loc, major, minor, mat):
+    """A torus ring (Blender units) whose axis runs along X, the car's length."""
+    bpy.ops.mesh.primitive_torus_add(major_segments=48, minor_segments=12,
+                                     major_radius=major, minor_radius=minor,
+                                     location=loc)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.rotation_euler = (0.0, math.pi / 2.0, 0.0)
+    obj.data.materials.append(mat)
+    return _smooth(obj)
+
+
+def _lamp_sphere(name, loc, radius, scale, mat):
+    """A sphere (Blender units) stretched by scale."""
+    bpy.ops.mesh.primitive_uv_sphere_add(radius=radius, segments=24,
+                                         ring_count=12, location=loc)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.scale = scale
+    obj.data.materials.append(mat)
+    return _smooth(obj)
+
+
+def _headlamp_parts(i, shape, loc, r, mats):
+    """The objects for headlamp i at loc (Blender units); r is in car units."""
+    name = 'headlamp_%d' % i
+    R = r * U
+    if shape == 'square':
+        # A chrome housing 2r wide and high, with its lens set into the front.
+        housing = _lamp_box(name, loc, (0.6 * R, 2.0 * R, 2.0 * R), mats['chrome'])
+        lens = _lamp_box(name + '_lens', (loc[0] + 0.15 * R, loc[1], loc[2]),
+                         (0.3 * R, 1.6 * R, 1.6 * R), mats['lens'])
+        return [housing, lens]
+    if shape == 'oval':
+        return [_lamp_sphere(name, loc, R, (0.45, 1.4, 1.0), mats['lens'])]
+    if shape == 'pop-up':
+        # Hidden lamps: a flat dark lid (the tyre material is the dark one).
+        return [_lamp_box(name, loc, (0.3 * R, 2.4 * R, 1.8 * R), mats['tyre'])]
+    if shape == 'slanted':
+        return [_lamp_box(name, loc, (0.4 * R, 2.2 * R, 1.2 * R), mats['lens'],
+                          rot=(0.0, 0.35, 0.0))]
+    # round (and anything else): a chrome ring with a flattened glass lens inside.
+    ring = _lamp_ring(name, loc, R, 0.22 * R, mats['chrome'])
+    lens = _lamp_sphere(name + '_lens', loc, 0.78 * R, (0.45, 1.0, 1.0), mats['lens'])
+    return [ring, lens]
+
+
+def build_lamps(dossier, mats):
+    """V05: the headlamps from front.headlamps (defaults for anything missing),
+    two red tail lamps and a number plate on the front and rear faces.
+    Objects are named headlamp_<i>, taillamp_<i> and plate_front / plate_rear.
+    Needs mats 'chrome', 'lens', 'tail', 'plate' and 'tyre'. Returns the new objects."""
+    count, shape, hx, hy, r, y_off = _headlamp_settings(dossier)
+    objs = []
+    for i, lat in enumerate(_headlamp_lateral(count, y_off)):
+        objs += _headlamp_parts(i, shape, (hx * U, lat * U, hy * U), r, mats)
+
+    pts = _profile_points(dossier.get('side_profile'))
+    if not pts:
+        return objs  # no body outline to hang the rear lamps and plates on
+    xs = [x for x, _ in pts]
+    ys = [y for _, y in pts]
+    xmin, xmax, ymin, ymax = min(xs), max(xs), min(ys), max(ys)
+    # The rear lamps sit at 0.62 of the height of the rear-most outline points.
+    tail_top = max(y for x, y in pts if x < xmin + 6.0)
+    width = _number(dossier.get('plan'), 'width_units', 40.0, positive=True)
+
+    for idx, s in enumerate((-1.0, 1.0)):
+        loc = ((xmin + 0.5) * U, s * width * 0.38 * U, 0.62 * tail_top * U)
+        objs.append(_lamp_box('taillamp_%d' % idx, loc,
+                              (1.5 * U, 4.0 * U, 3.0 * U), mats['tail']))
+
+    # Number plates, centred, at 0.35 of the body height above its bottom.
+    z = (ymin + 0.35 * (ymax - ymin)) * U
+    dims = (1.2 * U, 12.0 * U, 4.0 * U)
+    objs.append(_lamp_box('plate_front', ((xmax + 0.6) * U, 0.0, z), dims,
+                          mats['plate']))
+    objs.append(_lamp_box('plate_rear', ((xmin - 0.6) * U, 0.0, z), dims,
+                          mats['plate']))
+    return objs
+
+
 def load_dossier(path):
     """Read one car dossier JSON. Exits 2 with a clear message if it is unusable."""
     if not os.path.isfile(path):

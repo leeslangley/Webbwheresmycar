@@ -79,6 +79,22 @@ def main():
                                  roughness=0.03, alpha=0.32, blend='BLEND'),
         'fabric': carlib.make_mat('fabric', carlib.hex_to_rgb('#1c1c20'),
                                   roughness=0.9),
+        # V04: tyres and chrome brightwork for the wheels.
+        'tyre': carlib.make_mat('tyre', carlib.hex_to_rgb('#101014'),
+                                roughness=0.9),
+        'chrome': carlib.make_mat('chrome', carlib.hex_to_rgb('#e8e8ee'),
+                                  metallic=1.0, roughness=0.08),
+        # V05: headlamp lenses, red tail lamps and white number plates.
+        'lens': carlib.make_mat('lens', carlib.hex_to_rgb('#fff6c0'),
+                                roughness=0.05,
+                                emission=carlib.hex_to_rgb('#fff6c0'),
+                                emission_strength=1.0),
+        'tail': carlib.make_mat('tail', carlib.hex_to_rgb('#d82020'),
+                                roughness=0.3,
+                                emission=carlib.hex_to_rgb('#d82020'),
+                                emission_strength=0.5),
+        'plate': carlib.make_mat('plate', carlib.hex_to_rgb('#f4f4f0'),
+                                 roughness=0.4),
     }
     body = carlib.extrude_polygon(d['side_profile'], d['plan']['width_units'],
                                   mats['paint'], 'body')
@@ -87,6 +103,10 @@ def main():
     carlib.finish_mesh(body)
     # V03: the windows, extruded narrower so they sit inside the roof.
     carlib.build_glass(d, body, mats)
+    # V04: the wheels, tyre and rim on each side of the car.
+    carlib.build_wheels(d, mats)
+    # V05: the headlamps, tail lamps and number plates.
+    carlib.build_lamps(d, mats)
 
     # Shadow catcher plane under the car (renders only the shadow).
     bpy.ops.mesh.primitive_plane_add(size=40, location=(0, 0, 0))
