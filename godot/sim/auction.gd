@@ -1,8 +1,8 @@
 class_name SimAuction
 extends RefCounted
 
-# Port of src/sim/auction.js (DESIGN.md 4.10), first third: lot generation, the safe lot view, paid stat
-# reveals, consigning and unconsigning. Bidding (GDS10) and attend_auction (GDS13) are appended later.
+# Port of src/sim/auction.js (DESIGN.md 4.10), first two thirds: lot generation, the safe lot view, paid stat
+# reveals, consigning, unconsigning and bidding (bid_step, min_bid, place_bid). attend_auction (GDS13) is appended later.
 # Pure: randomness only through CoreRng on state.rng, no node access, no dates.
 
 # Cost of one paid stat reveal, and the stats it can uncover.
@@ -185,3 +185,51 @@ static func unconsign(state: Dictionary, car_id: Variant) -> Dictionary:
 			consigned.remove_at(i)
 			return {"ok": true, "msg": "The car is out of the auction."}
 	return {"ok": false, "msg": "That car is not consigned."}
+
+
+# One bid increment: 5% of the reserve, at least 50, rounded to 10.
+static func bid_step(lot: Dictionary) -> int:
+	return int(maxf(50.0, CoreRng.round_to(float(lot["reserve"]) * 0.05, 10)))
+
+
+# The smallest bid that makes sense for a lot right now.
+static func min_bid(lot: Dictionary) -> int:
+	if int(lot["currentBid"]) == 0:
+		return int(lot["reserve"])
+	return int(lot["currentBid"]) + bid_step(lot)
+
+
+# place_bid(state, lot_id, steps): bid one or three steps up on a lot. The three AI bidders answer at once:
+# if the keenest ceiling can still top you, they do, otherwise you lead. Costs no day, no rng is drawn.
+# Refusals return only {ok, msg}; a bid returns {ok, msg, outbid}.
+static func place_bid(state: Dictionary, lot_id: Variant, steps: Variant) -> Dictionary:
+	if not CoreClock.is_auction_day(state["day"]):
+		return {"ok": false, "msg": "Bidding only happens on auction day."}
+	if steps != 1 and steps != 3:
+		return {"ok": false, "msg": "Bid one step or three steps."}
+	var found: Variant = _find_lot(state, lot_id)
+	if found == null:
+		return {"ok": false, "msg": "No such lot."}
+	var lot: Dictionary = found
+	if lot["leader"] == "player":
+		return {"ok": false, "msg": "You are already winning"}
+	var step: int = bid_step(lot)
+	var bid: int = min_bid(lot) + (int(steps) - 1) * step
+	if int(state["cash"]) < bid:
+		return {"ok": false, "msg": "Not enough cash for that bid."}
+	var leading := 0
+	var all_lots: Array = state["auction"]["lots"]
+	for other in all_lots:
+		if other["leader"] == "player":
+			leading += 1
+	if state["cars"].size() + leading >= int(state["garageSlots"]):
+		return {"ok": false, "msg": "No free garage slot to win another car."}
+	var ceilings: Array = lot["ceilings"]
+	var best: int = ceilings.max()
+	if best >= bid + step:
+		lot["currentBid"] = bid + step
+		lot["leader"] = "ai"
+		return {"ok": true, "msg": "Outbid! The bid is now " + CoreFormat.money(float(lot["currentBid"])) + ".", "outbid": true}
+	lot["currentBid"] = bid
+	lot["leader"] = "player"
+	return {"ok": true, "msg": "You lead at " + CoreFormat.money(float(bid)) + ".", "outbid": false}
