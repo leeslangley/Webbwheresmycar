@@ -24,6 +24,7 @@ const BTN_RECTS := {
 	&"sell": Rect2(700, 514, 270, 64),
 	&"consign": Rect2(980, 514, 270, 64),
 }
+const ACTION_IDS := [&"tinker", &"service", &"fix", &"restore", &"sell", &"consign"]
 
 var sel_id := ""
 var page := 0
@@ -58,6 +59,8 @@ func _build_controls() -> void:
 	add_button(&"page_down", R_PAGE_DOWN, "DOWN")
 	for i in range(ROWS_PER_PAGE):
 		_rows.append(add_button(StringName("row%d" % i), row_rect(i), "", "card"))
+	for id in ACTION_IDS:
+		add_button(id, BTN_RECTS[id], "", "normal")
 
 
 # Data helpers. With no game (a bare scene) the state is empty and the garage shows as empty.
@@ -209,14 +212,100 @@ func _refresh_detail() -> void:
 		fault_label.text = ""
 
 
-# Virtual: GDR27 overrides this to set the action buttons (tinker, service, fix, restore, sell, consign).
+func _action_button(id: StringName) -> UiButton:
+	return hotspots[id] as UiButton
+
+
+func _set_action(id: StringName, text: String, on: bool) -> void:
+	var b := _action_button(id)
+	b.text = text
+	b.enabled = on
+
+
+# Sets the six action buttons for the selected car. A greyed button (enabled = false) still takes the tap.
 func _refresh_buttons() -> void:
-	pass
+	var c := selected_car()
+	for id in ACTION_IDS:
+		_action_button(id).visible = not c.is_empty()
+		_action_button(id).enabled = false
+	if c.is_empty():
+		return
+	var st := state()
+	var m := GarageCosts.model_of(String(c.modelId))
+	var cash := int(st.get("cash", 0))
+	var fault = c.get("fault")
+	var fc := 0
+	if fault != null:
+		fc = int(fault.cost)
+	var consigned := GarageCosts.is_consigned(st, String(c.id))
+
+	var tc := GarageCosts.tinker_cost(m)
+	_set_action(&"tinker", "TINKER " + CoreFormat.money(tc), float(c.condition) < 10.0 and cash >= tc)
+	var sc := GarageCosts.service_cost(m)
+	_set_action(&"service", "SERVICE " + CoreFormat.money(sc), float(c.condition) < 10.0 and cash >= sc)
+	_set_action(&"fix", ("FIX FAULT " + CoreFormat.money(fc)) if fault != null else "FIX FAULT", fault != null and cash >= fc)
+	var rc := GarageCosts.restore_cost(m)
+	var perfect := float(c.condition) >= 10.0 and fault == null
+	_set_action(&"restore", "RESTORE " + CoreFormat.money(rc), not perfect and cash >= rc)
+
+	if c.get("owned", false):
+		var price := GarageCosts.dealer_price(st, m, c)
+		_set_action(&"sell", "SELL " + CoreFormat.money(price), not consigned)
+		_set_action(&"consign", "WITHDRAW" if consigned else "CONSIGN", consigned or not CoreClock.is_auction_day(int(st.get("day", 0))))
+	else:
+		var fee := GarageCosts.damage_fee(m, c)
+		_set_action(&"sell", "RETURN " + CoreFormat.money(fee), cash >= fee)
+		_action_button(&"consign").visible = false
 
 
-# Virtual: GDR27 overrides this for the action buttons and their shortcuts.
-func _on_action(_id: StringName) -> void:
-	pass
+# Runs one garage action on the selected car, then refreshes. The Game toasts any refusal itself.
+func _act(action: String, params: Dictionary) -> Dictionary:
+	var g = get_game()
+	var r = g.act(action, params)
+	refresh()
+	if r is Dictionary:
+		return r
+	return {}
+
+
+# A tap on an action button (enabled or greyed) or its key. Greyed buttons still reach the sim.
+func _on_action(id: StringName) -> void:
+	var c := selected_car()
+	if c.is_empty():
+		return
+	var car_id := String(c.id)
+	match id:
+		&"tinker":
+			_act("service_car", {"car_id": car_id, "kind": "quick"})
+		&"service":
+			_act("service_car", {"car_id": car_id, "kind": "full"})
+		&"fix":
+			_act("fix_fault", {"car_id": car_id})
+		&"restore":
+			_act("restore_car", {"car_id": car_id})
+		&"sell":
+			if c.get("owned", false):
+				_act("sell_to_dealer", {"car_id": car_id})
+			else:
+				_act("return_rental", {"car_id": car_id})
+		&"consign":
+			_consign(c)
+
+
+func _consign(c: Dictionary) -> void:
+	var st := state()
+	var car_id := String(c.id)
+	if GarageCosts.is_consigned(st, car_id):
+		_act("unconsign", {"car_id": car_id})
+		return
+	if CoreClock.is_auction_day(int(st.get("day", 0))):
+		toast.emit("Too late, the auction is today")
+		return
+	var model := GarageCosts.model_of(String(c.modelId))
+	var reserve := GarageCosts.consign_reserve(st, model, c)
+	var r := _act("consign_car", {"car_id": car_id, "reserve": reserve})
+	if r.get("ok", false):
+		toast.emit("Consigned. Reserve " + CoreFormat.money(reserve))
 
 
 # Input.
@@ -246,6 +335,16 @@ func _on_button_blocked(id: StringName) -> void:
 func handle_key(keycode: int) -> bool:
 	if keycode == KEY_ESCAPE:
 		request_scene.emit(&"office", {})
+		return true
+	if keycode == KEY_S or keycode == KEY_T or keycode == KEY_F:
+		if selected_car().is_empty():
+			return false
+		if keycode == KEY_S:
+			_on_action(&"service")
+		elif keycode == KEY_T:
+			_on_action(&"tinker")
+		else:
+			_on_action(&"fix")
 		return true
 	if keycode != KEY_UP and keycode != KEY_DOWN:
 		return false
