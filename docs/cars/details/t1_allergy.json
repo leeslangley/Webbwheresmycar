@@ -1,0 +1,49 @@
+{
+ "version": 2,
+ "id": "t1_allergy",
+ "belt_y": 26.9,
+ "window_frame": "chrome",
+ "caricature": {"eyes": 1.15, "mouth": 1.1, "wheels": 1.05, "bumper": 1.1},
+ "wheel": {"style": "steel", "hub": "chrome", "whitewall": false, "trim_ring": false, "hubcap_r": 2.5, "spokes": 0},
+ "roof": {"variant": "hard"},
+ "windows": [
+  [[15.2, 27.4], [9.6, 34.2], [-2.2, 34.2], [-2.2, 27.4]],
+  [[-3.8, 27.4], [-24.2, 27.4], [-20.9, 34.2], [-3.8, 34.2]]
+ ],
+ "pillars": [
+  {"poly": [[17.0, 26.9], [10.0, 35.2], [8.8, 35.2], [15.6, 26.9]], "lat_from": 0.82},
+  {"poly": [[-2.2, 26.9], [-2.2, 35.2], [-3.8, 35.2], [-3.8, 26.9]], "lat_from": 0.82},
+  {"poly": [[-25.0, 26.9], [-21.0, 35.3], [-20.9, 34.2], [-24.2, 27.4]], "lat_from": 0.82}
+ ],
+ "parts": [
+  {"kind": "headlamp", "x": 48, "y": 15, "lat": 6.5, "r": 1.8, "shape": "round", "bezel": "chrome", "side": "both", "note": "dossier: 2 round headlamps"},
+  {"kind": "grille", "end": "front", "x": 49, "y": 11, "w": 22, "h": 3, "style": "horizontal_bars", "bars": 7, "surround": "chrome", "lat": 0, "note": "dossier: wide flat horizontal-slat grille"},
+  {"kind": "lamp", "role": "indicator", "x": 49, "y": 5, "lat": 16, "r": 1.2, "shape": "round", "side": "both", "note": "small round lamp low in each front corner; role assumed"},
+  {"kind": "bumper", "end": "front", "y": 7, "h": 2, "style": "blade", "note": "chrome blade bumper with black rubber end caps"},
+  {"kind": "plate", "end": "front", "colour": "white"},
+  {"kind": "badge", "shape": "bar", "end": "front", "x": 50, "y": 11, "size": 2, "colour": "chrome", "note": "grille badge"},
+  {"kind": "taillamp", "x": -49, "y": 13, "lat": 14, "shape": "vertical", "w": 4, "h": 3, "side": "both", "note": "dossier: 2 upright lamps 4 wide by 3 high; lat not in dossier, chosen"},
+  {"kind": "bumper", "end": "rear", "y": 7, "h": 2, "style": "blade", "note": "chrome blade bumper with black rubber end caps"},
+  {"kind": "plate", "end": "rear", "colour": "white"},
+  {"kind": "exhaust", "style": "round", "x": -50, "y": 6, "lat": 6, "r": 1.0, "side": "near", "note": "dossier: one exhaust"},
+  {"kind": "badge", "shape": "script", "end": "rear", "x": -50, "y": 22, "size": 2, "colour": "chrome", "note": "boot lid script badge"},
+  {"kind": "handle", "style": "boot", "x": -44, "y": 22, "len": 2.5, "side": "centre", "note": "boot lid handle"},
+  {"kind": "lamp", "role": "reverse", "x": -50, "y": 10, "lat": 8, "r": 1.0, "shape": "round", "side": "both", "note": "reversing lamp; not in dossier, placed under the tail lamps"},
+  {"kind": "fuelcap", "x": -45, "y": 15, "r": 1.0, "side": "near"},
+  {"kind": "strip", "role": "sill", "x": -36, "x2": 36, "y": 6, "h": 0.5, "colour": "chrome", "side": "both", "note": "dossier: chrome sill strip"},
+  {"kind": "crease", "x": -46, "x2": 46, "y": 20, "depth": 0.15, "side": "both", "note": "dossier: body-side crease at y 20"},
+  {"kind": "strip", "role": "window", "x": -25, "x2": 17, "y": 27, "h": 0.5, "colour": "chrome", "side": "both", "note": "dossier: chrome window surround"},
+  {"kind": "handle", "style": "flap", "x": 0, "y": 18, "len": 2.5, "side": "both", "note": "front door handle"},
+  {"kind": "handle", "style": "flap", "x": -19, "y": 18, "len": 2.5, "side": "both", "note": "rear door handle"},
+  {"kind": "shutline", "role": "door", "path": [[21.5, 8], [21.5, 26.8]], "side": "both", "note": "front door front edge"},
+  {"kind": "shutline", "role": "door", "path": [[-2.2, 8], [-2.2, 27.4]], "side": "both", "note": "B pillar, front door rear edge"},
+  {"kind": "shutline", "role": "door", "path": [[-3.8, 8], [-3.8, 27.4]], "side": "both", "note": "B pillar, rear door front edge"},
+  {"kind": "shutline", "role": "door", "path": [[-22, 8], [-22, 26.8]], "side": "both", "note": "rear door rear edge"},
+  {"kind": "shutline", "role": "door", "path": [[21.5, 8], [-2.2, 8]], "side": "both", "note": "front door sill gap"},
+  {"kind": "shutline", "role": "door", "path": [[-3.8, 8], [-22, 8]], "side": "both", "note": "rear door sill gap"},
+  {"kind": "shutline", "role": "bonnet", "path": [[17, 26.9], [38, 26.0], [46, 25.4]], "side": "both", "note": "bonnet top edge"},
+  {"kind": "shutline", "role": "bonnet", "path": [[40, 25.8], [40, 8.5]], "side": "both", "note": "front wing gap"},
+  {"kind": "shutline", "role": "boot", "path": [[-25, 26.9], [-44, 26.3], [-49, 25.5]], "side": "both", "note": "boot lid top edge"},
+  {"kind": "shutline", "role": "boot", "path": [[-50.5, 18], [-45, 18]], "side": "both", "note": "boot lid lower edge on tail"}
+ ]
+}
