@@ -22,9 +22,16 @@ const ACTION_TABLE: Dictionary = {
 	"restore_car": ["res://sim/garage.gd", "restore_car", ["car_id"]],
 	"accept_job": ["res://sim/jobresolve.gd", "accept_job", ["request_id", "car_id"]],
 	"advertise": ["res://sim/adsim.gd", "advertise", ["media_id"]],
+	"reveal_stat": ["res://sim/auction.gd", "reveal_stat", ["lot_id", "stat"]],
+	"consign_car": ["res://sim/auction.gd", "consign_car", ["car_id", "reserve"]],
+	"unconsign": ["res://sim/auction.gd", "unconsign", ["car_id"]],
+	"place_bid": ["res://sim/auction.gd", "place_bid", ["lot_id", "steps"]],
+	"attend_auction": ["res://sim/auction.gd", "attend_auction", []],
 }
 
 var state: Dictionary = {}
+# When false, successful actions and new games do not write the save file (tests turn it off).
+var autosave: bool = true
 var settings: Dictionary = CoreSave.default_settings()
 var save_path: String = CoreSave.SAVE_PATH
 var settings_path: String = CoreSave.SETTINGS_PATH
@@ -46,10 +53,15 @@ func has_action(action: String) -> bool:
 
 
 # Runs one sim action by name. Returns the sim's result untouched (a Variant: a result without an
-# ok field passes straight through).
+# ok field passes straight through). A success saves (when autosave), emits changed, emits
+# day_advanced only when the day moved, and game_over when the year has ended. A refusal with
+# text becomes a toast. Once the year is over nothing runs and nothing is toasted.
 func act(action: String, params: Dictionary = {}) -> Variant:
 	if state.is_empty():
 		return {"ok": false, "msg": "No game running"}
+	var flags_now: Dictionary = state.get("flags", {})
+	if flags_now.get("gameOver") == true:
+		return {"ok": false, "msg": "The year is over"}
 	if not _actions.has(action):
 		return {"ok": false, "msg": "Unknown action: " + action}
 	var entry: Array = _actions[action]
@@ -61,14 +73,17 @@ func act(action: String, params: Dictionary = {}) -> Variant:
 		if not params.has(key):
 			return {"ok": false, "msg": "Missing parameter: " + str(key)}
 		args.append(params[key])
+	var day_before: int = int(state.get("day", 0))
 	var r: Variant = load(path).callv(entry[1], [state] + args)
 	if r is Dictionary:
 		var rd: Dictionary = r
 		if rd.get("ok") == true:
-			save_now()
-			day_advanced.emit()
+			if autosave:
+				save_now()
 			changed.emit()
 			_play_cash()
+			if int(state.get("day", 0)) != day_before:
+				day_advanced.emit()
 			var flags: Dictionary = state.get("flags", {})
 			if flags.get("gameOver") == true:
 				game_over.emit()
@@ -77,15 +92,14 @@ func act(action: String, params: Dictionary = {}) -> Variant:
 	return r
 
 
+# Starts a new game (seed -1 picks one from the clock) and saves it when autosave is on.
 func new_game(seed_value: int = -1) -> void:
 	var seed_used: int = seed_value
 	if seed_used == -1:
 		seed_used = int(Time.get_unix_time_from_system()) + 1
-	if ResourceLoader.exists("res://sim/newgame.gd"):
-		state = load("res://sim/newgame.gd").callv("start_game", [seed_used])
-	else:
-		state = CoreState.new_game_state(seed_used)
-	save_now()
+	state = SimNewGame.start_game(seed_used)
+	if autosave:
+		save_now()
 	changed.emit()
 
 

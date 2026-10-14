@@ -81,7 +81,7 @@ func test_success() -> void:
 	eq(r.get("ok"), true, "success is ok")
 	eq(g.state.cash, 40000, "cash doubled")
 	eq(changes[0], 1, "changed once")
-	eq(days[0], 1, "day_advanced once")
+	eq(days[0], 0, "day_advanced only when the day moves (double_cash keeps the day)")
 	eq(toasts.size(), 0, "no toast on success")
 	g.state = {}
 	ok(g.continue_game(), "continue_game works after a success")
@@ -134,10 +134,12 @@ func test_passthrough() -> void:
 func test_not_built_yet() -> void:
 	var g = _make()
 	g.new_game(7)
-	var r = g.act("buy_car", {"listing_id": 1})
+	g.register_action("later", "res://sim/not_written_yet.gd", "later", [])
+	var r = g.act("later")
 	ok(r is Dictionary, "returns a Dictionary")
 	if r is Dictionary:
 		eq(r.get("ok"), false, "not built yet is not ok")
+		eq(r.get("msg"), "Action not built yet: later", "names the action that is not built")
 	_done(g)
 
 
