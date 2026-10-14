@@ -2198,269 +2198,6 @@
   ]
  },
  {
-  "id": "CB01",
-  "title": "Car materials: paint, chrome, glass, rubber, lamps",
-  "needs": [
-   "V01"
-  ],
-  "file": "CB01-car-materials-paint-chrome-glass-rubber-.md",
-  "files": [
-   "tools/art/cbmat.py",
-   "tests/cb_mat_test.py"
-  ]
- },
- {
-  "id": "CB02",
-  "title": "Studio world and colour management",
-  "needs": [
-   "V01"
-  ],
-  "file": "CB02-studio-world-and-colour-management.md",
-  "files": [
-   "tools/art/cbrig.py",
-   "tests/cb_rig_test.py"
-  ]
- },
- {
-  "id": "CB03",
-  "title": "Studio light rig and chrome probe test",
-  "needs": [
-   "CB01",
-   "CB02"
-  ],
-  "file": "CB03-studio-light-rig-and-chrome-probe-test.md",
-  "files": [
-   "tools/art/cbrig.py",
-   "tests/cb_rig_test.py"
-  ]
- },
- {
-  "id": "CB04",
-  "title": "Fixed-scale studio camera",
-  "needs": [
-   "CB02"
-  ],
-  "file": "CB04-fixed-scale-studio-camera.md",
-  "files": [
-   "tools/art/cbrig.py",
-   "tests/cb_cam_test.py"
-  ]
- },
- {
-  "id": "CB05",
-  "title": "Material mask render pass",
-  "needs": [
-   "CB01"
-  ],
-  "file": "CB05-material-mask-render-pass.md",
-  "files": [
-   "tools/art/cbrig.py",
-   "tests/cb_mask_test.py"
-  ]
- },
- {
-  "id": "CB06",
-  "title": "Soft ground shadow render pass",
-  "needs": [
-   "CB03"
-  ],
-  "file": "CB06-soft-ground-shadow-render-pass.md",
-  "files": [
-   "tools/art/cbrig.py",
-   "tests/cb_shadow_test.py"
-  ]
- },
- {
-  "id": "CB09",
-  "title": "blender_car2: studio rig, views, materials",
-  "needs": [
-   "V06",
-   "CA03",
-   "CB01",
-   "CB02",
-   "CB03",
-   "CB04"
-  ],
-  "file": "CB09-blender-car2-studio-rig-views-materials.md",
-  "files": [
-   "tools/art/blender_car2.py",
-   "tests/run_blender_car2g.sh"
-  ]
- },
- {
-  "id": "CB10",
-  "title": "blender_car2: views, mask and shadow outputs",
-  "needs": [
-   "CB05",
-   "CB06",
-   "CB09",
-   "CA05",
-   "CA06"
-  ],
-  "file": "CB10-blender-car2-views-mask-and-shadow-outpu.md",
-  "files": [
-   "tools/art/blender_car2.py",
-   "tests/run_blender_car2h.sh",
-   "tests/cb_fractions.py"
-  ]
- },
- {
-  "id": "CB11",
-  "title": "Pixel stage: palette ramps",
-  "needs": [
-   "A04"
-  ],
-  "file": "CB11-pixel-stage-palette-ramps.md",
-  "files": [
-   "tools/art/pixramp.py",
-   "tests/pixramp_test.py"
-  ]
- },
- {
-  "id": "CB12",
-  "title": "Pixel stage: material class map",
-  "needs": [
-   "CB01",
-   "CB11"
-  ],
-  "file": "CB12-pixel-stage-material-class-map.md",
-  "files": [
-   "tools/art/pixramp.py",
-   "tests/pixramp_class_test.py"
-  ]
- },
- {
-  "id": "CB13",
-  "title": "Pixel stage: ramp quantiser with ordered dither",
-  "needs": [
-   "CB11",
-   "CB12"
-  ],
-  "file": "CB13-pixel-stage-ramp-quantiser-with-ordered-.md",
-  "files": [
-   "tools/art/pixramp.py",
-   "tests/pixramp_quant_test.py"
-  ]
- },
- {
-  "id": "CB14",
-  "title": "Pixel stage: selective outlines",
-  "needs": [
-   "CB13"
-  ],
-  "file": "CB14-pixel-stage-selective-outlines.md",
-  "files": [
-   "tools/art/pixramp.py",
-   "tests/pixramp_outline_test.py"
-  ]
- },
- {
-  "id": "CB15",
-  "title": "pixelate2: render + mask to a ramp-palette sprite",
-  "needs": [
-   "CB12",
-   "CB13",
-   "CB14"
-  ],
-  "file": "CB15-pixelate2-render-mask-to-a-ramp-palette-.md",
-  "files": [
-   "tools/art/pixelate2.py",
-   "tests/pixelate2_fixture.py",
-   "tests/run_pixelate2.sh"
-  ]
- },
- {
-  "id": "CB16",
-  "title": "pixelate2: fixed scale, crop and anchor, sprite profiles",
-  "needs": [
-   "CB04",
-   "CB15"
-  ],
-  "file": "CB16-pixelate2-fixed-scale-crop-and-anchor-sp.md",
-  "files": [
-   "tools/art/pixelate2.py",
-   "tests/run_pixelate2b.sh",
-   "tests/pixelate2b_check.py"
-  ]
- },
- {
-  "id": "CB17",
-  "title": "Pixel stage: shadow levels, lamp positions and game mask",
-  "needs": [
-   "CB12"
-  ],
-  "file": "CB17-pixel-stage-shadow-levels-lamp-positions.md",
-  "files": [
-   "tools/art/pixramp.py",
-   "tests/pixramp_extra_test.py"
-  ]
- },
- {
-  "id": "CB20",
-  "title": "pixelate2: shadow sprite, lamp list and game mask",
-  "needs": [
-   "CB16",
-   "CB17"
-  ],
-  "file": "CB20-pixelate2-shadow-sprite-lamp-list-and-ga.md",
-  "files": [
-   "tools/art/pixelate2.py",
-   "tests/run_pixelate2c.sh",
-   "tests/pixelate2c_check.py"
-  ]
- },
- {
-  "id": "CB21",
-  "title": "Pixel stage: all sprites for one car",
-  "needs": [
-   "CB20",
-   "CB10"
-  ],
-  "file": "CB21-pixel-stage-all-sprites-for-one-car.md",
-  "files": [
-   "tools/art/pixelate_all.py",
-   "tests/run_pixelate_all.sh"
-  ]
- },
- {
-  "id": "CB22",
-  "title": "render_all: studio pipeline, cache and manifest v2",
-  "needs": [
-   "V07",
-   "CB21"
-  ],
-  "file": "CB22-render-all-studio-pipeline-cache-and-man.md",
-  "files": [
-   "tools/art/render_all.sh",
-   "tools/art/carmanifest.py",
-   "tests/run_render_all.sh"
-  ]
- },
- {
-  "id": "CB23",
-  "title": "Sprite checker v2: palette budget, outline and shadow rules",
-  "needs": [
-   "CB14"
-  ],
-  "file": "CB23-sprite-checker-v2-palette-budget-outline.md",
-  "files": [
-   "tools/art/check_sprite2.py",
-   "tests/run_check_sprite2.sh"
-  ]
- },
- {
-  "id": "CB24",
-  "title": "Contact sheet for visual QA",
-  "needs": [
-   "CB21"
-  ],
-  "file": "CB24-contact-sheet-for-visual-qa.md",
-  "files": [
-   "tools/art/carsheet.py",
-   "tests/run_carsheet.sh"
-  ]
- },
- {
   "id": "CC01",
   "title": "Pixel scale, snapping, car motion helpers",
   "needs": [],
@@ -3928,6 +3665,270 @@
   "files": [
    "src/ui/scenes/tvshop.js",
    "tests/scene_tvshop_layout.test.mjs"
+  ]
+ },
+ {
+  "id": "CB01",
+  "title": "Car materials: paint, chrome, glass, rubber, lamps",
+  "needs": [
+   "V01"
+  ],
+  "file": "CB01-car-materials-paint-chrome-glass-rubber-.md",
+  "files": [
+   "tools/art/cbmat.py",
+   "tests/cb_mat_test.py"
+  ]
+ },
+ {
+  "id": "CB02",
+  "title": "Studio world and colour management",
+  "needs": [
+   "V01"
+  ],
+  "file": "CB02-studio-world-and-colour-management.md",
+  "files": [
+   "tools/art/cbrig.py",
+   "tests/cb_rig_test.py"
+  ]
+ },
+ {
+  "id": "CB03",
+  "title": "Studio light rig and chrome probe test",
+  "needs": [
+   "CB01",
+   "CB02"
+  ],
+  "file": "CB03-studio-light-rig-and-chrome-probe-test.md",
+  "files": [
+   "tools/art/cbrig.py",
+   "tests/cb_rig_test.py"
+  ]
+ },
+ {
+  "id": "CB04",
+  "title": "Fixed-scale studio camera",
+  "needs": [
+   "CB02"
+  ],
+  "file": "CB04-fixed-scale-studio-camera.md",
+  "files": [
+   "tools/art/cbrig.py",
+   "tests/cb_cam_test.py"
+  ]
+ },
+ {
+  "id": "CB05",
+  "title": "Material mask render pass",
+  "needs": [
+   "CB01"
+  ],
+  "file": "CB05-material-mask-render-pass.md",
+  "files": [
+   "tools/art/cbrig.py",
+   "tests/cb_mask_test.py"
+  ]
+ },
+ {
+  "id": "CB06",
+  "title": "Soft ground shadow render pass",
+  "needs": [
+   "CB03",
+   "CB04"
+  ],
+  "file": "CB06-soft-ground-shadow-render-pass.md",
+  "files": [
+   "tools/art/cbrig.py",
+   "tests/cb_shadow_test.py"
+  ]
+ },
+ {
+  "id": "CB09",
+  "title": "blender_car2: studio rig, views, materials",
+  "needs": [
+   "V06",
+   "CA03",
+   "CB01",
+   "CB02",
+   "CB03",
+   "CB04"
+  ],
+  "file": "CB09-blender-car2-studio-rig-views-materials.md",
+  "files": [
+   "tools/art/blender_car2.py",
+   "tests/run_blender_car2g.sh"
+  ]
+ },
+ {
+  "id": "CB10",
+  "title": "blender_car2: views, mask and shadow outputs",
+  "needs": [
+   "CB05",
+   "CB06",
+   "CB09",
+   "CA05",
+   "CA06"
+  ],
+  "file": "CB10-blender-car2-views-mask-and-shadow-outpu.md",
+  "files": [
+   "tools/art/blender_car2.py",
+   "tests/run_blender_car2h.sh",
+   "tests/cb_fractions.py"
+  ]
+ },
+ {
+  "id": "CB11",
+  "title": "Pixel stage: palette ramps",
+  "needs": [
+   "A04"
+  ],
+  "file": "CB11-pixel-stage-palette-ramps.md",
+  "files": [
+   "tools/art/pixramp.py",
+   "tests/pixramp_test.py"
+  ]
+ },
+ {
+  "id": "CB12",
+  "title": "Pixel stage: material class map",
+  "needs": [
+   "CB01",
+   "CB11"
+  ],
+  "file": "CB12-pixel-stage-material-class-map.md",
+  "files": [
+   "tools/art/pixramp.py",
+   "tests/pixramp_class_test.py"
+  ]
+ },
+ {
+  "id": "CB13",
+  "title": "Pixel stage: ramp quantiser with ordered dither",
+  "needs": [
+   "CB11",
+   "CB12"
+  ],
+  "file": "CB13-pixel-stage-ramp-quantiser-with-ordered-.md",
+  "files": [
+   "tools/art/pixramp.py",
+   "tests/pixramp_quant_test.py"
+  ]
+ },
+ {
+  "id": "CB14",
+  "title": "Pixel stage: selective outlines",
+  "needs": [
+   "CB13"
+  ],
+  "file": "CB14-pixel-stage-selective-outlines.md",
+  "files": [
+   "tools/art/pixramp.py",
+   "tests/pixramp_outline_test.py"
+  ]
+ },
+ {
+  "id": "CB15",
+  "title": "pixelate2: render + mask to a ramp-palette sprite",
+  "needs": [
+   "CB12",
+   "CB13",
+   "CB14"
+  ],
+  "file": "CB15-pixelate2-render-mask-to-a-ramp-palette-.md",
+  "files": [
+   "tools/art/pixelate2.py",
+   "tests/pixelate2_fixture.py",
+   "tests/run_pixelate2.sh"
+  ]
+ },
+ {
+  "id": "CB16",
+  "title": "pixelate2: fixed scale, crop and anchor, sprite profiles",
+  "needs": [
+   "CB04",
+   "CB15"
+  ],
+  "file": "CB16-pixelate2-fixed-scale-crop-and-anchor-sp.md",
+  "files": [
+   "tools/art/pixelate2.py",
+   "tests/run_pixelate2b.sh",
+   "tests/pixelate2b_check.py"
+  ]
+ },
+ {
+  "id": "CB17",
+  "title": "Pixel stage: shadow levels, lamp positions and game mask",
+  "needs": [
+   "CB12"
+  ],
+  "file": "CB17-pixel-stage-shadow-levels-lamp-positions.md",
+  "files": [
+   "tools/art/pixramp.py",
+   "tests/pixramp_extra_test.py"
+  ]
+ },
+ {
+  "id": "CB20",
+  "title": "pixelate2: shadow sprite, lamp list and game mask",
+  "needs": [
+   "CB16",
+   "CB17"
+  ],
+  "file": "CB20-pixelate2-shadow-sprite-lamp-list-and-ga.md",
+  "files": [
+   "tools/art/pixelate2.py",
+   "tests/run_pixelate2c.sh",
+   "tests/pixelate2c_check.py"
+  ]
+ },
+ {
+  "id": "CB21",
+  "title": "Pixel stage: all sprites for one car",
+  "needs": [
+   "CB20",
+   "CB10"
+  ],
+  "file": "CB21-pixel-stage-all-sprites-for-one-car.md",
+  "files": [
+   "tools/art/pixelate_all.py",
+   "tests/run_pixelate_all.sh"
+  ]
+ },
+ {
+  "id": "CB22",
+  "title": "render_all: studio pipeline, cache and manifest v2",
+  "needs": [
+   "V07",
+   "CB21"
+  ],
+  "file": "CB22-render-all-studio-pipeline-cache-and-man.md",
+  "files": [
+   "tools/art/render_all.sh",
+   "tools/art/carmanifest.py",
+   "tests/run_render_all.sh"
+  ]
+ },
+ {
+  "id": "CB23",
+  "title": "Sprite checker v2: palette budget, outline and shadow rules",
+  "needs": [
+   "CB14"
+  ],
+  "file": "CB23-sprite-checker-v2-palette-budget-outline.md",
+  "files": [
+   "tools/art/check_sprite2.py",
+   "tests/run_check_sprite2.sh"
+  ]
+ },
+ {
+  "id": "CB24",
+  "title": "Contact sheet for visual QA",
+  "needs": [
+   "CB21"
+  ],
+  "file": "CB24-contact-sheet-for-visual-qa.md",
+  "files": [
+   "tools/art/carsheet.py",
+   "tests/run_carsheet.sh"
   ]
  }
 ]
