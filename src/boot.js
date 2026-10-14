@@ -4,30 +4,7 @@
 // game logic stays in the pure modules.
 
 import { applyLayout, toLogical } from './ui/canvas.js';
-import { createApp } from './ui/scenes.js';
-import { PALETTE } from './ui/theme.js';
-import { label } from './ui/kit_draw.js';
-
-// Placeholder title scene (DESIGN.md 9.5): the W57 title screen replaces this.
-const titleScene = {
-	id: 'title',
-	draw: function (ctx, app, t) {
-		label(ctx, "WEBB, WHERE'S MY CAR?", app.w / 2, 280, {
-			size: 36,
-			color: PALETTE.cream,
-			align: 'center',
-			font: 'title',
-			shadow: true,
-		});
-		label(ctx, "A WEBB'S WHEELS PRODUCTION", app.w / 2, 380, {
-			size: 28,
-			color: PALETTE.cream,
-			align: 'center',
-			font: 'body',
-			shadow: true,
-		});
-	},
-};
+import { createGame } from './game.js';
 
 // bootGame(env) -> {app, getLayout}. env = {window, document, storage}.
 export function bootGame(env) {
@@ -42,12 +19,12 @@ export function bootGame(env) {
 	win.addEventListener('resize', reapply);
 	win.addEventListener('orientationchange', reapply);
 
-	const app = createApp({
+	const app = createGame({
+		storage: env.storage,
 		now: function () {
 			return win.performance ? win.performance.now() : 0;
 		},
 	});
-	app.register(titleScene);
 	app.go('title');
 
 	// Pointer events: convert screen coordinates to logical game coordinates

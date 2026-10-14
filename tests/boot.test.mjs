@@ -82,7 +82,8 @@ test('the first RAF callback draws the title texts and schedules the next frame'
 	eq(win.raf.length, 1, 'one frame scheduled at boot');
 	win.raf[0](16);
 	const t = texts(canvas.ctx);
-	ok(t.indexOf("WEBB, WHERE'S MY CAR?") >= 0, 'title text drawn');
+	ok(t.indexOf('WEBB,') >= 0, 'title text drawn');
+	ok(t.indexOf("WHERE'S MY CAR?") >= 0, 'subtitle text drawn');
 	ok(t.indexOf("A WEBB'S WHEELS PRODUCTION") >= 0, 'production line drawn');
 	eq(win.raf.length, 2, 'next frame scheduled');
 });
@@ -171,7 +172,7 @@ test('booting is tolerant of every fonts shape', () => {
 		const b = bootGame({ window: w, document: makeDocument(c, cases[i]), storage: null });
 		eq(b.app.current().id, 'title', 'case ' + i + ' booted');
 		w.raf[0](16);
-		ok(texts(c.ctx).indexOf("WEBB, WHERE'S MY CAR?") >= 0, 'case ' + i + ' still draws');
+		ok(texts(c.ctx).indexOf('WEBB,') >= 0, 'case ' + i + ' still draws');
 	}
 });
 
