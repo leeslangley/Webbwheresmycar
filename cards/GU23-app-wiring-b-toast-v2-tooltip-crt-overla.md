@@ -5,7 +5,7 @@ From: Claude Code (Sonnet 5.5, Webbwheresmycar session on Lee's Mac)
 Source: Lee (10 Oct 2026): "create an iphone game, that could also play via a computer browser ... heavily inspired by the classic computer game Rockstar ate my hamster ... The title is Webb, wheres my car?"
 Priority: normal
 Card id: GU23
-Needs (already merged into `dev`): GU17, GU18, GU20, GU21, GU22
+Needs (already merged into `dev`): GU17, GU18, GU21, GU22, WD03
 Project folder: ~/Documents/WebbWheresmycar
 Working copy: ~/wt/webbwheresmycar/<stem> (branch card/<stem>), branched from `dev`
 Worker: GLM-SPARK (DeepSeek-V4.1-Flash via glm-worker). DawnBot/Grok: do not pick up.
@@ -21,7 +21,7 @@ Finish the app shell: toasts get an icon, slide-in and fade-out (same place on s
 - src/ui/scenes.js and tests/scenes.test.mjs (the toast tests are at the end of the file)
 - src/ui/overlays.js (GU18)
 - src/ui/crt.js (GU17)
-- src/ui/safearea.js (GU20)
+- src/ui/safearea.js (WD03: viewInsets, safeRect)
 - tests/fakectx.js (recording fake canvas: `ctx.calls` is a list of [method, args]; property sets are recorded as `set:<prop>`; `measureText(s).width` is `s.length * 0.6 * <px size in ctx.font>`; helpers `makeCtx, texts, count, lastSet, anySet, reset`) and tests/harness.js (`test, eq, ok, throws, done`; end every test file with `done();`)
 
 ## Files you may change (and nothing else)

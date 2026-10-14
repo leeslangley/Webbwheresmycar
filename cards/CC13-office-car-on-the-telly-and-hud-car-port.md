@@ -5,7 +5,7 @@ From: Claude Code (Sonnet 5.5, Webbwheresmycar session on Lee's Mac)
 Source: Lee (10 Oct 2026): "create an iphone game, that could also play via a computer browser ... heavily inspired by the classic computer game Rockstar ate my hamster ... The title is Webb, wheres my car?"
 Priority: normal
 Card id: CC13
-Needs (already merged into `dev`): CC11, CC12, W58
+Needs (already merged into `dev`): CC11, CC12, W58, GC26
 Project folder: ~/Documents/WebbWheresmycar
 Working copy: ~/wt/webbwheresmycar/<stem> (branch card/<stem>), branched from `dev`
 Worker: GLM-SPARK (DeepSeek-V4.1-Flash via glm-worker). DawnBot/Grok: do not pick up.

@@ -5,7 +5,7 @@ From: Claude Code (Sonnet 5.5, Webbwheresmycar session on Lee's Mac)
 Source: Lee (10 Oct 2026): "create an iphone game, that could also play via a computer browser ... heavily inspired by the classic computer game Rockstar ate my hamster ... The title is Webb, wheres my car?"
 Priority: normal
 Card id: CC16
-Needs (already merged into `dev`): CC01, CC07, CC08, W65b
+Needs (already merged into `dev`): CC01, CC07, CC08, W65b, GE21
 Project folder: ~/Documents/WebbWheresmycar
 Working copy: ~/wt/webbwheresmycar/<stem> (branch card/<stem>), branched from `dev`
 Worker: GLM-SPARK (DeepSeek-V4.1-Flash via glm-worker). DawnBot/Grok: do not pick up.
@@ -20,7 +20,7 @@ The auction stage becomes a curtained hall with the lot as the star. Today the l
 - docs/art/CARS_ALIGN.md (THE sprite contract: views, densities, file names, manifest v2, game mask; it wins over any other text) and docs/art/CC.md (API names and background; its 'Sprite contract' section is superseded)
 - src/ui/scenes/auction.js (drawHall, the picture block in draw, LAYOUT.picture)
 - tests/scene_auction_a.test.mjs
-- src/art/modelcar.js, src/art/stage.js
+- src/art/modelcar.js, src/art/showroom.js
 - src/ui/kit_draw.js (panel, paragraph, label)
 - tests/fakecarart.js (from CC07): installFakeCarArt() / uninstallFakeCarArt() give scene tests sprite-like drawImage calls
 

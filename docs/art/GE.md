@@ -39,7 +39,7 @@ Office (the hub), screen px {x,y,w,h}: window 30,150,160,170 (opening is transpa
 1. Immediately, in parallel: GE01 stage zones, GE02 roomlib, GE13 loader (after GE01), GE14 light effects, GE15 sky/dust/steam.
 2. GE03 pixel stage + checker; GE04 shell, then GE05 furniture and GE06 props in parallel.
 3. GE07 office plates, GE08 garage, GE09 auction, GE10 title, GE11 desks; GE12 build script and manifest.
-4. GE16 office layout (moves hit rects, updates tests), then GE17 office scene; GE18 to GE23 the other scenes; GE24 boot wiring (needs W68d).
+4. GE16 office layout (moves hit rects, updates tests), then GE17 office scene; GE18 to GE23 the other scenes; GE24 boot wiring (needs W68d). Scene files are shared, so `needs` order them: GU24 then GE17 then GC26 then CC13 (office), GU25 then GE18 then CC14 (tv shop), GE19 then CC15, GE20 then CC17, GE21 then CC16 then WD13, GE23 then CC18; boot.js goes GE24, CC10, WD06, WD14. GE14's `vignette` now overdraws 144 px each side (wide screens, WD.md).
 After GE07 the planner (or a Sonnet QA pass) should LOOK at the office plate and send fix notes before the other rooms are tuned.
 Every scene keeps a fallback to its old vector background, so a missing PNG never breaks the game or any test.
 

@@ -142,8 +142,8 @@ CARDS = [
   steps=[
    "`src/art/roomfx_light.js` (pure; deterministic; no Math.random, no Date). `flicker(t, seed, depth)` returns `1 - depth * (0.5 + 0.5 * (0.6 * Math.sin(t * 7.3 + seed) + 0.4 * Math.sin(t * 17.9 + seed * 2.1)))` (always between 1-depth and 1). `glow(ctx, x, y, r, color, alpha)`: `save`, set `globalCompositeOperation = 'lighter'`, a radial gradient from (x,y,0) to (x,y,r) with stops 0 -> `rgba(color, alpha)` and 1 -> `rgba(color, 0)`, `fillRect(x - r, y - r, 2 * r, 2 * r)`, `restore`.",
    "`lampGlow(ctx, x, y, t)` = `glow(ctx, x, y, 170, '#ffab55', 0.38 * flicker(t, 1.3, 0.12))`. `tvGlow(ctx, rect, t)` = `glow(ctx, rect.x + rect.w / 2, rect.y + rect.h / 2, rect.w * 0.9, '#78b4ff', 0.22 * flicker(t, 4.1, 0.25))`. `sunShaft(ctx, quad, t)`: `quad` is four [x,y] points; `save`, composite 'lighter', fill the polygon with `rgba('#ffe2b8', 0.10 + 0.03 * Math.sin(t * 0.6))`, `restore`.",
-   "`vignette(ctx, w, h, strength)`: radial gradient centred (w/2,h/2) from radius `h * 0.45` (stop 0 -> `rgba('#000000', 0)`) to radius `w * 0.62` (stop 1 -> `rgba('#000000', strength)`), `fillRect(0, 0, w, h)`. `grain(ctx, w, h, t, n)`: for i in 0..n-1 one 2x2 `fillRect` at `x = (i * 7919 + k * 104729) % w`, `y = (i * 6007 + k * 15485863) % h` where `k = Math.floor(t * 12)`, colour `rgba('#ffffff', 0.05)` for even i and `rgba('#000000', 0.06)` for odd i (integers only). `glassGlare(ctx, rect, t)`: `save`, clip to rect, a diagonal band (polygon from (rect.x + rect.w*0.1, rect.y) to (rect.x + rect.w*0.3, rect.y) to (rect.x + rect.w*0.15, rect.y + rect.h) to (rect.x - rect.w*0.05, rect.y + rect.h)) filled `rgba('#ffffff', 0.05)`; thin scanlines `fillRect(rect.x, y, rect.w, 1)` every 6 px with `rgba('#000000', 0.06)`; `restore`.",
-   "`tests/roomfx_light.test.mjs` (fakectx): `flicker` over t = 0..20 step 0.1 stays within [0.88, 1] for depth 0.12 and the same call twice gives the same number; `glow` makes one `createRadialGradient` and one `fillRect(x-r, y-r, 2r, 2r)`, sets `globalCompositeOperation` to `'lighter'` inside a balanced save/restore; `vignette` fills exactly `(0,0,w,h)`; `grain(ctx,1280,720,1.0,60)` makes exactly 60 `fillRect` calls, every rect inside the canvas, and two calls with the same t give identical call logs; `glassGlare` clips (`clip` call count 1) and draws `Math.floor(rect.h / 6)` or one more scanline; `sunShaft` calls `fill` once."],
+   "`vignette(ctx, w, h, strength)`: radial gradient centred (w/2,h/2) from radius `h * 0.45` (stop 0 -> `rgba('#000000', 0)`) to radius `w * 0.62` (stop 1 -> `rgba('#000000', strength)`), `fillRect(-144, 0, w + 288, h)` (overdraw 144 px each side so the vignette also covers the strips of a wide phone screen, docs/art/WD.md; callers still pass w = 1280, h = 720). `grain(ctx, w, h, t, n)`: for i in 0..n-1 one 2x2 `fillRect` at `x = (i * 7919 + k * 104729) % w`, `y = (i * 6007 + k * 15485863) % h` where `k = Math.floor(t * 12)`, colour `rgba('#ffffff', 0.05)` for even i and `rgba('#000000', 0.06)` for odd i (integers only). `glassGlare(ctx, rect, t)`: `save`, clip to rect, a diagonal band (polygon from (rect.x + rect.w*0.1, rect.y) to (rect.x + rect.w*0.3, rect.y) to (rect.x + rect.w*0.15, rect.y + rect.h) to (rect.x - rect.w*0.05, rect.y + rect.h)) filled `rgba('#ffffff', 0.05)`; thin scanlines `fillRect(rect.x, y, rect.w, 1)` every 6 px with `rgba('#000000', 0.06)`; `restore`.",
+   "`tests/roomfx_light.test.mjs` (fakectx): `flicker` over t = 0..20 step 0.1 stays within [0.88, 1] for depth 0.12 and the same call twice gives the same number; `glow` makes one `createRadialGradient` and one `fillRect(x-r, y-r, 2r, 2r)`, sets `globalCompositeOperation` to `'lighter'` inside a balanced save/restore; `vignette` fills exactly `(-144,0,w+288,h)`; `grain(ctx,1280,720,1.0,60)` makes exactly 60 `fillRect` calls, every rect inside the canvas, and two calls with the same t give identical call logs; `glassGlare` clips (`clip` call count 1) and draws `Math.floor(rect.h / 6)` or one more scanline; `sunShaft` calls `fill` once."],
   accept=["`sh tools/run_tests.sh 2>&1 | grep roomfx_light` shows PASS."]),
 
  dict(id="GE15", title="Game side: living window sky, dust motes, steam", needs=["W43"],
@@ -157,7 +157,7 @@ CARDS = [
    "`tests/roomfx_world.test.mjs` (fakectx): `skyColors(12).top === '#6fb4ee'`, `skyColors(7).bottom === '#f2a65a'`, `skyColors(18).top === '#4a3a7a'`, `skyColors(2).top === '#0b0d24'`; `drawSky` clips once, balanced save/restore, the gradient has two stops with those colours; a daytime call and a night call each make at least one `arc` call (sun or moon); with `rect.w` 160, the `fillRect` call of width 60 (first cloud) has its x reduced by exactly 4 when `look.x` goes from 0 to 1; `drawDust(ctx, rect, 5, 30)` makes 30 `fillRect` calls all inside the rect; `steamPuffs(ctx, 100, 100, 2, 4)` makes 4 `arc` calls and every fillStyle alpha is between 0 and 0.35."],
   accept=["`sh tools/run_tests.sh 2>&1 | grep roomfx_world` shows PASS."]),
 
- dict(id="GE16", title="Office layout: move every hotspot onto the new room (tableau)", needs=["GE01"],
+ dict(id="GE16", title="Office layout: move every hotspot onto the new room (tableau)", needs=["GE01", "W58"],
   files=["src/art/officelayout.js", "tests/office_art.test.mjs", "tests/scene_office.test.mjs"],
   goal="The new office plate (docs/art/GE.md 'Office') puts every object in a new place inside the 470 px tableau (screen y 120 to 590). Move the hit rectangles to match. The SCENE LAYOUT constants move, so the tests that check them are updated here too.",
   read=["src/art/officelayout.js", "tests/office_art.test.mjs and tests/scene_office.test.mjs (the checks that name coordinates)", "src/art/stage.js (GE01)", "docs/art/GE.md section 'RSAMH echo' (the Office paragraph)"],
@@ -169,7 +169,7 @@ CARDS = [
   accept=["`sh tools/run_tests.sh 2>&1 | grep -E 'office_art|scene_office'` shows PASS for both."],
   oos=["Everything not listed under files. The HUD does not move in this card."]),
 
- dict(id="GE17", title="Office scene: draw the plate, chairs, lights and sky", needs=["GE13", "GE14", "GE15", "GE16"],
+ dict(id="GE17", title="Office scene: draw the plate, chairs, lights and sky", needs=["GE13", "GE14", "GE15", "GE16", "GU24"],
   files=["src/ui/scenes/office.js", "tests/scene_office_plate.test.mjs"],
   goal="The office hub draws the Blender plate when `app.rooms` has it, and falls back to the old vector room otherwise (all existing tests keep passing). Live things (TV picture, calendar, phone, laptop, newspaper, kettle, Mark, Dave, speech bubble, HUD) are still code-drawn on top.",
   read=["src/ui/scenes/office.js (the draw function)", "src/art/rooms.js, src/art/roomfx_light.js, src/art/roomfx_world.js, src/art/officelayout.js (OFFICE and OFFICE_FX)", "tests/scene_office.test.mjs and tests/fakeapp.js (how a fake app is built)"],
@@ -180,7 +180,7 @@ CARDS = [
    "`tests/scene_office_plate.test.mjs` (fakectx + fakeapp, `startGame(3)`): with `app.rooms = {calls: [], has: id => id === 'office', draw(ctx, id, o) {this.calls.push(['draw', id, o]);}, drawFront(ctx, id, o) {this.calls.push(['front', id, o]);}}` one `officeScene.draw` gives `rooms.calls` of length 2 in the order draw then front, both for 'office'; the drawn texts (`texts(ctx)`) contain each of `AUCTION`, `LEDGER`, `WORKSHOP`, `GARAGE` exactly once, and also `WEBB TV`; `set:globalCompositeOperation` was set to `'lighter'`. With NO `app.rooms` the draw still works and the same four labels appear (from the old painter). Tapping the TV centre still pushes `tvshop` in plate mode (down, redraw, up)."],
   accept=["`sh tools/run_tests.sh 2>&1 | grep -E 'scene_office'` shows PASS for both scene_office files."]),
 
- dict(id="GE18", title="Tellies and laptops: glass glare, scanlines, vignette", needs=["GE14"],
+ dict(id="GE18", title="Tellies and laptops: glass glare, scanlines, vignette", needs=["GE14", "GU25", "W61"],
   files=["src/ui/scenes/tvshop.js", "src/ui/scenes/adverts.js", "tests/scene_device_glass.test.mjs"],
   goal="The TV shop and the advertising laptop are full-screen devices. Give their glass depth with the shared light effects, without moving any button or list (their LAYOUT constants and hit areas must not change).",
   read=["src/ui/scenes/tvshop.js (draw: the BEZEL/SCREEN panels and scanlines, step 1)", "src/ui/scenes/adverts.js (draw: BEZEL and SCREEN)", "src/art/roomfx_light.js (GE14: `glassGlare`, `vignette`, `grain`)"],
@@ -190,7 +190,7 @@ CARDS = [
    "`tests/scene_device_glass.test.mjs`: draw tvshopScene and advertsScene once with fakectx/fakeapp (see tests/scene_adverts.test.mjs and tests/scene_tvshop_input.test.mjs for how the app and state are built); in both, a `clip` call exists whose rect equals `[SCREEN.x, SCREEN.y, SCREEN.w, SCREEN.h]` (use the numbers 32,32,1208,656 for tv and 32,28,1216,676 for adverts) and the last 40 `fillRect` calls are 2x2 specks. Layout guard: `LAYOUT.buy` of tvshop still deep-equals `{x:640,y:600,w:290,h:64}` and `LAYOUT.run` of adverts still `{x:660,y:560,w:580,h:70}`."],
   accept=["`sh tools/run_tests.sh 2>&1 | grep -E 'scene_device_glass|scene_tvshop|scene_adverts'` shows PASS for all."]),
 
- dict(id="GE19", title="Garage scene: plate, flickering strip lights, dust", needs=["GE13", "GE14", "GE15"],
+ dict(id="GE19", title="Garage scene: plate, flickering strip lights, dust", needs=["GE13", "GE14", "GE15", "W60"],
   files=["src/ui/scenes/garage.js", "tests/scene_garage_plate.test.mjs"],
   goal="The garage draws the Blender garage plate when `app.rooms` has it (old gradient room as fallback). LAYOUT and hit areas stay unchanged.",
   read=["src/ui/scenes/garage.js (`drawRoom(ctx, app)` and where draw calls it)", "src/art/rooms.js, roomfx_light.js, roomfx_world.js", "tests/scene_garage.test.mjs (how the garage scene is set up with a bought car)"],
@@ -200,7 +200,7 @@ CARDS = [
    "`tests/scene_garage_plate.test.mjs`: build the app and state the way tests/scene_garage.test.mjs does; with a fake `app.rooms` (as in GE17: records calls, `has` true for 'garage') one draw records a single `['draw','garage',...]` call and `set:globalCompositeOperation` was set to `'lighter'` three times or more; without `app.rooms` the draw still works and `createLinearGradient` was called (old room). Tap rule check: down on LAYOUT.back centre, redraw, up -> `app.calls` has `['pop']`."],
   accept=["`sh tools/run_tests.sh 2>&1 | grep -E 'scene_garage'` shows PASS for all garage scene files."]),
 
- dict(id="GE20", title="Bookings scene: desk plate and lamp glow", needs=["GE13", "GE14"],
+ dict(id="GE20", title="Bookings scene: desk plate and lamp glow", needs=["GE13", "GE14", "W62"],
   files=["src/ui/scenes/bookings.js", "tests/scene_bookings_plate.test.mjs"],
   goal="The bookings screen draws the Blender 'bookings' desk plate (when available) behind its panels, with the lamp glow. LAYOUT and hit areas stay unchanged.",
   read=["src/ui/scenes/bookings.js (the start of `draw`)", "src/art/rooms.js, roomfx_light.js", "tests/scene_bookings.test.mjs (how the scene is set up)"],
@@ -210,7 +210,7 @@ CARDS = [
    "`tests/scene_bookings_plate.test.mjs`: with a fake `app.rooms` (records calls, has('bookings') true) one draw records `['draw','bookings',...]` once and `set:globalCompositeOperation` `'lighter'` at least once; without it the draw still works; BACK still pops (down, redraw, up on LAYOUT.back centre)."],
   accept=["`sh tools/run_tests.sh 2>&1 | grep -E 'scene_bookings'` shows PASS for all bookings scene files."]),
 
- dict(id="GE21", title="Auction scene: hall plate, spotlight cone, bobbing crowd kept", needs=["GE13", "GE14"],
+ dict(id="GE21", title="Auction scene: hall plate, spotlight cone, bobbing crowd kept", needs=["GE13", "GE14", "W65d"],
   files=["src/ui/scenes/auction.js", "tests/scene_auction_plate.test.mjs"],
   goal="The auction hall draws the Blender hall plate (curtains, stage, podium, dark lot board) when available. The lot picture area, buttons and hit areas stay exactly where they are; the bobbing crowd silhouettes stay code-drawn.",
   read=["src/ui/scenes/auction.js (`drawHall(ctx, t)` and its call in draw)", "src/art/rooms.js, roomfx_light.js", "tests/scene_auction_a.test.mjs (how the auction scene is set up)"],
@@ -220,7 +220,7 @@ CARDS = [
    "`tests/scene_auction_plate.test.mjs`: set up like tests/scene_auction_a.test.mjs; with a fake `app.rooms` one draw records `['draw','auction',...]` once, the crowd is drawn (at least 16 `arc` calls whose third argument is 13), and the old plank stage is not (no `fillRect` call with args `[120,100,1040,260]`); without rooms the old hall is drawn (exactly one `fillRect` call with args `[120,100,1040,260]`). `LAYOUT.picture` still deep-equals `{x:120,y:100,w:1040,h:260}`; tapping NEXT still works."],
   accept=["`sh tools/run_tests.sh 2>&1 | grep -E 'scene_auction'` shows PASS for all auction scene files."]),
 
- dict(id="GE22", title="Ledger scene: desk plate, lamp glow, mug steam", needs=["GE13", "GE14", "GE15"],
+ dict(id="GE22", title="Ledger scene: desk plate, lamp glow, mug steam", needs=["GE13", "GE14", "GE15", "W64b", "W64"],
   files=["src/ui/scenes/ledger.js", "tests/scene_ledger_plate.test.mjs"],
   goal="The ledger/workshop screen draws the Blender 'ledger' desk plate (when available) behind its panels, with the lamp glow and a little mug steam. LAYOUT and hit areas stay unchanged.",
   read=["src/ui/scenes/ledger.js (`draw` start)", "src/art/rooms.js, roomfx_light.js, roomfx_world.js", "tests/scene_ledger.test.mjs"],
@@ -229,7 +229,7 @@ CARDS = [
    "`tests/scene_ledger_plate.test.mjs`: with a fake `app.rooms` (records calls; has('ledger') true) one draw records `['draw','ledger',...]` once, at least 4 `arc` calls with a radius between 4 and 14 exist (the steam), `set:globalCompositeOperation` `'lighter'` at least once; without it the draw still works; both tabs still draw (enter with `{tab:'workshop'}`); BACK pops after down, redraw, up."],
   accept=["`sh tools/run_tests.sh 2>&1 | grep -E 'scene_ledger'` shows PASS for all ledger scene files."]),
 
- dict(id="GE23", title="Title scene: night shop row plate with road, lamps and stars behind", needs=["GE13", "GE14"],
+ dict(id="GE23", title="Title scene: night shop row plate with road, lamps and stars behind", needs=["GE13", "GE14", "W57"],
   files=["src/ui/scenes/title.js", "tests/scene_title_plate.test.mjs"],
   goal="The title screen keeps its sky gradient and twinkling stars, and puts the Blender 'title' plate (shop row, lamp posts, pavement, wet road; transparent sky) over them, with warm lamp glows. The driving car and the scrolling road dashes stay code-drawn. Buttons and LAYOUT unchanged.",
   read=["src/ui/scenes/title.js (draw: sky, stars, road strip, dashes, car)", "src/art/rooms.js, roomfx_light.js", "tests/scene_title.test.mjs"],
