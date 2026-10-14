@@ -8,6 +8,7 @@ import { makeHits, ScrollList } from '../kit_hits.js';
 import { panel, label, button, paragraph } from '../kit_draw.js';
 import { drawCar } from '../../art/cardraw.js';
 import { drawPhone } from '../../art/props.js';
+import { lampGlow, vignette } from '../../art/roomfx_light.js';
 import { money, oneDp, plural } from '../../core/format.js';
 import { CAR_BY_ID } from '../../data/cars.js';
 import { jobTypeOf } from '../../data/jobtypes.js';
@@ -187,6 +188,13 @@ export const bookingsScene = {
 			this.onAccept(app);
 		});
 
+		// Desk plate with its lamp glow (plate mode only), behind the panels.
+		const plate = !!(app.rooms && app.rooms.has('bookings'));
+		if (plate) {
+			app.rooms.draw(ctx, 'bookings', { look: app.look || { x: 0, y: 0 } });
+			lampGlow(ctx, 190, 135, t);
+		}
+
 		// Header: the phone, ringing when there is business on the line.
 		label(ctx, 'BOOKINGS', L.requests.x, 24, { size: 28, font: 'title', color: PALETTE.cream });
 		drawPhone(ctx, PHONE_RECT, t, state.requests.length > 0);
@@ -331,6 +339,9 @@ export const bookingsScene = {
 		});
 		button(ctx, { x: L.back.x, y: L.back.y, w: L.back.w, h: L.back.h, label: 'BACK' });
 		this.hits = hits;
+		if (plate) {
+			vignette(ctx, 1280, 720, 0.25);
+		}
 	},
 
 	pointer: function (app, type, x, y) {
