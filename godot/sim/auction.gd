@@ -1,8 +1,8 @@
 class_name SimAuction
 extends RefCounted
 
-# Port of src/sim/auction.js (DESIGN.md 4.10), first two thirds: lot generation, the safe lot view, paid stat
-# reveals, consigning, unconsigning and bidding (bid_step, min_bid, place_bid). attend_auction (GDS13) is appended later.
+# Port of src/sim/auction.js (DESIGN.md 4.10): lot generation, the safe lot view, paid stat reveals, consigning,
+# unconsigning, bidding (bid_step, min_bid, place_bid) and the auction-day settlement (attend_auction).
 # Pure: randomness only through CoreRng on state.rng, no node access, no dates.
 
 # Cost of one paid stat reveal, and the stats it can uncover.
@@ -233,3 +233,77 @@ static func place_bid(state: Dictionary, lot_id: Variant, steps: Variant) -> Dic
 	lot["currentBid"] = bid
 	lot["leader"] = "player"
 	return {"ok": true, "msg": "You lead at " + CoreFormat.money(float(bid)) + ".", "outbid": false}
+
+
+# Auction-day settlement (GDS13): consigned cars go under the hammer first, then the lots the player leads.
+# Refusals return {ok, msg}; a settlement returns {ok, msg, results} and advances the day.
+static func attend_auction(state: Dictionary) -> Dictionary:
+	if not CoreClock.is_auction_day(state["day"]):
+		return {"ok": false, "msg": "The auction is only on day 24 of the month."}
+	if state["auction"].get("attendedDay") == state["day"]:
+		return {"ok": false, "msg": "You have already been to this auction."}
+	var results: Array = []
+
+	# (1) your own consigned cars go under the hammer first.
+	var consigned: Array = state["auction"]["consigned"].duplicate()
+	for entry in consigned:
+		var still_consigned: Array = state["auction"]["consigned"]
+		for i in range(still_consigned.size()):
+			if still_consigned[i]["carId"] == entry["carId"]:
+				still_consigned.remove_at(i)
+				break
+		var car: Variant = _find_car(state, entry["carId"])
+		if car == null:
+			continue
+		var car_model: Dictionary = SimData.model_of(str(car["modelId"]))
+		var price: int = SimUtil.jround(float(SimCarStats.market_value(state, car_model, car)) * (0.85 + 0.40 * CoreRng.rand(state)))
+		if price >= int(entry["reserve"]):
+			var fee: int = SimUtil.jround(float(price) * 0.08)
+			state["cash"] = int(state["cash"]) + price - fee
+			_remove_car(state, entry["carId"])
+			state["stats"]["carsSold"] = int(state["stats"]["carsSold"]) + 1
+			state["stats"]["bestAuctionSale"] = maxi(int(state["stats"]["bestAuctionSale"]), price)
+			results.append("Sold the " + str(car_model["name"]) + " for " + CoreFormat.money(float(price)) + " (fee " + CoreFormat.money(float(fee)) + ")")
+		else:
+			results.append("The " + str(car_model["name"]) + " failed to meet its reserve")
+
+	# (2) lots you lead: pay up or lose face.
+	var lots: Array = state["auction"]["lots"]
+	for lot in lots:
+		if lot["leader"] != "player":
+			continue
+		var lot_model: Dictionary = SimData.model_of(str(lot["modelId"]))
+		if int(state["cash"]) >= int(lot["currentBid"]) and state["cars"].size() < int(state["garageSlots"]):
+			state["cash"] = int(state["cash"]) - int(lot["currentBid"])
+			var new_id := "c" + str(state["nextId"])
+			state["nextId"] = int(state["nextId"]) + 1
+			state["cars"].append({
+				"id": new_id,
+				"modelId": lot["modelId"],
+				"owned": true,
+				"owner": null,
+				"rentMonthly": 0,
+				"paid": lot["currentBid"],
+				"condition": lot["condition"],
+				"fault": null,
+				"lastServiceDay": state["day"],
+				"jobsDone": 0,
+				"boughtDay": state["day"],
+				"impoundedUntil": 0,
+				"rentedAtCondition": null,
+			})
+			state["stats"]["carsBought"] = int(state["stats"]["carsBought"]) + 1
+			results.append("You won the " + str(lot_model["name"]) + " for " + CoreFormat.money(float(lot["currentBid"])) + ".")
+		else:
+			state["reputation"] = maxi(0, int(state["reputation"]) - 2)
+			results.append("You could not pay for the " + str(lot_model["name"]) + ".")
+
+	# (3) tidy up: the lots go home, the results go in the paper.
+	state["auction"]["lots"] = []
+	state["auction"]["lastResults"] = results
+	for r in results:
+		state["pending"].append(r)
+	state["auction"]["attendedDay"] = state["day"]
+	var msg: String = " ".join(PackedStringArray(results)) if results.size() > 0 else "The gavel fell on nothing at all."
+	SimAdvance.advance_day(state)
+	return {"ok": true, "msg": msg, "results": results}
