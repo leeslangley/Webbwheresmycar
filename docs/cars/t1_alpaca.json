@@ -1,0 +1,22 @@
+{
+ "id": "t1_alpaca",
+ "real_car": "Sunbeam Alpine Series V 1965",
+ "game_name": "Webb, wheres my car?",
+ "dims_mm": {"length": 3960, "width": 1530, "height": 1245, "wheelbase": 2210, "track_front": 1210, "track_rear": 1220, "tyre_overall_diameter": 650},
+ "dims_confidence": "medium",
+ "body_style": "2-seat roadster, soft top down",
+ "doors": 2,
+ "wheels": [{"x": -27.9, "r": 8.2, "style": "steel"}, {"x": 27.9, "r": 8.2, "style": "steel"}],
+ "wheel_arch": "round",
+ "side_profile": [[-50, 0], [-50, 15], [-48.5, 21], [-46, 24], [-42, 22.5], [-36, 23], [-14, 23.5], [-12, 22], [8, 22], [14, 23], [20, 23], [30, 22], [40, 20], [47, 18], [50, 16], [50, 8], [50, 0], [48, 0], [46, 0], [46, 5], [30, 6.5], [-30, 6.5], [-46, 5], [-46, 0]],
+ "greenhouse": [[11.5, 23], [8.5, 31.4], [12.5, 31.4], [15.5, 23]],
+ "roof": {"type": "soft-top-down", "colour_split": false},
+ "plan": {"width_units": 38.6, "nose_width_pct": 80, "tail_width_pct": 72, "tumblehome": "medium", "waist_pinch": true},
+ "front": {"grille": "small oval mouth grille with thick chrome surround, about 10 units wide by 5 units high, centred at x 49 y 11", "headlamps": {"count": 2, "shape": "round", "x": 45, "y": 16, "r": 1.6, "y_offset_from_centre": 6}, "bumper": "slim full-width chrome blade, about 1.5 units high, at x 50 y 6", "extras": ["chrome windscreen surround"]},
+ "rear": {"taillamps": "small rectangular lamps set into the tail panel below the fins, about 2 units wide by 3 high, at x -49.5 y 14", "bumper": "slim full-width chrome blade, about 1.5 units high, at x -50 y 6", "exhaust": "one", "extras": ["reversing light on the boot handle side"]},
+ "side_features": ["chrome sill strip x -34..34 y 5", "thin chrome belt strip along the door line x -12..14 y 22", "body-colour bonnet with a shallow power bulge x 18..34 y 22.5"],
+ "special": ["small tail fins about 2.5 units high on the rear wings, x -50..-40, a signature of this car", "hood down: nothing above the belt line behind the windscreen except the folded hood, so the cockpit is open at y 22"],
+ "typical_paint": ["#1a3a26", "#f0f0ea", "#8c1f1f", "#6f8fa8"],
+ "ref_urls": ["https://commons.wikimedia.org/wiki/Category:Sunbeam_Alpine", "https://en.wikipedia.org/wiki/Sunbeam_Alpine"],
+ "notes": "Figures: wheelbase 2210 mm (87 in) is the one I am fairly sure of; length 3960 mm, width 1530 mm and height 1245 mm (top up) are estimates from memory, sources vary by a few tens of mm. Track front 1210 / rear 1220 mm and tyre overall diameter about 650 mm (5.90 x 13 tyres on 13 inch wheels) are estimates. Height 1245 mm is with the hood up; the model is drawn hood down, so the only thing reaching 31.4 units is the windscreen frame. Most important proportions: the long low bonnet (nose top about y 18) and the short rear deck with the small fin (fin tip about y 24, tail panel top about y 21). The car is a compact roadster: belt line stays at about y 22 and the sill is low at y 6.5."
+}
