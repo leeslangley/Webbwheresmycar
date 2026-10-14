@@ -265,3 +265,86 @@ def quantise(rgb, opaque, cls, color, color2=None, dither=0.5,
         j = np.clip(np.searchsorted(edges, s_used), 0, n_steps - 1)
         out[m] = ramp[j]
     return out, idx
+
+
+# ------------------------------------------------------ outlines (CB14)
+
+def _four_neighbours(a, fill):
+    """Four shifted copies of a 2-d array: each out[y, x] is the named
+    neighbour of a[y, x]; cells beyond the edge take `fill`."""
+    up = np.full(a.shape, fill, dtype=a.dtype)
+    down = np.full(a.shape, fill, dtype=a.dtype)
+    left = np.full(a.shape, fill, dtype=a.dtype)
+    right = np.full(a.shape, fill, dtype=a.dtype)
+    up[1:, :] = a[:-1, :]
+    down[:-1, :] = a[1:, :]
+    left[:, 1:] = a[:, :-1]
+    right[:, :-1] = a[:, 1:]
+    return [up, down, left, right]
+
+
+def add_outlines(out, cls, idx, opaque, color, color2=None):
+    """Pad by 1 px and draw the selective outlines (card CB14).
+
+    out: (h, w, 3) LINEAR colours from quantise(); cls, idx, opaque: the class
+    map, ramp steps and opaque mask of the same grid. color / color2: paint hex
+    (color2 None means paint2 uses color), as in quantise().
+
+    Silhouette: each transparent cell 4-adjacent to an opaque cell becomes
+    OUTLINE with alpha 1. Inner lines: a paint or paint2 cell with an opaque
+    4-neighbour of another class goes to its ramp step 0; a glass or wall cell
+    with such a neighbour goes to glass step 0. Chrome, lamp, tail, trim and
+    tyre cells never change. All decisions use the original classes.
+
+    Returns (rgb, alpha, cls2, idx2) on the padded (h+2, w+2) grid: cls2 is -1
+    on outline and transparent cells, idx2 is -1 except on opaque cells (paint
+    cells changed by an inner line get 0).
+    """
+    arr = np.asarray(out, dtype=np.float64)
+    if arr.ndim != 3 or arr.shape[2] != 3:
+        raise ValueError('pixramp: add_outlines wants a (h, w, 3) array')
+    h, w = arr.shape[0], arr.shape[1]
+    opq = np.asarray(opaque, dtype=bool)
+    cls = np.asarray(cls, dtype=np.int64)
+    idx = np.asarray(idx, dtype=np.int64)
+    if opq.shape != (h, w) or cls.shape != (h, w) or idx.shape != (h, w):
+        raise ValueError('pixramp: add_outlines wants cls, idx, opaque of shape (h, w)')
+
+    H, W = h + 2, w + 2
+    pop = np.zeros((H, W), dtype=bool)
+    pop[1:-1, 1:-1] = opq
+    pcls = np.full((H, W), -1, dtype=np.int64)
+    pcls[1:-1, 1:-1] = np.where(opq, cls, -1)
+    pidx = np.full((H, W), -1, dtype=np.int64)
+    pidx[1:-1, 1:-1] = np.where(opq, idx, -1)
+
+    # Silhouette ring: transparent cells touching an opaque cell.
+    touch = np.zeros((H, W), dtype=bool)
+    for n in _four_neighbours(pop, False):
+        touch |= n
+    ring = (~pop) & touch
+
+    # Inner lines: opaque cells with an opaque neighbour of another class.
+    diff = np.zeros((H, W), dtype=bool)
+    for n_cls, n_op in zip(_four_neighbours(pcls, -1), _four_neighbours(pop, False)):
+        diff |= n_op & (n_cls != pcls)
+    inner = pop & diff
+    paint_inner = inner & (pcls == 0)
+    paint2_inner = inner & (pcls == 8)
+    glass_inner = inner & ((pcls == 2) | (pcls == 4))
+
+    outline = srgb_to_linear(hex_rgb(OUTLINE))
+    rgb = np.zeros((H, W, 3), dtype=np.float64)
+    rgb[1:-1, 1:-1][opq] = arr[opq]
+    rgb[ring] = outline
+    rgb[paint_inner] = paint_ramp(color)[0]
+    rgb[paint2_inner] = paint_ramp(color2 if color2 is not None else color)[0]
+    rgb[glass_inner] = fixed_ramp('glass')[0]
+
+    alpha = np.zeros((H, W), dtype=np.float64)
+    alpha[pop | ring] = 1.0
+
+    cls2 = pcls.copy()
+    idx2 = pidx.copy()
+    idx2[paint_inner | paint2_inner] = 0
+    return rgb, alpha, cls2, idx2
