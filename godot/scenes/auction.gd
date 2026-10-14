@@ -26,6 +26,7 @@ const STAT_BAR_PX := 160.0
 var lot_index := 0
 var shown_lot_id := ""
 var _t := 0.0
+var _pressed_lot := ""
 
 
 func _ready() -> void:
@@ -43,6 +44,12 @@ func _build_controls() -> void:
 	add_button(&"back", R_BACK, "BACK")
 	add_button(&"prev", R_PREV, "<\nPREV")
 	add_button(&"next", R_NEXT, ">\nNEXT")
+	add_button(&"bid1", R_BID1, "", "primary")
+	add_button(&"bid3", R_BID3, "", "primary")
+	add_button(&"leave", R_LEAVE, "LEAVE & SETTLE", "primary")
+	for i in range(R_STAT_ROWS.size()):
+		add_hotspot(StringName("reveal%d" % i), R_STAT_ROWS[i])
+	_refresh_buttons()
 
 
 func _connect_game() -> void:
@@ -224,9 +231,30 @@ func _refresh_yours() -> void:
 	(ui().get_node("YoursEmpty") as Label).visible = rows.is_empty()
 
 
-# Virtual: the bid and leave buttons are set by GDR28.
+# Sets the bid, reveal and leave buttons from the lot on show. With no lot the bid buttons are hidden
+# and every reveal is disabled; LEAVE & SETTLE is always there.
 func _refresh_buttons() -> void:
-	pass
+	var view := current_view()
+	var has_lot := not view.is_empty()
+	var bid1 := hotspots[&"bid1"] as UiButton
+	var bid3 := hotspots[&"bid3"] as UiButton
+	bid1.visible = has_lot
+	bid3.visible = has_lot
+	bid1.enabled = has_lot
+	bid3.enabled = has_lot
+	if has_lot:
+		var lot := current_lot()
+		var minimum := SimAuction.min_bid(lot)
+		var step := SimAuction.bid_step(lot)
+		bid1.text = "BID +1 " + CoreFormat.money(float(minimum))
+		bid3.text = "BID +3 " + CoreFormat.money(float(minimum + 2 * step))
+	var revealed: Dictionary = view.get("revealed", {})
+	for i in range(SimAuction.STATS.size()):
+		var hs := hotspots[StringName("reveal%d" % i)] as RoomHotspot
+		hs.enabled = has_lot and revealed.get(SimAuction.STATS[i], false) != true
+	var leave := hotspots[&"leave"] as UiButton
+	leave.visible = true
+	leave.enabled = true
 
 
 func _process(delta: float) -> void:
@@ -253,9 +281,63 @@ func _on_hotspot(id: StringName) -> void:
 		_on_action(id)
 
 
-# Virtual: the bid and leave taps are GDR28.
-func _on_action(_id: StringName) -> void:
-	pass
+# Remembers the lot on show when a button or hotspot goes down: a tap only counts for that lot.
+func _on_button_down(_id: StringName) -> void:
+	_pressed_lot = shown_lot_id
+
+
+# Bid, reveal and leave taps (the fallthrough of _on_hotspot).
+func _on_action(id: StringName) -> void:
+	if id == &"bid1":
+		_bid(1)
+	elif id == &"bid3":
+		_bid(3)
+	elif id == &"leave":
+		_leave()
+	elif String(id).begins_with("reveal"):
+		_reveal(int(String(id).substr(6)))
+
+
+# True only when a lot is on show and it is the lot that was on show when the finger went down.
+func _tapped_shown_lot() -> bool:
+	return shown_lot_id != "" and _pressed_lot == shown_lot_id
+
+
+# Runs one Game action, refreshes the room and returns its result ({} when it is not a Dictionary).
+func _act(action: String, params: Dictionary) -> Dictionary:
+	var g = _game()
+	if g == null:
+		return {}
+	var r = g.act(action, params)
+	refresh()
+	if r is Dictionary:
+		return r
+	return {}
+
+
+# Success messages are toasted here; refusals are toasted by the Game.
+func _toast_success(r: Dictionary) -> void:
+	if r.get("ok", false) and str(r.get("msg", "")) != "":
+		toast.emit(str(r["msg"]))
+
+
+func _bid(steps: int) -> void:
+	if not _tapped_shown_lot():
+		return
+	_toast_success(_act("place_bid", {"lotId": shown_lot_id, "steps": steps}))
+
+
+func _reveal(index: int) -> void:
+	if not _tapped_shown_lot():
+		return
+	_toast_success(_act("reveal_stat", {"lotId": shown_lot_id, "stat": SimAuction.STATS[index]}))
+
+
+# Attending settles the day: the Game advances the day, so the room goes back to the office.
+func _leave() -> void:
+	var r := _act("attend_auction", {})
+	if r.get("ok", false):
+		request_scene.emit(&"office", {})
 
 
 # BACK leaves the hall, unless the player leads a lot: they must settle the day first.
