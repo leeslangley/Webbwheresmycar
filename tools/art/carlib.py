@@ -80,11 +80,12 @@ def extrude_polygon(pts, width, mat, name):
 TUMBLEHOME_K = {'low': 0.04, 'medium': 0.10, 'high': 0.18}
 
 
-def finish_mesh(obj):
+def finish_mesh(obj, bevel_width=1.2 * U):
     """Bevel the edges, smooth with Catmull-Clark and shade smooth (the finish
-    extrude_polygon used to apply itself). Call after any vertex shaping."""
+    extrude_polygon used to apply itself). Call after any vertex shaping.
+    bevel_width overrides the default body bevel (the glass uses a smaller one)."""
     bevel = obj.modifiers.new('Bevel', 'BEVEL')
-    bevel.width = 1.2 * U
+    bevel.width = bevel_width
     bevel.segments = 4
     sub = obj.modifiers.new('Subsurf', 'SUBSURF')
     sub.levels = 1
@@ -124,6 +125,22 @@ def shape_body(obj, plan):
             f *= 1 - k
         v.co.y *= f
     return obj
+
+
+def build_glass(dossier, body_obj, mats):
+    """V03: extrude each greenhouse polygon as the glass sitting inside the
+    narrower roof. A soft-top-up roof gets dark fabric instead of glass.
+    body_obj is unused so far (kept so builders pass the body they shape).
+    Returns the new objects; none if the dossier has no greenhouse."""
+    roof = dossier.get('roof') or {}
+    mat = mats['fabric'] if roof.get('type') == 'soft-top-up' else mats['glass']
+    width = dossier['plan']['width_units'] * 0.86
+    objs = []
+    for i, poly in enumerate(polygons(dossier.get('greenhouse'))):
+        obj = extrude_polygon(poly, width, mat, 'glass%d' % i)
+        finish_mesh(obj, 0.4 * U)
+        objs.append(obj)
+    return objs
 
 
 def load_dossier(path):

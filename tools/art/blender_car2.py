@@ -71,13 +71,22 @@ def main():
     bpy.ops.wm.read_factory_settings(use_empty=True)
     scene = bpy.context.scene
 
-    paint = carlib.make_mat('paint', color, metallic=0.0, roughness=0.25,
-                            coat=1.0, coat_rough=0.05)
+    mats = {
+        'paint': carlib.make_mat('paint', color, metallic=0.0, roughness=0.25,
+                                 coat=1.0, coat_rough=0.05),
+        # V03: tinted greenhouse glass (and dark fabric for soft tops).
+        'glass': carlib.make_mat('glass', carlib.hex_to_rgb('#a8d0e0'),
+                                 roughness=0.03, alpha=0.32, blend='BLEND'),
+        'fabric': carlib.make_mat('fabric', carlib.hex_to_rgb('#1c1c20'),
+                                  roughness=0.9),
+    }
     body = carlib.extrude_polygon(d['side_profile'], d['plan']['width_units'],
-                                  paint, 'body')
+                                  mats['paint'], 'body')
     # Shape the raw mesh, then finish it (bevel, subsurf, smooth shading).
     carlib.shape_body(body, d['plan'])
     carlib.finish_mesh(body)
+    # V03: the windows, extruded narrower so they sit inside the roof.
+    carlib.build_glass(d, body, mats)
 
     # Shadow catcher plane under the car (renders only the shadow).
     bpy.ops.mesh.primitive_plane_add(size=40, location=(0, 0, 0))
