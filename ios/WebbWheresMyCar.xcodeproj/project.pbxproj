@@ -1,0 +1,262 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5a903794f03e4bbe18a17e02 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = a35e13a2a3939396d58c8cdd /* AppDelegate.swift */; };
+		d1cf938c219bea165241b6f8 /* AssetSchemeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = a4cb407756971f7500c92a97 /* AssetSchemeHandler.swift */; };
+		6b848a7e0e02943c5c34b6f4 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ccd53e53db90a37f51f9967 /* GameViewController.swift */; };
+		7d1dba83f5517888388f38d2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = a790bb479b2477e3a634a1eb /* Assets.xcassets */; };
+		b2ea42760ea0cd2ec3ec3f7d /* www in Resources */ = {isa = PBXBuildFile; fileRef = 9938d6d919c9164159e37a6c /* www */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		a35e13a2a3939396d58c8cdd /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		a4cb407756971f7500c92a97 /* AssetSchemeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSchemeHandler.swift; sourceTree = "<group>"; };
+		8ccd53e53db90a37f51f9967 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		a790bb479b2477e3a634a1eb /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9938d6d919c9164159e37a6c /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
+		0cd0920891a0b00e299c5815 /* WebbWheresMyCar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebbWheresMyCar.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		804db52e2955449d2f091c7e /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		fb61758d0f0fda4ba867c3d5 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				a35e13a2a3939396d58c8cdd /* AppDelegate.swift */,
+				a4cb407756971f7500c92a97 /* AssetSchemeHandler.swift */,
+				8ccd53e53db90a37f51f9967 /* GameViewController.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		068f80c7519d0528fb08e821 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0cd0920891a0b00e299c5815 /* WebbWheresMyCar.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		fad58de7366495db4650cfef = {
+			isa = PBXGroup;
+			children = (
+				fb61758d0f0fda4ba867c3d5 /* Sources */,
+				068f80c7519d0528fb08e821 /* Products */,
+				a790bb479b2477e3a634a1eb /* Assets.xcassets */,
+				9938d6d919c9164159e37a6c /* www */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		82d227ac961d874e4babf764 /* WebbWheresMyCar */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6f896c510fa6028956987932 /* Build configuration list for PBXNativeTarget "WebbWheresMyCar" */;
+			buildPhases = (
+				d8e2b34c6803a5daeda2cb7e /* Sources */,
+				804db52e2955449d2f091c7e /* Frameworks */,
+				00513fa0ce487262d0410603 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WebbWheresMyCar;
+			productName = WebbWheresMyCar;
+			productReference = 0cd0920891a0b00e299c5815 /* WebbWheresMyCar.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		ca06cf9f80ee59ef59d0545f /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1400;
+				LastUpgradeCheck = 1400;
+				TargetAttributes = {
+					82d227ac961d874e4babf764 = {
+						CreatedOnToolsVersion = 14.0;
+					};
+				};
+			};
+			buildConfigurationList = 7ef2517a8fe63f4681ec5eea /* Build configuration list for PBXProject "WebbWheresMyCar" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = fad58de7366495db4650cfef;
+			productRefGroup = 068f80c7519d0528fb08e821 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				82d227ac961d874e4babf764 /* WebbWheresMyCar */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		00513fa0ce487262d0410603 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7d1dba83f5517888388f38d2 /* Assets.xcassets in Resources */,
+				b2ea42760ea0cd2ec3ec3f7d /* www in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		d8e2b34c6803a5daeda2cb7e /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5a903794f03e4bbe18a17e02 /* AppDelegate.swift in Sources */,
+				d1cf938c219bea165241b6f8 /* AssetSchemeHandler.swift in Sources */,
+				6b848a7e0e02943c5c34b6f4 /* GameViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		4a43692ad8bceeb8b727c85b /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				/* NOTE: DEBUG is deliberately NOT defined as a Swift compilation
+				   condition. GameViewController.swift calls WKWebView.isInspectable
+				   (iOS 16.4+) inside #if DEBUG; with the 16.0 deployment target the
+				   build only succeeds when that block is compiled out. */
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		c28449456a5a705a7479770b /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		4d8f6610af6606489ed8dfbc /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = "1";
+				DEVELOPMENT_TEAM = G3G9X5XV82;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.leelangley.webbwheresmycar;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		3ddf142c91e4be3a6ba5a69e /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = "1";
+				DEVELOPMENT_TEAM = G3G9X5XV82;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.leelangley.webbwheresmycar;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7ef2517a8fe63f4681ec5eea /* Build configuration list for PBXProject "WebbWheresMyCar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4a43692ad8bceeb8b727c85b /* Debug */,
+				c28449456a5a705a7479770b /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6f896c510fa6028956987932 /* Build configuration list for PBXNativeTarget "WebbWheresMyCar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4d8f6610af6606489ed8dfbc /* Debug */,
+				3ddf142c91e4be3a6ba5a69e /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = ca06cf9f80ee59ef59d0545f /* Project object */;
+}
