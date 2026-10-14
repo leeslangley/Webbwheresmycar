@@ -5,7 +5,7 @@ From: Claude Code (Sonnet 5.5, Webbwheresmycar session on Lee's Mac)
 Source: Lee (10 Oct 2026): "create an iphone game, that could also play via a computer browser ... heavily inspired by the classic computer game Rockstar ate my hamster ... The title is Webb, wheres my car?"
 Priority: normal
 Card id: GDR22
-Needs (already merged into `dev`): GDR13, GDR21
+Needs (already merged into `dev`): GDR13
 Project folder: ~/Documents/WebbWheresmycar
 Working copy: ~/wt/webbwheresmycar/<stem> (branch card/<stem>), branched from `dev`
 Worker: GLM-SPARK (DeepSeek-V4.1-Flash via glm-worker). DawnBot/Grok: do not pick up.
@@ -14,7 +14,7 @@ Commit: local only
 Deploy: no
 
 ## Goal
-The `Transitions` node (full-screen Control in `Fx`): `play(kind, swap, shifter)` changes screens with a transition. It takes a snapshot of the outgoing screen, calls `swap` (which installs the new room), then animates snapshot and new room: fade (snapshot fades out), slide-left/right/up/down (snapshot slides away while the new room slides in by moving `shifter`, the Stage/Room control), page turn (snapshot squashes towards the left edge with a shadow and a light edge). Iris and static are a plain dip-to-black placeholder here (GDR23 replaces them with shaders). In headless mode, with effects off, with an unknown kind, or when already running, it just calls `swap` at once and emits `finished` (synchronously, no awaits) so tests and the CASE box work.
+The `Transitions` node (full-screen Control that the Flow adds to the Main root, above the Stage): `play(kind, swap, shifter)` changes screens with a transition. It takes a snapshot of the outgoing screen, calls `swap` (which installs the new room), then animates snapshot and new room: fade (snapshot fades out), slide-left/right/up/down (snapshot slides away while the new room slides in by moving `shifter`, the SceneHost control), page turn (snapshot squashes towards the left edge with a shadow and a light edge). Iris and static are a plain dip-to-black placeholder here (GDR23 replaces them with shaders). In headless mode, with effects off, with an unknown kind, or when already running, it just calls `swap` at once and emits `finished` (synchronously, no awaits) so tests and the CASE box work.
 
 ## Read first
 - docs/GODOT.md (plan, TV-centred layout, tap rule, determinism) and docs/GODOT_PLANNER_BRIEF.md section SHARED CONTRACTS (Game, Data, Sim*, Core*, tests, tools)
@@ -22,7 +22,7 @@ The `Transitions` node (full-screen Control in `Fx`): `play(kind, swap, shifter)
 - Test hygiene: get the tree with `var tree := Engine.get_main_loop() as SceneTree`; add a node with `tree.root.add_child(n)` when its `_ready` must run; at the end of each test `tree.root.remove_child(n)` (if added) and `n.free()`. Nodes made with `.new()` and never added can simply be `free()`d.
 - /Users/leelangley/wt/webbwheresmycar/_dev/src/ui/transitions.js and src/ui/transitions2.js (draw order of each kind)
 - godot/rooms/trans_math.gd (GDR13)
-- godot/scenes/flow.gd (GDR11: how `play` is called)
+- godot/scenes/flow.gd (GDR11: it calls `play(kind, swap, host)` with the SceneHost as shifter)
 
 ## Files you may change (and nothing else)
 - `godot/rooms/transitions.gd`

@@ -5236,27 +5236,28 @@
   ]
  },
  {
-  "id": "GDR18",
-  "title": "RoomHotspot: tap-rule control",
+  "id": "GDR32",
+  "title": "TapUtil: tap helper for tests",
   "needs": [
    "GDF02"
   ],
-  "file": "GDR18-roomhotspot-tap-rule-control.md",
+  "file": "GDR32-taputil-tap-helper-for-tests.md",
   "files": [
-   "godot/rooms/hotspot.gd",
-   "godot/tests/test_hotspot.gd"
+   "godot/tests/tap_util.gd",
+   "godot/tests/test_tap_util.gd"
   ]
  },
  {
-  "id": "GDR25",
-  "title": "RoomButton: labelled tap button",
+  "id": "GDR18",
+  "title": "RoomHotspot: invisible tap-rule rect",
   "needs": [
-   "GDR19"
+   "GDF02",
+   "GDU02"
   ],
-  "file": "GDR25-roombutton-labelled-tap-button.md",
+  "file": "GDR18-roomhotspot-invisible-tap-rule-rect.md",
   "files": [
-   "godot/rooms/room_button.gd",
-   "godot/tests/test_room_button.gd"
+   "godot/rooms/hotspot.gd",
+   "godot/tests/test_hotspot.gd"
   ]
  },
  {
@@ -5264,7 +5265,9 @@
   "title": "RoomBase: layered room root with placeholder builders",
   "needs": [
    "GDR18",
-   "GDR32"
+   "GDR32",
+   "GDU01",
+   "GDU02"
   ],
   "file": "GDR19-roombase-layered-room-root-with-placehol.md",
   "files": [
@@ -5273,49 +5276,11 @@
   ]
  },
  {
-  "id": "GDR32",
-  "title": "FakeGame: test double for the Game autoload",
-  "needs": [
-   "GDF02"
-  ],
-  "file": "GDR32-fakegame-test-double-for-the-game-autolo.md",
-  "files": [
-   "godot/tests/fake_game.gd",
-   "godot/tests/test_fake_game.gd"
-  ]
- },
- {
-  "id": "GDR20",
-  "title": "RoomMenu: pop-up menu with arrow cursor",
-  "needs": [
-   "GDR19"
-  ],
-  "file": "GDR20-roommenu-pop-up-menu-with-arrow-cursor.md",
-  "files": [
-   "godot/rooms/room_menu.gd",
-   "godot/tests/test_room_menu.gd"
-  ]
- },
- {
-  "id": "GDR21",
-  "title": "Main scene shell: stage, chrome, toasts, banner text",
-  "needs": [
-   "GDF01",
-   "GDF02"
-  ],
-  "file": "GDR21-main-scene-shell-stage-chrome-toasts-ban.md",
-  "files": [
-   "godot/scenes/main.tscn",
-   "godot/scenes/flow.gd",
-   "godot/tests/test_main_shell.gd"
-  ]
- },
- {
   "id": "GDR01",
   "title": "Office scene: TV-centred layout with placeholder art",
   "needs": [
    "GDR19",
-   "GDU08"
+   "GDU10"
   ],
   "file": "GDR01-office-scene-tv-centred-layout-with-plac.md",
   "files": [
@@ -5332,7 +5297,8 @@
    "GDF02",
    "GDF03",
    "GDF05",
-   "GDR32"
+   "GDF06",
+   "GDU28"
   ],
   "file": "GDR24-officechat-dave-s-line-of-the-day-and-ma.md",
   "files": [
@@ -5342,11 +5308,14 @@
  },
  {
   "id": "GDR02",
-  "title": "Office behaviour: hotspots, pop-up menu, kettle day, chatter",
+  "title": "Office behaviour: hotspots, pop-up menu, kettle day, TV, chatter",
   "needs": [
    "GDR01",
-   "GDR20",
    "GDR24",
+   "GDR32",
+   "GDU03",
+   "GDU12",
+   "GDU28",
    "GDF10"
   ],
   "file": "GDR02-office-behaviour-hotspots-pop-up-menu-ke.md",
@@ -5376,7 +5345,7 @@
    "GDF02",
    "GDF03",
    "GDF05",
-   "GDR32"
+   "GDS03"
   ],
   "file": "GDR26-garagecosts-treatment-prices-dealer-pric.md",
   "files": [
@@ -5389,8 +5358,11 @@
   "title": "Garage behaviour: car list, selection, detail panel",
   "needs": [
    "GDR03",
-   "GDR25",
-   "GDF03"
+   "GDR32",
+   "GDU28",
+   "GDF03",
+   "GDF07",
+   "GDS03"
   ],
   "file": "GDR04-garage-behaviour-car-list-selection-deta.md",
   "files": [
@@ -5430,9 +5402,14 @@
   "title": "Auction behaviour: browse lots, stats, your lots, bid info",
   "needs": [
    "GDR05",
-   "GDR25",
+   "GDR32",
+   "GDU28",
    "GDF03",
-   "GDF05"
+   "GDF05",
+   "GDF06",
+   "GDF07",
+   "GDS09",
+   "GDS10"
   ],
   "file": "GDR06-auction-behaviour-browse-lots-stats-your.md",
   "files": [
@@ -5453,40 +5430,14 @@
   ]
  },
  {
-  "id": "GDR12",
-  "title": "Save: write, read and erase the saved game",
-  "needs": [
-   "GDF02",
-   "GDR32"
-  ],
-  "file": "GDR12-save-write-read-and-erase-the-saved-game.md",
-  "files": [
-   "godot/rooms/save.gd",
-   "godot/tests/test_save.gd"
-  ]
- },
- {
-  "id": "GDR29",
-  "title": "SettingsStore: sound, music, CRT and effects switches",
-  "needs": [
-   "GDF02"
-  ],
-  "file": "GDR29-settingsstore-sound-music-crt-and-effect.md",
-  "files": [
-   "godot/rooms/settings_store.gd",
-   "godot/tests/test_settings_store.gd"
-  ]
- },
- {
   "id": "GDR09",
-  "title": "Settings overlay: toggles, erase save, back",
+  "title": "Settings overlay: CRT, sound, music, erase save, back",
   "needs": [
    "GDR19",
-   "GDR25",
-   "GDR29",
-   "GDR12"
+   "GDR32",
+   "GDF10"
   ],
-  "file": "GDR09-settings-overlay-toggles-erase-save-back.md",
+  "file": "GDR09-settings-overlay-crt-sound-music-erase-s.md",
   "files": [
    "godot/scenes/settings.tscn",
    "godot/scenes/settings.gd",
@@ -5498,8 +5449,8 @@
   "title": "Title scene: night sky, road, logo, NEW GAME / CONTINUE / SETTINGS",
   "needs": [
    "GDR19",
-   "GDR25",
-   "GDR12"
+   "GDR32",
+   "GDF10"
   ],
   "file": "GDR07-title-scene-night-sky-road-logo-new-game.md",
   "files": [
@@ -5513,14 +5464,119 @@
   "title": "Endgame scene: heading, score block, plates, play again",
   "needs": [
    "GDR19",
-   "GDR25",
-   "GDF05"
+   "GDR32",
+   "GDU28",
+   "GDF07",
+   "GDF08",
+   "GDS08"
   ],
   "file": "GDR08-endgame-scene-heading-score-block-plates.md",
   "files": [
    "godot/scenes/endgame.tscn",
    "godot/scenes/endgame.gd",
    "godot/tests/test_endgame_scene.gd"
+  ]
+ },
+ {
+  "id": "GDR11",
+  "title": "Flow: room switching, overlays, chrome visibility",
+  "needs": [
+   "GDR19",
+   "GDR32",
+   "GDU08",
+   "GDU30"
+  ],
+  "file": "GDR11-flow-room-switching-overlays-chrome-visi.md",
+  "files": [
+   "godot/scenes/flow.gd",
+   "godot/scenes/main.gd",
+   "godot/tests/fake_room.gd",
+   "godot/tests/fake_room.tscn",
+   "godot/tests/test_flow_nav.gd"
+  ]
+ },
+ {
+  "id": "GDR30",
+  "title": "Flow: new game, continue, news on every new day, title wiring",
+  "needs": [
+   "GDR11",
+   "GDF10",
+   "GDS19"
+  ],
+  "file": "GDR30-flow-new-game-continue-news-on-every-new.md",
+  "files": [
+   "godot/scenes/flow.gd",
+   "godot/tests/fake_room.gd",
+   "godot/tests/test_flow_lifecycle.gd"
+  ]
+ },
+ {
+  "id": "GDR31",
+  "title": "Flow: game over to news to endgame, settings applied",
+  "needs": [
+   "GDR30",
+   "GDR09",
+   "GDR02"
+  ],
+  "file": "GDR31-flow-game-over-to-news-to-endgame-settin.md",
+  "files": [
+   "godot/scenes/flow.gd",
+   "godot/scenes/office.gd",
+   "godot/tests/fake_room.gd",
+   "godot/tests/test_flow_gameover.gd"
+  ]
+ },
+ {
+  "id": "GDR15",
+  "title": "StageFit: fill the wide strips, safe rect, wide-screen test",
+  "needs": [
+   "GDR11",
+   "GDR19",
+   "GDU08"
+  ],
+  "file": "GDR15-stagefit-fill-the-wide-strips-safe-rect-.md",
+  "files": [
+   "godot/rooms/stage_fit.gd",
+   "godot/scenes/flow.gd",
+   "godot/tests/test_stage_fit.gd"
+  ]
+ },
+ {
+  "id": "GDR16",
+  "title": "End-to-end smoke test: boot main, new game, ten days, game over",
+  "needs": [
+   "GDR31",
+   "GDR15",
+   "GDR02",
+   "GDR27",
+   "GDR28",
+   "GDR07",
+   "GDR08",
+   "GDR09",
+   "GDR10",
+   "GDS20"
+  ],
+  "file": "GDR16-end-to-end-smoke-test-boot-main-new-game.md",
+  "files": [
+   "godot/tests/test_e2e_smoke.gd"
+  ]
+ },
+ {
+  "id": "GDR17",
+  "title": "Contact sheet tool: one PNG of all room scenes",
+  "needs": [
+   "GDR02",
+   "GDR27",
+   "GDR28",
+   "GDR07",
+   "GDR08",
+   "GDR09",
+   "GDR10"
+  ],
+  "file": "GDR17-contact-sheet-tool-one-png-of-all-room-s.md",
+  "files": [
+   "tools/godot/sheet.sh",
+   "tools/godot/sheet.gd"
   ]
  },
  {
@@ -5534,50 +5590,6 @@
    "godot/scenes/loading.tscn",
    "godot/scenes/loading.gd",
    "godot/tests/test_loading_scene.gd"
-  ]
- },
- {
-  "id": "GDR11",
-  "title": "Flow: room switching, overlays, chrome visibility",
-  "needs": [
-   "GDR21",
-   "GDR19"
-  ],
-  "file": "GDR11-flow-room-switching-overlays-chrome-visi.md",
-  "files": [
-   "godot/scenes/flow.gd",
-   "godot/tests/fake_room.gd",
-   "godot/tests/fake_room.tscn",
-   "godot/tests/test_flow_nav.gd"
-  ]
- },
- {
-  "id": "GDR30",
-  "title": "Flow: new game, continue, autosave, title wiring",
-  "needs": [
-   "GDR11",
-   "GDR12",
-   "GDF10"
-  ],
-  "file": "GDR30-flow-new-game-continue-autosave-title-wi.md",
-  "files": [
-   "godot/scenes/flow.gd",
-   "godot/tests/fake_room.gd",
-   "godot/tests/test_flow_lifecycle.gd"
-  ]
- },
- {
-  "id": "GDR31",
-  "title": "Flow: game over to news to endgame, settings applied",
-  "needs": [
-   "GDR30",
-   "GDR29",
-   "GDR09"
-  ],
-  "file": "GDR31-flow-game-over-to-news-to-endgame-settin.md",
-  "files": [
-   "godot/scenes/flow.gd",
-   "godot/tests/test_flow_gameover.gd"
   ]
  },
  {
@@ -5596,8 +5608,7 @@
   "id": "GDR22",
   "title": "Transitions node: fade, slides, page turn",
   "needs": [
-   "GDR13",
-   "GDR21"
+   "GDR13"
   ],
   "file": "GDR22-transitions-node-fade-slides-page-turn.md",
   "files": [
@@ -5632,57 +5643,6 @@
    "godot/rooms/room_parallax.gd",
    "godot/rooms/room_base.gd",
    "godot/tests/test_room_parallax.gd"
-  ]
- },
- {
-  "id": "GDR15",
-  "title": "StageFit: centred 1280x720 stage, wide strips, safe area",
-  "needs": [
-   "GDR11",
-   "GDR19"
-  ],
-  "file": "GDR15-stagefit-centred-1280x720-stage-wide-str.md",
-  "files": [
-   "godot/rooms/stage_fit.gd",
-   "godot/scenes/flow.gd",
-   "godot/tests/test_stage_fit.gd"
-  ]
- },
- {
-  "id": "GDR16",
-  "title": "End-to-end smoke test: boot main, new game, ten days, game over",
-  "needs": [
-   "GDR31",
-   "GDR15",
-   "GDR02",
-   "GDR27",
-   "GDR28",
-   "GDR07",
-   "GDR08",
-   "GDR09",
-   "GDR10"
-  ],
-  "file": "GDR16-end-to-end-smoke-test-boot-main-new-game.md",
-  "files": [
-   "godot/tests/test_e2e_smoke.gd"
-  ]
- },
- {
-  "id": "GDR17",
-  "title": "Contact sheet tool: one PNG of all room scenes",
-  "needs": [
-   "GDR02",
-   "GDR27",
-   "GDR28",
-   "GDR07",
-   "GDR08",
-   "GDR09",
-   "GDR10"
-  ],
-  "file": "GDR17-contact-sheet-tool-one-png-of-all-room-s.md",
-  "files": [
-   "tools/godot/sheet.sh",
-   "tools/godot/sheet.gd"
   ]
  }
 ]
