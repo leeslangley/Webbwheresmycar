@@ -13,7 +13,7 @@ import { drawCar } from '../../art/cardraw.js';
 import { paintOf } from '../../data/paint.js';
 import { modelOf } from '../../data/cars.js';
 import { money } from '../../core/format.js';
-import { lotView, revealStat, AUCTION_REVEAL_COST, STATS } from '../../sim/auction.js';
+import { lotView, revealStat, placeBid, minBid, bidStep, AUCTION_REVEAL_COST, STATS } from '../../sim/auction.js';
 import { isAuctionDay } from '../../core/clock.js';
 import { drawHud } from '../../art/hud.js';
 
@@ -44,7 +44,7 @@ const STAT_MAX = 10;
 
 // The hall: dark room, a plank stage under the picture, a spotlight cone and a
 // line of silhouette bidders along the bottom. Drawn back to front.
-function drawHall(ctx, t) {
+function drawHall(ctx, t, leading) {
 	const P = LAYOUT.picture;
 
 	// The room itself, darker than the stage.
@@ -98,6 +98,23 @@ function drawHall(ctx, t) {
 		ctx.arc(x, y - 10, 13, 0, Math.PI * 2);
 		ctx.fill();
 		ctx.fillRect(x - 18, y + 2, 36, 52);
+	}
+
+	// While the player leads, a few of the crowd wave paddles in the air,
+	// rocking with t so a redraw with the same t always looks the same.
+	if (leading) {
+		for (let i = 0; i < 5; i++) {
+			const x = 120 + i * 260;
+			const wave = Math.sin(t * 5 + i * 1.7) * 0.5;
+			ctx.save();
+			ctx.translate(x, 648);
+			ctx.rotate(wave);
+			ctx.fillStyle = PALETTE.cream;
+			ctx.fillRect(-3, -44, 6, 44);
+			ctx.fillStyle = PALETTE.lightred;
+			ctx.fillRect(-15, -66, 30, 24);
+			ctx.restore();
+		}
 	}
 }
 
@@ -225,6 +242,25 @@ export const auctionScene = {
 			app.pop();
 		});
 		if (view) {
+			// The two bid buttons. A bid costs no day, so it is not an app.act:
+			// it calls the sim directly and toasts its message. Like the
+			// reveals, only the lot on screen when the finger went down may
+			// take the bid.
+			const lotId = lot.lotId;
+			hits.add('bid1', LAYOUT.bid1.x, LAYOUT.bid1.y, LAYOUT.bid1.w, LAYOUT.bid1.h, () => {
+				if (this.pressedLot !== lotId) {
+					return;
+				}
+				const res = placeBid(app.state, lotId, 1);
+				app.toast(res.msg);
+			});
+			hits.add('bid3', LAYOUT.bid3.x, LAYOUT.bid3.y, LAYOUT.bid3.w, LAYOUT.bid3.h, () => {
+				if (this.pressedLot !== lotId) {
+					return;
+				}
+				const res = placeBid(app.state, lotId, 3);
+				app.toast(res.msg);
+			});
 			for (let i = 0; i < STATS.length; i++) {
 				if (view.revealed[STATS[i]]) {
 					continue;
@@ -247,7 +283,7 @@ export const auctionScene = {
 		}
 		this.hits = hits;
 
-		drawHall(ctx, t);
+		drawHall(ctx, t, view ? view.leader === 'player' : false);
 		arrowButton(ctx, LAYOUT.prev, '<', 'PREV');
 		arrowButton(ctx, LAYOUT.next, '>', 'NEXT');
 
@@ -304,6 +340,46 @@ export const auctionScene = {
 			for (let i = 0; i < STATS.length; i++) {
 				drawStatRow(ctx, LAYOUT.reveals[i], i, view);
 			}
+		}
+
+		// The bidding block: the current bid, who leads and the next minimum,
+		// then the two bid buttons. The amounts come from the sim's minBid and
+		// bidStep: BID +1 bids the minimum, BID +3 bids two steps above it.
+		if (view) {
+			const leaderText = view.leader === 'player' ? 'You' : view.leader === 'ai' ? 'Rival bidder' : 'Nobody';
+			label(ctx, 'Bid: ' + (view.currentBid > 0 ? money(view.currentBid) : 'none'), LAYOUT.bid1.x, LAYOUT.bid1.y - 88, {
+				size: 22,
+				font: 'title',
+				color: PALETTE.white,
+				shadow: true,
+			});
+			label(ctx, leaderText, LAYOUT.bid1.x, LAYOUT.bid1.y - 58, {
+				size: 18,
+				font: 'title',
+				color: PALETTE.lamp,
+				shadow: true,
+			});
+			label(ctx, 'Min next ' + money(minBid(lot)), LAYOUT.bid1.x, LAYOUT.bid1.y - 32, {
+				size: 16,
+				color: PALETTE.cream,
+				shadow: true,
+			});
+			button(ctx, {
+				x: LAYOUT.bid1.x,
+				y: LAYOUT.bid1.y,
+				w: LAYOUT.bid1.w,
+				h: LAYOUT.bid1.h,
+				label: 'BID +1 ' + money(minBid(lot)),
+				kind: 'primary',
+			});
+			button(ctx, {
+				x: LAYOUT.bid3.x,
+				y: LAYOUT.bid3.y,
+				w: LAYOUT.bid3.w,
+				h: LAYOUT.bid3.h,
+				label: 'BID +3 ' + money(minBid(lot) + 2 * bidStep(lot)),
+				kind: 'primary',
+			});
 		}
 
 		// The hall's own buttons, then the HUD strip on top of everything.
