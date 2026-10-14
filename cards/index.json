@@ -1808,992 +1808,6 @@
   ]
  },
  {
-  "id": "GU01",
-  "title": "UI tokens: colours, spacing, type scale, motion, easing",
-  "needs": [],
-  "file": "GU01-ui-tokens-colours-spacing-type-scale-mot.md",
-  "files": [
-   "src/ui/tokens.js",
-   "tests/tokens.test.mjs"
-  ]
- },
- {
-  "id": "GU02",
-  "title": "Text-fit helpers so nothing overlaps or clips",
-  "needs": [
-   "GU01"
-  ],
-  "file": "GU02-text-fit-helpers-so-nothing-overlaps-or-.md",
-  "files": [
-   "src/ui/textfit.js",
-   "tests/textfit.test.mjs"
-  ]
- },
- {
-  "id": "GU03",
-  "title": "UI audit helper: text boxes, minimum sizes, overlaps",
-  "needs": [
-   "GU01"
-  ],
-  "file": "GU03-ui-audit-helper-text-boxes-minimum-sizes.md",
-  "files": [
-   "tests/uiaudit.js",
-   "tests/uiaudit.test.mjs"
-  ]
- },
- {
-  "id": "GU04",
-  "title": "Icon set drawn in code: 14 icons plus 4 plate discs",
-  "needs": [
-   "GU01"
-  ],
-  "file": "GU04-icon-set-drawn-in-code-14-icons-plus-4-p.md",
-  "files": [
-   "src/ui/icons.js",
-   "tests/icons.test.mjs"
-  ]
- },
- {
-  "id": "GU05",
-  "title": "Textured panels: chunky frame, paper, wood plank, enamel sign",
-  "needs": [
-   "GU01"
-  ],
-  "file": "GU05-textured-panels-chunky-frame-paper-wood-.md",
-  "files": [
-   "src/ui/panels2.js",
-   "tests/panels2.test.mjs"
-  ]
- },
- {
-  "id": "GU06",
-  "title": "Chunky button with hover/press states, plus press and hover sound hooks",
-  "needs": [
-   "GU01",
-   "GU02",
-   "GU04",
-   "GU05"
-  ],
-  "file": "GU06-chunky-button-with-hover-press-states-pl.md",
-  "files": [
-   "src/ui/button2.js",
-   "src/ui/uistate.js",
-   "tests/button2.test.mjs"
-  ]
- },
- {
-  "id": "GU07",
-  "title": "Animated counters and bars: tween, count-up, stat bar with ghost",
-  "needs": [
-   "GU01"
-  ],
-  "file": "GU07-animated-counters-and-bars-tween-count-u.md",
-  "files": [
-   "src/ui/anim.js",
-   "src/ui/bars.js",
-   "tests/anim_bars.test.mjs"
-  ]
- },
- {
-  "id": "GU08",
-  "title": "RSAMH speech banner: top zone with tail, dither and typewriter",
-  "needs": [
-   "GU01",
-   "GU02",
-   "GU05"
-  ],
-  "file": "GU08-rsamh-speech-banner-top-zone-with-tail-d.md",
-  "files": [
-   "src/ui/banner.js",
-   "tests/banner.test.mjs"
-  ]
- },
- {
-  "id": "GU09",
-  "title": "HUD parts: Gold Number Plate icons and the green CASH bar",
-  "needs": [
-   "GU01",
-   "GU04",
-   "GU07"
-  ],
-  "file": "GU09-hud-parts-gold-number-plate-icons-and-th.md",
-  "files": [
-   "src/ui/hudparts.js",
-   "tests/hudparts.test.mjs"
-  ]
- },
- {
-  "id": "GU10",
-  "title": "Calendar sheet with tear-off animation",
-  "needs": [
-   "GU01",
-   "GU05",
-   "GU07"
-  ],
-  "file": "GU10-calendar-sheet-with-tear-off-animation.md",
-  "files": [
-   "src/ui/calendarsheet.js",
-   "tests/calendarsheet.test.mjs"
-  ]
- },
- {
-  "id": "GU11",
-  "title": "Bottom HUD strip: plates, cash bar, car portrait, calendar, chart panel",
-  "needs": [
-   "GU03",
-   "GU04",
-   "GU05",
-   "GU07",
-   "GU09",
-   "GU10"
-  ],
-  "file": "GU11-bottom-hud-strip-plates-cash-bar-car-por.md",
-  "files": [
-   "src/ui/hudstrip.js",
-   "tests/hudstrip.test.mjs"
-  ]
- },
- {
-  "id": "GU12",
-  "title": "Small in-scene pop-up menu with arrow cursor",
-  "needs": [
-   "GU01",
-   "GU03",
-   "GU05"
-  ],
-  "file": "GU12-small-in-scene-pop-up-menu-with-arrow-cu.md",
-  "files": [
-   "src/ui/popmenu.js",
-   "tests/popmenu.test.mjs"
-  ]
- },
- {
-  "id": "GU13",
-  "title": "Particles: confetti, smoke, sparks, cash, rust flakes",
-  "needs": [
-   "GU01"
-  ],
-  "file": "GU13-particles-confetti-smoke-sparks-cash-rus.md",
-  "files": [
-   "src/ui/particles.js",
-   "tests/particles.test.mjs"
-  ]
- },
- {
-  "id": "GU14",
-  "title": "Screen shake, flashes and the disaster / good-news presets",
-  "needs": [
-   "GU01"
-  ],
-  "file": "GU14-screen-shake-flashes-and-the-disaster-go.md",
-  "files": [
-   "src/ui/screenfx.js",
-   "tests/screenfx.test.mjs"
-  ]
- },
- {
-  "id": "GU15",
-  "title": "Screen transitions A: fade, slide, iris",
-  "needs": [
-   "GU01"
-  ],
-  "file": "GU15-screen-transitions-a-fade-slide-iris.md",
-  "files": [
-   "src/ui/transitions.js",
-   "tests/transitions.test.mjs"
-  ]
- },
- {
-  "id": "GU16",
-  "title": "Screen transitions B: TV-static wipe and newspaper page-turn",
-  "needs": [
-   "GU15"
-  ],
-  "file": "GU16-screen-transitions-b-tv-static-wipe-and-.md",
-  "files": [
-   "src/ui/transitions2.js",
-   "tests/transitions2.test.mjs"
-  ]
- },
- {
-  "id": "GU17",
-  "title": "CRT overlay and shared TV-static drawing",
-  "needs": [
-   "GU01"
-  ],
-  "file": "GU17-crt-overlay-and-shared-tv-static-drawing.md",
-  "files": [
-   "src/ui/crt.js",
-   "tests/crt.test.mjs"
-  ]
- },
- {
-  "id": "GU18",
-  "title": "Toast v2 (icon, slide-in, fade-out) and tooltips",
-  "needs": [
-   "GU01",
-   "GU04"
-  ],
-  "file": "GU18-toast-v2-icon-slide-in-fade-out-and-tool.md",
-  "files": [
-   "src/ui/overlays.js",
-   "tests/overlays.test.mjs"
-  ]
- },
- {
-  "id": "GU19",
-  "title": "Day-change sequence: timeline, events and overlay",
-  "needs": [
-   "GU01",
-   "GU07",
-   "GU08",
-   "GU10"
-  ],
-  "file": "GU19-day-change-sequence-timeline-events-and-.md",
-  "files": [
-   "src/ui/daychange.js",
-   "tests/daychange.test.mjs"
-  ]
- },
- {
-  "id": "GU20",
-  "title": "iPhone safe areas: logical insets and boot hookup",
-  "needs": [
-   "GU01"
-  ],
-  "file": "GU20-iphone-safe-areas-logical-insets-and-boo.md",
-  "files": [
-   "src/ui/safearea.js",
-   "src/boot.js",
-   "index.html",
-   "tests/safearea.test.mjs"
-  ]
- },
- {
-  "id": "GU21",
-  "title": "kit_draw upgrade in place: textured panel, chunky button, animated-look bar, label outline",
-  "needs": [
-   "GU02",
-   "GU05",
-   "GU06",
-   "GU07"
-  ],
-  "file": "GU21-kit-draw-upgrade-in-place-textured-panel.md",
-  "files": [
-   "src/ui/kit_draw.js",
-   "tests/kit_draw_v2.test.mjs"
-  ]
- },
- {
-  "id": "GU22",
-  "title": "App wiring A: transitions, screen shake/flash and particles in createApp",
-  "needs": [
-   "GU13",
-   "GU14",
-   "GU15",
-   "GU16"
-  ],
-  "file": "GU22-app-wiring-a-transitions-screen-shake-fl.md",
-  "files": [
-   "src/ui/scenes.js",
-   "tests/app_fx.test.mjs"
-  ]
- },
- {
-  "id": "GU23",
-  "title": "App wiring B: toast v2, tooltip, CRT overlay and safe insets in createApp",
-  "needs": [
-   "GU17",
-   "GU18",
-   "GU20",
-   "GU21",
-   "GU22"
-  ],
-  "file": "GU23-app-wiring-b-toast-v2-tooltip-crt-overla.md",
-  "files": [
-   "src/ui/scenes.js",
-   "tests/scenes.test.mjs",
-   "tests/app_overlays.test.mjs"
-  ]
- },
- {
-  "id": "GU24",
-  "title": "Office in the RSAMH frame: speech banner on top, HUD strip at the bottom",
-  "needs": [
-   "GU03",
-   "GU07",
-   "GU08",
-   "GU11",
-   "GU21"
-  ],
-  "file": "GU24-office-in-the-rsamh-frame-speech-banner-.md",
-  "files": [
-   "src/ui/scenes/office.js",
-   "tests/scene_office_rsamh.test.mjs"
-  ]
- },
- {
-  "id": "GU25",
-  "title": "TV shop fixes: quip off the car, CONDITION label, tag text size, button gaps",
-  "needs": [
-   "GU02",
-   "GU03",
-   "GU21"
-  ],
-  "file": "GU25-tv-shop-fixes-quip-off-the-car-condition.md",
-  "files": [
-   "src/ui/scenes/tvshop.js",
-   "tests/scene_tvshop_layout.test.mjs"
-  ]
- },
- {
-  "id": "GC01",
-  "title": "Character Blender helpers: toon material, shapes, camera",
-  "needs": [
-   "A04"
-  ],
-  "file": "GC01-character-blender-helpers-toon-material-.md",
-  "files": [
-   "tools/art/charlib.py",
-   "tests/charlib_check.py",
-   "tests/run_charlib.sh"
-  ]
- },
- {
-  "id": "GC02",
-  "title": "Character spec files for Mark and Dave plus checker",
-  "needs": [
-   "A04"
-  ],
-  "file": "GC02-character-spec-files-for-mark-and-dave-p.md",
-  "files": [
-   "docs/characters/mark.json",
-   "docs/characters/dave.json",
-   "tools/check_charspec.py"
-  ]
- },
- {
-  "id": "GC03",
-  "title": "Expression table and pose library (pure python)",
-  "needs": [
-   "GC02"
-  ],
-  "file": "GC03-expression-table-and-pose-library-pure-p.md",
-  "files": [
-   "docs/characters/expressions.json",
-   "tools/art/poselib.py",
-   "tests/run_poselib.sh"
-  ]
- },
- {
-  "id": "GC04",
-  "title": "Mark head and neck in Blender",
-  "needs": [
-   "GC01",
-   "GC02"
-  ],
-  "file": "GC04-mark-head-and-neck-in-blender.md",
-  "files": [
-   "tools/art/mark_head.py"
-  ]
- },
- {
-  "id": "GC05",
-  "title": "Mark curly hair in Blender",
-  "needs": [
-   "GC04"
-  ],
-  "file": "GC05-mark-curly-hair-in-blender.md",
-  "files": [
-   "tools/art/mark_hair.py"
-  ]
- },
- {
-  "id": "GC06",
-  "title": "Face parts for both characters: eyes, brows, mouths, glasses",
-  "needs": [
-   "GC03",
-   "GC04"
-  ],
-  "file": "GC06-face-parts-for-both-characters-eyes-brow.md",
-  "files": [
-   "tools/art/charface.py"
-  ]
- },
- {
-  "id": "GC07",
-  "title": "Mark torso, suit, shirt, tie and the office chair",
-  "needs": [
-   "GC01",
-   "GC02"
-  ],
-  "file": "GC07-mark-torso-suit-shirt-tie-and-the-office.md",
-  "files": [
-   "tools/art/mark_torso.py"
-  ]
- },
- {
-  "id": "GC08",
-  "title": "Arms, hands, finger shapes and props for both characters",
-  "needs": [
-   "GC01",
-   "GC03"
-  ],
-  "file": "GC08-arms-hands-finger-shapes-and-props-for-b.md",
-  "files": [
-   "tools/art/chararms.py"
-  ]
- },
- {
-  "id": "GC09",
-  "title": "Mark rig: assemble the model and apply poses",
-  "needs": [
-   "GC05",
-   "GC06",
-   "GC07",
-   "GC08"
-  ],
-  "file": "GC09-mark-rig-assemble-the-model-and-apply-po.md",
-  "files": [
-   "tools/art/mark_rig.py"
-  ]
- },
- {
-  "id": "GC10",
-  "title": "Dave head: bald, flat cap, moustache, big nose",
-  "needs": [
-   "GC06"
-  ],
-  "file": "GC10-dave-head-bald-flat-cap-moustache-big-no.md",
-  "files": [
-   "tools/art/dave_head.py"
-  ]
- },
- {
-  "id": "GC11",
-  "title": "Dave body, legs, overalls and rig",
-  "needs": [
-   "GC08",
-   "GC10"
-  ],
-  "file": "GC11-dave-body-legs-overalls-and-rig.md",
-  "files": [
-   "tools/art/dave_rig.py"
-  ]
- },
- {
-  "id": "GC12",
-  "title": "Mark poses A: idle, tap, three talk gestures, phone, reading",
-  "needs": [
-   "GC03"
-  ],
-  "file": "GC12-mark-poses-a-idle-tap-three-talk-gesture.md",
-  "files": [
-   "docs/characters/poses_mark_front_a.json"
-  ]
- },
- {
-  "id": "GC13",
-  "title": "Mark poses B: shrug, point, thumbs up, panic, facepalm, celebrate, slump",
-  "needs": [
-   "GC12"
-  ],
-  "file": "GC13-mark-poses-b-shrug-point-thumbs-up-panic.md",
-  "files": [
-   "docs/characters/poses_mark_front_b.json"
-  ]
- },
- {
-  "id": "GC14",
-  "title": "Back-view poses: Mark and Dave seated watching the telly",
-  "needs": [
-   "GC03"
-  ],
-  "file": "GC14-back-view-poses-mark-and-dave-seated-wat.md",
-  "files": [
-   "docs/characters/poses_mark_back.json",
-   "docs/characters/poses_dave_back.json"
-  ]
- },
- {
-  "id": "GC15",
-  "title": "Dave front poses: lean, tea sip, talk, shrug, point, thumbs, panic, facepalm, celebrate",
-  "needs": [
-   "GC03"
-  ],
-  "file": "GC15-dave-front-poses-lean-tea-sip-talk-shrug.md",
-  "files": [
-   "docs/characters/poses_dave_front.json"
-  ]
- },
- {
-  "id": "GC16",
-  "title": "Render body frames: pose files to raw Blender renders",
-  "needs": [
-   "GC09",
-   "GC11",
-   "GC12",
-   "GC14",
-   "GC15"
-  ],
-  "file": "GC16-render-body-frames-pose-files-to-raw-ble.md",
-  "files": [
-   "tools/art/render_frames.py"
-  ]
- },
- {
-  "id": "GC17",
-  "title": "Pixel stage for characters: one shared palette per character, dither, outline",
-  "needs": [
-   "GC02",
-   "A04"
-  ],
-  "file": "GC17-pixel-stage-for-characters-one-shared-pa.md",
-  "files": [
-   "tools/art/charpix.py"
-  ]
- },
- {
-  "id": "GC18",
-  "title": "Render head sprites (16 faces, 7 angles) and bust portraits",
-  "needs": [
-   "GC06",
-   "GC09",
-   "GC10",
-   "GC11"
-  ],
-  "file": "GC18-render-head-sprites-16-faces-7-angles-an.md",
-  "files": [
-   "tools/art/render_heads.py"
-  ]
- },
- {
-  "id": "GC19",
-  "title": "Character manifest, contact sheets and the one-command render script",
-  "needs": [
-   "GC16",
-   "GC17",
-   "GC18"
-  ],
-  "file": "GC19-character-manifest-contact-sheets-and-th.md",
-  "files": [
-   "tools/art/build_manifest.py",
-   "tools/art/contact_sheet.py",
-   "tools/art/render_chars.sh"
-  ]
- },
- {
-  "id": "GC20",
-  "title": "Customer builder: heads, skin tones, hair styles, hats, accessories",
-  "needs": [
-   "GC01",
-   "GC06"
-  ],
-  "file": "GC20-customer-builder-heads-skin-tones-hair-s.md",
-  "files": [
-   "tools/art/customerlib.py"
-  ]
- },
- {
-  "id": "GC21",
-  "title": "Customer archetypes A (8 jobs) and the customer render script",
-  "needs": [
-   "GC20",
-   "GC17",
-   "GC19"
-  ],
-  "file": "GC21-customer-archetypes-a-8-jobs-and-the-cus.md",
-  "files": [
-   "docs/characters/customers_a.json",
-   "tools/art/render_customers.py",
-   "tools/art/render_customers.sh"
-  ]
- },
- {
-  "id": "GC22",
-  "title": "Customer archetypes B (8 jobs) and 8 silly extras",
-  "needs": [
-   "GC21"
-  ],
-  "file": "GC22-customer-archetypes-b-8-jobs-and-8-silly.md",
-  "files": [
-   "docs/characters/customers_b.json"
-  ]
- },
- {
-  "id": "GC23",
-  "title": "Game: animation clock, blink, mouth shapes and the actor state machine",
-  "needs": [
-   "W44"
-  ],
-  "file": "GC23-game-animation-clock-blink-mouth-shapes-.md",
-  "files": [
-   "src/art/anim.js",
-   "tests/anim.test.mjs"
-  ]
- },
- {
-  "id": "GC24",
-  "title": "Game: character sprite loader, actor drawing and customer portrait pick",
-  "needs": [
-   "GC23",
-   "S01"
-  ],
-  "file": "GC24-game-character-sprite-loader-actor-drawi.md",
-  "files": [
-   "src/art/charsprites.js",
-   "tests/charsprites.test.mjs"
-  ]
- },
- {
-  "id": "GC25",
-  "title": "Game: speech banner and portrait frame in the Rock Star Ate My Hamster style",
-  "needs": [
-   "W43",
-   "W44"
-  ],
-  "file": "GC25-game-speech-banner-and-portrait-frame-in.md",
-  "files": [
-   "src/art/banner.js",
-   "tests/banner.test.mjs"
-  ]
- },
- {
-  "id": "GC26",
-  "title": "Office scene: draw Mark and Dave from sprites (vector fallback, hit areas unchanged)",
-  "needs": [
-   "GC23",
-   "GC24",
-   "W58"
-  ],
-  "file": "GC26-office-scene-draw-mark-and-dave-from-spr.md",
-  "files": [
-   "src/ui/scenes/office.js",
-   "tests/scene_office_chars.test.mjs"
-  ]
- },
- {
-  "id": "GE01",
-  "title": "Stage zones: banner, tableau, HUD constants",
-  "needs": [],
-  "file": "GE01-stage-zones-banner-tableau-hud-constants.md",
-  "files": [
-   "src/art/stage.js",
-   "tests/stage.test.mjs"
-  ]
- },
- {
-  "id": "GE02",
-  "title": "Blender room kit core: camera maths, materials, primitives",
-  "needs": [],
-  "file": "GE02-blender-room-kit-core-camera-maths-mater.md",
-  "files": [
-   "tools/art/roomlib.py",
-   "tests/run_roomlib.sh"
-  ]
- },
- {
-  "id": "GE03",
-  "title": "Room pixel stage and numeric checker",
-  "needs": [
-   "A04"
-  ],
-  "file": "GE03-room-pixel-stage-and-numeric-checker.md",
-  "files": [
-   "tools/art/pixelbg.py",
-   "tools/art/check_room.py",
-   "tests/run_pixelbg.sh"
-  ]
- },
- {
-  "id": "GE04",
-  "title": "Room kit: shell (wall, floor, window, frames, bunting)",
-  "needs": [
-   "GE02"
-  ],
-  "file": "GE04-room-kit-shell-wall-floor-window-frames-.md",
-  "files": [
-   "tools/art/roomkit_shell.py",
-   "tests/run_roomkit_shell.sh"
-  ]
- },
- {
-  "id": "GE05",
-  "title": "Room kit: furniture A (desk, lamp, side table, cabinet, chair)",
-  "needs": [
-   "GE04"
-  ],
-  "file": "GE05-room-kit-furniture-a-desk-lamp-side-tabl.md",
-  "files": [
-   "tools/art/roomkit_furn.py",
-   "tests/run_roomkit_furn.sh"
-  ]
- },
- {
-  "id": "GE06",
-  "title": "Room kit: props B (CRT TV, cabinet, rug, tyres, plant, roller door)",
-  "needs": [
-   "GE04"
-  ],
-  "file": "GE06-room-kit-props-b-crt-tv-cabinet-rug-tyre.md",
-  "files": [
-   "tools/art/roomkit_props.py",
-   "tests/run_roomkit_props.sh"
-  ]
- },
- {
-  "id": "GE07",
-  "title": "Office plate: Blender room, lights, two layers",
-  "needs": [
-   "GE03",
-   "GE05",
-   "GE06"
-  ],
-  "file": "GE07-office-plate-blender-room-lights-two-lay.md",
-  "files": [
-   "tools/art/room_office.py",
-   "tests/run_room_office.sh",
-   "assets/art/rooms/office.png",
-   "assets/art/rooms/office_front.png"
-  ]
- },
- {
-  "id": "GE08",
-  "title": "Garage plate: strip lights, pegboard, bays",
-  "needs": [
-   "GE03",
-   "GE04",
-   "GE06"
-  ],
-  "file": "GE08-garage-plate-strip-lights-pegboard-bays.md",
-  "files": [
-   "tools/art/roomkit_garage.py",
-   "tools/art/room_garage.py",
-   "tests/run_room_garage.sh",
-   "assets/art/rooms/garage.png"
-  ]
- },
- {
-  "id": "GE09",
-  "title": "Auction hall plate: curtains, stage, podium, spotlight",
-  "needs": [
-   "GE03",
-   "GE04"
-  ],
-  "file": "GE09-auction-hall-plate-curtains-stage-podium.md",
-  "files": [
-   "tools/art/roomkit_auction.py",
-   "tools/art/room_auction.py",
-   "tests/run_room_auction.sh",
-   "assets/art/rooms/auction.png"
-  ]
- },
- {
-  "id": "GE10",
-  "title": "Title plate: night shop row with a transparent sky",
-  "needs": [
-   "GE03",
-   "GE04"
-  ],
-  "file": "GE10-title-plate-night-shop-row-with-a-transp.md",
-  "files": [
-   "tools/art/roomkit_title.py",
-   "tools/art/room_title.py",
-   "tests/run_room_title.sh",
-   "assets/art/rooms/title.png"
-  ]
- },
- {
-  "id": "GE11",
-  "title": "Desk plates: ledger and bookings (top-down desk with lamp)",
-  "needs": [
-   "GE03",
-   "GE04"
-  ],
-  "file": "GE11-desk-plates-ledger-and-bookings-top-down.md",
-  "files": [
-   "tools/art/room_desk.py",
-   "tests/run_room_desk.sh",
-   "assets/art/rooms/ledger.png",
-   "assets/art/rooms/bookings.png"
-  ]
- },
- {
-  "id": "GE12",
-  "title": "Build every room plate and write the manifest",
-  "needs": [
-   "GE07",
-   "GE08",
-   "GE09",
-   "GE10",
-   "GE11"
-  ],
-  "file": "GE12-build-every-room-plate-and-write-the-man.md",
-  "files": [
-   "tools/art/build_rooms.sh",
-   "tests/run_build_rooms.sh",
-   "assets/art/rooms/manifest.json"
-  ]
- },
- {
-  "id": "GE13",
-  "title": "Game side: room plate loader and compositor",
-  "needs": [
-   "S01",
-   "GE01"
-  ],
-  "file": "GE13-game-side-room-plate-loader-and-composit.md",
-  "files": [
-   "src/art/rooms.js",
-   "tests/rooms.test.mjs"
-  ]
- },
- {
-  "id": "GE14",
-  "title": "Game side: light effects (glow, flicker, shaft, vignette, grain, glass)",
-  "needs": [
-   "W43"
-  ],
-  "file": "GE14-game-side-light-effects-glow-flicker-sha.md",
-  "files": [
-   "src/art/roomfx_light.js",
-   "tests/roomfx_light.test.mjs"
-  ]
- },
- {
-  "id": "GE15",
-  "title": "Game side: living window sky, dust motes, steam",
-  "needs": [
-   "W43"
-  ],
-  "file": "GE15-game-side-living-window-sky-dust-motes-s.md",
-  "files": [
-   "src/art/roomfx_world.js",
-   "tests/roomfx_world.test.mjs"
-  ]
- },
- {
-  "id": "GE16",
-  "title": "Office layout: move every hotspot onto the new room (tableau)",
-  "needs": [
-   "GE01"
-  ],
-  "file": "GE16-office-layout-move-every-hotspot-onto-th.md",
-  "files": [
-   "src/art/officelayout.js",
-   "tests/office_art.test.mjs",
-   "tests/scene_office.test.mjs"
-  ]
- },
- {
-  "id": "GE17",
-  "title": "Office scene: draw the plate, chairs, lights and sky",
-  "needs": [
-   "GE13",
-   "GE14",
-   "GE15",
-   "GE16"
-  ],
-  "file": "GE17-office-scene-draw-the-plate-chairs-light.md",
-  "files": [
-   "src/ui/scenes/office.js",
-   "tests/scene_office_plate.test.mjs"
-  ]
- },
- {
-  "id": "GE18",
-  "title": "Tellies and laptops: glass glare, scanlines, vignette",
-  "needs": [
-   "GE14"
-  ],
-  "file": "GE18-tellies-and-laptops-glass-glare-scanline.md",
-  "files": [
-   "src/ui/scenes/tvshop.js",
-   "src/ui/scenes/adverts.js",
-   "tests/scene_device_glass.test.mjs"
-  ]
- },
- {
-  "id": "GE19",
-  "title": "Garage scene: plate, flickering strip lights, dust",
-  "needs": [
-   "GE13",
-   "GE14",
-   "GE15"
-  ],
-  "file": "GE19-garage-scene-plate-flickering-strip-ligh.md",
-  "files": [
-   "src/ui/scenes/garage.js",
-   "tests/scene_garage_plate.test.mjs"
-  ]
- },
- {
-  "id": "GE20",
-  "title": "Bookings scene: desk plate and lamp glow",
-  "needs": [
-   "GE13",
-   "GE14"
-  ],
-  "file": "GE20-bookings-scene-desk-plate-and-lamp-glow.md",
-  "files": [
-   "src/ui/scenes/bookings.js",
-   "tests/scene_bookings_plate.test.mjs"
-  ]
- },
- {
-  "id": "GE21",
-  "title": "Auction scene: hall plate, spotlight cone, bobbing crowd kept",
-  "needs": [
-   "GE13",
-   "GE14"
-  ],
-  "file": "GE21-auction-scene-hall-plate-spotlight-cone-.md",
-  "files": [
-   "src/ui/scenes/auction.js",
-   "tests/scene_auction_plate.test.mjs"
-  ]
- },
- {
-  "id": "GE22",
-  "title": "Ledger scene: desk plate, lamp glow, mug steam",
-  "needs": [
-   "GE13",
-   "GE14",
-   "GE15"
-  ],
-  "file": "GE22-ledger-scene-desk-plate-lamp-glow-mug-st.md",
-  "files": [
-   "src/ui/scenes/ledger.js",
-   "tests/scene_ledger_plate.test.mjs"
-  ]
- },
- {
-  "id": "GE23",
-  "title": "Title scene: night shop row plate with road, lamps and stars behind",
-  "needs": [
-   "GE13",
-   "GE14"
-  ],
-  "file": "GE23-title-scene-night-shop-row-plate-with-ro.md",
-  "files": [
-   "src/ui/scenes/title.js",
-   "tests/scene_title_plate.test.mjs"
-  ]
- },
- {
-  "id": "GE24",
-  "title": "Boot: load the room plates and track the pointer for parallax",
-  "needs": [
-   "GE13",
-   "W68d"
-  ],
-  "file": "GE24-boot-load-the-room-plates-and-track-the-.md",
-  "files": [
-   "src/boot.js",
-   "tests/boot.test.mjs"
-  ]
- },
- {
   "id": "CA01",
   "title": "Car details schema v2: validator and spec doc",
   "needs": [
@@ -3549,8 +2563,8 @@
   ],
   "file": "CC08-stages-showroom-garage-and-auction-sets.md",
   "files": [
-   "src/art/stage.js",
-   "tests/stage.test.mjs"
+   "src/art/showroom.js",
+   "tests/showroom.test.mjs"
   ]
  },
  {
@@ -3573,7 +2587,8 @@
    "CC03",
    "CC07",
    "CC09",
-   "W68d"
+   "W68d",
+   "GE24"
   ],
   "file": "CC10-boot-flow-device-scale-asset-loading-loa.md",
   "files": [
@@ -3614,7 +2629,8 @@
   "needs": [
    "CC11",
    "CC12",
-   "W58"
+   "W58",
+   "GC26"
   ],
   "file": "CC13-office-car-on-the-telly-and-hud-car-port.md",
   "files": [
@@ -3630,7 +2646,8 @@
    "CC01",
    "CC07",
    "CC08",
-   "W59b"
+   "W59b",
+   "GE18"
   ],
   "file": "CC14-tv-shop-the-car-on-a-showroom-stage.md",
   "files": [
@@ -3646,7 +2663,8 @@
    "CC07",
    "CC08",
    "CC11",
-   "W60"
+   "W60",
+   "GE19"
   ],
   "file": "CC15-garage-car-on-a-workshop-stage-with-wear.md",
   "files": [
@@ -3661,7 +2679,8 @@
    "CC01",
    "CC07",
    "CC08",
-   "W65b"
+   "W65b",
+   "GE21"
   ],
   "file": "CC16-auction-lot-on-a-curtained-stage-no-text.md",
   "files": [
@@ -3674,7 +2693,8 @@
   "title": "Bookings: car thumbnails in the strip",
   "needs": [
    "CC07",
-   "W62"
+   "W62",
+   "GE20"
   ],
   "file": "CC17-bookings-car-thumbnails-in-the-strip.md",
   "files": [
@@ -3688,12 +2708,1207 @@
   "needs": [
    "CC01",
    "CC07",
-   "W57"
+   "W57",
+   "GE23"
   ],
   "file": "CC18-title-drive-by-of-real-classic-cars.md",
   "files": [
    "src/ui/scenes/title.js",
    "tests/scene_title.test.mjs"
+  ]
+ },
+ {
+  "id": "GU01",
+  "title": "UI tokens: colours, spacing, type scale, motion, easing",
+  "needs": [],
+  "file": "GU01-ui-tokens-colours-spacing-type-scale-mot.md",
+  "files": [
+   "src/ui/tokens.js",
+   "tests/tokens.test.mjs"
+  ]
+ },
+ {
+  "id": "GU02",
+  "title": "Text-fit helpers so nothing overlaps or clips",
+  "needs": [
+   "GU01"
+  ],
+  "file": "GU02-text-fit-helpers-so-nothing-overlaps-or-.md",
+  "files": [
+   "src/ui/textfit.js",
+   "tests/textfit.test.mjs"
+  ]
+ },
+ {
+  "id": "GU03",
+  "title": "UI audit helper: text boxes, minimum sizes, overlaps",
+  "needs": [
+   "GU01"
+  ],
+  "file": "GU03-ui-audit-helper-text-boxes-minimum-sizes.md",
+  "files": [
+   "tests/uiaudit.js",
+   "tests/uiaudit.test.mjs"
+  ]
+ },
+ {
+  "id": "GU04",
+  "title": "Icon set drawn in code: 14 icons plus 4 plate discs",
+  "needs": [
+   "GU01"
+  ],
+  "file": "GU04-icon-set-drawn-in-code-14-icons-plus-4-p.md",
+  "files": [
+   "src/ui/icons.js",
+   "tests/icons.test.mjs"
+  ]
+ },
+ {
+  "id": "GU05",
+  "title": "Textured panels: chunky frame, paper, wood plank, enamel sign",
+  "needs": [
+   "GU01"
+  ],
+  "file": "GU05-textured-panels-chunky-frame-paper-wood-.md",
+  "files": [
+   "src/ui/panels2.js",
+   "tests/panels2.test.mjs"
+  ]
+ },
+ {
+  "id": "GU06",
+  "title": "Chunky button with hover/press states, plus press and hover sound hooks",
+  "needs": [
+   "GU01",
+   "GU02",
+   "GU04",
+   "GU05"
+  ],
+  "file": "GU06-chunky-button-with-hover-press-states-pl.md",
+  "files": [
+   "src/ui/button2.js",
+   "src/ui/uistate.js",
+   "tests/button2.test.mjs"
+  ]
+ },
+ {
+  "id": "GU07",
+  "title": "Animated counters and bars: tween, count-up, stat bar with ghost",
+  "needs": [
+   "GU01"
+  ],
+  "file": "GU07-animated-counters-and-bars-tween-count-u.md",
+  "files": [
+   "src/ui/anim.js",
+   "src/ui/bars.js",
+   "tests/anim_bars.test.mjs"
+  ]
+ },
+ {
+  "id": "GU08",
+  "title": "RSAMH speech banner: top zone with tail, dither and typewriter",
+  "needs": [
+   "GU01",
+   "GU02",
+   "GU05"
+  ],
+  "file": "GU08-rsamh-speech-banner-top-zone-with-tail-d.md",
+  "files": [
+   "src/ui/banner.js",
+   "tests/banner.test.mjs"
+  ]
+ },
+ {
+  "id": "GU09",
+  "title": "HUD parts: Gold Number Plate icons and the green CASH bar",
+  "needs": [
+   "GU01",
+   "GU04",
+   "GU07"
+  ],
+  "file": "GU09-hud-parts-gold-number-plate-icons-and-th.md",
+  "files": [
+   "src/ui/hudparts.js",
+   "tests/hudparts.test.mjs"
+  ]
+ },
+ {
+  "id": "GU10",
+  "title": "Calendar sheet with tear-off animation",
+  "needs": [
+   "GU01",
+   "GU05",
+   "GU07"
+  ],
+  "file": "GU10-calendar-sheet-with-tear-off-animation.md",
+  "files": [
+   "src/ui/calendarsheet.js",
+   "tests/calendarsheet.test.mjs"
+  ]
+ },
+ {
+  "id": "GU11",
+  "title": "Bottom HUD strip: plates, cash bar, car portrait, calendar, chart panel",
+  "needs": [
+   "GU03",
+   "GU04",
+   "GU05",
+   "GU07",
+   "GU09",
+   "GU10"
+  ],
+  "file": "GU11-bottom-hud-strip-plates-cash-bar-car-por.md",
+  "files": [
+   "src/ui/hudstrip.js",
+   "tests/hudstrip.test.mjs"
+  ]
+ },
+ {
+  "id": "GU12",
+  "title": "Small in-scene pop-up menu with arrow cursor",
+  "needs": [
+   "GU01",
+   "GU03",
+   "GU05"
+  ],
+  "file": "GU12-small-in-scene-pop-up-menu-with-arrow-cu.md",
+  "files": [
+   "src/ui/popmenu.js",
+   "tests/popmenu.test.mjs"
+  ]
+ },
+ {
+  "id": "GU13",
+  "title": "Particles: confetti, smoke, sparks, cash, rust flakes",
+  "needs": [
+   "GU01"
+  ],
+  "file": "GU13-particles-confetti-smoke-sparks-cash-rus.md",
+  "files": [
+   "src/ui/particles.js",
+   "tests/particles.test.mjs"
+  ]
+ },
+ {
+  "id": "GU14",
+  "title": "Screen shake, flashes and the disaster / good-news presets",
+  "needs": [
+   "GU01"
+  ],
+  "file": "GU14-screen-shake-flashes-and-the-disaster-go.md",
+  "files": [
+   "src/ui/screenfx.js",
+   "tests/screenfx.test.mjs"
+  ]
+ },
+ {
+  "id": "GU15",
+  "title": "Screen transitions A: fade, slide, iris",
+  "needs": [
+   "GU01"
+  ],
+  "file": "GU15-screen-transitions-a-fade-slide-iris.md",
+  "files": [
+   "src/ui/transitions.js",
+   "tests/transitions.test.mjs"
+  ]
+ },
+ {
+  "id": "GU16",
+  "title": "Screen transitions B: TV-static wipe and newspaper page-turn",
+  "needs": [
+   "GU15"
+  ],
+  "file": "GU16-screen-transitions-b-tv-static-wipe-and-.md",
+  "files": [
+   "src/ui/transitions2.js",
+   "tests/transitions2.test.mjs"
+  ]
+ },
+ {
+  "id": "GU17",
+  "title": "CRT overlay and shared TV-static drawing",
+  "needs": [
+   "GU01"
+  ],
+  "file": "GU17-crt-overlay-and-shared-tv-static-drawing.md",
+  "files": [
+   "src/ui/crt.js",
+   "tests/crt_ui.test.mjs"
+  ]
+ },
+ {
+  "id": "GU18",
+  "title": "Toast v2 (icon, slide-in, fade-out) and tooltips",
+  "needs": [
+   "GU01",
+   "GU04"
+  ],
+  "file": "GU18-toast-v2-icon-slide-in-fade-out-and-tool.md",
+  "files": [
+   "src/ui/overlays.js",
+   "tests/overlays.test.mjs"
+  ]
+ },
+ {
+  "id": "GU19",
+  "title": "Day-change sequence: timeline, events and overlay",
+  "needs": [
+   "GU01",
+   "GU07",
+   "GU08",
+   "GU10"
+  ],
+  "file": "GU19-day-change-sequence-timeline-events-and-.md",
+  "files": [
+   "src/ui/daychange.js",
+   "tests/daychange.test.mjs"
+  ]
+ },
+ {
+  "id": "GU21",
+  "title": "kit_draw upgrade in place: textured panel, chunky button, animated-look bar, label outline",
+  "needs": [
+   "GU02",
+   "GU05",
+   "GU06",
+   "GU07",
+   "W45"
+  ],
+  "file": "GU21-kit-draw-upgrade-in-place-textured-panel.md",
+  "files": [
+   "src/ui/kit_draw.js",
+   "tests/kit_draw_v2.test.mjs"
+  ]
+ },
+ {
+  "id": "GU22",
+  "title": "App wiring A: transitions, screen shake/flash and particles in createApp",
+  "needs": [
+   "GU13",
+   "GU14",
+   "GU15",
+   "GU16",
+   "W47"
+  ],
+  "file": "GU22-app-wiring-a-transitions-screen-shake-fl.md",
+  "files": [
+   "src/ui/scenes.js",
+   "tests/app_fx.test.mjs"
+  ]
+ },
+ {
+  "id": "GU23",
+  "title": "App wiring B: toast v2, tooltip, CRT overlay and safe insets in createApp",
+  "needs": [
+   "GU17",
+   "GU18",
+   "GU21",
+   "GU22",
+   "WD03"
+  ],
+  "file": "GU23-app-wiring-b-toast-v2-tooltip-crt-overla.md",
+  "files": [
+   "src/ui/scenes.js",
+   "tests/scenes.test.mjs",
+   "tests/app_overlays.test.mjs"
+  ]
+ },
+ {
+  "id": "GU24",
+  "title": "Office in the RSAMH frame: speech banner on top, HUD strip at the bottom",
+  "needs": [
+   "GU03",
+   "GU07",
+   "GU08",
+   "GU11",
+   "GU21",
+   "W58"
+  ],
+  "file": "GU24-office-in-the-rsamh-frame-speech-banner-.md",
+  "files": [
+   "src/ui/scenes/office.js",
+   "tests/scene_office_rsamh.test.mjs"
+  ]
+ },
+ {
+  "id": "GU25",
+  "title": "TV shop fixes: quip off the car, CONDITION label, tag text size, button gaps",
+  "needs": [
+   "GU02",
+   "GU03",
+   "GU21",
+   "W59b"
+  ],
+  "file": "GU25-tv-shop-fixes-quip-off-the-car-condition.md",
+  "files": [
+   "src/ui/scenes/tvshop.js",
+   "tests/scene_tvshop_layout.test.mjs"
+  ]
+ },
+ {
+  "id": "GE01",
+  "title": "Stage zones: banner, tableau, HUD constants",
+  "needs": [],
+  "file": "GE01-stage-zones-banner-tableau-hud-constants.md",
+  "files": [
+   "src/art/stage.js",
+   "tests/stage.test.mjs"
+  ]
+ },
+ {
+  "id": "GE02",
+  "title": "Blender room kit core: camera maths, materials, primitives",
+  "needs": [],
+  "file": "GE02-blender-room-kit-core-camera-maths-mater.md",
+  "files": [
+   "tools/art/roomlib.py",
+   "tests/run_roomlib.sh"
+  ]
+ },
+ {
+  "id": "GE03",
+  "title": "Room pixel stage and numeric checker",
+  "needs": [
+   "A04"
+  ],
+  "file": "GE03-room-pixel-stage-and-numeric-checker.md",
+  "files": [
+   "tools/art/pixelbg.py",
+   "tools/art/check_room.py",
+   "tests/run_pixelbg.sh"
+  ]
+ },
+ {
+  "id": "GE04",
+  "title": "Room kit: shell (wall, floor, window, frames, bunting)",
+  "needs": [
+   "GE02"
+  ],
+  "file": "GE04-room-kit-shell-wall-floor-window-frames-.md",
+  "files": [
+   "tools/art/roomkit_shell.py",
+   "tests/run_roomkit_shell.sh"
+  ]
+ },
+ {
+  "id": "GE05",
+  "title": "Room kit: furniture A (desk, lamp, side table, cabinet, chair)",
+  "needs": [
+   "GE04"
+  ],
+  "file": "GE05-room-kit-furniture-a-desk-lamp-side-tabl.md",
+  "files": [
+   "tools/art/roomkit_furn.py",
+   "tests/run_roomkit_furn.sh"
+  ]
+ },
+ {
+  "id": "GE06",
+  "title": "Room kit: props B (CRT TV, cabinet, rug, tyres, plant, roller door)",
+  "needs": [
+   "GE04"
+  ],
+  "file": "GE06-room-kit-props-b-crt-tv-cabinet-rug-tyre.md",
+  "files": [
+   "tools/art/roomkit_props.py",
+   "tests/run_roomkit_props.sh"
+  ]
+ },
+ {
+  "id": "GE07",
+  "title": "Office plate: Blender room, lights, two layers",
+  "needs": [
+   "GE03",
+   "GE05",
+   "GE06"
+  ],
+  "file": "GE07-office-plate-blender-room-lights-two-lay.md",
+  "files": [
+   "tools/art/room_office.py",
+   "tests/run_room_office.sh",
+   "assets/art/rooms/office.png",
+   "assets/art/rooms/office_front.png"
+  ]
+ },
+ {
+  "id": "GE08",
+  "title": "Garage plate: strip lights, pegboard, bays",
+  "needs": [
+   "GE03",
+   "GE04",
+   "GE06"
+  ],
+  "file": "GE08-garage-plate-strip-lights-pegboard-bays.md",
+  "files": [
+   "tools/art/roomkit_garage.py",
+   "tools/art/room_garage.py",
+   "tests/run_room_garage.sh",
+   "assets/art/rooms/garage.png"
+  ]
+ },
+ {
+  "id": "GE09",
+  "title": "Auction hall plate: curtains, stage, podium, spotlight",
+  "needs": [
+   "GE03",
+   "GE04"
+  ],
+  "file": "GE09-auction-hall-plate-curtains-stage-podium.md",
+  "files": [
+   "tools/art/roomkit_auction.py",
+   "tools/art/room_auction.py",
+   "tests/run_room_auction.sh",
+   "assets/art/rooms/auction.png"
+  ]
+ },
+ {
+  "id": "GE10",
+  "title": "Title plate: night shop row with a transparent sky",
+  "needs": [
+   "GE03",
+   "GE04"
+  ],
+  "file": "GE10-title-plate-night-shop-row-with-a-transp.md",
+  "files": [
+   "tools/art/roomkit_title.py",
+   "tools/art/room_title.py",
+   "tests/run_room_title.sh",
+   "assets/art/rooms/title.png"
+  ]
+ },
+ {
+  "id": "GE11",
+  "title": "Desk plates: ledger and bookings (top-down desk with lamp)",
+  "needs": [
+   "GE03",
+   "GE04"
+  ],
+  "file": "GE11-desk-plates-ledger-and-bookings-top-down.md",
+  "files": [
+   "tools/art/room_desk.py",
+   "tests/run_room_desk.sh",
+   "assets/art/rooms/ledger.png",
+   "assets/art/rooms/bookings.png"
+  ]
+ },
+ {
+  "id": "GE12",
+  "title": "Build every room plate and write the manifest",
+  "needs": [
+   "GE07",
+   "GE08",
+   "GE09",
+   "GE10",
+   "GE11"
+  ],
+  "file": "GE12-build-every-room-plate-and-write-the-man.md",
+  "files": [
+   "tools/art/build_rooms.sh",
+   "tests/run_build_rooms.sh",
+   "assets/art/rooms/manifest.json"
+  ]
+ },
+ {
+  "id": "GE13",
+  "title": "Game side: room plate loader and compositor",
+  "needs": [
+   "S01",
+   "GE01"
+  ],
+  "file": "GE13-game-side-room-plate-loader-and-composit.md",
+  "files": [
+   "src/art/rooms.js",
+   "tests/rooms.test.mjs"
+  ]
+ },
+ {
+  "id": "GE14",
+  "title": "Game side: light effects (glow, flicker, shaft, vignette, grain, glass)",
+  "needs": [
+   "W43"
+  ],
+  "file": "GE14-game-side-light-effects-glow-flicker-sha.md",
+  "files": [
+   "src/art/roomfx_light.js",
+   "tests/roomfx_light.test.mjs"
+  ]
+ },
+ {
+  "id": "GE15",
+  "title": "Game side: living window sky, dust motes, steam",
+  "needs": [
+   "W43"
+  ],
+  "file": "GE15-game-side-living-window-sky-dust-motes-s.md",
+  "files": [
+   "src/art/roomfx_world.js",
+   "tests/roomfx_world.test.mjs"
+  ]
+ },
+ {
+  "id": "GE16",
+  "title": "Office layout: move every hotspot onto the new room (tableau)",
+  "needs": [
+   "GE01",
+   "W58"
+  ],
+  "file": "GE16-office-layout-move-every-hotspot-onto-th.md",
+  "files": [
+   "src/art/officelayout.js",
+   "tests/office_art.test.mjs",
+   "tests/scene_office.test.mjs"
+  ]
+ },
+ {
+  "id": "GE17",
+  "title": "Office scene: draw the plate, chairs, lights and sky",
+  "needs": [
+   "GE13",
+   "GE14",
+   "GE15",
+   "GE16",
+   "GU24"
+  ],
+  "file": "GE17-office-scene-draw-the-plate-chairs-light.md",
+  "files": [
+   "src/ui/scenes/office.js",
+   "tests/scene_office_plate.test.mjs"
+  ]
+ },
+ {
+  "id": "GE18",
+  "title": "Tellies and laptops: glass glare, scanlines, vignette",
+  "needs": [
+   "GE14",
+   "GU25",
+   "W61"
+  ],
+  "file": "GE18-tellies-and-laptops-glass-glare-scanline.md",
+  "files": [
+   "src/ui/scenes/tvshop.js",
+   "src/ui/scenes/adverts.js",
+   "tests/scene_device_glass.test.mjs"
+  ]
+ },
+ {
+  "id": "GE19",
+  "title": "Garage scene: plate, flickering strip lights, dust",
+  "needs": [
+   "GE13",
+   "GE14",
+   "GE15",
+   "W60"
+  ],
+  "file": "GE19-garage-scene-plate-flickering-strip-ligh.md",
+  "files": [
+   "src/ui/scenes/garage.js",
+   "tests/scene_garage_plate.test.mjs"
+  ]
+ },
+ {
+  "id": "GE20",
+  "title": "Bookings scene: desk plate and lamp glow",
+  "needs": [
+   "GE13",
+   "GE14",
+   "W62"
+  ],
+  "file": "GE20-bookings-scene-desk-plate-and-lamp-glow.md",
+  "files": [
+   "src/ui/scenes/bookings.js",
+   "tests/scene_bookings_plate.test.mjs"
+  ]
+ },
+ {
+  "id": "GE21",
+  "title": "Auction scene: hall plate, spotlight cone, bobbing crowd kept",
+  "needs": [
+   "GE13",
+   "GE14",
+   "W65d"
+  ],
+  "file": "GE21-auction-scene-hall-plate-spotlight-cone-.md",
+  "files": [
+   "src/ui/scenes/auction.js",
+   "tests/scene_auction_plate.test.mjs"
+  ]
+ },
+ {
+  "id": "GE22",
+  "title": "Ledger scene: desk plate, lamp glow, mug steam",
+  "needs": [
+   "GE13",
+   "GE14",
+   "GE15",
+   "W64b",
+   "W64"
+  ],
+  "file": "GE22-ledger-scene-desk-plate-lamp-glow-mug-st.md",
+  "files": [
+   "src/ui/scenes/ledger.js",
+   "tests/scene_ledger_plate.test.mjs"
+  ]
+ },
+ {
+  "id": "GE23",
+  "title": "Title scene: night shop row plate with road, lamps and stars behind",
+  "needs": [
+   "GE13",
+   "GE14",
+   "W57"
+  ],
+  "file": "GE23-title-scene-night-shop-row-plate-with-ro.md",
+  "files": [
+   "src/ui/scenes/title.js",
+   "tests/scene_title_plate.test.mjs"
+  ]
+ },
+ {
+  "id": "GE24",
+  "title": "Boot: load the room plates and track the pointer for parallax",
+  "needs": [
+   "GE13",
+   "W68d"
+  ],
+  "file": "GE24-boot-load-the-room-plates-and-track-the-.md",
+  "files": [
+   "src/boot.js",
+   "tests/boot.test.mjs"
+  ]
+ },
+ {
+  "id": "GC01",
+  "title": "Character Blender helpers: toon material, shapes, camera",
+  "needs": [
+   "A04"
+  ],
+  "file": "GC01-character-blender-helpers-toon-material-.md",
+  "files": [
+   "tools/art/charlib.py",
+   "tests/charlib_check.py",
+   "tests/run_charlib.sh"
+  ]
+ },
+ {
+  "id": "GC02",
+  "title": "Character spec files for Mark and Dave plus checker",
+  "needs": [
+   "A04"
+  ],
+  "file": "GC02-character-spec-files-for-mark-and-dave-p.md",
+  "files": [
+   "docs/characters/mark.json",
+   "docs/characters/dave.json",
+   "tools/check_charspec.py"
+  ]
+ },
+ {
+  "id": "GC03",
+  "title": "Expression table and pose library (pure python)",
+  "needs": [
+   "GC02"
+  ],
+  "file": "GC03-expression-table-and-pose-library-pure-p.md",
+  "files": [
+   "docs/characters/expressions.json",
+   "tools/art/poselib.py",
+   "tests/run_poselib.sh"
+  ]
+ },
+ {
+  "id": "GC04",
+  "title": "Mark head and neck in Blender",
+  "needs": [
+   "GC01",
+   "GC02"
+  ],
+  "file": "GC04-mark-head-and-neck-in-blender.md",
+  "files": [
+   "tools/art/mark_head.py"
+  ]
+ },
+ {
+  "id": "GC05",
+  "title": "Mark curly hair in Blender",
+  "needs": [
+   "GC04"
+  ],
+  "file": "GC05-mark-curly-hair-in-blender.md",
+  "files": [
+   "tools/art/mark_hair.py"
+  ]
+ },
+ {
+  "id": "GC06",
+  "title": "Face parts for both characters: eyes, brows, mouths, glasses",
+  "needs": [
+   "GC03",
+   "GC04"
+  ],
+  "file": "GC06-face-parts-for-both-characters-eyes-brow.md",
+  "files": [
+   "tools/art/charface.py"
+  ]
+ },
+ {
+  "id": "GC07",
+  "title": "Mark torso, suit, shirt, tie and the office chair",
+  "needs": [
+   "GC01",
+   "GC02"
+  ],
+  "file": "GC07-mark-torso-suit-shirt-tie-and-the-office.md",
+  "files": [
+   "tools/art/mark_torso.py"
+  ]
+ },
+ {
+  "id": "GC08",
+  "title": "Arms, hands, finger shapes and props for both characters",
+  "needs": [
+   "GC01",
+   "GC03"
+  ],
+  "file": "GC08-arms-hands-finger-shapes-and-props-for-b.md",
+  "files": [
+   "tools/art/chararms.py"
+  ]
+ },
+ {
+  "id": "GC09",
+  "title": "Mark rig: assemble the model and apply poses",
+  "needs": [
+   "GC05",
+   "GC06",
+   "GC07",
+   "GC08"
+  ],
+  "file": "GC09-mark-rig-assemble-the-model-and-apply-po.md",
+  "files": [
+   "tools/art/mark_rig.py"
+  ]
+ },
+ {
+  "id": "GC10",
+  "title": "Dave head: bald, flat cap, moustache, big nose",
+  "needs": [
+   "GC06"
+  ],
+  "file": "GC10-dave-head-bald-flat-cap-moustache-big-no.md",
+  "files": [
+   "tools/art/dave_head.py"
+  ]
+ },
+ {
+  "id": "GC11",
+  "title": "Dave body, legs, overalls and rig",
+  "needs": [
+   "GC08",
+   "GC10"
+  ],
+  "file": "GC11-dave-body-legs-overalls-and-rig.md",
+  "files": [
+   "tools/art/dave_rig.py"
+  ]
+ },
+ {
+  "id": "GC12",
+  "title": "Mark poses A: idle, tap, three talk gestures, phone, reading",
+  "needs": [
+   "GC03"
+  ],
+  "file": "GC12-mark-poses-a-idle-tap-three-talk-gesture.md",
+  "files": [
+   "docs/characters/poses_mark_front_a.json"
+  ]
+ },
+ {
+  "id": "GC13",
+  "title": "Mark poses B: shrug, point, thumbs up, panic, facepalm, celebrate, slump",
+  "needs": [
+   "GC12"
+  ],
+  "file": "GC13-mark-poses-b-shrug-point-thumbs-up-panic.md",
+  "files": [
+   "docs/characters/poses_mark_front_b.json"
+  ]
+ },
+ {
+  "id": "GC14",
+  "title": "Back-view poses: Mark and Dave seated watching the telly",
+  "needs": [
+   "GC03"
+  ],
+  "file": "GC14-back-view-poses-mark-and-dave-seated-wat.md",
+  "files": [
+   "docs/characters/poses_mark_back.json",
+   "docs/characters/poses_dave_back.json"
+  ]
+ },
+ {
+  "id": "GC15",
+  "title": "Dave front poses: lean, tea sip, talk, shrug, point, thumbs, panic, facepalm, celebrate",
+  "needs": [
+   "GC03"
+  ],
+  "file": "GC15-dave-front-poses-lean-tea-sip-talk-shrug.md",
+  "files": [
+   "docs/characters/poses_dave_front.json"
+  ]
+ },
+ {
+  "id": "GC16",
+  "title": "Render body frames: pose files to raw Blender renders",
+  "needs": [
+   "GC09",
+   "GC11",
+   "GC12",
+   "GC14",
+   "GC15"
+  ],
+  "file": "GC16-render-body-frames-pose-files-to-raw-ble.md",
+  "files": [
+   "tools/art/render_frames.py"
+  ]
+ },
+ {
+  "id": "GC17",
+  "title": "Pixel stage for characters: one shared palette per character, dither, outline",
+  "needs": [
+   "GC02",
+   "A04"
+  ],
+  "file": "GC17-pixel-stage-for-characters-one-shared-pa.md",
+  "files": [
+   "tools/art/charpix.py"
+  ]
+ },
+ {
+  "id": "GC18",
+  "title": "Render head sprites (16 faces, 7 angles) and bust portraits",
+  "needs": [
+   "GC06",
+   "GC09",
+   "GC10",
+   "GC11"
+  ],
+  "file": "GC18-render-head-sprites-16-faces-7-angles-an.md",
+  "files": [
+   "tools/art/render_heads.py"
+  ]
+ },
+ {
+  "id": "GC19",
+  "title": "Character manifest, contact sheets and the one-command render script",
+  "needs": [
+   "GC16",
+   "GC17",
+   "GC18"
+  ],
+  "file": "GC19-character-manifest-contact-sheets-and-th.md",
+  "files": [
+   "tools/art/build_manifest.py",
+   "tools/art/contact_sheet.py",
+   "tools/art/render_chars.sh"
+  ]
+ },
+ {
+  "id": "GC20",
+  "title": "Customer builder: heads, skin tones, hair styles, hats, accessories",
+  "needs": [
+   "GC01",
+   "GC06"
+  ],
+  "file": "GC20-customer-builder-heads-skin-tones-hair-s.md",
+  "files": [
+   "tools/art/customerlib.py"
+  ]
+ },
+ {
+  "id": "GC21",
+  "title": "Customer archetypes A (8 jobs) and the customer render script",
+  "needs": [
+   "GC20",
+   "GC17",
+   "GC19"
+  ],
+  "file": "GC21-customer-archetypes-a-8-jobs-and-the-cus.md",
+  "files": [
+   "docs/characters/customers_a.json",
+   "tools/art/render_customers.py",
+   "tools/art/render_customers.sh"
+  ]
+ },
+ {
+  "id": "GC22",
+  "title": "Customer archetypes B (8 jobs) and 8 silly extras",
+  "needs": [
+   "GC21"
+  ],
+  "file": "GC22-customer-archetypes-b-8-jobs-and-8-silly.md",
+  "files": [
+   "docs/characters/customers_b.json"
+  ]
+ },
+ {
+  "id": "GC23",
+  "title": "Game: animation clock, blink, mouth shapes and the actor state machine",
+  "needs": [
+   "W44"
+  ],
+  "file": "GC23-game-animation-clock-blink-mouth-shapes-.md",
+  "files": [
+   "src/art/anim.js",
+   "tests/anim.test.mjs"
+  ]
+ },
+ {
+  "id": "GC24",
+  "title": "Game: character sprite loader, actor drawing and customer portrait pick",
+  "needs": [
+   "GC23",
+   "S01"
+  ],
+  "file": "GC24-game-character-sprite-loader-actor-drawi.md",
+  "files": [
+   "src/art/charsprites.js",
+   "tests/charsprites.test.mjs"
+  ]
+ },
+ {
+  "id": "GC25",
+  "title": "Game: speech banner and portrait frame in the Rock Star Ate My Hamster style",
+  "needs": [
+   "W43",
+   "W44"
+  ],
+  "file": "GC25-game-speech-banner-and-portrait-frame-in.md",
+  "files": [
+   "src/art/banner.js",
+   "tests/art_banner.test.mjs"
+  ]
+ },
+ {
+  "id": "GC26",
+  "title": "Office scene: draw Mark and Dave from sprites (vector fallback, hit areas unchanged)",
+  "needs": [
+   "GC23",
+   "GC24",
+   "W58",
+   "GE17"
+  ],
+  "file": "GC26-office-scene-draw-mark-and-dave-from-spr.md",
+  "files": [
+   "src/ui/scenes/office.js",
+   "tests/scene_office_chars.test.mjs"
+  ]
+ },
+ {
+  "id": "WD01",
+  "title": "Canvas layout: variable-width canvas, 1280 stage, pointer maps to stage",
+  "needs": [
+   "W42"
+  ],
+  "file": "WD01-canvas-layout-variable-width-canvas-1280.md",
+  "files": [
+   "src/ui/canvas.js",
+   "tests/canvas.test.mjs"
+  ]
+ },
+ {
+  "id": "WD02",
+  "title": "View object: stage offset, snapped dx, strip bounds, safe insets holder",
+  "needs": [
+   "WD01"
+  ],
+  "file": "WD02-view-object-stage-offset-snapped-dx-stri.md",
+  "files": [
+   "src/ui/view.js",
+   "tests/view.test.mjs"
+  ]
+ },
+ {
+  "id": "WD03",
+  "title": "Safe areas: CSS insets to stage-relative insets (replaces GU20)",
+  "needs": [
+   "WD01",
+   "W71b"
+  ],
+  "file": "WD03-safe-areas-css-insets-to-stage-relative-.md",
+  "files": [
+   "src/ui/safearea.js",
+   "index.html",
+   "tests/safearea.test.mjs"
+  ]
+ },
+ {
+  "id": "WD04",
+  "title": "Strip filler: smear the stage edge into empty strips, then ink underlay",
+  "needs": [
+   "WD02"
+  ],
+  "file": "WD04-strip-filler-smear-the-stage-edge-into-e.md",
+  "files": [
+   "src/ui/smear.js",
+   "tests/smear.test.mjs"
+  ]
+ },
+ {
+  "id": "WD05",
+  "title": "App shell: draw the stage translated, full-width transitions, CRT, strips",
+  "needs": [
+   "GU23",
+   "WD02",
+   "WD04"
+  ],
+  "file": "WD05-app-shell-draw-the-stage-translated-full.md",
+  "files": [
+   "src/ui/scenes.js",
+   "tests/app_view.test.mjs",
+   "tests/fakeapp.js"
+  ]
+ },
+ {
+  "id": "WD06",
+  "title": "Boot: build app.view and safe insets, orientation re-fit, DESIGN.md",
+  "needs": [
+   "WD01",
+   "WD02",
+   "WD03",
+   "W68d",
+   "GE24",
+   "CC10"
+  ],
+  "file": "WD06-boot-build-app-view-and-safe-insets-orie.md",
+  "files": [
+   "src/boot.js",
+   "tests/boot_view.test.mjs",
+   "docs/DESIGN.md"
+  ]
+ },
+ {
+  "id": "WD07",
+  "title": "Room plates: wide plates drawn at -144, wide manifest first",
+  "needs": [
+   "GE13",
+   "WD01"
+  ],
+  "file": "WD07-room-plates-wide-plates-drawn-at-144-wid.md",
+  "files": [
+   "src/art/rooms.js",
+   "tests/rooms_wide.test.mjs"
+  ]
+ },
+ {
+  "id": "WD08",
+  "title": "Blender: render any room script on a wider frame (roomwide.py)",
+  "needs": [
+   "GE02"
+  ],
+  "file": "WD08-blender-render-any-room-script-on-a-wide.md",
+  "files": [
+   "tools/art/roomwide.py",
+   "tests/run_roomwide.sh"
+  ]
+ },
+ {
+  "id": "WD09",
+  "title": "Room checker: --wide option (rectangles in stage px, negative x allowed)",
+  "needs": [
+   "GE03"
+  ],
+  "file": "WD09-room-checker-wide-option-rectangles-in-s.md",
+  "files": [
+   "tools/art/check_room.py",
+   "tests/run_check_room_wide.sh"
+  ]
+ },
+ {
+  "id": "WD10",
+  "title": "Build the wide room plates (784x360) and their manifest",
+  "needs": [
+   "GE12",
+   "WD08",
+   "WD09"
+  ],
+  "file": "WD10-build-the-wide-room-plates-784x360-and-t.md",
+  "files": [
+   "tools/art/build_rooms_wide.sh",
+   "tests/run_build_rooms_wide.sh",
+   "assets/art/rooms/wide/manifest.json"
+  ]
+ },
+ {
+  "id": "WD11",
+  "title": "Title scene: stars, sky, road and dashes across the whole canvas",
+  "needs": [
+   "WD05",
+   "GE23",
+   "CC18"
+  ],
+  "file": "WD11-title-scene-stars-sky-road-and-dashes-ac.md",
+  "files": [
+   "src/ui/scenes/title.js",
+   "tests/scene_title_view.test.mjs"
+  ]
+ },
+ {
+  "id": "WD12",
+  "title": "News overlay: dim the whole canvas and tap anywhere in the strips",
+  "needs": [
+   "WD05",
+   "W63"
+  ],
+  "file": "WD12-news-overlay-dim-the-whole-canvas-and-ta.md",
+  "files": [
+   "src/ui/scenes/news.js",
+   "tests/scene_news_view.test.mjs"
+  ]
+ },
+ {
+  "id": "WD13",
+  "title": "Auction hall: stretch the warm glow band over the whole canvas",
+  "needs": [
+   "WD05",
+   "GE21",
+   "CC16"
+  ],
+  "file": "WD13-auction-hall-stretch-the-warm-glow-band-.md",
+  "files": [
+   "src/ui/scenes/auction.js",
+   "tests/scene_auction_view.test.mjs"
+  ]
+ },
+ {
+  "id": "WD14",
+  "title": "Dev switches: ?size=852x393 and ?safe=0,59,21,59 to test phone layouts in a desktop browser",
+  "needs": [
+   "WD06"
+  ],
+  "file": "WD14-dev-switches-size-852x393-and-safe-0-59-.md",
+  "files": [
+   "src/ui/devsize.js",
+   "src/boot.js",
+   "tests/devsize.test.mjs"
+  ]
+ },
+ {
+  "id": "WD15",
+  "title": "Seam audit: every scene and every full-screen effect covers the strips",
+  "needs": [
+   "WD05",
+   "WD11",
+   "WD12",
+   "WD13",
+   "GU14",
+   "GU16",
+   "GU19",
+   "GE14"
+  ],
+  "file": "WD15-seam-audit-every-scene-and-every-full-sc.md",
+  "files": [
+   "tests/viewaudit.test.mjs"
   ]
  },
  {

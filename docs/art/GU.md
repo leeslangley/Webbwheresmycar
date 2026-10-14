@@ -30,18 +30,18 @@ Motion (ms): tap 90, press 80, toast 260 in / 2500 hold / 200 out, bars 450 (gho
 Icons (GU04): 12x12 and 16x16 text bitmaps, ink outline, 3-tone fills, drawn as merged fillRect runs. Particles (GU13): confetti, smoke, sparks, cash, rust. Juice (GU14): shake, flash, hit-stop. Transitions (GU15, GU16): fade, slide x4, iris, TV-static wipe, page-turn.
 
 ## Order of work
-1. Start now, no dependencies: GU01 tokens. Then in parallel: GU02, GU03, GU04, GU05, GU07, GU13, GU14, GU15, GU17, GU20.
+1. Start now, no dependencies: GU01 tokens. Then in parallel: GU02, GU03, GU04, GU05, GU07, GU13, GU14, GU15, GU17. (GU20, iPhone safe areas, was dropped on 14 Oct: WD03 replaces it, see WD.md.)
 2. After those: GU06 (button), GU08 (banner), GU09, GU10, GU12, GU16, GU18.
 3. GU11 (HUD strip), GU19 (day change), GU21 (kit_draw upgraded in place: every scene gets the new panels, buttons, bars at once; old tests stay green by design).
-4. GU22, GU23 (app wiring), then GU24 (office in the RSAMH frame) and GU25 (TV shop fixes, the pattern for the rest).
-Existing tests kept green: each card says which. GU21 keeps `kit_draw`; GU22/GU23 keep `scenes`; GU24 keeps `scene_office`, `office_art`, `hud`; GU25 keeps `scene_tvshop_*`; GU20 keeps `boot`. Only edited existing test: the one toast-position test in `tests/scenes.test.mjs` (GU23, settled time).
+4. GU22, GU23 (app wiring; GU23 needs WD03 for the safe-area helpers), then GU24 (office in the RSAMH frame) and GU25 (TV shop fixes, the pattern for the rest).
+Existing tests kept green: each card says which. GU21 keeps `kit_draw`; GU22/GU23 keep `scenes`; GU24 keeps `scene_office`, `office_art`, `hud`; GU25 keeps `scene_tvshop_*`; GU21 and GU22 wait for W45 and W47 (they edit those files). Only edited existing test: the one toast-position test in `tests/scenes.test.mjs` (GU23, settled time).
 
 ## Wave 2 (write after wave 1 merges, from fresh screenshots)
 Per-scene adoption, each with the `auditCtx` zero-overlap and zero-below-floor test: auction (lot title vs car, arrows, stat labels), adverts (PAYS/RISK rows), garage, ledger, bookings, settings (icons on toggles), title (logo plate, wood buttons), endgame (confetti from particles, plate discs). Scenes become in-scene pop-ups inside the 470px tableau; wire day change to the kettle (`dayEvents` to audio and particles), page-turn to the newspaper, static wipe to the TV, disaster shake to breakdowns, `app.safe` into every back button and the HUD. Needs the art team's 1280x470 tableaus: until then the office keeps its old 56..720 art and the banner/strip simply cover its edges.
 
 ## Decisions for Lee
 1. **Reflow every menu into the 470px tableau** (RSAMH pop-ups) or keep a few full-screen? I recommend pop-ups; it is wave 2 and touches every scene.
-2. **Phone shape.** On a 19.5:9 iPhone the 16:9 canvas leaves about 18% of the width black. Keep (simple, recommended) or make the logical canvas wider (about 1560x720) with art extended: large change.
+2. **Phone shape.** On a 19.5:9 iPhone the 16:9 canvas leaves about 18% of the width black. DECIDED 14 Oct: the canvas gets wider (720 high, 1280 to 1568 wide, 1280x720 stage in the middle), see docs/art/WD.md; GU14, GU16, GU19 overdraw to cover the strips.
 3. **Fonts.** Keep Press Start 2P + VT323 (both OFL, bundled, readable at the floors). Swapping to Silkscreen or Pixelify Sans needs a download the Sparks cannot do; not worth it now.
 4. **Sound.** Hooks are named `hover tap click deny paper coins thud stamp`; there is no audio module or sound assets in `src` yet (`app.audio.play` is a stub). Needs its own cards.
 5. CRT filter default stays off; GU17/GU23 make the existing toggle work.
