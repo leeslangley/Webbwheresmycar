@@ -44,6 +44,8 @@
   {"kind": "shutline", "path": [[-36.0, 29.7], [-36.0, 8.0]], "role": "boot", "across_x": -36.0, "side": "both", "note": "Boot lid front edge with across shut line at x -36. Estimated: boot lid spans about x -36 to -50."},
   {"kind": "shutline", "path": [[47.5, 26.8], [47.5, 10.0]], "role": "bonnet", "side": "both", "note": "Bonnet front edge at the nose. Estimated."},
   {"kind": "handle", "x": 8.0, "y": 18.5, "style": "flap", "side": "both", "note": "Dossier: single chrome door handle at x 8 y 18.5. No door mirrors added: the dossier lists none."},
-  {"kind": "strip", "x": 44.0, "x2": 47.5, "y": 26.8, "h": 0.5, "role": "sweep", "colour": "chrome", "side": "both", "note": "Dossier: short chrome bonnet front lip at x 47.5 y 26.8. Start x 44 is estimated."}
+  {"kind": "strip", "x": 44.0, "x2": 47.5, "y": 26.8, "h": 0.5, "role": "sweep", "colour": "chrome", "side": "both", "note": "Dossier: short chrome bonnet front lip at x 47.5 y 26.8. Start x 44 is estimated."},
+  {"kind": "lamp", "x": 49.0, "y": 12.0, "role": "driving", "lat": 6.0, "r": 1.0, "shape": "round", "side": "both", "note": "planner decision: added as parts because the per-car module does not exist"},
+  {"kind": "shutline", "path": [[24.0, 28.0], [24.0, 25.0]], "role": "door", "side": "both", "note": "planner decision: added as parts because the per-car module does not exist"}
  ]
 }
