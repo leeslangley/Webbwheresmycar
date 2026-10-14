@@ -2718,335 +2718,6 @@
   ]
  },
  {
-  "id": "GU01",
-  "title": "UI tokens: colours, spacing, type scale, motion, easing",
-  "needs": [],
-  "file": "GU01-ui-tokens-colours-spacing-type-scale-mot.md",
-  "files": [
-   "src/ui/tokens.js",
-   "tests/tokens.test.mjs"
-  ]
- },
- {
-  "id": "GU02",
-  "title": "Text-fit helpers so nothing overlaps or clips",
-  "needs": [
-   "GU01"
-  ],
-  "file": "GU02-text-fit-helpers-so-nothing-overlaps-or-.md",
-  "files": [
-   "src/ui/textfit.js",
-   "tests/textfit.test.mjs"
-  ]
- },
- {
-  "id": "GU03",
-  "title": "UI audit helper: text boxes, minimum sizes, overlaps",
-  "needs": [
-   "GU01"
-  ],
-  "file": "GU03-ui-audit-helper-text-boxes-minimum-sizes.md",
-  "files": [
-   "tests/uiaudit.js",
-   "tests/uiaudit.test.mjs"
-  ]
- },
- {
-  "id": "GU04",
-  "title": "Icon set drawn in code: 14 icons plus 4 plate discs",
-  "needs": [
-   "GU01"
-  ],
-  "file": "GU04-icon-set-drawn-in-code-14-icons-plus-4-p.md",
-  "files": [
-   "src/ui/icons.js",
-   "tests/icons.test.mjs"
-  ]
- },
- {
-  "id": "GU05",
-  "title": "Textured panels: chunky frame, paper, wood plank, enamel sign",
-  "needs": [
-   "GU01"
-  ],
-  "file": "GU05-textured-panels-chunky-frame-paper-wood-.md",
-  "files": [
-   "src/ui/panels2.js",
-   "tests/panels2.test.mjs"
-  ]
- },
- {
-  "id": "GU06",
-  "title": "Chunky button with hover/press states, plus press and hover sound hooks",
-  "needs": [
-   "GU01",
-   "GU02",
-   "GU04",
-   "GU05"
-  ],
-  "file": "GU06-chunky-button-with-hover-press-states-pl.md",
-  "files": [
-   "src/ui/button2.js",
-   "src/ui/uistate.js",
-   "tests/button2.test.mjs"
-  ]
- },
- {
-  "id": "GU07",
-  "title": "Animated counters and bars: tween, count-up, stat bar with ghost",
-  "needs": [
-   "GU01"
-  ],
-  "file": "GU07-animated-counters-and-bars-tween-count-u.md",
-  "files": [
-   "src/ui/anim.js",
-   "src/ui/bars.js",
-   "tests/anim_bars.test.mjs"
-  ]
- },
- {
-  "id": "GU08",
-  "title": "RSAMH speech banner: top zone with tail, dither and typewriter",
-  "needs": [
-   "GU01",
-   "GU02",
-   "GU05"
-  ],
-  "file": "GU08-rsamh-speech-banner-top-zone-with-tail-d.md",
-  "files": [
-   "src/ui/banner.js",
-   "tests/banner.test.mjs"
-  ]
- },
- {
-  "id": "GU09",
-  "title": "HUD parts: Gold Number Plate icons and the green CASH bar",
-  "needs": [
-   "GU01",
-   "GU04",
-   "GU07"
-  ],
-  "file": "GU09-hud-parts-gold-number-plate-icons-and-th.md",
-  "files": [
-   "src/ui/hudparts.js",
-   "tests/hudparts.test.mjs"
-  ]
- },
- {
-  "id": "GU10",
-  "title": "Calendar sheet with tear-off animation",
-  "needs": [
-   "GU01",
-   "GU05",
-   "GU07"
-  ],
-  "file": "GU10-calendar-sheet-with-tear-off-animation.md",
-  "files": [
-   "src/ui/calendarsheet.js",
-   "tests/calendarsheet.test.mjs"
-  ]
- },
- {
-  "id": "GU11",
-  "title": "Bottom HUD strip: plates, cash bar, car portrait, calendar, chart panel",
-  "needs": [
-   "GU03",
-   "GU04",
-   "GU05",
-   "GU07",
-   "GU09",
-   "GU10"
-  ],
-  "file": "GU11-bottom-hud-strip-plates-cash-bar-car-por.md",
-  "files": [
-   "src/ui/hudstrip.js",
-   "tests/hudstrip.test.mjs"
-  ]
- },
- {
-  "id": "GU12",
-  "title": "Small in-scene pop-up menu with arrow cursor",
-  "needs": [
-   "GU01",
-   "GU03",
-   "GU05"
-  ],
-  "file": "GU12-small-in-scene-pop-up-menu-with-arrow-cu.md",
-  "files": [
-   "src/ui/popmenu.js",
-   "tests/popmenu.test.mjs"
-  ]
- },
- {
-  "id": "GU13",
-  "title": "Particles: confetti, smoke, sparks, cash, rust flakes",
-  "needs": [
-   "GU01"
-  ],
-  "file": "GU13-particles-confetti-smoke-sparks-cash-rus.md",
-  "files": [
-   "src/ui/particles.js",
-   "tests/particles.test.mjs"
-  ]
- },
- {
-  "id": "GU14",
-  "title": "Screen shake, flashes and the disaster / good-news presets",
-  "needs": [
-   "GU01"
-  ],
-  "file": "GU14-screen-shake-flashes-and-the-disaster-go.md",
-  "files": [
-   "src/ui/screenfx.js",
-   "tests/screenfx.test.mjs"
-  ]
- },
- {
-  "id": "GU15",
-  "title": "Screen transitions A: fade, slide, iris",
-  "needs": [
-   "GU01"
-  ],
-  "file": "GU15-screen-transitions-a-fade-slide-iris.md",
-  "files": [
-   "src/ui/transitions.js",
-   "tests/transitions.test.mjs"
-  ]
- },
- {
-  "id": "GU16",
-  "title": "Screen transitions B: TV-static wipe and newspaper page-turn",
-  "needs": [
-   "GU15"
-  ],
-  "file": "GU16-screen-transitions-b-tv-static-wipe-and-.md",
-  "files": [
-   "src/ui/transitions2.js",
-   "tests/transitions2.test.mjs"
-  ]
- },
- {
-  "id": "GU17",
-  "title": "CRT overlay and shared TV-static drawing",
-  "needs": [
-   "GU01"
-  ],
-  "file": "GU17-crt-overlay-and-shared-tv-static-drawing.md",
-  "files": [
-   "src/ui/crt.js",
-   "tests/crt_ui.test.mjs"
-  ]
- },
- {
-  "id": "GU18",
-  "title": "Toast v2 (icon, slide-in, fade-out) and tooltips",
-  "needs": [
-   "GU01",
-   "GU04"
-  ],
-  "file": "GU18-toast-v2-icon-slide-in-fade-out-and-tool.md",
-  "files": [
-   "src/ui/overlays.js",
-   "tests/overlays.test.mjs"
-  ]
- },
- {
-  "id": "GU19",
-  "title": "Day-change sequence: timeline, events and overlay",
-  "needs": [
-   "GU01",
-   "GU07",
-   "GU08",
-   "GU10"
-  ],
-  "file": "GU19-day-change-sequence-timeline-events-and-.md",
-  "files": [
-   "src/ui/daychange.js",
-   "tests/daychange.test.mjs"
-  ]
- },
- {
-  "id": "GU21",
-  "title": "kit_draw upgrade in place: textured panel, chunky button, animated-look bar, label outline",
-  "needs": [
-   "GU02",
-   "GU05",
-   "GU06",
-   "GU07",
-   "W45"
-  ],
-  "file": "GU21-kit-draw-upgrade-in-place-textured-panel.md",
-  "files": [
-   "src/ui/kit_draw.js",
-   "tests/kit_draw_v2.test.mjs"
-  ]
- },
- {
-  "id": "GU22",
-  "title": "App wiring A: transitions, screen shake/flash and particles in createApp",
-  "needs": [
-   "GU13",
-   "GU14",
-   "GU15",
-   "GU16",
-   "W47"
-  ],
-  "file": "GU22-app-wiring-a-transitions-screen-shake-fl.md",
-  "files": [
-   "src/ui/scenes.js",
-   "tests/app_fx.test.mjs"
-  ]
- },
- {
-  "id": "GU23",
-  "title": "App wiring B: toast v2, tooltip, CRT overlay and safe insets in createApp",
-  "needs": [
-   "GU17",
-   "GU18",
-   "GU21",
-   "GU22",
-   "WD03"
-  ],
-  "file": "GU23-app-wiring-b-toast-v2-tooltip-crt-overla.md",
-  "files": [
-   "src/ui/scenes.js",
-   "tests/scenes.test.mjs",
-   "tests/app_overlays.test.mjs"
-  ]
- },
- {
-  "id": "GU24",
-  "title": "Office in the RSAMH frame: speech banner on top, HUD strip at the bottom",
-  "needs": [
-   "GU03",
-   "GU07",
-   "GU08",
-   "GU11",
-   "GU21",
-   "W58"
-  ],
-  "file": "GU24-office-in-the-rsamh-frame-speech-banner-.md",
-  "files": [
-   "src/ui/scenes/office.js",
-   "tests/scene_office_rsamh.test.mjs"
-  ]
- },
- {
-  "id": "GU25",
-  "title": "TV shop fixes: quip off the car, CONDITION label, tag text size, button gaps",
-  "needs": [
-   "GU02",
-   "GU03",
-   "GU21",
-   "W59b"
-  ],
-  "file": "GU25-tv-shop-fixes-quip-off-the-car-condition.md",
-  "files": [
-   "src/ui/scenes/tvshop.js",
-   "tests/scene_tvshop_layout.test.mjs"
-  ]
- },
- {
   "id": "GE01",
   "title": "Stage zones: banner, tableau, HUD constants",
   "needs": [],
@@ -3927,6 +3598,336 @@
    "docs/cars/t1_maurice.json",
    "docs/cars/t1_cooker.json",
    "docs/cars/t1_volksbeagle.json"
+  ]
+ },
+ {
+  "id": "GU01",
+  "title": "UI tokens: colours, spacing, type scale, motion, easing",
+  "needs": [],
+  "file": "GU01-ui-tokens-colours-spacing-type-scale-mot.md",
+  "files": [
+   "src/ui/tokens.js",
+   "tests/tokens.test.mjs"
+  ]
+ },
+ {
+  "id": "GU02",
+  "title": "Text-fit helpers so nothing overlaps or clips",
+  "needs": [
+   "GU01"
+  ],
+  "file": "GU02-text-fit-helpers-so-nothing-overlaps-or-.md",
+  "files": [
+   "src/ui/textfit.js",
+   "tests/textfit.test.mjs"
+  ]
+ },
+ {
+  "id": "GU03",
+  "title": "UI audit helper: text boxes, minimum sizes, overlaps",
+  "needs": [
+   "GU01"
+  ],
+  "file": "GU03-ui-audit-helper-text-boxes-minimum-sizes.md",
+  "files": [
+   "tests/uiaudit.js",
+   "tests/uiaudit.test.mjs"
+  ]
+ },
+ {
+  "id": "GU04",
+  "title": "Icon set drawn in code: 14 icons plus 4 plate discs",
+  "needs": [
+   "GU01"
+  ],
+  "file": "GU04-icon-set-drawn-in-code-14-icons-plus-4-p.md",
+  "files": [
+   "src/ui/icons.js",
+   "tests/icons.test.mjs"
+  ]
+ },
+ {
+  "id": "GU05",
+  "title": "Textured panels: chunky frame, paper, wood plank, enamel sign",
+  "needs": [
+   "GU01"
+  ],
+  "file": "GU05-textured-panels-chunky-frame-paper-wood-.md",
+  "files": [
+   "src/ui/panels2.js",
+   "tests/panels2.test.mjs"
+  ]
+ },
+ {
+  "id": "GU06",
+  "title": "Chunky button with hover/press states, plus press and hover sound hooks",
+  "needs": [
+   "GU01",
+   "GU02",
+   "GU04",
+   "GU05"
+  ],
+  "file": "GU06-chunky-button-with-hover-press-states-pl.md",
+  "files": [
+   "src/ui/button2.js",
+   "src/ui/uistate.js",
+   "tests/button2.test.mjs"
+  ]
+ },
+ {
+  "id": "GU07",
+  "title": "Animated counters and bars: tween, count-up, stat bar with ghost",
+  "needs": [
+   "GU01",
+   "GU04"
+  ],
+  "file": "GU07-animated-counters-and-bars-tween-count-u.md",
+  "files": [
+   "src/ui/anim.js",
+   "src/ui/bars.js",
+   "tests/anim_bars.test.mjs"
+  ]
+ },
+ {
+  "id": "GU08",
+  "title": "RSAMH speech banner: top zone with tail, dither and typewriter",
+  "needs": [
+   "GU01",
+   "GU02",
+   "GU05"
+  ],
+  "file": "GU08-rsamh-speech-banner-top-zone-with-tail-d.md",
+  "files": [
+   "src/ui/banner.js",
+   "tests/banner.test.mjs"
+  ]
+ },
+ {
+  "id": "GU09",
+  "title": "HUD parts: Gold Number Plate icons and the green CASH bar",
+  "needs": [
+   "GU01",
+   "GU04",
+   "GU07"
+  ],
+  "file": "GU09-hud-parts-gold-number-plate-icons-and-th.md",
+  "files": [
+   "src/ui/hudparts.js",
+   "tests/hudparts.test.mjs"
+  ]
+ },
+ {
+  "id": "GU10",
+  "title": "Calendar sheet with tear-off animation",
+  "needs": [
+   "GU01",
+   "GU05",
+   "GU07"
+  ],
+  "file": "GU10-calendar-sheet-with-tear-off-animation.md",
+  "files": [
+   "src/ui/calendarsheet.js",
+   "tests/calendarsheet.test.mjs"
+  ]
+ },
+ {
+  "id": "GU11",
+  "title": "Bottom HUD strip: plates, cash bar, car portrait, calendar, chart panel",
+  "needs": [
+   "GU03",
+   "GU04",
+   "GU05",
+   "GU07",
+   "GU09",
+   "GU10"
+  ],
+  "file": "GU11-bottom-hud-strip-plates-cash-bar-car-por.md",
+  "files": [
+   "src/ui/hudstrip.js",
+   "tests/hudstrip.test.mjs"
+  ]
+ },
+ {
+  "id": "GU12",
+  "title": "Small in-scene pop-up menu with arrow cursor",
+  "needs": [
+   "GU01",
+   "GU03",
+   "GU05"
+  ],
+  "file": "GU12-small-in-scene-pop-up-menu-with-arrow-cu.md",
+  "files": [
+   "src/ui/popmenu.js",
+   "tests/popmenu.test.mjs"
+  ]
+ },
+ {
+  "id": "GU13",
+  "title": "Particles: confetti, smoke, sparks, cash, rust flakes",
+  "needs": [
+   "GU01"
+  ],
+  "file": "GU13-particles-confetti-smoke-sparks-cash-rus.md",
+  "files": [
+   "src/ui/particles.js",
+   "tests/particles.test.mjs"
+  ]
+ },
+ {
+  "id": "GU14",
+  "title": "Screen shake, flashes and the disaster / good-news presets",
+  "needs": [
+   "GU01"
+  ],
+  "file": "GU14-screen-shake-flashes-and-the-disaster-go.md",
+  "files": [
+   "src/ui/screenfx.js",
+   "tests/screenfx.test.mjs"
+  ]
+ },
+ {
+  "id": "GU15",
+  "title": "Screen transitions A: fade, slide, iris",
+  "needs": [
+   "GU01"
+  ],
+  "file": "GU15-screen-transitions-a-fade-slide-iris.md",
+  "files": [
+   "src/ui/transitions.js",
+   "tests/transitions.test.mjs"
+  ]
+ },
+ {
+  "id": "GU16",
+  "title": "Screen transitions B: TV-static wipe and newspaper page-turn",
+  "needs": [
+   "GU15"
+  ],
+  "file": "GU16-screen-transitions-b-tv-static-wipe-and-.md",
+  "files": [
+   "src/ui/transitions2.js",
+   "tests/transitions2.test.mjs"
+  ]
+ },
+ {
+  "id": "GU17",
+  "title": "CRT overlay and shared TV-static drawing",
+  "needs": [
+   "GU01"
+  ],
+  "file": "GU17-crt-overlay-and-shared-tv-static-drawing.md",
+  "files": [
+   "src/ui/crt.js",
+   "tests/crt_ui.test.mjs"
+  ]
+ },
+ {
+  "id": "GU18",
+  "title": "Toast v2 (icon, slide-in, fade-out) and tooltips",
+  "needs": [
+   "GU01",
+   "GU04"
+  ],
+  "file": "GU18-toast-v2-icon-slide-in-fade-out-and-tool.md",
+  "files": [
+   "src/ui/overlays.js",
+   "tests/overlays.test.mjs"
+  ]
+ },
+ {
+  "id": "GU19",
+  "title": "Day-change sequence: timeline, events and overlay",
+  "needs": [
+   "GU01",
+   "GU07",
+   "GU08",
+   "GU10"
+  ],
+  "file": "GU19-day-change-sequence-timeline-events-and-.md",
+  "files": [
+   "src/ui/daychange.js",
+   "tests/daychange.test.mjs"
+  ]
+ },
+ {
+  "id": "GU21",
+  "title": "kit_draw upgrade in place: textured panel, chunky button, animated-look bar, label outline",
+  "needs": [
+   "GU02",
+   "GU05",
+   "GU06",
+   "GU07",
+   "W45"
+  ],
+  "file": "GU21-kit-draw-upgrade-in-place-textured-panel.md",
+  "files": [
+   "src/ui/kit_draw.js",
+   "tests/kit_draw_v2.test.mjs"
+  ]
+ },
+ {
+  "id": "GU22",
+  "title": "App wiring A: transitions, screen shake/flash and particles in createApp",
+  "needs": [
+   "GU13",
+   "GU14",
+   "GU15",
+   "GU16",
+   "W47"
+  ],
+  "file": "GU22-app-wiring-a-transitions-screen-shake-fl.md",
+  "files": [
+   "src/ui/scenes.js",
+   "tests/app_fx.test.mjs"
+  ]
+ },
+ {
+  "id": "GU23",
+  "title": "App wiring B: toast v2, tooltip, CRT overlay and safe insets in createApp",
+  "needs": [
+   "GU17",
+   "GU18",
+   "GU21",
+   "GU22",
+   "WD03"
+  ],
+  "file": "GU23-app-wiring-b-toast-v2-tooltip-crt-overla.md",
+  "files": [
+   "src/ui/scenes.js",
+   "tests/scenes.test.mjs",
+   "tests/app_overlays.test.mjs"
+  ]
+ },
+ {
+  "id": "GU24",
+  "title": "Office in the RSAMH frame: speech banner on top, HUD strip at the bottom",
+  "needs": [
+   "GU03",
+   "GU07",
+   "GU08",
+   "GU11",
+   "GU21",
+   "W58"
+  ],
+  "file": "GU24-office-in-the-rsamh-frame-speech-banner-.md",
+  "files": [
+   "src/ui/scenes/office.js",
+   "tests/scene_office_rsamh.test.mjs"
+  ]
+ },
+ {
+  "id": "GU25",
+  "title": "TV shop fixes: quip off the car, CONDITION label, tag text size, button gaps",
+  "needs": [
+   "GU02",
+   "GU03",
+   "GU21",
+   "W59b"
+  ],
+  "file": "GU25-tv-shop-fixes-quip-off-the-car-condition.md",
+  "files": [
+   "src/ui/scenes/tvshop.js",
+   "tests/scene_tvshop_layout.test.mjs"
   ]
  }
 ]
