@@ -9,7 +9,7 @@ import { panel, label, button, paragraph } from '../kit_draw.js';
 import { drawCar } from '../../art/cardraw.js';
 import { drawPhone } from '../../art/props.js';
 import { money, oneDp, plural } from '../../core/format.js';
-import { modelOf } from '../../data/cars.js';
+import { CAR_BY_ID } from '../../data/cars.js';
 import { jobTypeOf } from '../../data/jobtypes.js';
 import { effD, effR, isAvailable } from '../../sim/carstats.js';
 import { acceptJob } from '../../sim/jobresolve.js';
@@ -33,6 +33,13 @@ function inRect(r, x, y) {
 	return x >= r.x && x < r.x + r.w && y >= r.y && y < r.y + r.h;
 }
 
+// A car's catalogue model, or null when the car carries an id the catalogue
+// does not know (corrupt or future save). Nothing here may throw on such a
+// car: it is left out of the strip and never accepted.
+function modelOrNull(car) {
+	return Object.prototype.hasOwnProperty.call(CAR_BY_ID, car.modelId) ? CAR_BY_ID[car.modelId] : null;
+}
+
 // The clock may be a function (real app) or a plain number (test fakes).
 function nowMs(app) {
 	return typeof app.now === 'function' ? app.now() : app.now;
@@ -54,11 +61,13 @@ function findCar(state, id) {
 	return null;
 }
 
-// The player's own cars; rented cars are not ours to send out.
+// The player's own cars; rented cars are not ours to send out, and a car with
+// an unknown model is not something we can show or send.
 function ownedCars(state) {
 	const out = [];
 	for (let i = 0; i < state.cars.length; i++) {
-		if (state.cars[i].owned === true) out.push(state.cars[i]);
+		const car = state.cars[i];
+		if (car.owned === true && modelOrNull(car) !== null) out.push(car);
 	}
 	return out;
 }
@@ -68,8 +77,9 @@ function ownedCars(state) {
 function carBlock(state, car, req) {
 	if (car.fault) return 'FAULT';
 	if ((car.impoundedUntil || 0) > state.day) return 'IMPOUNDED';
+	const model = modelOrNull(car);
+	if (model === null) return 'FAULT';
 	if (req) {
-		const model = modelOf(car.modelId);
 		if (effD(model, car) < req.minDesirability) return 'TOO PLAIN';
 		if (effR(model, car) < req.minReliability) return 'TOO FLAKY';
 		if (car.condition < req.minCondition) return 'TOO SCRUFFY';
@@ -135,7 +145,11 @@ export const bookingsScene = {
 			app.toast('Pick a booking first');
 			return;
 		}
-		const model = modelOf(car.modelId);
+		const model = modelOrNull(car);
+		if (model === null) {
+			app.toast('That car is not fit to go out');
+			return;
+		}
 		if (effD(model, car) < req.minDesirability) {
 			app.toast('That car is too plain for this booking');
 			return;
@@ -231,12 +245,13 @@ export const bookingsScene = {
 			const range = this.carScroll.visibleRange();
 			for (let i = range.first; i <= range.last; i++) {
 				const car = cars[i];
+				const model = modelOrNull(car);
+				if (model === null) continue;
 				const x = L.cars.x + i * L.carW + 6 - this.carScroll.offset;
 				const y = L.cars.y + 6;
 				const w = L.carW - 12;
 				const h = L.cars.h - 12;
 				panel(ctx, x, y, w, h, { shadow: false });
-				const model = modelOf(car.modelId);
 				label(ctx, model.name, x + 10, y + 10, { size: 10, font: 'title', maxW: w - 20 });
 				drawCar(ctx, model.archetype, x + w / 2, y + h - 40, 0.4, { cond: car.condition });
 				const block = carBlock(state, car, findReq(state, this.selReq));
@@ -288,15 +303,16 @@ export const bookingsScene = {
 			label(ctx, 'Fee', dx, L.detail.y + 210, { size: 30 });
 			label(ctx, money(req.fee), dx + 90, L.detail.y + 210, { size: 30, color: PALETTE.good });
 			const car = findCar(state, this.selCar);
+			const cmodel = car ? modelOrNull(car) : null;
 			const lines = [
-				['Style needed', req.minDesirability, car ? effD(modelOf(car.modelId), car) : null],
-				['Reliability needed', req.minReliability, car ? effR(modelOf(car.modelId), car) : null],
-				['Condition needed', req.minCondition, car ? car.condition : null],
+				['Style needed', req.minDesirability, cmodel ? effD(cmodel, car) : null],
+				['Reliability needed', req.minReliability, cmodel ? effR(cmodel, car) : null],
+				['Condition needed', req.minCondition, cmodel ? car.condition : null],
 			];
 			for (let i = 0; i < lines.length; i++) {
 				const y = L.detail.y + 260 + i * 40;
 				label(ctx, lines[i][0] + ' ' + lines[i][1], dx, y, { size: 28 });
-				if (car) {
+				if (lines[i][2] !== null) {
 					const pass = lines[i][2] >= lines[i][1];
 					label(ctx, pass ? 'OK' : 'NO', dx + 340, y, { size: 20, font: 'title', color: pass ? PALETTE.good : PALETTE.bad });
 					label(ctx, oneDp(lines[i][2]), dx + 430, y, { size: 28 });

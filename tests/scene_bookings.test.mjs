@@ -217,4 +217,69 @@ test('a tap that lands nowhere changes nothing', () => {
 	eq(bookingsScene.selCar, null, 'no car selected');
 });
 
+test('a fault car shows FAULT and ACCEPT refuses with the fit toast', () => {
+	const f = freshApp();
+	f.state.cars[0].fault = { id: 'gearbox' };
+	const ctx = makeCtx();
+	bookingsScene.draw(ctx, f.app, 0);
+	tap(f.app, ROW);
+	bookingsScene.draw(ctx, f.app, 0);
+	ok(has(texts(ctx), 'FAULT'), 'FAULT label drawn');
+	tap(f.app, ZED);
+	bookingsScene.draw(ctx, f.app, 0);
+	tap(f.app, ACCEPT);
+	eq(f.app.toasts, ['That car is not fit to go out'], 'fit toast');
+	eq(f.state.day, 1, 'no day spent');
+});
+
+test('an impounded car shows IMPOUNDED', () => {
+	const f = freshApp();
+	f.state.cars[0].impoundedUntil = f.state.day + 3;
+	const ctx = makeCtx();
+	bookingsScene.draw(ctx, f.app, 0);
+	tap(f.app, ROW);
+	bookingsScene.draw(ctx, f.app, 0);
+	ok(has(texts(ctx), 'IMPOUNDED'), 'IMPOUNDED label drawn');
+});
+
+test('an expired request: ACCEPT toasts acceptJob and changes nothing', () => {
+	const f = freshApp();
+	f.state.requests[0].expiresDay = 0;
+	f.state.day = 3;
+	const ctx = makeCtx();
+	bookingsScene.draw(ctx, f.app, 0);
+	tap(f.app, ROW);
+	tap(f.app, ZED);
+	bookingsScene.draw(ctx, f.app, 0);
+	tap(f.app, ACCEPT);
+	eq(f.app.toasts.length, 1, 'one toast from acceptJob');
+	eq(f.state.requests.length, 1, 'the request is still on the board');
+});
+
+test('a selection pointing at vanished ids does not crash a draw', () => {
+	const f = freshApp();
+	bookingsScene.selReq = 'NOPE';
+	bookingsScene.selCar = 'GONE';
+	const ctx = makeCtx();
+	bookingsScene.draw(ctx, f.app, 0);
+	bookingsScene.draw(ctx, f.app, 9);
+	ok(true, 'draw survived a vanished selection');
+});
+
+test('a car with an unknown model id is left out of the strip, draw survives', () => {
+	const f = freshApp();
+	f.state.cars[1].modelId = 't9_nope';
+	const ctx = makeCtx();
+	let threw = false;
+	try {
+		bookingsScene.draw(ctx, f.app, 0);
+	} catch (e) {
+		threw = true;
+	}
+	ok(!threw, 'draw survives an unknown model id');
+	tap(f.app, ROW);
+	tap(f.app, ALLERGY);
+	eq(bookingsScene.selCar, null, 'the unknown-model car cannot be picked');
+});
+
 done();
