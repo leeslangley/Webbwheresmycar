@@ -3,7 +3,7 @@ extends Control
 
 # Full-screen transition layer (the Flow puts it on the Main root, above the Stage).
 # play() changes screens: fade, slide-left/right/up/down and pageturn take a snapshot of the outgoing
-# screen; iris and static are a dip-to-black placeholder until GDR23 replaces them with shaders.
+# screen; iris and static draw a shader overlay (shaders/iris.gdshader, shaders/static_wipe.gdshader).
 # Headless, fx off, unknown kind, or already running: swap at once and emit finished (no awaits).
 # The numbers come from TransMath (rooms/trans_math.gd).
 
@@ -92,17 +92,46 @@ func apply_progress(u: float, kind: String, area: Vector2, shifter: Control) -> 
 			_light.position = Vector2(edge_x - 3.0, 0.0)
 			_light.size = Vector2(3.0, area.y)
 	elif kind == "iris" or kind == "static":
-		# Placeholder until GDR23: black dips in and out, the screen swaps at the midpoint.
+		# The overlay shader does the picture; the screen swaps at the midpoint.
 		if _overlay == null:
-			_overlay = ColorRect.new()
-			_overlay.color = Color.BLACK
-			_overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
-			_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			_overlay = make_overlay(kind, area)
 			add_child(_overlay)
-		_overlay.modulate.a = TransMath.static_coverage(u)
+		apply_overlay(_overlay, kind, u, area)
 		if u >= 0.5 and not _swapped and _swap.is_valid():
 			_swapped = true
 			_swap.call()
+
+
+# A full-screen ColorRect with the iris or static shader (null for other kinds). The caller adds it to a node.
+func make_overlay(kind: String, size: Vector2) -> ColorRect:
+	var path := ""
+	if kind == "iris":
+		path = "res://shaders/iris.gdshader"
+	elif kind == "static":
+		path = "res://shaders/static_wipe.gdshader"
+	else:
+		return null
+	var ov := ColorRect.new()
+	ov.size = size
+	ov.color = Color.WHITE
+	ov.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var mat := ShaderMaterial.new()
+	mat.shader = load(path) as Shader
+	mat.set_shader_parameter("rect_size", size)
+	if kind == "iris":
+		mat.set_shader_parameter("center", size / 2.0)
+	ov.material = mat
+	return ov
+
+
+# Sets the overlay's shader parameters for progress u (0..1) of an iris or static transition.
+func apply_overlay(ov: ColorRect, kind: String, u: float, size: Vector2) -> void:
+	var mat := ov.material as ShaderMaterial
+	if kind == "iris":
+		mat.set_shader_parameter("radius", TransMath.iris(u, size).radius)
+	elif kind == "static":
+		mat.set_shader_parameter("coverage", TransMath.static_coverage(u))
+		mat.set_shader_parameter("frame", int(Time.get_ticks_msec() / 50))
 
 
 func _cleanup(shifter: Control) -> void:
