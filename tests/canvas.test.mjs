@@ -1,10 +1,11 @@
 // Tests for ui/canvas.js (DESIGN.md 9.7): layout fitting, pointer mapping,
 // portrait detection and canvas sizing. Runs under macOS `jsc -m`.
 
-import { test, eq, near, throws, done } from './harness.js';
+import { test, eq, near, ok, throws, done } from './harness.js';
 import { makeCtx } from './fakectx.js';
 import {
-	LOGICAL_W, LOGICAL_H, fitLayout, toLogical, isPortrait, applyLayout,
+	LOGICAL_W, LOGICAL_H, STAGE_W, FULL_W_MAX, BLEED_MAX, fullWidthFor, fitLayout,
+	toFull, toLogical, isPortrait, applyLayout,
 } from '../src/ui/canvas.js';
 
 test('logical size is 1280x720', () => {
@@ -39,13 +40,17 @@ test('fitLayout 1000x1000 -> width-limited letterbox top and bottom', () => {
 	near(l.offY, 218.75, 1e-9, 'offY');
 });
 
-test('fitLayout 844x390 iPhone landscape -> height-limited side bars', () => {
+test('fitLayout 844x390 iPhone landscape: 1560 canvas, stage at 140', () => {
 	const l = fitLayout(844, 390);
-	near(l.scale, 390 / 720, 1e-4, 'scale');
-	near(l.viewW, 1280 * (390 / 720), 1e-4, 'viewW');
-	near(l.viewH, 390, 1e-4, 'viewH');
-	near(l.offX, (844 - 1280 * (390 / 720)) / 2, 1e-4, 'offX');
-	near(l.offY, 0, 1e-4, 'offY');
+	eq(l.fullW, 1560, 'fullW');
+	eq(l.stageX, 140, 'stageX');
+	eq(l.stageW, 1280, 'stageW');
+	eq(l.fullH, 720, 'fullH');
+	near(l.scale, 390 / 720, 1e-9, 'scale');
+	near(l.viewW, 845, 1e-6, 'viewW');
+	near(l.viewH, 390, 1e-6, 'viewH');
+	near(l.offX, -0.5, 1e-6, 'offX');
+	near(l.offY, 0, 1e-6, 'offY');
 });
 
 test('fitLayout rejects zero and negative sizes', () => {
@@ -73,9 +78,9 @@ test('toLogical gives null for points in the letterbox bars', () => {
 	const l = fitLayout(1000, 1000);
 	eq(toLogical(l, 500, 100), null, 'top bar');
 	eq(toLogical(l, 500, 900), null, 'bottom bar');
-	const side = fitLayout(844, 390);
-	eq(toLogical(side, -5, 200), null, 'left bar');
-	eq(toLogical(side, 840, 200), null, 'right bar');
+	const wide = fitLayout(2560, 1080);
+	eq(toLogical(wide, 50, 500), null, 'left bar');
+	eq(toLogical(wide, 2457, 500), null, 'right bar');
 });
 
 test('isPortrait only when taller than wide', () => {
@@ -103,18 +108,25 @@ test('applyLayout 1280x720 dpr 2 -> 2560x1440 backing, scale*dpr transform', () 
 	eq(calls[0][1], [2, 0, 0, 2, 0, 0], 'setTransform args');
 });
 
-test('applyLayout 844x390 dpr 3 -> letterboxed CSS size, scaled transform', () => {
+test('applyLayout 844x390 dpr 3 -> 1560-wide canvas overhanging by half a pixel', () => {
 	const ctx = makeCtx();
 	const canvas = { style: {}, width: 0, height: 0, getContext: function () { return ctx; } };
 	const r = applyLayout(canvas, { innerWidth: 844, innerHeight: 390, devicePixelRatio: 3 });
-	const scale = 390 / 720;
-	eq(canvas.width, Math.round(1280 * scale * 3), 'canvas.width');
-	eq(canvas.height, Math.round(720 * scale * 3), 'canvas.height');
-	const offX = (844 - 1280 * scale) / 2;
-	eq(canvas.style.left, offX + 'px', 'style.left');
+	eq(canvas.width, 2535, 'canvas.width');
+	eq(canvas.height, 1170, 'canvas.height');
+	near(parseFloat(canvas.style.left), -0.5, 1e-6, 'style.left');
 	eq(canvas.style.top, '0px', 'style.top');
+	near(parseFloat(canvas.style.width), 845, 1e-6, 'style.width');
+	eq(canvas.style.height, '390px', 'style.height');
 	const calls = ctx.calls.filter(function (c) { return c[0] === 'setTransform'; });
-	eq(calls[0][1], [scale * 3, 0, 0, scale * 3, 0, 0], 'setTransform args');
+	eq(calls.length, 1, 'one setTransform');
+	const t = calls[0][1];
+	near(t[0], 1.625, 1e-9, 'a');
+	near(t[1], 0, 1e-9, 'b');
+	near(t[2], 0, 1e-9, 'c');
+	near(t[3], 1.625, 1e-9, 'd');
+	near(t[4], 0, 1e-9, 'e');
+	near(t[5], 0, 1e-9, 'f');
 	eq(r.dpr, 3, 'dpr');
 });
 
@@ -148,11 +160,121 @@ test('applyLayout rejects an invalid window', () => {
 test('toLogical round-trips any in-view point', () => {
 	const l = fitLayout(844, 390);
 	const p = { x: 1024, y: 300 };
-	const screenX = l.offX + p.x * l.scale;
+	const screenX = l.offX + (p.x + l.stageX) * l.scale;
 	const screenY = l.offY + p.y * l.scale;
+	near(screenX, 630, 1e-6, 'client x of stage point');
+	near(screenY, 162.5, 1e-6, 'client y of stage point');
 	const back = toLogical(l, screenX, screenY);
 	near(back.x, 1024, 1e-9, 'x round trip');
 	near(back.y, 300, 1e-9, 'y round trip');
+});
+
+test('toLogical round-trips points in the left and right strips', () => {
+	const l = fitLayout(844, 390);
+	const pts = [{ x: -100, y: 300 }, { x: 1380, y: 300 }];
+	for (let i = 0; i < pts.length; i++) {
+		const screenX = l.offX + (pts[i].x + l.stageX) * l.scale;
+		const screenY = l.offY + pts[i].y * l.scale;
+		const back = toLogical(l, screenX, screenY);
+		ok(back !== null, 'strip point ' + i + ' is inside the canvas');
+		near(back.x, pts[i].x, 1e-9, 'strip x round trip ' + i);
+		near(back.y, pts[i].y, 1e-9, 'strip y round trip ' + i);
+	}
+});
+
+test('fullWidthFor: 16:9 and narrower windows keep 1280', () => {
+	const sizes = [[1280, 720], [667, 375], [1366, 768], [1024, 768], [1000, 1000]];
+	for (let i = 0; i < sizes.length; i++) {
+		eq(fullWidthFor(sizes[i][0], sizes[i][1]), 1280, sizes[i][0] + 'x' + sizes[i][1]);
+	}
+});
+
+test('fullWidthFor: 1316 for 1316x720', () => {
+	eq(fullWidthFor(1316, 720), 1316, '1316x720');
+});
+
+test('fullWidthFor: 1560 for 844x390 and 1564 for 852x393', () => {
+	eq(fullWidthFor(844, 390), 1560, '844x390');
+	eq(fullWidthFor(852, 393), 1564, '852x393');
+});
+
+test('fullWidthFor: 1568 for phones above the cap and for very wide windows', () => {
+	const sizes = [[874, 402], [956, 440], [2560, 1080], [1600, 720]];
+	for (let i = 0; i < sizes.length; i++) {
+		eq(fullWidthFor(sizes[i][0], sizes[i][1]), 1568, sizes[i][0] + 'x' + sizes[i][1]);
+	}
+});
+
+test('fullWidthFor rejects a zero width', () => {
+	throws(() => fullWidthFor(0, 100), 'winW 0');
+});
+
+test('fitLayout 852x393 iPhone 15 Pro: 1564 canvas, stage at 142', () => {
+	const l = fitLayout(852, 393);
+	eq(l.fullW, 1564, 'fullW');
+	eq(l.stageX, 142, 'stageX');
+	near(l.scale, 393 / 720, 1e-9, 'scale');
+	near(l.viewW, 853.6833, 1e-3, 'viewW');
+	near(l.offX, -0.84167, 1e-3, 'offX');
+	near(l.offY, 0, 1e-6, 'offY');
+});
+
+test('fitLayout 2560x1080 ultrawide: 1568 canvas, scale 1.5, stage at 144', () => {
+	const l = fitLayout(2560, 1080);
+	eq(l.fullW, 1568, 'fullW');
+	near(l.scale, 1.5, 1e-9, 'scale');
+	near(l.viewW, 2352, 1e-6, 'viewW');
+	near(l.offX, 104, 1e-6, 'offX');
+	near(l.offY, 0, 1e-6, 'offY');
+	eq(l.stageX, 144, 'stageX');
+});
+
+test('fitLayout 1316x720: stage at 18, no offset', () => {
+	const l = fitLayout(1316, 720);
+	eq(l.stageX, 18, 'stageX');
+	near(l.offX, 0, 1e-9, 'offX');
+});
+
+test('fitLayout 1024x768 4:3: 1280 canvas, letterbox top and bottom', () => {
+	const l = fitLayout(1024, 768);
+	eq(l.fullW, 1280, 'fullW');
+	eq(l.stageX, 0, 'stageX');
+	near(l.scale, 0.8, 1e-9, 'scale');
+	near(l.offY, 96, 1e-9, 'offY');
+});
+
+test('fitLayout property: canvas width in range, covers the window below the cap', () => {
+	const heights = [393, 402, 440, 720, 1080];
+	for (let hi = 0; hi < heights.length; hi++) {
+		const winH = heights[hi];
+		for (let winW = 1300; winW <= 2400; winW += 7) {
+			const l = fitLayout(winW, winH);
+			const tag = winW + 'x' + winH;
+			ok(l.fullW >= 1280 && l.fullW <= 1568, 'fullW in range ' + tag);
+			ok((l.fullW - 1280) % 4 === 0, 'fullW multiple of 4 ' + tag);
+			ok(l.offY >= -1e-6, 'offY not negative ' + tag);
+			if (l.fullW > 1280 && l.fullW < 1568) {
+				ok(l.viewW >= winW - 1e-6, 'canvas covers the window width ' + tag);
+				ok(l.offX <= 1e-6, 'offX not positive ' + tag);
+			}
+		}
+	}
+});
+
+test('toLogical and toFull on a 1560x720 window: strips and edges', () => {
+	const l = fitLayout(1560, 720);
+	eq(toLogical(l, 140, 360), { x: 0, y: 360 }, 'stage left edge');
+	near(toLogical(l, 0, 360).x, -140, 1e-9, 'left strip');
+	eq(toLogical(l, 1560, 720), { x: 1420, y: 720 }, 'bottom right corner');
+	eq(toLogical(l, 1561, 10), null, 'right of canvas');
+	eq(toFull(l, 140, 360), { x: 140, y: 360 }, 'toFull');
+});
+
+test('constants: BLEED_MAX and FULL_W_MAX agree with STAGE_W', () => {
+	eq(BLEED_MAX, 144, 'BLEED_MAX');
+	eq(FULL_W_MAX, 1568, 'FULL_W_MAX');
+	eq(STAGE_W, 1280, 'STAGE_W');
+	eq((FULL_W_MAX - STAGE_W) / 2, BLEED_MAX, 'strip width');
 });
 
 done();
