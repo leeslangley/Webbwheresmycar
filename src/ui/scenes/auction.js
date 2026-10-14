@@ -1,18 +1,19 @@
-// Auction hall scene (card W65a, DESIGN.md sections 4.10, 5, 9.5, 9.7): the
-// hall itself, the current lot's header (number, name, year, estimate range) and
-// browsing between the six lots with PREV/NEXT or the Left/Right keys. Reveals
-// and bidding are other cards; this one only looks. Pure UI: no DOM, no
-// Math.random, no Date, everything through the passed-in ctx so it runs in jsc
-// tests with tests/fakectx.js. draw() never writes to app.state.
+// Auction hall scene (cards W65a/W65b, DESIGN.md sections 4.10, 5, 9.5, 9.7):
+// the hall itself, the current lot's header (number, name, year, estimate range),
+// browsing between the six lots with PREV/NEXT or the Left/Right keys, and the
+// four stat rows. A stat reads ??? until the player pays to reveal it; the reveal
+// costs no day, so it calls the sim directly and toasts the returned message.
+// Pure UI: no DOM, no Math.random, no Date, everything through the passed-in ctx
+// so it runs in jsc tests with tests/fakectx.js. draw() never writes to app.state.
 
 import { PALETTE, font, shade, rgba } from '../theme.js';
-import { panel, label } from '../kit_draw.js';
+import { panel, label, button, bar } from '../kit_draw.js';
 import { makeHits } from '../kit_hits.js';
 import { drawCar } from '../../art/cardraw.js';
 import { paintOf } from '../../data/paint.js';
 import { modelOf } from '../../data/cars.js';
 import { money } from '../../core/format.js';
-import { lotView } from '../../sim/auction.js';
+import { lotView, revealStat, AUCTION_REVEAL_COST, STATS } from '../../sim/auction.js';
 import { isAuctionDay } from '../../core/clock.js';
 import { drawHud } from '../../art/hud.js';
 
@@ -32,6 +33,14 @@ export const LAYOUT = {
 	leave: { x: 700, y: 600, w: 540, h: 70 },
 	back: { x: 40, y: 650, w: 200, h: 50 },
 };
+
+// Player-facing names for the four revealable stats, in STATS order, and the
+// colour of each stat's bar. Stats run 0..10.
+export const STAT_LABELS = ['STYLE', 'UPKEEP', 'GRIT', 'CONDITION'];
+
+const STAT_COLORS = [PALETTE.lamp, PALETTE.lightred, PALETTE.lightgreen, PALETTE.cyan];
+
+const STAT_MAX = 10;
 
 // The hall: dark room, a plank stage under the picture, a spotlight cone and a
 // line of silhouette bidders along the bottom. Drawn back to front.
@@ -114,6 +123,45 @@ function arrowButton(ctx, rect, glyph, caption, t) {
 	});
 }
 
+// One stat row: the stat's name, then ??? in grey while it is hidden or its
+// value with a bar once revealed. A hidden row carries a REVEAL button on the
+// right; the whole row is the tap target for it.
+function drawStatRow(ctx, rect, i, view) {
+	panel(ctx, rect.x, rect.y, rect.w, rect.h, { fill: PALETTE.darkgrey });
+	const stat = STATS[i];
+	const known = view.revealed[stat];
+	label(ctx, STAT_LABELS[i], rect.x + 10, rect.y + 8, {
+		size: 14,
+		font: 'title',
+		color: PALETTE.lamp,
+		shadow: true,
+	});
+	if (known) {
+		const value = view.values[stat];
+		label(ctx, String(value), rect.x + 10, rect.y + 30, {
+			size: 18,
+			font: 'title',
+			color: PALETTE.white,
+			shadow: true,
+		});
+		bar(ctx, rect.x + 70, rect.y + 26, 60, 14, value, STAT_MAX, STAT_COLORS[i]);
+	} else {
+		label(ctx, '???', rect.x + 10, rect.y + 30, {
+			size: 18,
+			font: 'title',
+			color: PALETTE.lightgrey,
+			shadow: true,
+		});
+		button(ctx, {
+			x: rect.x + rect.w - 130,
+			y: rect.y + 7,
+			w: 120,
+			h: 36,
+			label: 'REVEAL ' + money(AUCTION_REVEAL_COST),
+		});
+	}
+}
+
 export const auctionScene = {
 	id: 'auction',
 
@@ -121,13 +169,18 @@ export const auctionScene = {
 	lotIndex: 0,
 
 	// Hit list, rebuilt at the start of every draw; pressed is the id of the
-	// hit pressed on 'down' and is reset only by enter and 'up'.
+	// hit pressed on 'down' and pressedLot is the lot showing at that moment.
+	// Both are reset only by enter and 'up'.
 	hits: null,
 	pressed: null,
+	pressedLot: null,
+	shownLotId: null,
 
 	enter: function (app) {
 		this.hits = null;
 		this.pressed = null;
+		this.pressedLot = null;
+		this.shownLotId = null;
 		this.lotIndex = 0;
 		const state = app.state;
 		if (!state || !isAuctionDay(state.day)) {
@@ -152,7 +205,15 @@ export const auctionScene = {
 			this.lotIndex = 0;
 		}
 
-		// Hit list first, so every tap below matches what this draw shows.
+		// The current lot, read before the hit list is built so the REVEAL hits
+		// know which lot they belong to.
+		const lot = n > 0 ? lots[this.lotIndex] : null;
+		const view = lot ? lotView(state, lot.lotId) : null;
+		this.shownLotId = lot ? lot.lotId : null;
+
+		// Hit list first, so every tap below matches what this draw shows. A
+		// REVEAL only exists while its stat is still hidden; the sim checks the
+		// lot's remaining allowance and the cash.
 		const hits = makeHits();
 		hits.add('prev', LAYOUT.prev.x, LAYOUT.prev.y, LAYOUT.prev.w, LAYOUT.prev.h, () => {
 			this.step(n, -1);
@@ -163,15 +224,33 @@ export const auctionScene = {
 		hits.add('back', LAYOUT.back.x, LAYOUT.back.y, LAYOUT.back.w, LAYOUT.back.h, () => {
 			app.pop();
 		});
+		if (view) {
+			for (let i = 0; i < STATS.length; i++) {
+				if (view.revealed[STATS[i]]) {
+					continue;
+				}
+				const r = LAYOUT.reveals[i];
+				const lotId = lot.lotId;
+				const stat = STATS[i];
+				hits.add('reveal' + i, r.x, r.y, r.w, r.h, () => {
+					// Only the lot that was on screen when the player pressed
+					// may be revealed: if the hall moved on before the release,
+					// the tap was not for this lot and must not spend cash.
+					if (this.pressedLot !== lotId) {
+						return;
+					}
+					// A reveal costs no day, so it is not an app.act.
+					const res = revealStat(app.state, lotId, stat);
+					app.toast(res.msg);
+				});
+			}
+		}
 		this.hits = hits;
 
 		drawHall(ctx, t);
 		arrowButton(ctx, LAYOUT.prev, '<', 'PREV');
 		arrowButton(ctx, LAYOUT.next, '>', 'NEXT');
 
-		// The current lot and its header.
-		const lot = n > 0 ? lots[this.lotIndex] : null;
-		const view = lot ? lotView(state, lot.lotId) : null;
 		if (n === 0) {
 			label(ctx, 'No lots this month.', 640, LAYOUT.picture.y + 120, {
 				size: 34,
@@ -181,10 +260,11 @@ export const auctionScene = {
 			});
 		} else if (view) {
 			const model = modelOf(view.modelId);
-			// The car stands on the stage, painted in its catalogue colour.
+			// The car stands on the stage, painted in its catalogue colour. Its
+			// wear only shows once the player has paid to know the condition.
 			drawCar(ctx, model.archetype, 640, LAYOUT.picture.y + LAYOUT.picture.h - 24, 1.7, {
 				body: paintOf(model.id),
-				cond: 6,
+				cond: view.revealed.condition ? view.values.condition : 6,
 				t: t,
 			});
 			// Header over the stage: lot number, name (title font 22px), year,
@@ -218,6 +298,14 @@ export const auctionScene = {
 			});
 		}
 
+		// The four stat rows: ??? until paid for, then the value with a bar and
+		// a REVEAL button while the stat is still hidden.
+		if (view) {
+			for (let i = 0; i < STATS.length; i++) {
+				drawStatRow(ctx, LAYOUT.reveals[i], i, view);
+			}
+		}
+
 		// The hall's own buttons, then the HUD strip on top of everything.
 		arrowButton(ctx, LAYOUT.back, '<', 'BACK');
 		drawHud(ctx, state, t);
@@ -236,9 +324,12 @@ export const auctionScene = {
 			return;
 		}
 		if (type === 'down') {
-			// Tap rule: remember the hit's id, never the hit object.
+			// Tap rule: remember the hit's id, never the hit object. The lot
+			// showing now is remembered too, so a reveal cannot land on a lot
+			// the player never saw.
 			const h = this.hits.hit(x, y);
 			this.pressed = h ? h.id : null;
+			this.pressedLot = this.shownLotId;
 			return;
 		}
 		if (type === 'up') {
@@ -248,6 +339,7 @@ export const auctionScene = {
 			if (e && pressed !== null && e.id === pressed && typeof e.onTap === 'function') {
 				e.onTap(e);
 			}
+			this.pressedLot = null;
 		}
 	},
 
