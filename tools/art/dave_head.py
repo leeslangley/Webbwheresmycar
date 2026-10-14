@@ -110,6 +110,7 @@ def build_cap(spec, mats, pivot):
     band = _grab(pivot, parts, charlib.ring, at((0.0, 0.0, c + 0.14)), 0.28,
                  0.025, mats['cap_dark'], 'dave_cap_band')
     band.scale = (1.07, 1.0, 1.0)
+    band.rotation_euler = (0.0, 0.0, 0.0)
 
     peak = _grab(pivot, parts, charlib.rbox, at((0.0, -0.30, c + 0.15)),
                  (0.30, 0.22, 0.03), 0.012, mats['cap_dark'], 'dave_cap_peak')
