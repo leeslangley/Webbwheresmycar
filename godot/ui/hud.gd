@@ -43,6 +43,8 @@ func build() -> void:
 
 	var portrait := CarPortrait.new()
 	portrait.name = "Portrait"
+	# The wide HUD slot suits a three-quarter view of the car (the default front view is for square slots).
+	portrait.view_name = "three_quarter"
 	portrait.position = Vector2(324, 8)
 	portrait.size = Vector2(300, 114)
 	add_child(portrait)

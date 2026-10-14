@@ -122,11 +122,13 @@ func _build_background() -> void:
 		sp.name = "SkyArt"
 		sp.texture = art
 		sp.centered = false
+		sp.position = Vector2(-200, 0)
 		sp.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 		placeholder("Background").add_child(sp)
 		var shade := ColorRect.new()
 		shade.name = "Shade"
-		shade.size = Vector2(1280, 720)
+		shade.position = Vector2(-200, 0)
+		shade.size = Vector2(1680, 720)
 		shade.color = Color(0.03, 0.02, 0.1, 0.35)
 		placeholder("Background").add_child(shade)
 

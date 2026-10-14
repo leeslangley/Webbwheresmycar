@@ -50,7 +50,33 @@ func _ready() -> void:
 	add_button(&"erase", R_ERASE, "", "normal")
 	add_button(&"back", R_BACK, "BACK", "normal")
 	get_node("Hotspots").add_child(UiPainter.make("Switches", _draw_switches))
+	_build_footer(u)
 	refresh()
+
+
+# The foot of the panel: the little classic car parked on a strip of kerb, and the credit line.
+func _build_footer(u: Control) -> void:
+	if UiSkin.tex("title_car_paint") == null:
+		return
+	var foot := Node2D.new()
+	foot.name = "Footer"
+	foot.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	u.add_child(foot)
+	foot.add_child(UiPainter.make("Kerb", func(on: CanvasItem) -> void:
+		UiSkin.rrect(on, Rect2(300, 640, 680, 10), Color("4A4468"), 5, UiTheme.INK, 3)))
+	var k := 0.5
+	for part in [["Paint", "title_car_paint"], ["Detail", "title_car_detail"]]:
+		var sp := Sprite2D.new()
+		sp.name = part[0]
+		sp.texture = UiSkin.tex(part[1])
+		sp.centered = false
+		sp.scale = Vector2(k, k)
+		sp.position = Vector2(640.0 - 150.0 * k, 646.0 - 112.0 * k)
+		if part[0] == "Paint":
+			sp.modulate = Color("D8323A")
+		foot.add_child(sp)
+	var credit := RoomBase.add_label(u, "Credit", "WEBB'S WHEELS  -  FINE MOTORS, MOSTLY", Vector2(240, 574), 18, Color("B9B4E0"), 800.0, true)
+	credit.add_theme_font_override("font", UiSkin.display_font(700))
 
 
 # A little sliding switch at the right end of each toggle row (knob right and lit when ON).

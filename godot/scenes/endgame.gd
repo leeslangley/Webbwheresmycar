@@ -206,8 +206,9 @@ func _build() -> void:
 			sp.name = art[0]
 			sp.texture = UiSkin.tex(art[1])
 			sp.centered = false
+			sp.position = Vector2(-200, 0)
 			bg.add_child(sp)
-	add_box(bg, "Dim", Rect2(0, 0, 1280, 720), Color(0.04, 0.02, 0.1, 0.42))
+	add_box(bg, "Dim", Rect2(-200, 0, 1680, 720), Color(0.04, 0.02, 0.1, 0.42))
 	var rays := UiPainter.make("Rays", _draw_rays)
 	rays.position = Vector2(640, 110)
 	bg.add_child(rays)

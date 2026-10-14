@@ -22,6 +22,8 @@ const LAMP_X := [147.0, 497.0, 1137.0]
 const LAMP_Y := 418.0
 const CAR_ART_OFFSET := Vector2(-50, -9)
 const SUB_Y := 304.0
+# The baked town is 200 px wider than the stage on each side, for wide phones.
+const ART_PAD := 200.0
 const STAR_Y := 340.0
 
 var _t := 0.0
@@ -49,7 +51,7 @@ func _build_background() -> void:
 	sky.polygon = PackedVector2Array([Vector2(0, 0), Vector2(1280, 0), Vector2(1280, 640), Vector2(0, 640)])
 	sky.vertex_colors = PackedColorArray([Color("14102A"), Color("14102A"), Color("352879"), Color("352879")])
 	bg.add_child(sky)
-	_add_sprite(bg, "SkyArt", "title_sky", Vector2.ZERO)
+	_add_sprite(bg, "SkyArt", "title_sky", Vector2(-ART_PAD, 0))
 	var stars := Node2D.new()
 	stars.name = "Stars"
 	bg.add_child(stars)
@@ -64,7 +66,7 @@ func _build_background() -> void:
 			sparkle.color = Color(1, 0.96, 0.85, 0.8)
 			star.add_child(sparkle)
 	RoomBase.add_box(bg, "Road", Rect2(0, 648, 1280, 72), Color("151226"))
-	_add_sprite(bg, "TownArt", "title_town", Vector2.ZERO)
+	_add_sprite(bg, "TownArt", "title_town", Vector2(-ART_PAD, 0))
 	var dashes := Node2D.new()
 	dashes.name = "Dashes"
 	bg.add_child(dashes)
@@ -171,14 +173,15 @@ func _build_vignette() -> void:
 	gt.gradient = g
 	gt.fill = GradientTexture2D.FILL_RADIAL
 	gt.fill_from = Vector2(0.5, 0.45)
-	gt.fill_to = Vector2(1.05, 0.45)
+	gt.fill_to = Vector2(0.95, 0.45)
 	gt.width = 256
 	gt.height = 144
 	var v := Sprite2D.new()
 	v.name = "Vignette"
 	v.texture = gt
 	v.centered = false
-	v.scale = Vector2(1280.0 / 256.0, 720.0 / 144.0)
+	v.position = Vector2(-ART_PAD, 0)
+	v.scale = Vector2((1280.0 + 2.0 * ART_PAD) / 256.0, 720.0 / 144.0)
 	v.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	placeholder("Front").add_child(v)
 

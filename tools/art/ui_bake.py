@@ -572,11 +572,18 @@ def panels():
 # ============================================================== title: night sky, town, car
 
 TW, TH = 1280, 720
+XPAD = 200  # extra painted picture each side for wide phones; the images are drawn at x = -XPAD
+
+
+def wide_canvas(ss):
+    c = Canvas(TW + 2 * XPAD, TH, ss=ss)
+    c.X -= XPAD  # helpers then work in stage coordinates
+    return c
 
 
 @bake
 def title_sky():
-    c = Canvas(TW, TH, ss=1)
+    c = wide_canvas(1)
     X, Y = c.X, c.Y
     sky = grad(Y / 600.0, [(0, hexc("#070720")), (0.35, hexc("#15124A")), (0.62, hexc("#33206A")), (0.8, hexc("#7A2F74")), (0.92, hexc("#D9576A")), (1.0, hexc("#FF9A5C"))])
     c.paint(np.ones_like(X), sky)
@@ -585,16 +592,16 @@ def title_sky():
     d = np.hypot(X - mx, Y - my)
     c.paint(np.clip(1 - d / 330, 0, 1) ** 2.2 * 0.45, hexc("#9FB4FF"))
     c.paint(np.clip(1 - d / 110, 0, 1) ** 1.5 * 0.5, hexc("#FFF4D8"))
-    moon = Canvas(TW, TH, ss=4)
+    moon = wide_canvas(4)
     md = sd_circle(moon.X, moon.Y, mx, my, mr)
     mt = np.clip(((moon.X - mx) * 0.6 + (moon.Y - my) * 0.8) / (2 * mr) + 0.5, 0, 1)
     moon.paint(moon.cov(md), grad(mt, [(0, hexc("#FFFDF0")), (0.6, hexc("#FFF0C8")), (1, hexc("#E8C88A"))]))
     for (cx, cy, r) in [(mx - 14, my - 10, 9), (mx + 16, my + 8, 12), (mx - 4, my + 22, 6), (mx + 20, my - 20, 5)]:
         moon.paint(moon.cov(sd_circle(moon.X, moon.Y, cx, cy, r)) * moon.cov(md) * 0.18, hexc("#B89A60"))
-    mp = moon.px.reshape(TH, 4, TW, 4, 4).mean(axis=(1, 3))
+    mp = moon.px.reshape(TH, 4, TW + 2 * XPAD, 4, 4).mean(axis=(1, 3))
     c.px = mp + c.px * (1 - mp[..., 3:4])
     # wispy clouds lit by the moon
-    n = value_noise((TH, TW), 160, 5, 5)
+    n = value_noise((TH, TW + 2 * XPAD), 160, 5, 5)
     band = np.clip(1 - np.abs(Y - 230) / 70, 0, 1) + np.clip(1 - np.abs(Y - 390) / 50, 0, 1) * 0.8
     cl = np.clip((n - 0.52) * 4.0, 0, 1) * band
     c.paint(cl * 0.55, hexc("#3B2E78"))
@@ -603,8 +610,8 @@ def title_sky():
     # far skyline silhouette with a few lit dots
     rng = np.random.default_rng(3)
     far = np.full_like(X, 1e9)
-    x = -10.0
-    while x < TW:
+    x = -XPAD - 10.0
+    while x < TW + XPAD:
         w = rng.uniform(30, 90)
         h = rng.uniform(40, 140)
         far = np.minimum(far, sd_rrect(X, Y, x, 600 - h, x + w, 760, 1))
@@ -614,8 +621,8 @@ def title_sky():
     gas = np.abs(sd_rrect(X, Y, 690, 470, 820, 760, 6)) - 3
     far = np.minimum(far, gas)
     c.paint(c.cov(far), grad(np.clip((Y - 440) / 280, 0, 1), [(0, hexc("#3A2462")), (0.5, hexc("#4A2862")), (1, hexc("#1A1030"))]))
-    dots = (rng.random((TH // 6 + 1, TW // 5 + 1)) > 0.88).astype(np.float32)
-    dm = np.repeat(np.repeat(dots, 6, 0), 5, 1)[:TH, :TW]
+    dots = (rng.random((TH // 6 + 1, (TW + 2 * XPAD) // 5 + 1)) > 0.88).astype(np.float32)
+    dm = np.repeat(np.repeat(dots, 6, 0), 5, 1)[:TH, :TW + 2 * XPAD]
     win = ((np.mod(X, 5) < 2) & (np.mod(Y, 6) < 3)).astype(np.float32) * dm * c.cov(far + 3) * np.clip((640 - Y) / 80, 0, 1)
     c.paint(win * 0.8, hexc("#FFC46A"))
     c.save(out("title_sky.png"))
@@ -661,20 +668,20 @@ def bricks(c, sd, x0, y0, col, a=0.18):
 
 @bake
 def title_town():
-    c = Canvas(TW, TH, ss=2)
+    c = wide_canvas(2)
     X, Y = c.X, c.Y
     L = []
     rng = np.random.default_rng(9)
     G = 604.0  # pavement line
     # --- warehouse, left
-    wh = sd_rrect(X, Y, -20, 330, 160, 720, 2)
+    wh = sd_rrect(X, Y, -XPAD - 20, 330, 160, 720, 2)
     building(c, wh, hexc("#4A2B4E"), 330, G, 0.5)
     bricks(c, wh, 0, 330, hexc("#1E1028"))
     tank = np.minimum(sd_rrect(X, Y, 40, 262, 110, 312, 6), np.minimum(sd_rrect(X, Y, 48, 312, 54, 332, 1), sd_rrect(X, Y, 96, 312, 102, 332, 1)))
     building(c, tank, hexc("#3A3060"), 262, 332, 0.6)
     c.paint(c.cov(np.abs(c.Y - 280) - 1.2) * c.cov(tank), INK)
     for wy in [350, 420, 490]:
-        for wx in [10, 62, 114]:
+        for wx in [-190, -138, -86, -34, 10, 62, 114]:
             lit_window(c, L, wx, wy, wx + 36, wy + 48, rng.random() > 0.55, True)
     # --- terraced houses
     for i, x0 in enumerate([160, 262]):
@@ -743,6 +750,17 @@ def title_town():
             if wy + 18 < G - 40:
                 lit_window(c, L, wx, wy, wx + 15, wy + 18, rng.random() > 0.45, rng.random() > 0.3)
     # --- pub, right
+    # terrace beyond the pub (wide phones only) and a red phone box
+    for x0 in [1300, 1392]:
+        house = np.minimum(sd_rrect(X, Y, x0, 450, x0 + 92, 720, 1), sd_poly(X, Y, [(x0 - 6, 452), (x0 + 26, 404), (x0 + 66, 404), (x0 + 98, 452)]))
+        building(c, house, hexc("#4E3A62"), 404, G, 0.5)
+        bricks(c, sd_rrect(X, Y, x0, 452, x0 + 92, G, 1), x0, 452, hexc("#241430"))
+        lit_window(c, L, x0 + 14, 470, x0 + 40, 506, rng.random() > 0.4)
+        lit_window(c, L, x0 + 52, 470, x0 + 78, 506, rng.random() > 0.6)
+        lit_window(c, L, x0 + 12, 532, x0 + 48, 584, rng.random() > 0.3)
+    box = sd_rrect(X, Y, 1330, 520, 1362, 604, 4)
+    building(c, box, hexc("#C8202A"), 520, 604, 0.6)
+    lit_window(c, L, 1336, 534, 1356, 584, True)
     pub = np.minimum(sd_rrect(X, Y, 1160, 440, 1300, 720, 2), sd_poly(X, Y, [(1154, 444), (1230, 396), (1306, 444)]))
     building(c, pub, hexc("#5A3A34"), 396, G, 0.5)
     roof = sd_poly(X, Y, [(1154, 444), (1230, 396), (1306, 444)])
@@ -757,7 +775,7 @@ def title_town():
     building(c, ps, hexc("#7A2A2A"), 468, 506)
     c.paint(c.cov(sd_circle(X, Y, 1266, 487, 9)), hexc("#E8B923"))
     # --- pavement, kerb, road
-    pav = np.maximum(-(Y - G), Y - 640)
+    pav = np.maximum(-(Y - G), Y - 640) + 0 * X
     c.paint(c.cov(pav), grad(np.clip((Y - G) / 36, 0, 1), [(0, hexc("#4A4468")), (1, hexc("#5E5880"))]))
     slab = ((np.mod(X + (Y - G) * 0.6, 64.0) < 1.5) | (np.abs(Y - 620) < 0.8)) * c.cov(pav)
     c.paint(slab * 0.4, hexc("#2A2648"))
@@ -765,7 +783,7 @@ def title_town():
     c.paint(c.cov(kerb), grad(np.clip((Y - 638) / 10, 0, 1), [(0, hexc("#9A94BE")), (1, hexc("#4A4468"))]))
     c.paint(c.cov(np.abs(Y - 648) - 1.2), INK)
     road = -(Y - 648)
-    asphalt = up(c, value_noise((TH, TW), 3, 41, 2))
+    asphalt = up(c, value_noise((TH, TW + 2 * XPAD), 3, 41, 2))
     rc = grad(np.clip((Y - 648) / 72, 0, 1), [(0, hexc("#24203A")), (1, hexc("#151226"))])
     rc[..., :3] *= (0.9 + 0.2 * asphalt)[..., None]
     c.paint(c.cov(road), rc)
