@@ -1,0 +1,1 @@
+{"cases":[{"fn":"add","name":"two plus three","args":[2,3],"result":5},{"fn":"bump","name":"bump a state","state":{"n":1,"list":[1,2]},"args":[5],"result":6,"after":{"n":6,"list":[1,2,5]}},{"fn":"float","name":"floats and text","args":[0.1,0.2],"result":{"sum":0.30000000000000004,"text":"Price £ 5","flag":true,"none":null}}]}
