@@ -1,0 +1,44 @@
+{
+ "version": 2,
+ "id": "t1_mgbee",
+ "note": "Estimates not in the dossier: wheel hubcap_r, door rear shut line x -12 (seat line), bonnet and boot shut lines (lowered from the body edge), boot lid lower edge y 14.5, vent bulge width, wiper position, amber indicator lamps, mirror position (x 8, lat 17), and the door handle at x -9. Card asks for a chrome slatted grille and a wing mirror; the dossier says small black grille and does not name the mirror style (MGB 1970 mirror style not confirmed without web access).",
+ "belt_y": 24.6,
+ "window_frame": "chrome",
+ "caricature": {"eyes": 1.15, "mouth": 1.1, "wheels": 1.05, "bumper": 1.1},
+ "wheel": {"style": "knockoff", "hub": "chrome", "whitewall": false, "trim_ring": false, "hubcap_r": 2.2},
+ "roof": {"variant": "soft_down", "fold_x0": -18, "fold_x1": -12},
+ "windows": [
+  [[8.8, 24.6], [4.2, 30.8], [2.4, 30.8], [5.8, 24.6]]
+ ],
+ "pillars": [
+  {"poly": [[8.8, 24.6], [4.2, 30.8], [3.4, 30.8], [7.6, 24.6]], "lat_from": 0.82}
+ ],
+ "parts": [
+  {"kind": "headlamp", "x": 47, "y": 15, "lat": 6, "r": 2.2, "shape": "round", "bezel": "chrome", "side": "both", "note": "Round recessed headlamps either side of the grille (dossier front.headlamps)."},
+  {"kind": "grille", "x": 49.5, "y": 14, "w": 7, "h": 4, "style": "vertical_bars", "bars": 11, "surround": "chrome", "end": "front", "lat": 0, "note": "Card recogniser: chrome slatted grille, 11 bars. Dossier says a small black grille with a thin chrome surround; surround kept chrome, bars from the card."},
+  {"kind": "bumper", "end": "front", "y": 7.5, "h": 2.5, "w": 0, "style": "blade", "overriders": 2, "thick": 1.2, "note": "Full-width chrome blade bumper with two over-riders (dossier front.bumper)."},
+  {"kind": "plate", "end": "front", "y": 8, "w": 12, "h": 3, "lat": 0, "colour": "white"},
+  {"kind": "lamp", "x": 48.6, "y": 11.2, "lat": 9.5, "role": "indicator", "shape": "round", "r": 0.9, "side": "both", "note": "Small front indicator on the nose; estimated position."},
+  {"kind": "badge", "x": 49.8, "y": 15, "shape": "disc", "end": "front", "size": 1.5, "colour": "red", "note": "Octagon-style badge at grille top centre (card: disc, red)."},
+  {"kind": "taillamp", "x": -49.5, "y": 13, "lat": 8, "shape": "rect", "w": 3, "h": 2, "side": "both", "note": "Red rear lamp cluster, dossier rear.taillamps."},
+  {"kind": "lamp", "x": -49.5, "y": 10.5, "lat": 8, "role": "indicator", "shape": "rect", "w": 3, "h": 1.2, "side": "both", "note": "Amber stack lamp under the red lamp (card recogniser); position estimated."},
+  {"kind": "bumper", "end": "rear", "y": 7.5, "h": 2.5, "w": 0, "style": "blade", "overriders": 2, "thick": 1.2, "note": "Full-width chrome blade bumper with two over-riders (dossier rear.bumper)."},
+  {"kind": "plate", "end": "rear", "y": 8, "w": 12, "h": 3, "lat": 0, "colour": "white"},
+  {"kind": "exhaust", "style": "round", "x": -50, "y": 6, "lat": 6, "r": 1.0, "side": "near", "note": "One round exhaust outlet (dossier rear.exhaust: one)."},
+  {"kind": "shutline", "path": [[2.0, 7.0], [5.0, 24.6]], "role": "door", "side": "near", "note": "Front door edge, dossier door panel gap x 2..5 from y 7 to y 24."},
+  {"kind": "shutline", "path": [[-12.0, 7.0], [-12.0, 24.6]], "role": "door", "side": "near", "note": "Rear door edge at the seat line x -12 (estimate)."},
+  {"kind": "shutline", "path": [[2.0, 7.0], [5.0, 24.6]], "role": "door", "side": "far", "note": "Far-side front door edge (mirror of the near side)."},
+  {"kind": "shutline", "path": [[-12.0, 7.0], [-12.0, 24.6]], "role": "door", "side": "far", "note": "Far-side rear door edge (mirror of the near side)."},
+  {"kind": "shutline", "path": [[8.0, 23.4], [46.0, 17.8]], "role": "bonnet", "side": "both", "note": "Bonnet side gap, just below the bonnet top edge (side_features bonnet line)."},
+  {"kind": "shutline", "path": [[-18.0, 23.8], [-18.0, 14.5], [-46.0, 14.5]], "role": "boot", "side": "both", "note": "Boot lid front edge at x -18 and lower edge (boot lid x -18 to -46, dossier special); lower edge estimated."},
+  {"kind": "strip", "x": -40, "x2": 40, "y": 6.8, "h": 0.5, "role": "sweep", "colour": "chrome", "side": "both", "note": "Long chrome flank strip on the sill edge (card: sweep; dossier chrome sill edge strip x -40..40 at y 6.8)."},
+  {"kind": "crease", "x": -46, "x2": 46, "y": 6.8, "depth": 0.15, "side": "both", "note": "Straight sill line x -46..46 at y 6.8 (dossier side_features)."},
+  {"kind": "handle", "x": -9, "y": 16, "style": "flap", "len": 2.5, "side": "both", "note": "Chrome door handle on the rear edge of the door (position estimated)."},
+  {"kind": "handle", "x": -42, "y": 22, "style": "boot", "len": 2.5, "side": "both", "note": "Chrome boot lid handle at the rear edge of the lid (dossier rear.extras)."},
+  {"kind": "mirror", "x": 8, "y": 23.5, "lat": 17, "style": "wing", "size": 2, "side": "both", "note": "Wing mirror (card recogniser). MGB 1970 mirror style not confirmed."},
+  {"kind": "fuelcap", "x": -34, "y": 22.5, "r": 1.0, "side": "near", "note": "Fuel filler cap on the rear left quarter (dossier rear.extras)."},
+  {"kind": "badge", "x": -40, "y": 22.8, "shape": "bar", "end": "rear", "size": 2, "colour": "chrome", "note": "Boot lid badge."},
+  {"kind": "vent", "where": "bonnet", "x": 20, "x2": 44, "y": 20.7, "w": 10, "h": 0.5, "style": "bulge", "note": "Centre bonnet bulge x 20..44 peaking about 0.5 units above the bonnet edge (side_features)."},
+  {"kind": "wiper", "x": 6.5, "y": 26.5, "len": 8, "n": 1, "note": "Single windscreen wiper, estimated position."}
+ ]
+}
