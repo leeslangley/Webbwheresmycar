@@ -1,70 +1,69 @@
-// Tests for src/art/sprite_paint.js, run under `jsc -m`. A synthetic 100x40
-// sprite: rows 10..34 opaque, body paint (mask 255) at x 5..94, rows 12..30.
+// Tests for src/art/sprite_paint.js, run under `jsc -m`. A synthetic 6x2
+// sprite: four paint pixels (steps 0, 2, 4, 6), one second-paint pixel
+// (step 3), one chrome pixel, one transparent pixel and five unmasked outline
+// pixels.
 
 import { test, eq, ok, near, throws, done } from './harness.js';
 import {
 	hexToRgb,
-	lum,
-	hashString,
+	rgbToHex,
+	paintRamp,
+	fadeHex,
 	wearState,
-	wearPixels,
-	recolourPixels,
 	WEAR_NAMES,
+	hashString,
+	splitMask,
+	recolourPixels,
 } from '../src/art/sprite_paint.js';
 
-const W = 100;
-const H = 40;
-const BASE = '#C81E1E';
+const W = 6;
+const H = 2;
+const ORANGE = '#C96F32';
 const GREEN = '#1E4D2B';
-const BLACK = '#1C1C1C';
-const RUST = [
-	[107, 45, 20],
-	[138, 59, 23],
-	[168, 80, 30],
-];
-const PRIMER = [139, 143, 147];
+const BLACK = '#000000';
+const ORANGE_RAMP = ['#3e203d', '#59304e', '#7c4458', '#a25a53', '#c96f32', '#f4a36f', '#ffd3a3'];
+const GREEN_RAMP = ['#0a121d', '#111d27', '#172c2f', '#1b3d31', '#1e4d2b', '#808d6c', '#c6c6a1'];
+const OUTLINE = [20, 5, 5];
+const CHROME = [230, 230, 230];
 
-function setPx(px, x, y, rgb) {
-	const o = (y * W + x) * 4;
-	px[o] = rgb[0];
-	px[o + 1] = rgb[1];
-	px[o + 2] = rgb[2];
-	px[o + 3] = 255;
+// Sprite pixel index i = y * W + x. Row 0: paint 0, paint 2, paint 4, paint 6,
+// second paint 3, chrome. Row 1: transparent, then five outline pixels.
+const PAINT_STEPS = [0, 2, 4, 6];
+
+function setPx(arr, i, rgba) {
+	arr[i * 4] = rgba[0];
+	arr[i * 4 + 1] = rgba[1];
+	arr[i * 4 + 2] = rgba[2];
+	arr[i * 4 + 3] = rgba[3];
 }
 
-// makeSprite(): the synthetic car. Ramp [200,30,30] on the body; highlight at
-// (20,14),(21,14); shadow at (20,28),(21,28); chrome outside the body; a dark
-// unmasked outline pixel at (4,20) beside the body.
 function makeSprite() {
 	const px = new Uint8ClampedArray(W * H * 4);
-	const mask = new Uint8ClampedArray(W * H);
-	for (let y = 10; y <= 34; y++) {
-		for (let x = 0; x < W; x++) {
-			const i = y * W + x;
-			const body = x >= 5 && x <= 94 && y >= 12 && y <= 30;
-			if (body) {
-				mask[i] = 255;
-				setPx(px, x, y, [200, 30, 30]);
-			} else {
-				setPx(px, x, y, [230, 230, 230]);
-			}
-		}
+	const mask = new Uint8ClampedArray(W * H * 4);
+	const ramp = paintRamp(ORANGE);
+	for (let k = 0; k < 4; k++) {
+		const s = PAINT_STEPS[k];
+		setPx(px, k, [ramp[s][0], ramp[s][1], ramp[s][2], 255]);
+		setPx(mask, k, [1, s, 0, 255]);
 	}
-	setPx(px, 20, 14, [255, 235, 235]);
-	setPx(px, 21, 14, [255, 235, 235]);
-	setPx(px, 20, 28, [60, 5, 5]);
-	setPx(px, 21, 28, [60, 5, 5]);
-	setPx(px, 4, 20, [20, 5, 5]);
+	setPx(px, 4, [ramp[3][0], ramp[3][1], ramp[3][2], 255]);
+	setPx(mask, 4, [2, 3, 0, 255]);
+	setPx(px, 5, [CHROME[0], CHROME[1], CHROME[2], 255]);
+	setPx(mask, 5, [3, 0, 0, 255]);
+	setPx(px, 6, [0, 0, 0, 0]);
+	setPx(mask, 6, [0, 0, 0, 0]);
+	for (let i = 7; i < 12; i++) {
+		setPx(px, i, [OUTLINE[0], OUTLINE[1], OUTLINE[2], 255]);
+		setPx(mask, i, [0, 0, 0, 0]);
+	}
 	return { px: px, mask: mask };
 }
 
-function rgbAt(px, x, y) {
-	const o = (y * W + x) * 4;
-	return [px[o], px[o + 1], px[o + 2]];
-}
+const SPRITE = makeSprite();
+const SPLIT = splitMask(SPRITE.mask, W, H);
 
-function alphaAt(px, x, y) {
-	return px[(y * W + x) * 4 + 3];
+function rgbAt(px, i) {
+	return [px[i * 4], px[i * 4 + 1], px[i * 4 + 2]];
 }
 
 function sameBytes(a, b) {
@@ -79,28 +78,15 @@ function sameBytes(a, b) {
 	return true;
 }
 
-function isRust(rgb) {
-	for (let k = 0; k < RUST.length; k++) {
-		if (rgb[0] === RUST[k][0] && rgb[1] === RUST[k][1] && rgb[2] === RUST[k][2]) {
-			return true;
-		}
+function withinOne(actual, expected, msg) {
+	for (let k = 0; k < 3; k++) {
+		ok(Math.abs(actual[k] - expected[k]) <= 1, msg + ' channel ' + k + ' got ' + actual[k] + ' want ' + expected[k]);
 	}
-	return false;
 }
 
-// countPixels(px, pred): visible pixels whose rgb satisfies pred.
-function countPixels(px, pred) {
-	let n = 0;
-	for (let i = 0; i < W * H; i++) {
-		if (px[i * 4 + 3] > 0 && pred([px[i * 4], px[i * 4 + 1], px[i * 4 + 2]])) {
-			n += 1;
-		}
-	}
-	return n;
+function luma(rgb) {
+	return 0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2];
 }
-
-const SPRITE = makeSprite();
-const SEED = 7;
 
 // --- colour helpers ----------------------------------------------------------
 
@@ -113,16 +99,52 @@ test('hexToRgb parses #rrggbb and throws on anything else', () => {
 	throws(() => hexToRgb(undefined), 'undefined');
 });
 
-test('lum is the 0.299/0.587/0.114 weighted sum', () => {
-	near(lum(0, 0, 0), 0, 1e-9, 'black');
-	near(lum(255, 255, 255), 255, 1e-9, 'white');
-	near(lum(200, 30, 30), 80.83, 1e-9, 'base paint');
+test('rgbToHex gives lower case #rrggbb and throws on bad channels', () => {
+	eq(rgbToHex([201, 111, 50]), '#c96f32', 'orange');
+	eq(rgbToHex([0, 0, 0]), '#000000', 'black');
+	eq(rgbToHex([255, 255, 255]), '#ffffff', 'white');
+	throws(() => rgbToHex([256, 0, 0]), 'channel above 255');
+	throws(() => rgbToHex([1.5, 0, 0]), 'fractional channel');
 });
 
-test('hashString is FNV-1a 32 bit and unsigned', () => {
-	eq(hashString('a'), 0xe40c292c, 'FNV-1a of a');
-	eq(hashString(''), 2166136261, 'empty string is the offset basis');
-	ok(hashString('car-7') >= 0, 'unsigned');
+test('paintRamp C96F32 matches the CB11 values (every channel within 1)', () => {
+	const ramp = paintRamp(ORANGE);
+	eq(ramp.length, 7, 'seven steps');
+	for (let s = 0; s < 7; s++) {
+		withinOne(ramp[s], hexToRgb(ORANGE_RAMP[s]), 'orange step ' + s);
+	}
+	eq(rgbToHex(ramp[4]), '#c96f32', 'step 4 is the base');
+});
+
+test('paintRamp 1E4D2B matches the CB11 values (every channel within 1)', () => {
+	const ramp = paintRamp(GREEN);
+	for (let s = 0; s < 7; s++) {
+		withinOne(ramp[s], hexToRgb(GREEN_RAMP[s]), 'green step ' + s);
+	}
+});
+
+test('paintRamp of a very dark base uses #202028 (step 4)', () => {
+	eq(rgbToHex(paintRamp('#101010')[4]), '#202028', 'dark fallback');
+});
+
+test('paintRamp of white has non-decreasing luma', () => {
+	const ramp = paintRamp('#ffffff');
+	for (let s = 1; s < 7; s++) {
+		ok(luma(ramp[s]) >= luma(ramp[s - 1]), 'luma step ' + s + ' not below step ' + (s - 1));
+	}
+});
+
+test('paintRamp rejects bad hex', () => {
+	throws(() => paintRamp('red'), 'name');
+	throws(() => paintRamp('#12345'), 'short');
+});
+
+test('fadeHex mixes toward the faded tone by wear level', () => {
+	eq(fadeHex('#C96F32', 0), '#c96f32', 'level 0 is the same colour');
+	eq(fadeHex('#C96F32', 3), '#c08c64', 'level 3 is faded');
+	throws(() => fadeHex('#C96F32', 4), 'level 4 throws');
+	throws(() => fadeHex('#C96F32', -1), 'level -1 throws');
+	throws(() => fadeHex('#C96F32', 1.5), 'fractional level throws');
 });
 
 test('wearState maps condition to the four states', () => {
@@ -138,119 +160,83 @@ test('wearState maps condition to the four states', () => {
 	eq(WEAR_NAMES, ['mint', 'worn', 'tatty', 'wreck'], 'names');
 });
 
+test('hashString is FNV-1a 32 bit and unsigned', () => {
+	eq(hashString('a'), 0xe40c292c, 'FNV-1a of a');
+	eq(hashString(''), 2166136261, 'empty string is the offset basis');
+	ok(hashString('car-7') >= 0, 'unsigned');
+});
+
+// --- mask split --------------------------------------------------------------
+
+test('splitMask: cls is R and step is G where alpha is 255, else 0', () => {
+	const m = new Uint8ClampedArray([1, 4, 0, 255, 1, 5, 0, 128, 3, 0, 0, 255]);
+	const s = splitMask(m, 3, 1);
+	eq(Array.from(s.cls), [1, 0, 3], 'cls');
+	eq(Array.from(s.step), [4, 0, 0], 'step');
+	throws(() => splitMask(m, 2, 1), 'wrong size throws');
+});
+
 // --- recolour ----------------------------------------------------------------
 
-test('recolour to the same hex keeps the ramp pixels (within 1)', () => {
-	const out = recolourPixels(SPRITE.px, SPRITE.mask, W, H, BASE, BASE);
-	const a = rgbAt(out, 30, 20);
-	const b = rgbAt(SPRITE.px, 30, 20);
-	for (let c = 0; c < 3; c++) {
-		ok(Math.abs(a[c] - b[c]) <= 1, 'channel ' + c + ' within 1');
+test('recolour: the four paint pixels equal rows 0, 2, 4, 6 of the target ramp', () => {
+	const out = recolourPixels(SPRITE.px, SPLIT.cls, SPLIT.step, W, H, GREEN);
+	const ramp = paintRamp(GREEN);
+	for (let k = 0; k < 4; k++) {
+		eq(rgbAt(out, k), ramp[PAINT_STEPS[k]], 'paint pixel ' + k);
+		eq(rgbToHex(rgbAt(out, k)), GREEN_RAMP[PAINT_STEPS[k]], 'paint pixel ' + k + ' as hex');
 	}
 });
 
-test('recolour to green: ramp pixel becomes [30,77,43] (+-1)', () => {
-	const out = recolourPixels(SPRITE.px, SPRITE.mask, W, H, BASE, GREEN);
-	const rgb = rgbAt(out, 30, 20);
-	near(rgb[0], 30, 1, 'red');
-	near(rgb[1], 77, 1, 'green');
-	near(rgb[2], 43, 1, 'blue');
+test('recolour: the second paint pixel is unchanged without hex2', () => {
+	const out = recolourPixels(SPRITE.px, SPLIT.cls, SPLIT.step, W, H, GREEN);
+	eq(rgbAt(out, 4), rgbAt(SPRITE.px, 4), 'cls 2 pixel');
 });
 
-test('recolour: highlight stays above the target and at most 255', () => {
-	const out = recolourPixels(SPRITE.px, SPRITE.mask, W, H, BASE, GREEN);
-	const rgb = rgbAt(out, 20, 14);
-	const t = hexToRgb(GREEN);
-	for (let c = 0; c < 3; c++) {
-		ok(rgb[c] > t[c], 'channel ' + c + ' above target');
-		ok(rgb[c] <= 255, 'channel ' + c + ' at most 255');
+test('recolour: the second paint pixel equals paintRamp(hex2)[3] with hex2', () => {
+	const out = recolourPixels(SPRITE.px, SPLIT.cls, SPLIT.step, W, H, GREEN, '#2F3E8C');
+	eq(rgbAt(out, 4), paintRamp('#2F3E8C')[3], 'cls 2 pixel from hex2');
+});
+
+test('recolour: chrome, transparent and outline pixels are unchanged', () => {
+	const out = recolourPixels(SPRITE.px, SPLIT.cls, SPLIT.step, W, H, GREEN, '#2F3E8C');
+	eq(rgbAt(out, 5), CHROME, 'chrome pixel');
+	for (let i = 6; i < 12; i++) {
+		eq(rgbAt(out, i), rgbAt(SPRITE.px, i), 'unmasked pixel ' + i);
 	}
 });
 
-test('recolour: shadow luminance is below the target luminance', () => {
-	const out = recolourPixels(SPRITE.px, SPRITE.mask, W, H, BASE, GREEN);
-	const rgb = rgbAt(out, 20, 28);
-	const t = hexToRgb(GREEN);
-	ok(lum(rgb[0], rgb[1], rgb[2]) < lum(t[0], t[1], t[2]), 'shadow darker than target');
-});
-
-test('recolour: unmasked chrome and every alpha are unchanged', () => {
-	const out = recolourPixels(SPRITE.px, SPRITE.mask, W, H, BASE, GREEN);
-	eq(rgbAt(out, 50, 11), [230, 230, 230], 'chrome pixel');
+test('recolour: every alpha is unchanged', () => {
+	const out = recolourPixels(SPRITE.px, SPLIT.cls, SPLIT.step, W, H, GREEN);
 	for (let i = 0; i < W * H; i++) {
 		eq(out[i * 4 + 3], SPRITE.px[i * 4 + 3], 'alpha at pixel ' + i);
 	}
 });
 
-test('recolour: the dark outline beside the paint takes the new dark tone', () => {
-	const out = recolourPixels(SPRITE.px, SPRITE.mask, W, H, BASE, GREEN);
-	eq(rgbAt(out, 4, 20), [4, 9, 5], 'outline pixel recoloured');
+test('recolour: the input array is not mutated', () => {
+	const fresh = makeSprite();
+	const freshSplit = splitMask(fresh.mask, W, H);
+	const copy = new Uint8ClampedArray(fresh.px);
+	recolourPixels(fresh.px, freshSplit.cls, freshSplit.step, W, H, GREEN, '#2F3E8C');
+	ok(sameBytes(copy, fresh.px), 'input bytes unchanged');
 });
 
-test('recolour: input is not mutated', () => {
-	const copy = new Uint8ClampedArray(SPRITE.px);
-	recolourPixels(SPRITE.px, SPRITE.mask, W, H, BASE, GREEN);
-	ok(sameBytes(copy, SPRITE.px), 'input bytes unchanged');
+test('recolour to the same colour returns identical bytes', () => {
+	const out = recolourPixels(SPRITE.px, SPLIT.cls, SPLIT.step, W, H, ORANGE);
+	ok(sameBytes(out, SPRITE.px), 'orange to orange is identical');
 });
 
-test('recolour to black: no channel above 255 and none NaN', () => {
-	const out = recolourPixels(SPRITE.px, SPRITE.mask, W, H, BASE, BLACK);
+test('recolour to black gives bytes within 0..255 and no NaN', () => {
+	const out = recolourPixels(SPRITE.px, SPLIT.cls, SPLIT.step, W, H, BLACK);
 	for (let i = 0; i < out.length; i++) {
 		ok(!Number.isNaN(out[i]), 'byte ' + i + ' not NaN');
-		ok(out[i] <= 255 && out[i] >= 0, 'byte ' + i + ' in range');
+		ok(out[i] >= 0 && out[i] <= 255, 'byte ' + i + ' in range');
 	}
 });
 
-// --- wear --------------------------------------------------------------------
-
-test('wear state 0 is an exact copy of the input', () => {
-	const out = wearPixels(SPRITE.px, SPRITE.mask, W, H, 0, SEED);
-	ok(sameBytes(out, SPRITE.px), 'state 0 equals input');
-});
-
-const WRECK = wearPixels(SPRITE.px, SPRITE.mask, W, H, 3, SEED);
-
-test('wear state 3: at least 20 rust pixels', () => {
-	const n = countPixels(WRECK, isRust);
-	ok(n >= 20, 'rust pixel count ' + n);
-});
-
-test('wear state 3: at least 12 primer pixels', () => {
-	const n = countPixels(WRECK, (rgb) => rgb[0] === PRIMER[0] && rgb[1] === PRIMER[1] && rgb[2] === PRIMER[2]);
-	ok(n >= 12, 'primer pixel count ' + n);
-});
-
-test('wear: unmasked pixels and every alpha are unchanged', () => {
-	for (let y = 0; y < H; y++) {
-		for (let x = 0; x < W; x++) {
-			const i = y * W + x;
-			eq(alphaAt(WRECK, x, y), SPRITE.px[i * 4 + 3], 'alpha at ' + x + ',' + y);
-			if (SPRITE.mask[i] !== 255) {
-				eq(rgbAt(WRECK, x, y), rgbAt(SPRITE.px, x, y), 'unmasked rgb at ' + x + ',' + y);
-			}
-		}
-	}
-});
-
-test('wear: same seed gives identical bytes, seed 1 and 2 differ', () => {
-	const again = wearPixels(SPRITE.px, SPRITE.mask, W, H, 3, SEED);
-	ok(sameBytes(again, WRECK), 'same seed identical');
-	const a = wearPixels(SPRITE.px, SPRITE.mask, W, H, 3, 1);
-	const b = wearPixels(SPRITE.px, SPRITE.mask, W, H, 3, 2);
-	ok(!sameBytes(a, b), 'seed 1 and seed 2 differ');
-});
-
-test('wear: state 2 has fewer rust pixels than state 3', () => {
-	const tatty = wearPixels(SPRITE.px, SPRITE.mask, W, H, 2, SEED);
-	const r2 = countPixels(tatty, isRust);
-	const r3 = countPixels(WRECK, isRust);
-	ok(r2 < r3, 'tatty rust ' + r2 + ' < wreck rust ' + r3);
-});
-
-test('wear: input is not mutated', () => {
-	const copy = new Uint8ClampedArray(SPRITE.px);
-	wearPixels(SPRITE.px, SPRITE.mask, W, H, 3, SEED);
-	ok(sameBytes(copy, SPRITE.px), 'input bytes unchanged');
+test('recolour: a paint step outside 0..6 throws', () => {
+	const badStep = new Uint8Array(SPLIT.step);
+	badStep[0] = 7;
+	throws(() => recolourPixels(SPRITE.px, SPLIT.cls, badStep, W, H, GREEN), 'step 7 throws');
 });
 
 done();

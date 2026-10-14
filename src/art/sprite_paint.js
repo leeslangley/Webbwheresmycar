@@ -1,21 +1,22 @@
-// Sprite paint (CC04, docs/art/CC.md): pure pixel maths that turns one rendered
-// car sprite into any paint colour and any of four wear states, using the
-// body-paint mask. Works on RGBA Uint8ClampedArray data (w * h * 4 bytes) with
-// a mask Uint8ClampedArray (w * h bytes, 255 = body paint). Pure: no DOM, no
-// Math.random, no Date. Every function returns a NEW array; inputs are never
-// changed, and alpha is never changed.
+// Sprite paint (CC04, docs/art/CARS_ALIGN.md): pure pixel maths that repaints
+// a rendered car sprite in any paint colour. The game mask says which of the
+// 7 ramp steps each paint pixel is, so repainting is a table lookup into the
+// ramp of the new colour. No luminance guessing. Works on RGBA
+// Uint8ClampedArray data (w * h * 4 bytes). Pure: no DOM, no Math.random, no
+// Date. Every function returns NEW data; inputs are never changed.
 
 export const WEAR_NAMES = ['mint', 'worn', 'tatty', 'wreck'];
 
-const FADE = [0, 0.1, 0.24, 0.38];
-const DARKEN = [0, 0.04, 0.1, 0.16];
-const RUST_BLOTCHES = [0, 0, 6, 14];
-const RUST = [
-	[107, 45, 20],
-	[138, 59, 23],
-	[168, 80, 30],
-];
-const PRIMER = [139, 143, 147];
+// Ramp recipe (the same formula as the Python original, CB11 pixramp.paint_ramp).
+const MULT = [0.1, 0.2, 0.38, 0.65, 1.0, 1.5, 2.3];
+const SW = [0.35, 0.28, 0.18, 0.08, 0, 0, 0];
+const HW = [0, 0, 0, 0, 0, 0.2, 0.55];
+const DARK_FALLBACK = '#202028';
+const SHADOW_TINT = '#2a1a5c';
+const HIGHLIGHT_CREAM = '#fff2cc';
+
+const FADE_TOWARD = '#b8aa96';
+const FADE_LEVEL = [0, 0.12, 0.3, 0.5];
 
 // hexToRgb('#rrggbb') -> [r, g, b]. Throws on anything else.
 export function hexToRgb(hex) {
@@ -29,24 +30,93 @@ export function hexToRgb(hex) {
 	];
 }
 
-// Luminance, 0 to 255.
-export function lum(r, g, b) {
-	return 0.299 * r + 0.587 * g + 0.114 * b;
-}
-
-// FNV-1a 32 bit hash of a string, as an unsigned integer.
-export function hashString(s) {
-	const str = String(s);
-	let h = 2166136261;
-	for (let i = 0; i < str.length; i++) {
-		h ^= str.charCodeAt(i);
-		h = Math.imul(h, 16777619);
+// rgbToHex([r, g, b]) -> lower case '#rrggbb'. Channels are integers 0..255.
+export function rgbToHex(rgb) {
+	let s = '#';
+	for (let k = 0; k < 3; k++) {
+		const v = rgb[k];
+		if (!Number.isInteger(v) || v < 0 || v > 255) {
+			throw new Error('rgbToHex: channel out of range: ' + String(v));
+		}
+		s += (v < 16 ? '0' : '') + v.toString(16);
 	}
-	return h >>> 0;
+	return s;
 }
 
-// Wear state from condition: 0 mint, 1 worn, 2 tatty, 3 wreck. NaN or
-// undefined counts as 0 (mint).
+// Round half to even (Python's round), so exact .5 cases match the Python values.
+function roundEven(x) {
+	const f = Math.floor(x);
+	const d = x - f;
+	if (d > 0.5) {
+		return f + 1;
+	}
+	if (d < 0.5) {
+		return f;
+	}
+	return f % 2 === 0 ? f : f + 1;
+}
+
+function clamp01(v) {
+	return v < 0 ? 0 : v > 1 ? 1 : v;
+}
+
+// sRGB 0..255 -> linear 0..1.
+function toLinear(c8) {
+	const c = c8 / 255;
+	return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+}
+
+// linear 0..1 -> sRGB 0..255 integer, clamped.
+function toSrgb8(l) {
+	const c = clamp01(l);
+	const s = c <= 0.0031308 ? 12.92 * c : 1.055 * Math.pow(c, 1 / 2.4) - 0.055;
+	return roundEven(clamp01(s) * 255);
+}
+
+// Relative luminance of linear [r, g, b].
+function lumLinear(c) {
+	return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+}
+
+// paintRamp(hex): the 7 ramp colours of a paint, darkest first, as [r, g, b]
+// integers. Step 4 is the base colour. A very dark base uses '#202028'.
+export function paintRamp(hex) {
+	let rgb = hexToRgb(hex);
+	if (Math.max(rgb[0], rgb[1], rgb[2]) < 32) {
+		rgb = hexToRgb(DARK_FALLBACK);
+	}
+	const base = rgb.map(toLinear);
+	const tint = hexToRgb(SHADOW_TINT).map(toLinear);
+	const tintLuma = lumLinear(tint);
+	const top = lumLinear(base) >= 0.5 ? [1, 1, 1] : hexToRgb(HIGHLIGHT_CREAM).map(toLinear);
+
+	const ramp = [];
+	for (let i = 0; i < 7; i++) {
+		const c = base.map((v) => clamp01(v * MULT[i]));
+		const scale = lumLinear(c) / tintLuma;
+		for (let k = 0; k < 3; k++) {
+			c[k] = c[k] + (tint[k] * scale - c[k]) * SW[i];
+		}
+		for (let k = 0; k < 3; k++) {
+			c[k] = c[k] * (1 - HW[i]) + top[k] * HW[i];
+		}
+		ramp.push(c.map(toSrgb8));
+	}
+	return ramp;
+}
+
+// fadeHex(hex, level): the paint mixed toward '#b8aa96' by a wear level 0..3.
+export function fadeHex(hex, level) {
+	if (!Number.isInteger(level) || level < 0 || level > 3) {
+		throw new Error('fadeHex: level must be 0..3, got ' + String(level));
+	}
+	const rgb = hexToRgb(hex);
+	const toward = hexToRgb(FADE_TOWARD);
+	const t = FADE_LEVEL[level];
+	return rgbToHex(rgb.map((c, k) => roundEven(c + (toward[k] - c) * t)));
+}
+
+// wearState(cond): 0 mint, 1 worn, 2 tatty, 3 wreck. NaN or undefined is 0.
 export function wearState(cond) {
 	if (typeof cond !== 'number' || Number.isNaN(cond)) {
 		return 0;
@@ -63,206 +133,62 @@ export function wearState(cond) {
 	return 3;
 }
 
-// Alpha at or above 128 counts as opaque (the same cut as tools/art/pixelate.py).
-function isOpaque(px, i) {
-	return px[i * 4 + 3] >= 128;
+// FNV-1a 32 bit hash of a string, as an unsigned integer.
+export function hashString(s) {
+	const str = String(s);
+	let h = 2166136261;
+	for (let i = 0; i < str.length; i++) {
+		h ^= str.charCodeAt(i);
+		h = Math.imul(h, 16777619);
+	}
+	return h >>> 0;
 }
 
-// True when pixel i has a 4-neighbour that is body paint.
-function touchesPaint(mask, w, h, i) {
-	const x = i % w;
-	const y = Math.floor(i / w);
-	if (x > 0 && mask[i - 1] === 255) {
-		return true;
-	}
-	if (x < w - 1 && mask[i + 1] === 255) {
-		return true;
-	}
-	if (y > 0 && mask[i - w] === 255) {
-		return true;
-	}
-	if (y < h - 1 && mask[i + w] === 255) {
-		return true;
-	}
-	return false;
-}
-
-// recolourPixels: body paint takes targetHex. Paint darker than the base
-// paint scales the new colour; paint brighter than the base blends towards
-// white. Opaque unmasked outline pixels next to the paint with luminance
-// below 0.45 of the base are treated as paint, so the dark outline takes the
-// new dark tone.
-export function recolourPixels(px, mask, w, h, baseHex, targetHex) {
-	const base = hexToRgb(baseHex);
-	const target = hexToRgb(targetHex);
-	const lb = Math.max(1, lum(base[0], base[1], base[2]));
-	const out = new Uint8ClampedArray(px);
+// splitMask(maskPx, w, h) -> { cls, step }: the game mask's RGBA bytes.
+// cls = R, step = G where alpha is 255, else 0. cls: 1 paint, 2 second paint,
+// 3 chrome, 4 glass.
+export function splitMask(maskPx, w, h) {
 	const n = w * h;
+	if (maskPx.length !== n * 4) {
+		throw new Error('splitMask: want ' + n * 4 + ' bytes, got ' + maskPx.length);
+	}
+	const cls = new Uint8Array(n);
+	const step = new Uint8Array(n);
 	for (let i = 0; i < n; i++) {
-		const o = i * 4;
-		if (px[o + 3] <= 0) {
-			continue;
-		}
-		const l = lum(px[o], px[o + 1], px[o + 2]);
-		let paint = mask[i] === 255;
-		if (!paint && isOpaque(px, i) && l < 0.45 * lb && touchesPaint(mask, w, h, i)) {
-			paint = true;
-		}
-		if (!paint) {
-			continue;
-		}
-		for (let c = 0; c < 3; c++) {
-			let v;
-			if (l <= lb) {
-				v = target[c] * (l / lb);
-			} else {
-				const t = (l - lb) / (255 - lb);
-				v = target[c] + (255 - target[c]) * t;
-			}
-			out[o + c] = Math.round(v);
+		if (maskPx[i * 4 + 3] === 255) {
+			cls[i] = maskPx[i * 4];
+			step[i] = maskPx[i * 4 + 1];
 		}
 	}
-	return out;
+	return { cls: cls, step: step };
 }
 
-// Linear congruential generator: returns a function giving the next state.
-function lcg(seed) {
-	let s = seed >>> 0;
-	return function () {
-		s = (s * 1664525 + 1013904223) >>> 0;
-		return s;
-	};
-}
-
-// wearPixels: state 0 is an exact copy. Otherwise, on body paint only:
-// (a) fade towards grey and darken; (b) dirt on the lower 28% (states 1-3);
-// (c) seeded rust blotches on the lower body (states 2: 6, 3: 14);
-// (d) a primer patch on a wreck (state 3).
-export function wearPixels(px, mask, w, h, state, seed) {
-	const out = new Uint8ClampedArray(px);
-	const s = Math.max(0, Math.min(3, state | 0));
-	if (s === 0) {
-		return out;
-	}
+// recolourPixels(px, cls, step, w, h, hex, hex2) -> NEW RGBA bytes. A cls 1
+// pixel becomes paintRamp(hex)[step]. A cls 2 pixel becomes paintRamp(hex2)[step]
+// when hex2 is given, else it is copied. Alpha and every other pixel copy through.
+export function recolourPixels(px, cls, step, w, h, hex, hex2) {
 	const n = w * h;
-
-	// Opaque bounding box rows.
-	let top = -1;
-	let bottom = -1;
+	const ramp1 = paintRamp(hex);
+	const ramp2 = hex2 === undefined || hex2 === null ? null : paintRamp(hex2);
+	const out = new Uint8ClampedArray(px);
 	for (let i = 0; i < n; i++) {
-		if (isOpaque(px, i)) {
-			const y = Math.floor(i / w);
-			if (top < 0) {
-				top = y;
-			}
-			bottom = y;
+		let ramp = null;
+		if (cls[i] === 1) {
+			ramp = ramp1;
+		} else if (cls[i] === 2 && ramp2 !== null) {
+			ramp = ramp2;
 		}
-	}
-	if (top < 0) {
-		return out;
-	}
-	const bh = bottom - top + 1;
-	const next = lcg(seed);
-
-	// (a) fade and darken the paint.
-	const f = FADE[s];
-	const d = DARKEN[s];
-	for (let i = 0; i < n; i++) {
-		const o = i * 4;
-		if (mask[i] !== 255 || px[o + 3] <= 0) {
+		if (ramp === null) {
 			continue;
 		}
-		const l = lum(px[o], px[o + 1], px[o + 2]);
-		for (let c = 0; c < 3; c++) {
-			const v = px[o + c];
-			out[o + c] = Math.round((v + (l - v) * f) * (1 - d));
+		const rgb = ramp[step[i]];
+		if (rgb === undefined) {
+			throw new Error('recolourPixels: paint step must be 0..6, got ' + String(step[i]));
 		}
+		const o = i * 4;
+		out[o] = rgb[0];
+		out[o + 1] = rgb[1];
+		out[o + 2] = rgb[2];
 	}
-
-	// (b) dirt on the lower body.
-	if (s >= 1) {
-		const dirtY = top + 0.72 * bh;
-		const k = 1 - 0.06 * s;
-		for (let i = 0; i < n; i++) {
-			const o = i * 4;
-			if (mask[i] !== 255 || px[o + 3] <= 0 || Math.floor(i / w) < dirtY) {
-				continue;
-			}
-			for (let c = 0; c < 3; c++) {
-				out[o + c] = Math.round(out[o + c] * k);
-			}
-		}
-	}
-
-	// (c) rust blotches on the lower body.
-	const rustY = top + 0.55 * bh;
-	const rustCand = [];
-	for (let i = 0; i < n; i++) {
-		if (mask[i] === 255 && px[i * 4 + 3] > 0 && Math.floor(i / w) >= rustY) {
-			rustCand.push(i);
-		}
-	}
-	const blotches = RUST_BLOTCHES[s];
-	if (rustCand.length > 0) {
-		for (let b = 0; b < blotches; b++) {
-			const centre = rustCand[(next() >>> 8) % rustCand.length];
-			const col = RUST[(next() >>> 8) % 3];
-			const cx = centre % w;
-			const cy = Math.floor(centre / w);
-			const cells = [[cx, cy]];
-			for (let k = 0; k < 3; k++) {
-				const dx = ((next() >>> 8) % 5) - 2;
-				const dy = ((next() >>> 8) % 5) - 2;
-				cells.push([cx + dx, cy + dy]);
-			}
-			for (let k = 0; k < cells.length; k++) {
-				const x = cells[k][0];
-				const y = cells[k][1];
-				if (x < 0 || y < 0 || x >= w || y >= h) {
-					continue;
-				}
-				const i = y * w + x;
-				if (mask[i] !== 255 || px[i * 4 + 3] <= 0) {
-					continue;
-				}
-				out[i * 4] = col[0];
-				out[i * 4 + 1] = col[1];
-				out[i * 4 + 2] = col[2];
-			}
-		}
-	}
-
-	// (d) primer patch on a wreck.
-	if (s === 3) {
-		const primerY = top + 0.5 * bh;
-		const primerCand = [];
-		for (let i = 0; i < n; i++) {
-			if (mask[i] === 255 && px[i * 4 + 3] > 0 && Math.floor(i / w) < primerY) {
-				primerCand.push(i);
-			}
-		}
-		if (primerCand.length > 0) {
-			const start = primerCand[(next() >>> 8) % primerCand.length];
-			const sx = start % w;
-			const sy = Math.floor(start / w);
-			for (let dy = 0; dy < 4; dy++) {
-				for (let dx = 0; dx < 6; dx++) {
-					const x = sx + dx;
-					const y = sy + dy;
-					if (x >= w || y >= h) {
-						continue;
-					}
-					const i = y * w + x;
-					if (mask[i] !== 255 || px[i * 4 + 3] <= 0) {
-						continue;
-					}
-					out[i * 4] = PRIMER[0];
-					out[i * 4 + 1] = PRIMER[1];
-					out[i * 4 + 2] = PRIMER[2];
-				}
-			}
-		}
-	}
-
 	return out;
 }
