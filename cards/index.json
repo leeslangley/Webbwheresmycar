@@ -3930,5 +3930,1309 @@
    "tools/art/carsheet.py",
    "tests/run_carsheet.sh"
   ]
+ },
+ {
+  "id": "GDF01",
+  "title": "Godot: project skeleton",
+  "needs": [],
+  "file": "GDF01-godot-project-skeleton.md",
+  "files": [
+   "godot/project.godot",
+   "godot/.gitignore",
+   "godot/autoload/game.gd",
+   "godot/autoload/data.gd",
+   "godot/autoload/sfx.gd",
+   "godot/tests/runner.gd",
+   "godot/core/.gitkeep",
+   "godot/sim/.gitkeep",
+   "godot/data/.gitkeep",
+   "godot/scenes/.gitkeep",
+   "godot/tv/.gitkeep",
+   "godot/ui/.gitkeep",
+   "godot/art/.gitkeep",
+   "godot/tests/golden/.gitkeep"
+  ]
+ },
+ {
+  "id": "GDF02",
+  "title": "Godot: test harness and runner",
+  "needs": [
+   "GDF01"
+  ],
+  "file": "GDF02-godot-test-harness-and-runner.md",
+  "files": [
+   "godot/tests/harness.gd",
+   "godot/tests/runner.gd",
+   "godot/tests/test_harness.gd",
+   "tools/godot/gtest.sh"
+  ]
+ },
+ {
+  "id": "GDF15",
+  "title": "Godot: CoreJson (int-preserving JSON)",
+  "needs": [
+   "GDF01",
+   "GDF02"
+  ],
+  "file": "GDF15-godot-corejson-int-preserving-json.md",
+  "files": [
+   "godot/core/json.gd",
+   "godot/tests/test_json.gd"
+  ]
+ },
+ {
+  "id": "GDF03",
+  "title": "Godot: data export tool and Data autoload",
+  "needs": [
+   "GDF01",
+   "GDF02",
+   "GDF15"
+  ],
+  "file": "GDF03-godot-data-export-tool-and-data-autoload.md",
+  "files": [
+   "tools/godot/export_data.mjs",
+   "tools/godot/export_data.sh",
+   "godot/autoload/data.gd",
+   "godot/data/adverts.json",
+   "godot/data/archetypes.json",
+   "godot/data/cars.json",
+   "godot/data/chatter.json",
+   "godot/data/faults.json",
+   "godot/data/headlines.json",
+   "godot/data/jobtypes.json",
+   "godot/data/names.json",
+   "godot/data/owners.json",
+   "godot/data/paint.json",
+   "godot/tests/golden/data_counts.json",
+   "godot/tests/test_data.gd"
+  ]
+ },
+ {
+  "id": "GDF04",
+  "title": "Godot: golden fixture helper",
+  "needs": [
+   "GDF01",
+   "GDF02",
+   "GDF15"
+  ],
+  "file": "GDF04-godot-golden-fixture-helper.md",
+  "files": [
+   "tools/godot/golden_common.mjs",
+   "tools/godot/golden.sh",
+   "tools/godot/golden_example.mjs",
+   "godot/tests/golden/example.json",
+   "godot/tests/golden_util.gd",
+   "godot/tests/test_golden_util.gd"
+  ]
+ },
+ {
+  "id": "GDF05",
+  "title": "Godot: CoreRng (port of core/rng.js)",
+  "needs": [
+   "GDF04"
+  ],
+  "file": "GDF05-godot-corerng-port-of-core-rng-js.md",
+  "files": [
+   "godot/core/rng.gd",
+   "tools/godot/golden_rng.mjs",
+   "godot/tests/golden/rng.json",
+   "godot/tests/test_rng.gd"
+  ]
+ },
+ {
+  "id": "GDF06",
+  "title": "Godot: CoreClock (port of core/clock.js)",
+  "needs": [
+   "GDF04"
+  ],
+  "file": "GDF06-godot-coreclock-port-of-core-clock-js.md",
+  "files": [
+   "godot/core/clock.gd",
+   "tools/godot/golden_clock.mjs",
+   "godot/tests/golden/clock.json",
+   "godot/tests/test_clock.gd"
+  ]
+ },
+ {
+  "id": "GDF07",
+  "title": "Godot: CoreFormat (port of core/format.js)",
+  "needs": [
+   "GDF04"
+  ],
+  "file": "GDF07-godot-coreformat-port-of-core-format-js.md",
+  "files": [
+   "godot/core/format.gd",
+   "tools/godot/golden_format.mjs",
+   "godot/tests/golden/format.json",
+   "godot/tests/test_format.gd"
+  ]
+ },
+ {
+  "id": "GDF08",
+  "title": "Godot: CoreState (port of core/state.js)",
+  "needs": [
+   "GDF04",
+   "GDF05"
+  ],
+  "file": "GDF08-godot-corestate-port-of-core-state-js.md",
+  "files": [
+   "godot/core/state.gd",
+   "tools/godot/golden_state.mjs",
+   "godot/tests/golden/state.json",
+   "godot/tests/test_state.gd"
+  ]
+ },
+ {
+  "id": "GDF09",
+  "title": "Godot: CoreSave (port of save/save.js)",
+  "needs": [
+   "GDF01",
+   "GDF02",
+   "GDF15"
+  ],
+  "file": "GDF09-godot-coresave-port-of-save-save-js.md",
+  "files": [
+   "godot/autoload/save.gd",
+   "godot/tests/test_save.gd"
+  ]
+ },
+ {
+  "id": "GDF10",
+  "title": "Godot: Game autoload shell",
+  "needs": [
+   "GDF08",
+   "GDF09",
+   "GDF15"
+  ],
+  "file": "GDF10-godot-game-autoload-shell.md",
+  "files": [
+   "godot/autoload/game.gd",
+   "godot/tests/fake_actions.gd",
+   "godot/tests/test_game.gd"
+  ]
+ },
+ {
+  "id": "GDF11",
+  "title": "Godot: make gtest and hello scene screenshot check",
+  "needs": [
+   "GDF01",
+   "GDF02"
+  ],
+  "file": "GDF11-godot-make-gtest-and-hello-scene-screens.md",
+  "files": [
+   "Makefile",
+   "godot/scenes/hello.tscn",
+   "godot/scenes/hello.gd",
+   "godot/tests/test_hello.gd",
+   "godot/project.godot"
+  ]
+ },
+ {
+  "id": "GDF12",
+  "title": "Godot: Sfx autoload (procedural sounds)",
+  "needs": [
+   "GDF01",
+   "GDF02"
+  ],
+  "file": "GDF12-godot-sfx-autoload-procedural-sounds.md",
+  "files": [
+   "godot/autoload/sfx.gd",
+   "godot/tests/test_sfx.gd"
+  ]
+ },
+ {
+  "id": "GDF13",
+  "title": "Godot: UiTokens (port of ui/tokens.js)",
+  "needs": [
+   "GDF04"
+  ],
+  "file": "GDF13-godot-uitokens-port-of-ui-tokens-js.md",
+  "files": [
+   "godot/ui/tokens.gd",
+   "tools/godot/golden_tokens.mjs",
+   "godot/tests/golden/tokens.json",
+   "godot/tests/test_tokens.gd"
+  ]
+ },
+ {
+  "id": "GDF14",
+  "title": "Godot: API reference docs/GODOT_API.md",
+  "needs": [
+   "GDF03",
+   "GDF04",
+   "GDF05",
+   "GDF06",
+   "GDF07",
+   "GDF08",
+   "GDF09",
+   "GDF10",
+   "GDF11",
+   "GDF12",
+   "GDF13"
+  ],
+  "file": "GDF14-godot-api-reference-docs-godot-api-md.md",
+  "files": [
+   "docs/GODOT_API.md"
+  ]
+ },
+ {
+  "id": "GDS01",
+  "title": "Golden fixture helpers (JS and GDScript)",
+  "needs": [
+   "GDF01",
+   "GDF02"
+  ],
+  "file": "GDS01-golden-fixture-helpers-js-and-gdscript.md",
+  "files": [
+   "tools/godot/golden_sim.mjs",
+   "tools/godot/golden_run.sh",
+   "tools/godot/golden_selftest.mjs",
+   "godot/tests/golden/selftest.json",
+   "godot/tests/golden_util.gd",
+   "godot/tests/test_golden_util.gd"
+  ]
+ },
+ {
+  "id": "GDS02",
+  "title": "SimUtil and SimData helpers for the sim ports",
+  "needs": [
+   "GDF01",
+   "GDF02",
+   "GDF03",
+   "GDF05",
+   "GDF06",
+   "GDF07",
+   "GDF08",
+   "GDS01"
+  ],
+  "file": "GDS02-simutil-and-simdata-helpers-for-the-sim-.md",
+  "files": [
+   "tools/godot/golden_simdata.mjs",
+   "godot/tests/golden/simdata.json",
+   "godot/sim/simutil.gd",
+   "godot/sim/simdata.gd",
+   "godot/tests/test_sim_simdata.gd"
+  ]
+ },
+ {
+  "id": "GDS03",
+  "title": "Sim port: carstats",
+  "needs": [
+   "GDS02"
+  ],
+  "file": "GDS03-sim-port-carstats.md",
+  "files": [
+   "tools/godot/golden_carstats.mjs",
+   "godot/tests/golden/carstats.json",
+   "godot/sim/carstats.gd",
+   "godot/tests/test_sim_carstats.gd"
+  ]
+ },
+ {
+  "id": "GDS04",
+  "title": "Sim port: faultsim",
+  "needs": [
+   "GDS03"
+  ],
+  "file": "GDS04-sim-port-faultsim.md",
+  "files": [
+   "tools/godot/golden_faultsim.mjs",
+   "godot/tests/golden/faultsim.json",
+   "godot/sim/faultsim.gd",
+   "godot/tests/test_sim_faultsim.gd"
+  ]
+ },
+ {
+  "id": "GDS05",
+  "title": "Sim port: shop",
+  "needs": [
+   "GDS03"
+  ],
+  "file": "GDS05-sim-port-shop.md",
+  "files": [
+   "tools/godot/golden_shop.mjs",
+   "godot/tests/golden/shop.json",
+   "godot/sim/shop.gd",
+   "godot/tests/test_sim_shop.gd"
+  ]
+ },
+ {
+  "id": "GDS06",
+  "title": "Sim port: jobsim",
+  "needs": [
+   "GDS02"
+  ],
+  "file": "GDS06-sim-port-jobsim.md",
+  "files": [
+   "tools/godot/golden_jobsim.mjs",
+   "godot/tests/golden/jobsim.json",
+   "godot/sim/jobsim.gd",
+   "godot/tests/test_sim_jobsim.gd"
+  ]
+ },
+ {
+  "id": "GDS07",
+  "title": "Sim port: news",
+  "needs": [
+   "GDS02"
+  ],
+  "file": "GDS07-sim-port-news.md",
+  "files": [
+   "tools/godot/golden_news.mjs",
+   "godot/tests/golden/news.json",
+   "godot/sim/news.gd",
+   "godot/tests/test_sim_news.gd"
+  ]
+ },
+ {
+  "id": "GDS08",
+  "title": "Sim port: endgame",
+  "needs": [
+   "GDS03"
+  ],
+  "file": "GDS08-sim-port-endgame.md",
+  "files": [
+   "tools/godot/golden_endgame.mjs",
+   "godot/tests/golden/endgame.json",
+   "godot/sim/endgame.gd",
+   "godot/tests/test_sim_endgame.gd"
+  ]
+ },
+ {
+  "id": "GDS09",
+  "title": "Sim port: auction lots, reveals, consigning",
+  "needs": [
+   "GDS03"
+  ],
+  "file": "GDS09-sim-port-auction-lots-reveals-consigning.md",
+  "files": [
+   "tools/godot/golden_auction_lots.mjs",
+   "godot/tests/golden/auction_lots.json",
+   "godot/sim/auction.gd",
+   "godot/tests/test_sim_auction_lots.gd"
+  ]
+ },
+ {
+  "id": "GDS10",
+  "title": "Sim port: auction bidding",
+  "needs": [
+   "GDS09"
+  ],
+  "file": "GDS10-sim-port-auction-bidding.md",
+  "files": [
+   "tools/godot/golden_auction_bids.mjs",
+   "godot/tests/golden/auction_bids.json",
+   "godot/sim/auction.gd",
+   "godot/tests/test_sim_auction_bids.gd"
+  ]
+ },
+ {
+  "id": "GDS11",
+  "title": "Sim port: month",
+  "needs": [
+   "GDS04",
+   "GDS09"
+  ],
+  "file": "GDS11-sim-port-month.md",
+  "files": [
+   "tools/godot/golden_month.mjs",
+   "godot/tests/golden/month.json",
+   "godot/sim/month.gd",
+   "godot/tests/test_sim_month.gd"
+  ]
+ },
+ {
+  "id": "GDS12",
+  "title": "Sim port: advance (the day clock)",
+  "needs": [
+   "GDS05",
+   "GDS06",
+   "GDS07",
+   "GDS08",
+   "GDS11"
+  ],
+  "file": "GDS12-sim-port-advance-the-day-clock.md",
+  "files": [
+   "tools/godot/golden_advance.mjs",
+   "godot/tests/golden/advance.json",
+   "godot/sim/advance.gd",
+   "godot/tests/test_sim_advance.gd"
+  ]
+ },
+ {
+  "id": "GDS13",
+  "title": "Sim port: auction attend",
+  "needs": [
+   "GDS10",
+   "GDS12"
+  ],
+  "file": "GDS13-sim-port-auction-attend.md",
+  "files": [
+   "tools/godot/golden_auction_attend.mjs",
+   "godot/tests/golden/auction_attend.json",
+   "godot/sim/auction.gd",
+   "godot/tests/test_sim_auction_attend.gd"
+  ]
+ },
+ {
+  "id": "GDS14",
+  "title": "Sim port: garage",
+  "needs": [
+   "GDS12"
+  ],
+  "file": "GDS14-sim-port-garage.md",
+  "files": [
+   "tools/godot/golden_garage.mjs",
+   "godot/tests/golden/garage.json",
+   "godot/sim/garage.gd",
+   "godot/tests/test_sim_garage.gd"
+  ]
+ },
+ {
+  "id": "GDS15",
+  "title": "Sim port: jobresolve (checks, success, mishap, breakdown)",
+  "needs": [
+   "GDS04",
+   "GDS12"
+  ],
+  "file": "GDS15-sim-port-jobresolve-checks-success-misha.md",
+  "files": [
+   "tools/godot/golden_jobresolve.mjs",
+   "godot/tests/golden/jobresolve.json",
+   "godot/sim/jobresolve.gd",
+   "godot/tests/test_sim_jobresolve.gd"
+  ]
+ },
+ {
+  "id": "GDS16",
+  "title": "Sim port: jobresolve disaster branch",
+  "needs": [
+   "GDS15"
+  ],
+  "file": "GDS16-sim-port-jobresolve-disaster-branch.md",
+  "files": [
+   "godot/sim/jobresolve.gd",
+   "godot/tests/test_sim_jobresolve.gd"
+  ]
+ },
+ {
+  "id": "GDS17",
+  "title": "Sim port: adsim",
+  "needs": [
+   "GDS12"
+  ],
+  "file": "GDS17-sim-port-adsim.md",
+  "files": [
+   "tools/godot/golden_adsim.mjs",
+   "godot/tests/golden/adsim.json",
+   "godot/sim/adsim.gd",
+   "godot/tests/test_sim_adsim.gd"
+  ]
+ },
+ {
+  "id": "GDS18",
+  "title": "Sim port: actions",
+  "needs": [
+   "GDS12"
+  ],
+  "file": "GDS18-sim-port-actions.md",
+  "files": [
+   "tools/godot/golden_actions.mjs",
+   "godot/tests/golden/actions.json",
+   "godot/sim/actions.gd",
+   "godot/tests/test_sim_actions.gd"
+  ]
+ },
+ {
+  "id": "GDS19",
+  "title": "Sim port: newgame",
+  "needs": [
+   "GDS05",
+   "GDS06",
+   "GDS07",
+   "GDS09"
+  ],
+  "file": "GDS19-sim-port-newgame.md",
+  "files": [
+   "tools/godot/golden_newgame.mjs",
+   "godot/tests/golden/newgame.json",
+   "godot/sim/newgame.gd",
+   "godot/tests/test_sim_newgame.gd"
+  ]
+ },
+ {
+  "id": "GDS20",
+  "title": "Game.act: dispatch every sim action",
+  "needs": [
+   "GDF10",
+   "GDS13",
+   "GDS14",
+   "GDS16",
+   "GDS17",
+   "GDS18",
+   "GDS19"
+  ],
+  "file": "GDS20-game-act-dispatch-every-sim-action.md",
+  "files": [
+   "tools/godot/golden_dispatch.mjs",
+   "tools/godot/golden_game_act.mjs",
+   "godot/tests/golden/game_act.json",
+   "godot/autoload/game.gd",
+   "godot/tests/test_game_act.gd"
+  ]
+ },
+ {
+  "id": "GDS21",
+  "title": "Parity: scripted 60-day play on a fixed seed",
+  "needs": [
+   "GDS20"
+  ],
+  "file": "GDS21-parity-scripted-60-day-play-on-a-fixed-s.md",
+  "files": [
+   "tools/godot/golden_bot.mjs",
+   "tools/godot/golden_playthrough.mjs",
+   "godot/tests/golden/playthrough.json",
+   "godot/tests/test_playthrough.gd"
+  ]
+ },
+ {
+  "id": "GDS22",
+  "title": "Parity: GDScript bot plays whole years like the JS bot",
+  "needs": [
+   "GDS21"
+  ],
+  "file": "GDS22-parity-gdscript-bot-plays-whole-years-li.md",
+  "files": [
+   "tools/godot/golden_bot_years.mjs",
+   "godot/tests/golden/bot_years.json",
+   "godot/tests/sim_bot.gd",
+   "godot/tests/test_bot_years.gd"
+  ]
+ },
+ {
+  "id": "GDU01",
+  "title": "UI: UiTheme, theme.tres and bundled pixel fonts",
+  "needs": [
+   "GDF01",
+   "GDF13"
+  ],
+  "file": "GDU01-ui-uitheme-theme-tres-and-bundled-pixel-.md",
+  "files": [
+   "godot/ui/fonts/PressStart2P-Regular.ttf",
+   "godot/ui/fonts/VT323-Regular.ttf",
+   "godot/ui/fonts/OFL-PressStart2P.txt",
+   "godot/ui/fonts/OFL-VT323.txt",
+   "godot/ui/ui_theme.gd",
+   "godot/ui/theme.tres",
+   "godot/tests/test_ui_theme.gd"
+  ]
+ },
+ {
+  "id": "GDU31",
+  "title": "UI: UiText wrap, ellipsize, pips",
+  "needs": [
+   "GDF01",
+   "GDF02"
+  ],
+  "file": "GDU31-ui-uitext-wrap-ellipsize-pips.md",
+  "files": [
+   "godot/ui/ui_text.gd",
+   "godot/tests/test_ui_text.gd"
+  ]
+ },
+ {
+  "id": "GDU02",
+  "title": "UI: UiTap rule and UiButton widget",
+  "needs": [
+   "GDU01",
+   "GDF02"
+  ],
+  "file": "GDU02-ui-uitap-rule-and-uibutton-widget.md",
+  "files": [
+   "godot/ui/tap.gd",
+   "godot/ui/button.gd",
+   "godot/tests/test_ui_button.gd"
+  ]
+ },
+ {
+  "id": "GDU03",
+  "title": "UI: pop-up menu widget (boxed list with arrow cursor)",
+  "needs": [
+   "GDU02",
+   "GDU01"
+  ],
+  "file": "GDU03-ui-pop-up-menu-widget-boxed-list-with-ar.md",
+  "files": [
+   "godot/ui/menu.gd",
+   "godot/tests/test_ui_menu.gd"
+  ]
+ },
+ {
+  "id": "GDU04",
+  "title": "UI: toast and tooltip widgets",
+  "needs": [
+   "GDU01",
+   "GDU31"
+  ],
+  "file": "GDU04-ui-toast-and-tooltip-widgets.md",
+  "files": [
+   "godot/ui/toast.gd",
+   "godot/ui/tooltip.gd",
+   "godot/tests/test_ui_toast.gd"
+  ]
+ },
+ {
+  "id": "GDU05",
+  "title": "UI: animated money and number counter",
+  "needs": [
+   "GDU01",
+   "GDF07"
+  ],
+  "file": "GDU05-ui-animated-money-and-number-counter.md",
+  "files": [
+   "godot/ui/counter.gd",
+   "godot/tests/test_ui_counter.gd"
+  ]
+ },
+ {
+  "id": "GDU06",
+  "title": "UI: speech banner with typewriter reveal",
+  "needs": [
+   "GDU01",
+   "GDU31",
+   "GDF02"
+  ],
+  "file": "GDU06-ui-speech-banner-with-typewriter-reveal.md",
+  "files": [
+   "godot/ui/banner.gd",
+   "godot/tests/test_ui_banner.gd"
+  ]
+ },
+ {
+  "id": "GDU21",
+  "title": "UI: Gold Number Plate slots and CASH bar",
+  "needs": [
+   "GDU02",
+   "GDU05"
+  ],
+  "file": "GDU21-ui-gold-number-plate-slots-and-cash-bar.md",
+  "files": [
+   "godot/ui/plate_row.gd",
+   "godot/ui/cash_bar.gd",
+   "godot/tests/test_ui_plates_cash.gd"
+  ]
+ },
+ {
+  "id": "GDU22",
+  "title": "UI: torn-off calendar day sheet",
+  "needs": [
+   "GDU01"
+  ],
+  "file": "GDU22-ui-torn-off-calendar-day-sheet.md",
+  "files": [
+   "godot/ui/calendar_sheet.gd",
+   "godot/tests/test_ui_calendar.gd"
+  ]
+ },
+ {
+  "id": "GDU29",
+  "title": "UI: cash history and small sales chart",
+  "needs": [
+   "GDU01"
+  ],
+  "file": "GDU29-ui-cash-history-and-small-sales-chart.md",
+  "files": [
+   "godot/ui/cash_history.gd",
+   "godot/ui/sales_chart.gd",
+   "godot/tests/test_ui_chart.gd"
+  ]
+ },
+ {
+  "id": "GDU19",
+  "title": "UI: CarPortrait widget API stub (placeholder drawing)",
+  "needs": [
+   "GDU01",
+   "GDF03"
+  ],
+  "file": "GDU19-ui-carportrait-widget-api-stub-placehold.md",
+  "files": [
+   "godot/ui/car_portrait.gd",
+   "godot/tests/test_car_portrait.gd"
+  ]
+ },
+ {
+  "id": "GDU07",
+  "title": "UI: bottom HUD strip (UiHud)",
+  "needs": [
+   "GDU05",
+   "GDU19",
+   "GDU21",
+   "GDU22",
+   "GDU29",
+   "GDF10",
+   "GDF03"
+  ],
+  "file": "GDU07-ui-bottom-hud-strip-uihud.md",
+  "files": [
+   "godot/ui/hud.gd",
+   "godot/tests/test_ui_hud.gd"
+  ]
+ },
+ {
+  "id": "GDU18",
+  "title": "UI: scrolling list widget (drag, fling, tap)",
+  "needs": [
+   "GDU01",
+   "GDU02"
+  ],
+  "file": "GDU18-ui-scrolling-list-widget-drag-fling-tap.md",
+  "files": [
+   "godot/ui/list.gd",
+   "godot/tests/test_ui_list.gd"
+  ]
+ },
+ {
+  "id": "GDU20",
+  "title": "UI: screen shake, flash and pop FX helper",
+  "needs": [
+   "GDU01",
+   "GDF02"
+  ],
+  "file": "GDU20-ui-screen-shake-flash-and-pop-fx-helper.md",
+  "files": [
+   "godot/ui/fx.gd",
+   "godot/tests/test_ui_fx.gd"
+  ]
+ },
+ {
+  "id": "GDU26",
+  "title": "UI: particle helpers (cash, confetti, smoke)",
+  "needs": [
+   "GDU01",
+   "GDF02"
+  ],
+  "file": "GDU26-ui-particle-helpers-cash-confetti-smoke.md",
+  "files": [
+   "godot/ui/particles.gd",
+   "godot/tests/test_ui_particles.gd"
+  ]
+ },
+ {
+  "id": "GDU30",
+  "title": "UI: SceneHost (go, push, pop)",
+  "needs": [
+   "GDF02"
+  ],
+  "file": "GDU30-ui-scenehost-go-push-pop.md",
+  "files": [
+   "godot/ui/scene_host.gd",
+   "godot/tests/test_scene_host.gd"
+  ]
+ },
+ {
+  "id": "GDU08",
+  "title": "UI: main.tscn Stage, layers, safe area",
+  "needs": [
+   "GDU04",
+   "GDU06",
+   "GDU07",
+   "GDU30",
+   "GDU28",
+   "GDU01"
+  ],
+  "file": "GDU08-ui-main-tscn-stage-layers-safe-area.md",
+  "files": [
+   "godot/scenes/main.tscn",
+   "godot/scenes/main.gd",
+   "godot/tests/test_main.gd"
+  ]
+ },
+ {
+  "id": "GDU09",
+  "title": "TV: CRT shader, CrtMath and test pattern demo",
+  "needs": [
+   "GDF02"
+  ],
+  "file": "GDU09-tv-crt-shader-crtmath-and-test-pattern-d.md",
+  "files": [
+   "godot/tv/crt.gdshader",
+   "godot/tv/crt_math.gd",
+   "godot/tv/crt_demo.tscn",
+   "godot/tv/crt_demo.gd",
+   "godot/tests/test_crt.gd"
+  ]
+ },
+ {
+  "id": "GDU27",
+  "title": "TV: static transition node",
+  "needs": [
+   "GDF02"
+  ],
+  "file": "GDU27-tv-static-transition-node.md",
+  "files": [
+   "godot/tv/static.gdshader",
+   "godot/tv/tv_static.gd",
+   "godot/tests/test_tv_static.gd"
+  ]
+ },
+ {
+  "id": "GDU10",
+  "title": "TV: tv.tscn cabinet, glass and SubViewport",
+  "needs": [
+   "GDU01",
+   "GDU09"
+  ],
+  "file": "GDU10-tv-tv-tscn-cabinet-glass-and-subviewport.md",
+  "files": [
+   "godot/tv/tv.tscn",
+   "godot/tv/tv.gd",
+   "godot/tests/test_tv.gd"
+  ]
+ },
+ {
+  "id": "GDU11",
+  "title": "TV: remote control buttons (CH-, CH+, OK, BACK)",
+  "needs": [
+   "GDU10",
+   "GDU02"
+  ],
+  "file": "GDU11-tv-remote-control-buttons-ch-ch-ok-back.md",
+  "files": [
+   "godot/tv/tv_remote.gd",
+   "godot/tv/tv.gd",
+   "godot/tests/test_tv_remote.gd"
+  ]
+ },
+ {
+  "id": "GDU28",
+  "title": "Test helpers: TestFakeGame and channel_shot",
+  "needs": [
+   "GDF02"
+  ],
+  "file": "GDU28-test-helpers-testfakegame-and-channel-sh.md",
+  "files": [
+   "godot/tests/fake_game.gd",
+   "godot/tests/shots/channel_shot.gd",
+   "godot/tests/test_fake_game.gd"
+  ]
+ },
+ {
+  "id": "GDU12",
+  "title": "TV: ChannelBase, ChannelManager and TV wiring",
+  "needs": [
+   "GDU11",
+   "GDU27",
+   "GDU28",
+   "GDU01",
+   "GDU31",
+   "GDF03",
+   "GDF07"
+  ],
+  "file": "GDU12-tv-channelbase-channelmanager-and-tv-wir.md",
+  "files": [
+   "godot/tv/channel_base.gd",
+   "godot/tv/channel_manager.gd",
+   "godot/tv/tv.gd",
+   "godot/tests/test_channels.gd",
+   "godot/tests/shots/tv_shot.tscn",
+   "godot/tests/shots/tv_shot.gd"
+  ]
+ },
+ {
+  "id": "GDU13",
+  "title": "Channel SHOP: cars list and details",
+  "needs": [
+   "GDU12",
+   "GDU18",
+   "GDU19",
+   "GDU02",
+   "GDU31",
+   "GDF03",
+   "GDF07"
+  ],
+  "file": "GDU13-channel-shop-cars-list-and-details.md",
+  "files": [
+   "godot/tv/shop_channel.gd",
+   "godot/tv/shop_channel.tscn",
+   "godot/tests/shots/shop_shot.tscn",
+   "godot/tests/test_shop_channel.gd"
+  ]
+ },
+ {
+  "id": "GDU23",
+  "title": "Channel SHOP: buy and rent actions",
+  "needs": [
+   "GDU13"
+  ],
+  "file": "GDU23-channel-shop-buy-and-rent-actions.md",
+  "files": [
+   "godot/tv/shop_channel.gd",
+   "godot/tests/test_shop_actions.gd"
+  ]
+ },
+ {
+  "id": "GDU14",
+  "title": "Channel NEWS: The Daily Sprocket pages",
+  "needs": [
+   "GDU12",
+   "GDU02",
+   "GDU31",
+   "GDF07"
+  ],
+  "file": "GDU14-channel-news-the-daily-sprocket-pages.md",
+  "files": [
+   "godot/tv/news_channel.gd",
+   "godot/tv/news_channel.tscn",
+   "godot/tests/shots/news_shot.tscn",
+   "godot/tests/test_news_channel.gd"
+  ]
+ },
+ {
+  "id": "GDU15",
+  "title": "Channel ADVERTS: media list and run advert",
+  "needs": [
+   "GDU12",
+   "GDU18",
+   "GDU02",
+   "GDU31",
+   "GDF03",
+   "GDF07"
+  ],
+  "file": "GDU15-channel-adverts-media-list-and-run-adver.md",
+  "files": [
+   "godot/tv/adverts_math.gd",
+   "godot/tv/adverts_channel.gd",
+   "godot/tv/adverts_channel.tscn",
+   "godot/tests/shots/adverts_shot.tscn",
+   "godot/tests/test_adverts_channel.gd"
+  ]
+ },
+ {
+  "id": "GDU16",
+  "title": "Channel LEDGER: books, plates and sales chart",
+  "needs": [
+   "GDU12",
+   "GDU29",
+   "GDU31",
+   "GDF03",
+   "GDF07"
+  ],
+  "file": "GDU16-channel-ledger-books-plates-and-sales-ch.md",
+  "files": [
+   "godot/tv/ledger_math.gd",
+   "godot/tv/ledger_channel.gd",
+   "godot/tv/ledger_channel.tscn",
+   "godot/tests/shots/ledger_shot.tscn",
+   "godot/tests/test_ledger_channel.gd"
+  ]
+ },
+ {
+  "id": "GDU24",
+  "title": "Channel LEDGER: workshop tab and buy slot",
+  "needs": [
+   "GDU16",
+   "GDU02"
+  ],
+  "file": "GDU24-channel-ledger-workshop-tab-and-buy-slot.md",
+  "files": [
+   "godot/tv/ledger_channel.gd",
+   "godot/tests/shots/ledger_workshop_shot.tscn",
+   "godot/tests/test_ledger_workshop.gd"
+  ]
+ },
+ {
+  "id": "GDU17",
+  "title": "Channel BOOKINGS: requests, cars and needs",
+  "needs": [
+   "GDU12",
+   "GDU18",
+   "GDU02",
+   "GDU31",
+   "GDF03",
+   "GDF07"
+  ],
+  "file": "GDU17-channel-bookings-requests-cars-and-needs.md",
+  "files": [
+   "godot/tv/bookings_math.gd",
+   "godot/tv/bookings_channel.gd",
+   "godot/tv/bookings_channel.tscn",
+   "godot/tests/shots/bookings_shot.tscn",
+   "godot/tests/test_bookings_channel.gd"
+  ]
+ },
+ {
+  "id": "GDU25",
+  "title": "Channel BOOKINGS: accept job and result panel",
+  "needs": [
+   "GDU17"
+  ],
+  "file": "GDU25-channel-bookings-accept-job-and-result-p.md",
+  "files": [
+   "godot/tv/bookings_channel.gd",
+   "godot/tests/shots/bookings_result_shot.tscn",
+   "godot/tests/test_bookings_actions.gd"
+  ]
+ },
+ {
+  "id": "GDA01",
+  "title": "Blender glTF export of one car (export_glb.py)",
+  "needs": [],
+  "file": "GDA01-blender-gltf-export-of-one-car-export-gl.md",
+  "files": [
+   "tools/art/export_glb.py",
+   "tools/art/test_export_glb.sh",
+   "godot/art/cars/t1_chimp.glb"
+  ]
+ },
+ {
+  "id": "GDA02",
+  "title": "Export every car to glb plus manifest.json",
+  "needs": [
+   "GDA01"
+  ],
+  "file": "GDA02-export-every-car-to-glb-plus-manifest-js.md",
+  "files": [
+   "tools/art/export_all_glb.sh",
+   "tools/art/glb_manifest.py",
+   "tools/art/test_export_all_glb.sh",
+   "godot/art/cars/manifest.json",
+   "godot/art/cars/t1_allergy.glb",
+   "godot/art/cars/t1_alpaca.glb",
+   "godot/art/cars/t1_chimp.glb",
+   "godot/art/cars/t1_cooker.glb",
+   "godot/art/cars/t1_maurice.glb",
+   "godot/art/cars/t1_robbin.glb",
+   "godot/art/cars/t1_trumpet.glb",
+   "godot/art/cars/t1_volksbeagle.glb"
+  ]
+ },
+ {
+  "id": "GDA05",
+  "title": "Wear: numbers (wear.gd) and shader include",
+  "needs": [
+   "GDF01",
+   "GDF02"
+  ],
+  "file": "GDA05-wear-numbers-wear-gd-and-shader-include.md",
+  "files": [
+   "godot/art/wear.gd",
+   "godot/art/car_wear.gdshaderinc",
+   "godot/tests/test_wear.gd"
+  ]
+ },
+ {
+  "id": "GDA04",
+  "title": "Car paint, chrome and glass shaders",
+  "needs": [
+   "GDA05"
+  ],
+  "file": "GDA04-car-paint-chrome-and-glass-shaders.md",
+  "files": [
+   "godot/art/car_paint.gdshader",
+   "godot/art/chrome.gdshader",
+   "godot/art/glass.gdshader",
+   "godot/art/previews/mat_preview.gd",
+   "godot/art/previews/mat_preview.tscn",
+   "godot/tests/test_car_shaders.gd",
+   "godot/art/car_wear.gdshaderinc"
+  ]
+ },
+ {
+  "id": "GDA18",
+  "title": "CarMats: material per car part class",
+  "needs": [
+   "GDA04"
+  ],
+  "file": "GDA18-carmats-material-per-car-part-class.md",
+  "files": [
+   "godot/art/car_mats.gd",
+   "godot/tests/test_car_mats.gd"
+  ]
+ },
+ {
+  "id": "GDA03",
+  "title": "CarView: 3D car in a pixel viewport",
+  "needs": [
+   "GDA02",
+   "GDA18"
+  ],
+  "file": "GDA03-carview-3d-car-in-a-pixel-viewport.md",
+  "files": [
+   "godot/art/carview.gd",
+   "godot/art/carview.tscn",
+   "godot/art/previews/carview_demo.tscn",
+   "godot/tests/test_carview.gd"
+  ]
+ },
+ {
+  "id": "GDA19",
+  "title": "Test: every exported car loads with all part classes",
+  "needs": [
+   "GDA03"
+  ],
+  "file": "GDA19-test-every-exported-car-loads-with-all-p.md",
+  "files": [
+   "godot/tests/test_art_cars.gd"
+  ]
+ },
+ {
+  "id": "GDA06",
+  "title": "CarPortrait: real implementation on CarView",
+  "needs": [
+   "GDA03",
+   "GDU19"
+  ],
+  "file": "GDA06-carportrait-real-implementation-on-carvi.md",
+  "files": [
+   "godot/ui/car_portrait.gd",
+   "godot/tests/test_car_portrait_art.gd"
+  ]
+ },
+ {
+  "id": "GDA07",
+  "title": "Showroom turntable scene",
+  "needs": [
+   "GDA03"
+  ],
+  "file": "GDA07-showroom-turntable-scene.md",
+  "files": [
+   "godot/art/showroom.gd",
+   "godot/art/showroom.tscn",
+   "godot/tests/test_showroom.gd"
+  ]
+ },
+ {
+  "id": "GDA08",
+  "title": "Character frames export script (Mark, Dave)",
+  "needs": [],
+  "file": "GDA08-character-frames-export-script-mark-dave.md",
+  "files": [
+   "tools/art/export_char_frames.py",
+   "tools/art/test_export_char_frames.sh"
+  ]
+ },
+ {
+  "id": "GDA09",
+  "title": "CharFrames: SpriteFrames from the exported JSON",
+  "needs": [
+   "GDA08",
+   "GDF02"
+  ],
+  "file": "GDA09-charframes-spriteframes-from-the-exporte.md",
+  "files": [
+   "godot/art/char_frames.gd",
+   "godot/tests/test_char_frames.gd"
+  ]
+ },
+ {
+  "id": "GDA10",
+  "title": "Actor scene: Mark and Dave with mouth flaps",
+  "needs": [
+   "GDA09"
+  ],
+  "file": "GDA10-actor-scene-mark-and-dave-with-mouth-fla.md",
+  "files": [
+   "godot/art/actor.gd",
+   "godot/art/actor.tscn",
+   "godot/art/previews/actor_demo.gd",
+   "godot/art/previews/actor_demo.tscn",
+   "godot/tests/test_actor.gd"
+  ]
+ },
+ {
+  "id": "GDA11",
+  "title": "Room plate export script (layers and lights JSON)",
+  "needs": [],
+  "file": "GDA11-room-plate-export-script-layers-and-ligh.md",
+  "files": [
+   "tools/art/export_room_layers.py",
+   "tools/art/test_export_room_layers.sh"
+  ]
+ },
+ {
+  "id": "GDA12",
+  "title": "RoomPlate: layered room with lights and parallax",
+  "needs": [
+   "GDA11",
+   "GDF02"
+  ],
+  "file": "GDA12-roomplate-layered-room-with-lights-and-p.md",
+  "files": [
+   "godot/art/room_plate.gd",
+   "godot/tests/test_room_plate.gd"
+  ]
+ },
+ {
+  "id": "GDA13",
+  "title": "Post-process screen shader (vignette, grain, glow)",
+  "needs": [
+   "GDF01",
+   "GDF02"
+  ],
+  "file": "GDA13-post-process-screen-shader-vignette-grai.md",
+  "files": [
+   "godot/art/post.gdshader",
+   "godot/art/post.gd",
+   "godot/art/post.tscn",
+   "godot/tests/test_post.gd"
+  ]
+ },
+ {
+  "id": "GDA14",
+  "title": "Particle effect scenes: steam, dust, cash, confetti, smoke",
+  "needs": [
+   "GDF02"
+  ],
+  "file": "GDA14-particle-effect-scenes-steam-dust-cash-c.md",
+  "files": [
+   "godot/art/fx/fx.gd",
+   "godot/art/fx/steam.tscn",
+   "godot/art/fx/dust.tscn",
+   "godot/art/fx/cash.tscn",
+   "godot/art/fx/confetti.tscn",
+   "godot/art/fx/smoke.tscn",
+   "godot/tests/test_fx.gd"
+  ]
+ },
+ {
+  "id": "GDA15",
+  "title": "Sfx: overlapping sounds, sound setting, six art sounds",
+  "needs": [
+   "GDF12"
+  ],
+  "file": "GDA15-sfx-overlapping-sounds-sound-setting-six.md",
+  "files": [
+   "godot/autoload/sfx.gd",
+   "godot/tests/test_sfx.gd"
+  ]
+ },
+ {
+  "id": "GDA16",
+  "title": "App icon and launch image",
+  "needs": [
+   "GDF01"
+  ],
+  "file": "GDA16-app-icon-and-launch-image.md",
+  "files": [
+   "tools/art/make_launch.py",
+   "tools/art/test_make_launch.sh",
+   "godot/icon.svg",
+   "godot/art/launch.png"
+  ]
+ },
+ {
+  "id": "GDA17",
+  "title": "Contact sheet of all cars (one review image)",
+  "needs": [
+   "GDA03",
+   "GDF01"
+  ],
+  "file": "GDA17-contact-sheet-of-all-cars-one-review-ima.md",
+  "files": [
+   "tools/godot/contact_sheet_cars.sh",
+   "godot/art/car_sheet.gd",
+   "godot/art/car_sheet.tscn",
+   "godot/tests/test_car_sheet.gd"
+  ]
  }
 ]
