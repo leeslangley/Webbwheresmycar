@@ -9,6 +9,7 @@ uniform float coat : hint_range(0.0, 1.0) = 1.0;
 uniform float wear : hint_range(0.0, 3.0) = 0.0;
 uniform float ground_y = 0.0;
 uniform float body_height = 3.8;
+uniform float diffuse_gain : hint_range(0.0, 1.0) = 0.2;
 
 varying vec3 v_obj;
 
@@ -33,6 +34,9 @@ void fragment() {
 }
 
 void light() {
+	// A custom light() replaces the built-in Lambert term, so the diffuse lobe is added here (ALBEDO applies later).
+	// Lambert diffuse, scaled down: the light energy arrives pre-scaled by pi in Godot, so unscaled Lambert over-exposes the paint.
+	DIFFUSE_LIGHT += LIGHT_COLOR * ATTENUATION * max(dot(NORMAL, LIGHT), 0.0) * diffuse_gain;
 	// Tight highlight standing in for the coat's specular lobe.
 	vec3 h = normalize(VIEW + LIGHT);
 	float s = pow(max(dot(NORMAL, h), 0.0), 96.0);
