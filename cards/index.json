@@ -5650,5 +5650,47 @@
    "godot/rooms/room_base.gd",
    "godot/tests/test_room_parallax.gd"
   ]
+ },
+ {
+  "id": "GDA20",
+  "title": "CarSheet: show each car in its manifest paint",
+  "needs": [
+   "GDA17",
+   "GDA03"
+  ],
+  "file": "GDA20-carsheet-show-each-car-in-its-manifest-p.md",
+  "files": [
+   "godot/art/car_sheet.gd",
+   "godot/tests/test_car_sheet.gd"
+  ]
+ },
+ {
+  "id": "GDA21",
+  "title": "Car lighting and paint shader: orange must read orange",
+  "needs": [
+   "GDA04",
+   "GDA03"
+  ],
+  "file": "GDA21-car-lighting-and-paint-shader-orange-mus.md",
+  "files": [
+   "godot/art/car_paint.gdshader",
+   "godot/art/carview.gd",
+   "godot/tests/test_car_colour.gd",
+   "godot/tests/shots/car_colour_shot.gd",
+   "godot/tests/shots/car_colour_shot.tscn"
+  ]
+ },
+ {
+  "id": "GDA22",
+  "title": "CarView: dark outline pass and finer pixels",
+  "needs": [
+   "GDA03"
+  ],
+  "file": "GDA22-carview-dark-outline-pass-and-finer-pixe.md",
+  "files": [
+   "godot/art/car_outline.gdshader",
+   "godot/art/carview.gd",
+   "godot/tests/test_car_outline.gd"
+  ]
  }
 ]
