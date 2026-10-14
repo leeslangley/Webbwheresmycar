@@ -213,22 +213,23 @@
   },
   "t1_trumpet": {
    "bbox_max": [
-    5.12,
-    3.05,
-    2.325
+    5.18,
+    2.465,
+    1.9852
    ],
    "bbox_min": [
-    -5.12,
-    0.44,
-    -2.325
+    -5.29,
+    -0.114,
+    -1.9852
    ],
    "classes": {
-    "chrome": 10,
+    "chrome": 35,
     "glass": 1,
-    "lamp": 2,
-    "paint": 1,
+    "lamp": 3,
+    "paint": 6,
     "tail": 2,
-    "tyre": 8,
+    "trim": 42,
+    "tyre": 4,
     "wall": 2
    },
    "file": "t1_trumpet.glb",
@@ -247,22 +248,23 @@
   },
   "t1_volksbeagle": {
    "bbox_max": [
-    5.12,
-    3.68,
-    2.334
+    5.18,
+    3.6793,
+    1.98
    ],
    "bbox_min": [
-    -5.12,
-    0.464,
-    -2.334
+    -5.29,
+    -0.1185,
+    -1.98
    ],
    "classes": {
-    "chrome": 10,
-    "glass": 1,
+    "chrome": 32,
+    "glass": 2,
     "lamp": 2,
-    "paint": 1,
+    "paint": 15,
     "tail": 2,
-    "tyre": 8,
+    "trim": 49,
+    "tyre": 5,
     "wall": 2
    },
    "file": "t1_volksbeagle.glb",
