@@ -158,3 +158,10 @@ A minimal Xcode project that hosts the game in a WKWebView, built with Xcode 27 
 - t1_allergy: dims_mm.length 3860 is probably ~6% long (real Allegro ~3620-3650); rescale outline x and wheel x (about -33/+33.5) in a small Spark card.
 - t1_chimp: rear window rake 37 deg vs real ~25-30 deg; notes say 13 inch wheels (real 12 inch).
 - t1_maurice: `special` empty; overhang split slightly rear-heavy.
+
+### Polish backlog: dossiers (14 Oct review)
+- docs/cars/t1_volksbeagle.json and t1_cooker.json: `game_name` still says "Webb, wheres my car?" (copied from the fixture); set to "Volksbeagle Bug" / "Minnie Cooker". Add a check to tools/check_dossier.py that game_name differs from the fixture's.
+- t1_volksbeagle: rear deck is flat; real engine lid falls gently (see reviewer note).
+- t1_robbin notes say 10 inch rims; the real car has 12 inch.
+- A04 colour limits: acceptance relaxed to the real totals (palette + outline shades): 50 for a 24 colour sprite, 26 for a 12 colour sprite.
+- TV shop screen: quip text overlaps the car and the CONDITION label is clipped (visible in screenshots 14 Oct).

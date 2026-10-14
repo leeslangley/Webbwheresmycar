@@ -1806,5 +1806,446 @@
   "files": [
    "docs/IOS.md"
   ]
+ },
+ {
+  "id": "CA01",
+  "title": "Car details schema v2: validator and spec doc",
+  "needs": [
+   "R00"
+  ],
+  "file": "CA01-car-details-schema-v2-validator-and-spec.md",
+  "files": [
+   "tools/art/details.py",
+   "tests/fixtures/details_ok.json",
+   "tests/fixtures/details_bad.json",
+   "tests/run_details.sh",
+   "docs/CAR_DETAILS_SPEC.md"
+  ]
+ },
+ {
+  "id": "CA02",
+  "title": "Car body surface maths (pure python)",
+  "needs": [
+   "V01"
+  ],
+  "file": "CA02-car-body-surface-maths-pure-python.md",
+  "files": [
+   "tools/art/surface.py",
+   "tests/test_surface.py"
+  ]
+ },
+ {
+  "id": "CA03",
+  "title": "Parts framework: registry, helpers, materials and render hook",
+  "needs": [
+   "V06",
+   "CA01",
+   "CA02"
+  ],
+  "file": "CA03-parts-framework-registry-helpers-materia.md",
+  "files": [
+   "tools/art/parts/__init__.py",
+   "tools/art/parts/_common.py",
+   "tools/art/parts/_mats.py",
+   "tools/art/blender_car2.py",
+   "tests/run_ca03.sh"
+  ]
+ },
+ {
+  "id": "CA04",
+  "title": "Lofted car body instead of an extruded slab",
+  "needs": [
+   "CA02",
+   "CA03"
+  ],
+  "file": "CA04-lofted-car-body-instead-of-an-extruded-s.md",
+  "files": [
+   "tools/art/parts/body_loft.py",
+   "tests/run_ca04.sh"
+  ]
+ },
+ {
+  "id": "CA05",
+  "title": "Wheel arches cut into the body, with dark wheel wells",
+  "needs": [
+   "CA04"
+  ],
+  "file": "CA05-wheel-arches-cut-into-the-body-with-dark.md",
+  "files": [
+   "tools/art/parts/arches.py",
+   "tests/run_ca05.sh"
+  ]
+ },
+ {
+  "id": "CA06",
+  "title": "Windows, pillars and screens that follow the body surface",
+  "needs": [
+   "CA04"
+  ],
+  "file": "CA06-windows-pillars-and-screens-that-follow-.md",
+  "files": [
+   "tools/art/parts/windows.py",
+   "tests/fixtures/details_windows.json",
+   "tests/run_ca06.sh"
+  ]
+ },
+ {
+  "id": "CA07",
+  "title": "Wheels v2: round tyre, dished steel rim, hubcap, whitewall",
+  "needs": [
+   "CA03"
+  ],
+  "file": "CA07-wheels-v2-round-tyre-dished-steel-rim-hu.md",
+  "files": [
+   "tools/art/parts/wheels_a.py",
+   "tests/run_ca07.sh"
+  ]
+ },
+ {
+  "id": "CA08",
+  "title": "Wheels v2: wire, knock-off, alloy and spare wheels",
+  "needs": [
+   "CA07"
+  ],
+  "file": "CA08-wheels-v2-wire-knock-off-alloy-and-spare.md",
+  "files": [
+   "tools/art/parts/wheels_b.py",
+   "tools/art/parts/spare.py",
+   "tests/run_ca08.sh"
+  ]
+ },
+ {
+  "id": "CA09",
+  "title": "Front lamps: round, square, oval, slanted, pop-up, quad",
+  "needs": [
+   "CA03",
+   "CA02"
+  ],
+  "file": "CA09-front-lamps-round-square-oval-slanted-po.md",
+  "files": [
+   "tools/art/parts/lamps_front.py",
+   "tests/run_ca09.sh"
+  ]
+ },
+ {
+  "id": "CA10",
+  "title": "Rear lamps: round, rectangular, vertical, cat-eye, fin, wrap-round",
+  "needs": [
+   "CA03",
+   "CA02"
+  ],
+  "file": "CA10-rear-lamps-round-rectangular-vertical-ca.md",
+  "files": [
+   "tools/art/parts/lamps_rear.py",
+   "tests/run_ca10.sh"
+  ]
+ },
+ {
+  "id": "CA11",
+  "title": "Chrome bumpers: blade, wrap-round, overriders, US chunky, quarter bumpers",
+  "needs": [
+   "CA03",
+   "CA02"
+  ],
+  "file": "CA11-chrome-bumpers-blade-wrap-round-override.md",
+  "files": [
+   "tools/art/parts/bumpers.py",
+   "tests/run_ca11.sh"
+  ]
+ },
+ {
+  "id": "CA12",
+  "title": "Grilles per marque: bars, egg-crate, kidney, shield, mesh",
+  "needs": [
+   "CA03",
+   "CA02"
+  ],
+  "file": "CA12-grilles-per-marque-bars-egg-crate-kidney.md",
+  "files": [
+   "tools/art/parts/grilles.py",
+   "tests/run_ca12.sh"
+  ]
+ },
+ {
+  "id": "CA13",
+  "title": "Trim strips, body creases and shut lines that follow the body",
+  "needs": [
+   "CA04"
+  ],
+  "file": "CA13-trim-strips-body-creases-and-shut-lines-.md",
+  "files": [
+   "tools/art/parts/trim.py",
+   "tests/run_ca13.sh"
+  ]
+ },
+ {
+  "id": "CA14",
+  "title": "Small fittings: door handles, mirrors, badges, wipers, aerial, fuel cap",
+  "needs": [
+   "CA04"
+  ],
+  "file": "CA14-small-fittings-door-handles-mirrors-badg.md",
+  "files": [
+   "tools/art/parts/fittings.py",
+   "tests/run_ca14.sh"
+  ]
+ },
+ {
+  "id": "CA15",
+  "title": "Number plates and exhaust pipes",
+  "needs": [
+   "CA03",
+   "CA02"
+  ],
+  "file": "CA15-number-plates-and-exhaust-pipes.md",
+  "files": [
+   "tools/art/parts/plates_exhaust.py",
+   "tests/run_ca15.sh"
+  ]
+ },
+ {
+  "id": "CA16",
+  "title": "Big features: tail fins, running boards, vents and scoops, racks",
+  "needs": [
+   "CA04"
+  ],
+  "file": "CA16-big-features-tail-fins-running-boards-ve.md",
+  "files": [
+   "tools/art/parts/features.py",
+   "tests/run_ca16.sh"
+  ]
+ },
+ {
+  "id": "CA17",
+  "title": "Two-tone paint, stripes and vinyl roofs",
+  "needs": [
+   "CA04"
+  ],
+  "file": "CA17-two-tone-paint-stripes-and-vinyl-roofs.md",
+  "files": [
+   "tools/art/parts/paintzones.py",
+   "tests/run_ca17.sh"
+  ]
+ },
+ {
+  "id": "CA18",
+  "title": "Open cars: cockpit cut-out, seats, dash and windscreen",
+  "needs": [
+   "CA06"
+  ],
+  "file": "CA18-open-cars-cockpit-cut-out-seats-dash-and.md",
+  "files": [
+   "tools/art/parts/cockpit.py",
+   "tests/run_ca18.sh"
+  ]
+ },
+ {
+  "id": "CA19",
+  "title": "Soft tops: hood up, hood folded, vinyl roof variant",
+  "needs": [
+   "CA18"
+  ],
+  "file": "CA19-soft-tops-hood-up-hood-folded-vinyl-roof.md",
+  "files": [
+   "tools/art/parts/roofs.py",
+   "tests/run_ca19.sh"
+  ]
+ },
+ {
+  "id": "CA20",
+  "title": "Per-car Blender modules for the truly unique features",
+  "needs": [
+   "CA03"
+  ],
+  "file": "CA20-per-car-blender-modules-for-the-truly-un.md",
+  "files": [
+   "tools/art/parts/carmodule.py",
+   "tools/art/cars/__init__.py",
+   "tools/art/cars/t1_cooker.py",
+   "tests/run_ca20.sh"
+  ]
+ },
+ {
+  "id": "CA21",
+  "title": "Camera views: front three-quarter hero, front face, rear three-quarter",
+  "needs": [
+   "CA03"
+  ],
+  "file": "CA21-camera-views-front-three-quarter-hero-fr.md",
+  "files": [
+   "tools/art/blender_car2.py",
+   "tests/run_ca21.sh"
+  ]
+ },
+ {
+  "id": "CA22",
+  "title": "Contact sheet: every car, three views, one picture for QA",
+  "needs": [
+   "CA21",
+   "V07"
+  ],
+  "file": "CA22-contact-sheet-every-car-three-views-one-.md",
+  "files": [
+   "tools/art/montage.py",
+   "tools/art/contact_sheet.sh",
+   "tests/run_ca22.sh"
+  ]
+ },
+ {
+  "id": "CA23",
+  "title": "RSAMH pixel finish: heavy outline, dither shadows, punchy palette",
+  "needs": [
+   "V07"
+  ],
+  "file": "CA23-rsamh-pixel-finish-heavy-outline-dither-.md",
+  "files": [
+   "tools/art/rsamh_finish.py",
+   "tests/run_ca23.sh"
+  ]
+ },
+ {
+  "id": "CA24",
+  "title": "Sprite set per car: hero 3/4 sprite plus HUD face portrait",
+  "needs": [
+   "CA21",
+   "CA23",
+   "V07"
+  ],
+  "file": "CA24-sprite-set-per-car-hero-3-4-sprite-plus-.md",
+  "files": [
+   "tools/art/render_sprites.sh",
+   "tests/run_ca24.sh"
+  ]
+ },
+ {
+  "id": "CA25",
+  "title": "Details for t1_allergy (Austin Allegro, 4-door)",
+  "needs": [
+   "CA01",
+   "D01"
+  ],
+  "file": "CA25-details-for-t1-allergy-austin-allegro-4-.md",
+  "files": [
+   "docs/cars/details/t1_allergy.json"
+  ]
+ },
+ {
+  "id": "CA26",
+  "title": "Details for t1_robbin (Reliant Robin, three-wheeler)",
+  "needs": [
+   "CA01",
+   "D02"
+  ],
+  "file": "CA26-details-for-t1-robbin-reliant-robin-thre.md",
+  "files": [
+   "docs/cars/details/t1_robbin.json"
+  ]
+ },
+ {
+  "id": "CA27",
+  "title": "Details for t1_chimp (Hillman Imp)",
+  "needs": [
+   "CA01",
+   "D03"
+  ],
+  "file": "CA27-details-for-t1-chimp-hillman-imp.md",
+  "files": [
+   "docs/cars/details/t1_chimp.json"
+  ]
+ },
+ {
+  "id": "CA28",
+  "title": "Details for t1_maurice (Morris Minor 1000)",
+  "needs": [
+   "CA01",
+   "D04"
+  ],
+  "file": "CA28-details-for-t1-maurice-morris-minor-1000.md",
+  "files": [
+   "docs/cars/details/t1_maurice.json"
+  ]
+ },
+ {
+  "id": "CA29",
+  "title": "Details for t1_volksbeagle (VW Beetle 1968)",
+  "needs": [
+   "CA01",
+   "D05"
+  ],
+  "file": "CA29-details-for-t1-volksbeagle-vw-beetle-196.md",
+  "files": [
+   "docs/cars/details/t1_volksbeagle.json"
+  ]
+ },
+ {
+  "id": "CA30",
+  "title": "Details for t1_trumpet (Triumph Spitfire, open roadster)",
+  "needs": [
+   "CA01",
+   "D06"
+  ],
+  "file": "CA30-details-for-t1-trumpet-triumph-spitfire-.md",
+  "files": [
+   "docs/cars/details/t1_trumpet.json"
+  ]
+ },
+ {
+  "id": "CA31",
+  "title": "Details for t1_cooker (Mini Cooper Mk1)",
+  "needs": [
+   "CA01",
+   "D07"
+  ],
+  "file": "CA31-details-for-t1-cooker-mini-cooper-mk1.md",
+  "files": [
+   "docs/cars/details/t1_cooker.json"
+  ]
+ },
+ {
+  "id": "CA32",
+  "title": "Details for t1_fjord (Ford Escort Mk1 style)",
+  "needs": [
+   "CA01",
+   "D08"
+  ],
+  "file": "CA32-details-for-t1-fjord-ford-escort-mk1-sty.md",
+  "files": [
+   "docs/cars/details/t1_fjord.json"
+  ]
+ },
+ {
+  "id": "CA33",
+  "title": "Details for t1_mgbee (MGB roadster)",
+  "needs": [
+   "CA01",
+   "D09"
+  ],
+  "file": "CA33-details-for-t1-mgbee-mgb-roadster.md",
+  "files": [
+   "docs/cars/details/t1_mgbee.json"
+  ]
+ },
+ {
+  "id": "CA34",
+  "title": "Details for t1_alpaca (Sunbeam Alpine style roadster)",
+  "needs": [
+   "CA01",
+   "D10"
+  ],
+  "file": "CA34-details-for-t1-alpaca-sunbeam-alpine-sty.md",
+  "files": [
+   "docs/cars/details/t1_alpaca.json"
+  ]
+ },
+ {
+  "id": "CA35",
+  "title": "TEMPLATE: details for {car} (planner: copy this card once per car, replacing {car} and {dossier_card})",
+  "needs": [
+   "CA01"
+  ],
+  "file": "CA35-template-details-for-car-planner-copy-th.md",
+  "files": [
+   "docs/cars/details/{car}.json"
+  ]
  }
 ]
