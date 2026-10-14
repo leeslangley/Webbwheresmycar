@@ -3695,5 +3695,23 @@
    "src/ui/scenes/title.js",
    "tests/scene_title.test.mjs"
   ]
+ },
+ {
+  "id": "G01",
+  "title": "Dossier game_name check and three name fixes",
+  "needs": [
+   "R00"
+  ],
+  "file": "G01-dossier-game-name-check-and-three-name-f.md",
+  "files": [
+   "tools/check_dossier.py",
+   "tests/fixtures/dossier_ok.json",
+   "tests/fixtures/dossier_bad.json",
+   "tests/fixtures/dossier_taper.json",
+   "tests/run_dossier_check.sh",
+   "docs/cars/t1_maurice.json",
+   "docs/cars/t1_cooker.json",
+   "docs/cars/t1_volksbeagle.json"
+  ]
  }
 ]
