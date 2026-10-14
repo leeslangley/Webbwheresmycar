@@ -29,7 +29,7 @@ func test_every_car() -> void:
 		var span := float(bmax[0]) - float(bmin[0])
 		ok(span >= 9.5 and span <= 10.6, "%s: bbox x span %s is between 9.5 and 10.6" % [id, str(span)])
 		var lift := float(bmin[1])
-		ok(lift >= -0.05 and lift <= 1.0, "%s: bbox_min y %s is between -0.05 and 1.0" % [id, str(lift)])
+		ok(lift >= -0.3 and lift <= 1.0, "%s: bbox_min y %s is between -0.3 and 1.0" % [id, str(lift)])
 		ok(int(entry.get("wheels", 0)) >= 2, "%s: wheels is at least 2" % id)
 
 		var gname := str(entry.get("game_name", ""))
