@@ -1,0 +1,51 @@
+{
+ "version": 2,
+ "id": "t1_volksbeagle",
+ "belt_y": 25.0,
+ "window_frame": "chrome",
+ "caricature": {"eyes": 1.15, "mouth": 1.1, "wheels": 1.05, "bumper": 1.1},
+ "wheel": {"style": "steel", "hub": "chrome", "whitewall": false, "trim_ring": false},
+ "roof": {"variant": "hard"},
+ "note": "No mirror part: the dossier lists none, so none is added. Estimates not in the dossier: headlamp lat 12 is from y_offset_from_centre; taillamp lat 9, exhaust side, vent size, front badge and engine-lid badge/handle positions, and the window split (door pane and rear quarter pane split at the B pillar) are my estimates. Bumper x 48..50 and plate x cannot be set (no x field on those kinds).",
+ "windows": [
+  [[13.5, 25.0], [13.5, 34.2], [15.8, 33.4], [17.9, 31.0], [20.0, 27.6], [21.2, 25.0]],
+  [[11.5, 25.0], [11.5, 34.9], [6.0, 35.3], [0.0, 35.4], [-6.0, 34.2], [-11.0, 32.2], [-16.0, 29.7], [-20.5, 27.6], [-24.0, 25.6], [-24.0, 25.0]]
+ ],
+ "pillars": [
+  {"poly": [[23.0, 25.0], [21.0, 28.6], [18.5, 32.0], [16.5, 34.6], [12.0, 35.9]], "lat_from": 0.82},
+  {"poly": [[12.5, 25.0], [12.5, 35.6]], "lat_from": 0.82}
+ ],
+ "parts": [
+  {"kind": "headlamp", "x": 47.5, "y": 20.0, "lat": 12.0, "r": 2.4, "shape": "round", "bezel": "chrome", "side": "both", "note": "round lamps standing on top of the front wings; lat from y_offset_from_centre 12"},
+  {"kind": "grille", "x": 48.0, "y": 12.0, "w": 1.0, "h": 1.0, "style": "none", "end": "front", "note": "no grille on a rear-engined car; style none records that"},
+  {"kind": "bumper", "end": "front", "style": "blade", "y": 8.8, "h": 1.8, "w": 0, "overriders": 2, "note": "thin chrome blade, full width; two upright overriders at x 48.5 y 10..14"},
+  {"kind": "plate", "end": "front", "note": "default plate size"},
+  {"kind": "handle", "x": 43.0, "y": 17.5, "style": "knob", "side": "centre", "note": "small round chrome bonnet handle on the nose"},
+  {"kind": "badge", "x": 44.5, "y": 14.0, "shape": "disc", "end": "front", "size": 2, "colour": "chrome", "side": "centre", "note": "badge position is my estimate"},
+  {"kind": "strip", "x": -34.0, "x2": 34.0, "y": 6.0, "h": 0.5, "role": "sill", "colour": "chrome", "side": "both", "note": "chrome sill strip x -34..34 y 6"},
+  {"kind": "strip", "x": -24.0, "x2": 21.2, "y": 25.0, "h": 0.5, "role": "window", "colour": "chrome", "side": "both", "note": "chrome window surround along the belt"},
+  {"kind": "crease", "x": -46.0, "x2": -38.0, "y": 22.0, "side": "both", "note": "wing beading from the tail, stepped to follow the wing top"},
+  {"kind": "crease", "x": -38.0, "x2": -26.0, "y": 24.0, "side": "both", "note": "wing beading, middle step"},
+  {"kind": "crease", "x": -26.0, "x2": -20.0, "y": 26.0, "side": "both", "note": "wing beading, end at the rear glass base"},
+  {"kind": "crease", "x": 22.0, "x2": 28.0, "y": 22.0, "side": "both", "note": "wing beading, front wing from the cowl"},
+  {"kind": "crease", "x": 28.0, "x2": 36.0, "y": 21.0, "side": "both", "note": "wing beading, front wing"},
+  {"kind": "crease", "x": 36.0, "x2": 46.0, "y": 17.0, "side": "both", "note": "wing beading, front wing to the headlamp"},
+  {"kind": "shutline", "path": [[21.8, 25.0], [21.8, 7.0]], "role": "door", "side": "both", "note": "door front edge at the A pillar"},
+  {"kind": "shutline", "path": [[12.5, 25.0], [12.5, 7.0]], "role": "door", "side": "both", "note": "door rear edge at the B pillar"},
+  {"kind": "shutline", "path": [[12.5, 7.0], [21.8, 7.0]], "role": "door", "side": "both", "note": "door bottom edge"},
+  {"kind": "shutline", "path": [[40.0, 19.0], [40.0, 9.5]], "role": "bonnet", "side": "both", "note": "front boot lid edge, position is my estimate"},
+  {"kind": "shutline", "path": [[-37.0, 26.3], [-45.0, 23.0], [-49.2, 13.5]], "role": "engine", "side": "both", "note": "sloping engine lid edge"},
+  {"kind": "shutline", "path": [[32.5, 18.8], [35.5, 18.8], [35.5, 21.0], [32.5, 21.0], [32.5, 18.8]], "role": "fuel", "side": "near", "note": "fuel flap outline on the right front wing"},
+  {"kind": "handle", "x": 12.5, "y": 22.0, "style": "push", "side": "both", "note": "upright door handle on the door rear edge"},
+  {"kind": "fuelcap", "x": 34.0, "y": 21.0, "r": 1.0, "side": "near", "note": "fuel filler on the right front wing; right is the near side (-Y) for a car facing +X"},
+  {"kind": "taillamp", "x": -49.0, "y": 15.0, "lat": 9.0, "shape": "round", "w": 2.0, "h": 2.0, "side": "both", "note": "small round tail lamps on the rear wings; lat is my estimate"},
+  {"kind": "bumper", "end": "rear", "style": "blade", "y": 8.8, "h": 1.8, "w": 0, "overriders": 2, "note": "thin chrome blade, full width; two upright overriders"},
+  {"kind": "plate", "end": "rear", "note": "default plate size"},
+  {"kind": "exhaust", "style": "round", "x": -50.0, "y": 6.0, "lat": 6.0, "r": 1.0, "side": "near", "note": "one tailpipe; side and lat are my estimates"},
+  {"kind": "handle", "x": -33.0, "y": 24.8, "style": "knob", "side": "centre", "note": "small round chrome engine-lid handle"},
+  {"kind": "badge", "x": -28.0, "y": 25.6, "shape": "disc", "end": "rear", "size": 2, "colour": "chrome", "side": "centre", "note": "rear badge on the engine lid, position is my estimate"},
+  {"kind": "vent", "where": "side", "x": -41.0, "x2": -31.0, "y": 8.5, "w": 0.6, "h": 3.0, "style": "louvre", "n": 5, "side": "both", "note": "cooling vents low on the rear wings; size is my estimate"},
+  {"kind": "spare", "mount": "bonnet", "x": 35.0, "y": 13.4, "r": 7.9, "cover": false, "side": "centre", "note": "spare wheel upright in the front boot; r is the wheel radius"},
+  {"kind": "running_board", "x": -19.0, "x2": 20.0, "y": 5.6, "w": 3.0, "colour": "black", "side": "both", "note": "narrow running board between the wheel arches; chrome edge is the sill strip"}
+ ]
+}
