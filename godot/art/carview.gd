@@ -2,16 +2,17 @@ class_name CarView
 extends Control
 
 # One node that shows a car: a SubViewport with an orthographic camera, a key light and a rim light, the car glb
-# loaded by id, rendered at 1/3 size and scaled up with the nearest filter (the pixel look). Paint, wear and view
-# are set from code. build() is idempotent; _ready() calls it.
+# loaded by id, rendered at 1/2 or 1/3 size (per view) and scaled up with the nearest filter (the pixel look). The Box
+# carries the car_outline pass (dark edge, GDA22) while outline is on. Paint, wear and view are set from code.
+# build() is idempotent; _ready() calls it.
 
 const CARS_DIR := "res://art/cars/"
 const TURN_SPEED := 0.6
 const TARGET := Vector3(0.0, 0.75, 0.0)
 const DIST := 30.0
 const VIEWS := {
-	"side": {"yaw": 0.0, "pitch": 3.0, "size": 3.2, "shrink": 3},
-	"three_quarter": {"yaw": 35.0, "pitch": 12.0, "size": 3.6, "shrink": 3},
+	"side": {"yaw": 0.0, "pitch": 3.0, "size": 3.2, "shrink": 2},
+	"three_quarter": {"yaw": 35.0, "pitch": 12.0, "size": 3.6, "shrink": 2},
 	"front": {"yaw": 90.0, "pitch": 4.0, "size": 2.4, "shrink": 3},
 	"mini": {"yaw": 0.0, "pitch": 3.0, "size": 3.6, "shrink": 2},
 }
@@ -22,6 +23,7 @@ var car_id := ""
 var paint := Color("c96f32")
 var wear := 0.0
 var view := "side"
+var outline := true
 
 static var _manifest: Dictionary
 
@@ -64,6 +66,7 @@ func build() -> void:
 	_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_box.set_anchors_preset(Control.PRESET_FULL_RECT)
 	add_child(_box)
+	_box.material = _outline_material() if outline else null
 
 	_vp = SubViewport.new()
 	_vp.name = "VP"
@@ -139,6 +142,18 @@ func build() -> void:
 
 	set_process(false)
 	set_view("side")
+
+
+func set_outline(on: bool) -> void:
+	outline = on
+	if _box != null:
+		_box.material = _outline_material() if on else null
+
+
+static func _outline_material() -> ShaderMaterial:
+	var mat := ShaderMaterial.new()
+	mat.shader = load("res://art/car_outline.gdshader") as Shader
+	return mat
 
 
 func set_view(v: String) -> bool:

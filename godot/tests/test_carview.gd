@@ -17,7 +17,7 @@ func test_build_tree() -> void:
 	var box := cv.get_node_or_null("Box") as SubViewportContainer
 	ok(box != null, "Box exists")
 	if box != null:
-		eq(box.stretch_shrink, 3, "Box stretch_shrink is 3")
+		eq(box.stretch_shrink, 2, "Box stretch_shrink is 2 (side view, GDA22)")
 		eq(box.texture_filter, CanvasItem.TEXTURE_FILTER_NEAREST, "Box texture_filter is nearest")
 	ok(cv.get_node_or_null("Box/VP/Pivot/Blob") != null, "Box/VP/Pivot/Blob exists")
 	cv.free()
