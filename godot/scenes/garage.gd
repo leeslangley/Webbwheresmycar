@@ -2,8 +2,9 @@ class_name GarageRoom
 extends RoomBase
 
 # The garage (the stable): the layout of src/ui/scenes/garage.js refitted to the tableau y 120..590.
-# This card builds the room layout and placeholder art only. The list rows, buttons and behaviour
-# come in later cards (GDR04, GDR27). Art comes from GarageArt (rooms/garage_art.gd).
+# GDR03 builds the layout and placeholder art (rooms/garage_art.gd). GDR04 adds the car list (five rows
+# per page), selection, paging, BACK and the detail panel. The action buttons come in GDR27 (_on_action,
+# _refresh_buttons are its hooks).
 
 const R_BACK := Rect2(30, 126, 150, 64)
 const R_PAGE_UP := Rect2(190, 126, 100, 64)
@@ -24,6 +25,10 @@ const BTN_RECTS := {
 	&"consign": Rect2(980, 514, 270, 64),
 }
 
+var sel_id := ""
+var page := 0
+var _rows: Array = []
+
 
 static func row_rect(i: int) -> Rect2:
 	return Rect2(30, 196 + i * ROW_H, 370, 68)
@@ -33,3 +38,263 @@ func _ready() -> void:
 	build_layers()
 	strip_color = Color("444444")
 	GarageArt.build(self)
+	_build_controls()
+	# Outside the tree (the test runner calls _ready by hand) there is no Game unless a test set one.
+	if game != null or is_inside_tree():
+		_connect_game()
+		refresh()
+
+
+func _exit_tree() -> void:
+	if game != null and game.changed.is_connected(refresh):
+		game.changed.disconnect(refresh)
+
+
+func _build_controls() -> void:
+	if not _rows.is_empty():
+		return
+	add_button(&"back", R_BACK, "BACK")
+	add_button(&"page_up", R_PAGE_UP, "UP")
+	add_button(&"page_down", R_PAGE_DOWN, "DOWN")
+	for i in range(ROWS_PER_PAGE):
+		_rows.append(add_button(StringName("row%d" % i), row_rect(i), "", "card"))
+
+
+# Data helpers. With no game (a bare scene) the state is empty and the garage shows as empty.
+func state() -> Dictionary:
+	var g = get_game()
+	if g == null:
+		return {}
+	return g.state
+
+
+func cars() -> Array:
+	return state().get("cars", [])
+
+
+func selected_car() -> Dictionary:
+	var idx := _index_of(sel_id)
+	if idx < 0:
+		return {}
+	return cars()[idx]
+
+
+func row_car_ids() -> Array:
+	var all := cars()
+	var out: Array = []
+	var start := page * ROWS_PER_PAGE
+	for i in range(start, mini(start + ROWS_PER_PAGE, all.size())):
+		out.append(String(all[i].id))
+	return out
+
+
+func page_count() -> int:
+	return maxi(1, ceili(cars().size() / float(ROWS_PER_PAGE)))
+
+
+func select(car_id: String) -> void:
+	sel_id = car_id
+	page = _page_for(car_id)
+	refresh()
+
+
+func page_move(delta: int) -> void:
+	page = clampi(page + delta, 0, page_count() - 1)
+	refresh()
+
+
+func enter(params: Dictionary = {}) -> void:
+	sel_id = String(params.get("carId", ""))
+	if _index_of(sel_id) < 0:
+		sel_id = _first_id()
+	page = _page_for(sel_id)
+	refresh()
+
+
+func refresh() -> void:
+	if _index_of(sel_id) < 0:
+		sel_id = _first_id()
+		page = _page_for(sel_id)
+	page = clampi(page, 0, page_count() - 1)
+	var all := cars()
+	var st := state()
+	var today := int(st.get("day", 0))
+
+	for i in range(ROWS_PER_PAGE):
+		var b := _rows[i] as UiButton
+		var idx := page * ROWS_PER_PAGE + i
+		if idx < all.size():
+			var car: Dictionary = all[idx]
+			var model := GarageCosts.model_of(String(car.modelId))
+			var line := ("OWN" if car.get("owned", false) else "RENT") + "  COND " + CoreFormat.one_dp(float(car.condition))
+			if car.get("fault") != null:
+				line += "  FAULT"
+			if int(car.get("impoundedUntil", 0)) > today:
+				line += "  IMPOUNDED"
+			b.text = String(model.get("name", car.modelId)) + "\n" + line
+			b.hot = String(car.id) == sel_id
+			b.visible = true
+			b.enabled = true
+		else:
+			b.hot = false
+			b.visible = false
+			b.enabled = false
+
+	(ui().get_node("StableLabel") as Label).text = "STABLE %d/%d" % [all.size(), int(st.get("garageSlots", 0))]
+	(ui().get_node("EmptyLabel") as Label).visible = all.is_empty()
+	(hotspots[&"page_up"] as UiButton).enabled = page > 0
+	(hotspots[&"page_down"] as UiButton).enabled = page < page_count() - 1
+
+	_refresh_detail()
+	_refresh_buttons()
+
+
+func _refresh_detail() -> void:
+	var car := selected_car()
+	var name_label := ui().get_node("NameLabel") as Label
+	var quip_label := ui().get_node("QuipLabel") as Label
+	var des_label := ui().get_node("DesLabel") as Label
+	var rel_label := ui().get_node("RelLabel") as Label
+	var cond_label := ui().get_node("CondLabel") as Label
+	var value_label := ui().get_node("ValueLabel") as Label
+	var cost_label := ui().get_node("CostLabel") as Label
+	var fault_label := ui().get_node("FaultLabel") as Label
+	var des_bar := ui().get_node("DesBar") as ColorRect
+	var rel_bar := ui().get_node("RelBar") as ColorRect
+	var cond_bar := ui().get_node("CondBar") as ColorRect
+
+	if car.is_empty():
+		name_label.text = ""
+		quip_label.text = ""
+		des_label.text = ""
+		rel_label.text = ""
+		cond_label.text = ""
+		value_label.text = ""
+		cost_label.text = ""
+		fault_label.text = ""
+		des_bar.size = Vector2(0, des_bar.size.y)
+		rel_bar.size = Vector2(0, rel_bar.size.y)
+		cond_bar.size = Vector2(0, cond_bar.size.y)
+		return
+
+	var model := GarageCosts.model_of(String(car.modelId))
+	var condition := float(car.condition)
+	var eff_d := SimCarStats.eff_d(model, car)
+	var eff_r := SimCarStats.eff_r(model, car)
+
+	name_label.text = String(model.get("name", ""))
+	quip_label.text = String(model.get("quip", ""))
+	des_label.text = "DESIRABILITY " + CoreFormat.one_dp(eff_d)
+	rel_label.text = "RELIABILITY " + CoreFormat.one_dp(eff_r)
+	cond_label.text = "CONDITION " + CoreFormat.one_dp(condition)
+	des_bar.size = Vector2(BAR_W * clampf(eff_d / 10.0, 0.0, 1.0), des_bar.size.y)
+	rel_bar.size = Vector2(BAR_W * clampf(eff_r / 10.0, 0.0, 1.0), rel_bar.size.y)
+	cond_bar.size = Vector2(BAR_W * clampf(condition / 10.0, 0.0, 1.0), cond_bar.size.y)
+	if condition >= 7.0:
+		cond_bar.color = Color("3FAE49")
+	elif condition >= 4.0:
+		cond_bar.color = Color("FFD27A")
+	else:
+		cond_bar.color = Color("D9483B")
+
+	value_label.text = "Value " + CoreFormat.money(float(SimCarStats.market_value(state(), model, car)))
+	if car.get("owned", false):
+		cost_label.text = "Running cost/month " + CoreFormat.money(float(SimCarStats.running_cost(model, car)))
+	else:
+		cost_label.text = "Rent/month " + CoreFormat.money(float(car.get("rentMonthly", 0)))
+	var fault = car.get("fault")
+	if fault != null:
+		fault_label.text = "FAULT: " + String(fault.label) + " (fix " + CoreFormat.money(float(fault.cost)) + ")"
+	else:
+		fault_label.text = ""
+
+
+# Virtual: GDR27 overrides this to set the action buttons (tinker, service, fix, restore, sell, consign).
+func _refresh_buttons() -> void:
+	pass
+
+
+# Virtual: GDR27 overrides this for the action buttons and their shortcuts.
+func _on_action(_id: StringName) -> void:
+	pass
+
+
+# Input.
+func _on_hotspot(id: StringName) -> void:
+	if id == &"back":
+		request_scene.emit(&"office", {})
+	elif id == &"page_up":
+		page_move(-1)
+	elif id == &"page_down":
+		page_move(1)
+	elif String(id).begins_with("row"):
+		var i := int(String(id).substr(3))
+		var ids := row_car_ids()
+		if i < ids.size():
+			select(String(ids[i]))
+	else:
+		_on_action(id)
+
+
+func _on_button_blocked(id: StringName) -> void:
+	# A dimmed action button still takes the tap: the Game explains the refusal.
+	if id in [&"tinker", &"service", &"fix", &"restore", &"sell", &"consign"]:
+		_on_action(id)
+
+
+# KEY_UP / KEY_DOWN move the selection (no wrap), KEY_ESCAPE goes back. True when the key was handled.
+func handle_key(keycode: int) -> bool:
+	if keycode == KEY_ESCAPE:
+		request_scene.emit(&"office", {})
+		return true
+	if keycode != KEY_UP and keycode != KEY_DOWN:
+		return false
+	var all := cars()
+	if all.is_empty():
+		return false
+	var idx := _index_of(sel_id)
+	var target := 0
+	if idx >= 0:
+		if keycode == KEY_UP:
+			target = maxi(idx - 1, 0)
+		else:
+			target = mini(idx + 1, all.size() - 1)
+	select(String(all[target].id))
+	return true
+
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	var key := event as InputEventKey
+	if not visible or key == null or not key.pressed or key.echo:
+		return
+	if handle_key(key.keycode):
+		get_viewport().set_input_as_handled()
+
+
+func _connect_game() -> void:
+	var g = get_game()
+	if g != null and not g.changed.is_connected(refresh):
+		g.changed.connect(refresh)
+
+
+func _index_of(car_id: String) -> int:
+	var all := cars()
+	for i in range(all.size()):
+		if String(all[i].id) == car_id:
+			return i
+	return -1
+
+
+func _first_id() -> String:
+	var all := cars()
+	if all.is_empty():
+		return ""
+	return String(all[0].id)
+
+
+# The page that holds a car; page 0 when the car is not in the garage.
+func _page_for(car_id: String) -> int:
+	var idx := _index_of(car_id)
+	if idx < 0:
+		return 0
+	return int(floor(float(idx) / float(ROWS_PER_PAGE)))
