@@ -1,0 +1,77 @@
+[gd_resource type="Theme" load_steps=8 format=3]
+
+[ext_resource type="FontFile" path="res://ui/fonts/VT323-Regular.ttf" id="1"]
+[ext_resource type="FontFile" path="res://ui/fonts/PressStart2P-Regular.ttf" id="2"]
+
+[sub_resource type="StyleBoxFlat" id="1"]
+bg_color = Color(1, 0.968, 0.863, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.0784, 0.0627, 0.1647, 1)
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="2"]
+bg_color = Color(1, 0.824, 0.478, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.0784, 0.0627, 0.1647, 1)
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="3"]
+bg_color = Color(0.851, 0.796, 0.627, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.0784, 0.0627, 0.1647, 1)
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="4"]
+bg_color = Color(0.584, 0.584, 0.584, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.0784, 0.0627, 0.1647, 1)
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="5"]
+bg_color = Color(1, 0.968, 0.863, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.0784, 0.0627, 0.1647, 1)
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+
+[resource]
+default_font = ExtResource("1")
+default_font_size = 28
+Button/fonts/font = ExtResource("2")
+Button/font_sizes/font_size = 16
+Button/colors/font_color = Color(0.0784, 0.0627, 0.1647, 1)
+Button/styles/normal = SubResource("1")
+Button/styles/hover = SubResource("2")
+Button/styles/pressed = SubResource("3")
+Button/styles/disabled = SubResource("4")
+Label/colors/font_color = Color(0.0784, 0.0627, 0.1647, 1)
+PanelContainer/styles/panel = SubResource("5")
