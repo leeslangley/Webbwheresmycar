@@ -2,22 +2,23 @@
  "cars": {
   "t1_allergy": {
    "bbox_max": [
-    5.12,
-    3.61,
-    2.495
+    5.08,
+    3.6097,
+    2.1553
    ],
    "bbox_min": [
-    -5.12,
-    0.0,
-    -2.495
+    -5.29,
+    -0.114,
+    -2.1553
    ],
    "classes": {
-    "chrome": 10,
-    "glass": 1,
-    "lamp": 2,
-    "paint": 1,
+    "chrome": 40,
+    "glass": 2,
+    "lamp": 6,
+    "paint": 9,
     "tail": 2,
-    "tyre": 8,
+    "trim": 51,
+    "tyre": 4,
     "wall": 2
    },
    "file": "t1_allergy.glb",
@@ -36,22 +37,23 @@
   },
   "t1_alpaca": {
    "bbox_max": [
-    5.12,
-    3.14,
-    2.382
+    5.18,
+    3.165,
+    2.0105
    ],
    "bbox_min": [
-    -5.12,
-    0.0,
-    -2.382
+    -5.29,
+    -0.1219,
+    -2.0105
    ],
    "classes": {
-    "chrome": 10,
+    "chrome": 48,
     "glass": 1,
-    "lamp": 2,
-    "paint": 1,
+    "lamp": 3,
+    "paint": 7,
     "tail": 2,
-    "tyre": 8,
+    "trim": 41,
+    "tyre": 4,
     "wall": 2
    },
    "file": "t1_alpaca.glb",
@@ -70,22 +72,23 @@
   },
   "t1_chimp": {
    "bbox_max": [
-    5.12,
-    3.8,
-    2.475
+    5.08,
+    3.7982,
+    2.1126
    ],
    "bbox_min": [
-    -5.12,
-    0.46,
-    -2.475
+    -5.29,
+    -0.1196,
+    -2.1126
    ],
    "classes": {
-    "chrome": 10,
-    "glass": 1,
+    "chrome": 27,
+    "glass": 2,
     "lamp": 2,
-    "paint": 1,
+    "paint": 7,
     "tail": 2,
-    "tyre": 8,
+    "trim": 48,
+    "tyre": 4,
     "wall": 2
    },
    "file": "t1_chimp.glb",
@@ -104,29 +107,31 @@
   },
   "t1_cooker": {
    "bbox_max": [
-    5.12,
-    4.41,
-    2.719
+    5.18,
+    4.425,
+    2.3611
    ],
    "bbox_min": [
-    -5.12,
-    0.464,
-    -2.719
+    -5.29,
+    -0.1185,
+    -2.3611
    ],
    "classes": {
-    "chrome": 10,
-    "glass": 1,
-    "lamp": 2,
-    "paint": 1,
+    "chrome": 44,
+    "glass": 2,
+    "lamp": 5,
+    "paint": 7,
+    "paint2": 1,
     "tail": 2,
-    "tyre": 8,
+    "trim": 47,
+    "tyre": 4,
     "wall": 2
    },
    "file": "t1_cooker.glb",
    "finish": "solid",
    "game_name": "Minnie Cooker",
    "len_mm": 3054,
-   "paint2": "",
+   "paint2": "#eae6dd",
    "paints": [
     "#a51c1c",
     "#eae6dd",
@@ -138,22 +143,23 @@
   },
   "t1_maurice": {
    "bbox_max": [
-    5.12,
-    4.05,
-    2.512
+    5.18,
+    4.0497,
+    2.1405
    ],
    "bbox_min": [
-    -5.12,
-    0.3127,
-    -2.512
+    -5.29,
+    -0.1219,
+    -2.1405
    ],
    "classes": {
-    "chrome": 10,
-    "glass": 1,
-    "lamp": 2,
-    "paint": 1,
+    "chrome": 41,
+    "glass": 2,
+    "lamp": 5,
+    "paint": 11,
     "tail": 2,
-    "tyre": 8,
+    "trim": 43,
+    "tyre": 4,
     "wall": 2
    },
    "file": "t1_maurice.glb",
@@ -172,22 +178,23 @@
   },
   "t1_robbin": {
    "bbox_max": [
-    5.12,
-    4.24,
-    2.524
+    5.08,
+    4.2397,
+    2.1888
    ],
    "bbox_min": [
-    -5.12,
-    0.4,
-    -2.524
+    -5.29,
+    -0.1128,
+    -2.1888
    ],
    "classes": {
-    "chrome": 12,
-    "glass": 1,
-    "lamp": 2,
-    "paint": 1,
+    "chrome": 31,
+    "glass": 2,
+    "lamp": 3,
+    "paint": 12,
     "tail": 2,
-    "tyre": 10,
+    "trim": 40,
+    "tyre": 5,
     "wall": 2
    },
    "file": "t1_robbin.glb",
