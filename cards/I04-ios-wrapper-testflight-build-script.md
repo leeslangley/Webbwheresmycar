@@ -14,10 +14,10 @@ Commit: local only
 Deploy: no
 
 ## Goal
-Two commands: `build <name>` makes an unsigned archive of the app; `upload <name>` signs it and sends it to App Store Connect (TestFlight). It copies the approach of Lee's script `~/Documents/Christs of Rage/tools/ios/testflight.sh` (read it first). Never read or print any Apple key or password.
+Two commands: `build <name>` makes an unsigned archive of the app; `upload <name>` signs it and sends it to App Store Connect (TestFlight). It copies the approach of Lee's script `docs/ref/roc_testflight.sh` (read it first). Never read or print any Apple key or password.
 
 ## Read first
-- ~/Documents/Christs of Rage/tools/ios/testflight.sh and ExportOptions.plist (the working example: copy its upload() retry loop and its ASC_KEY_PATH / ASC_KEY_ID / ASC_ISSUER_ID handling)
+- docs/ref/roc_testflight.sh and ExportOptions.plist (the working example: copy its upload() retry loop and its ASC_KEY_PATH / ASC_KEY_ID / ASC_ISSUER_ID handling)
 - ios/make_project.py (I02) and tools/ios/sync_www.sh (I03)
 - Xcode 27 is installed. Build checks use `xcodebuild` for the iOS Simulator only (no signing): `xcodebuild -project ios/WebbWheresMyCar.xcodeproj -scheme WebbWheresMyCar -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build`.
 
