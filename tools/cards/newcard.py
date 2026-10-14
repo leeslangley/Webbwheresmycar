@@ -5,6 +5,7 @@ import importlib.util, json, os, re, sys
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 MODEL = "DeepSeek-V4.1-Flash"
+MOD = None
 
 HEADER = """[Project: Webbwheresmycar]
 # Task: [GLM-SPARK] {model} {id} {title}
@@ -33,25 +34,36 @@ RULES = """## Rules
 
 ACC = "`make test` last line starts with `ALL TESTS PASS`."
 
+GD_RULES = """## Rules
+- Godot rebuild: read docs/GODOT.md first. Change only the files listed above (check `git status`). Scratch files go in /tmp.
+- Godot NEVER runs on the Mac (it steals window focus): use `sh tools/godot/gtest.sh [test_name]` (headless on CASE; last line `GDTEST OK` or `GDTEST FAIL`) and `sh tools/godot/gshot.sh <scene> <out.png> [frames]` (screenshot via CASE; view the PNG with the Read tool). The JS reference (src/, tests/*.mjs) is the spec for ports: read the named JS file fully.
+- GDScript: tabs, typed signatures, no `randf()`/`randi()`/`Time` in sim code (seeded rng only), no debug `print` left behind. Text for players: ASCII only, pound sign only via Format.money(), no real brands or people, no he/she/him/her for customers or named people.
+- Write your first complete version within 10 turns, run the acceptance commands, commit with the message `{id}: {title}`, then improve. Paste the real output of the acceptance commands in your final reply (for scene cards also say what the screenshot shows).
+- Unclear or impossible within the files listed: finish with `STATUS: BLOCKED` and the question.
+"""
+GD_ACC = "`sh tools/godot/gtest.sh` last line is `GDTEST OK`."
+
 
 def bullets(items, num=False):
     return "\n".join(("%d. " % i if num else "- ") + x for i, x in enumerate(items, 1))
 
 
 def render(c):
+    gd = getattr(MOD, "MODE", "") == "godot"
     out = HEADER.format(model=MODEL, id=c["id"], title=c["title"], needs=", ".join(c["needs"]) or "none")
     out += "## Goal\n%s\n\n## Read first\n%s\n\n" % (c["goal"], bullets(c["read"]))
     out += "## Files you may change (and nothing else)\n%s\n\n" % bullets(["`%s`" % f for f in c["files"]])
     out += "## Steps\n%s\n\n" % bullets(c["steps"], True)
-    out += "## Acceptance (all must pass; exact commands)\n%s\n\n" % bullets(c["accept"] + [ACC])
+    out += "## Acceptance (all must pass; exact commands)\n%s\n\n" % bullets(c["accept"] + [GD_ACC if gd else ACC])
     out += "## Out of scope (do not touch)\n%s\n\n" % bullets(c.get("oos", ["Everything not listed under files."]))
-    out += RULES.format(id=c["id"], title=c["title"])
+    out += (GD_RULES if gd else RULES).format(id=c["id"], title=c["title"])
     return out
 
 
 def main():
     spec = importlib.util.spec_from_file_location("specs", sys.argv[1])
     mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
+    global MOD; MOD = mod
     idxp = os.path.join(ROOT, "cards", "index.json")
     idx = json.load(open(idxp))
     for c in mod.CARDS:
