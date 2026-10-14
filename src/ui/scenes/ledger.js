@@ -14,6 +14,8 @@ import { modelOf } from '../../data/cars.js';
 import { marketValue, runningCost } from '../../sim/carstats.js';
 import { netWorth, PLATE_INFO } from '../../sim/endgame.js';
 import { buySlot } from '../../sim/actions.js';
+import { lampGlow, vignette } from '../../art/roomfx_light.js';
+import { steamPuffs } from '../../art/roomfx_world.js';
 
 // Rectangles in logical 1280x720 coordinates.
 export const LAYOUT = {
@@ -157,6 +159,15 @@ export const ledgerScene = {
 		const hits = makeHits();
 		const scene = this;
 
+		// The ledger desk plate (when it loaded) sits behind the panels, with the
+		// lamp glow and a little mug steam. Layout and hit areas do not change.
+		const plate = !!(app.rooms && app.rooms.has('ledger'));
+		if (plate) {
+			app.rooms.draw(ctx, 'ledger', { look: app.look || { x: 0, y: 0 } });
+			lampGlow(ctx, 190, 135, t);
+			steamPuffs(ctx, 1100, 548, t, 4);
+		}
+
 		// The two tab buttons, and the BACK button.
 		const onLedger = this.tab === 'ledger';
 		button(ctx, {
@@ -188,6 +199,10 @@ export const ledgerScene = {
 			app.pop();
 		});
 		this.hits = hits;
+
+		if (plate) {
+			vignette(ctx, 1280, 720, 0.25);
+		}
 	},
 
 	// The ledger tab: the cream book of accounts on the left, the four Gold
