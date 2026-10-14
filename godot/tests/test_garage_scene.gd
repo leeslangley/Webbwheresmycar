@@ -30,7 +30,7 @@ func test_scene_layout() -> void:
 	var names: Array = []
 	for c in g.get_children():
 		names.append(c.name)
-	eq(names, ["Background", "Props", "Characters", "Lights", "Front", "Ui", "Hotspots"], "child order of the root")
+	eq(names, ["Background", "Props", "Characters", "Lights", "Front", "Ui", "Hotspots", "Parallax"], "child order of the root")
 	eq(g.size, Vector2(1280, 720), "room is the 1280x720 stage")
 
 	for path in ["Background/Placeholder/Wall", "Background/Placeholder/Floor", "Props/Placeholder/CarViewSlot", \

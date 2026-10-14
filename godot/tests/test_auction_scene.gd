@@ -27,7 +27,7 @@ func _names(parent: Node) -> Array:
 
 func test_layer_order() -> void:
 	var room := _room()
-	eq(_names(room), ["Background", "Props", "Characters", "Lights", "Front", "Ui", "Hotspots"], "root children order")
+	eq(_names(room), ["Background", "Props", "Characters", "Lights", "Front", "Ui", "Hotspots", "Parallax"], "root children order")
 	eq(room.size, Vector2(1280, 720), "root is the 1280x720 stage")
 	eq(room.strip_color, Color("14102A"), "strip colour is set in _ready")
 	_release(room)

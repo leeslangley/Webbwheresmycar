@@ -27,7 +27,7 @@ func _has_all(parent: Node, wanted: Array, label: String) -> void:
 
 func test_layer_tree() -> void:
 	var room := _room()
-	eq(_names(room), ["Background", "Props", "Characters", "Lights", "Front", "Ui", "Hotspots"], "root children")
+	eq(_names(room), ["Background", "Props", "Characters", "Lights", "Front", "Ui", "Hotspots", "Parallax"], "root children")
 	_has_all(room.placeholder("Background"), ["Wall", "Skirting", "Floor", "Window", "Poster", "Calendar", "GarageDoor"], "Background/Placeholder")
 	_has_all(room.placeholder("Props"), ["Desk", "Phone", "Newspaper", "Kettle"], "Props/Placeholder")
 	_has_all(room.placeholder("Lights"), ["TvGlow", "WindowLight"], "Lights/Placeholder")
