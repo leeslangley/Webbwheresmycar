@@ -68,6 +68,7 @@ test('plate mode draws three warm lamp glows over the lamp posts', () => {
 	const ctx = makeCtx();
 	titleScene.draw(ctx, app, 0);
 	ok(count(ctx, 'set:globalCompositeOperation') >= 3, 'at least three additive composites');
+	ok(anySet(ctx, 'globalCompositeOperation', 'lighter'), 'additive lighter composite');
 	for (const x of [250, 700, 1180]) {
 		// glow() fills a 2*170 square centred on the lamp at y 296.
 		ok(hasCall(ctx, 'fillRect', [x - 170, 296 - 170, 340, 340]), 'lamp glow at x ' + x);
