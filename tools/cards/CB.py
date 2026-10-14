@@ -59,7 +59,7 @@ CARDS = [
    "Write `tests/cb_mask_test.py` (Blender): scene with a paint cube (`cbmat.make_paint('#C96F32')`) and a chrome sphere side by side, camera via `setup_fixed_camera(scene,'s')` (CB04 may not be merged: if `setup_fixed_camera` is missing use an ORTHO camera at (0,-20,1) aimed at (0,0,1) with ortho_scale 7, 400x200), `render_mask(scene,'/tmp/cb_mask.png')`. Load with colorspace 'Non-Color'; among pixels with alpha >= 0.5 every rgb (x255, rounded) is exactly (255,0,0) or (0,255,0) and both occur at least 200 times; every alpha is 0 or 255; after the call the cube's material is still named 'paint'. Print `CB MASK OK`."],
   accept=["`/opt/homebrew/bin/blender --background --python-exit-code 1 --python tests/cb_mask_test.py 2>&1 | tail -1` prints `CB MASK OK`."]),
 
- dict(id="CB06", title="Soft ground shadow render pass", needs=["CB03"],
+ dict(id="CB06", title="Soft ground shadow render pass", needs=["CB03", "CB04"],
   files=["tools/art/cbrig.py", "tests/cb_shadow_test.py"],
   goal="A separate shadow-only render (a soft contact shadow as alpha), so the game can draw a real car-shaped shadow under any background without baking dark pixels into the car sprite.",
   read=[BL, API, "tools/art/cbrig.py (CB02-CB05)", PLAN],
