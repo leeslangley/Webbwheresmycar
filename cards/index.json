@@ -1808,712 +1808,6 @@
   ]
  },
  {
-  "id": "CA01",
-  "title": "Car details schema v2: validator and spec doc",
-  "needs": [
-   "R00"
-  ],
-  "file": "CA01-car-details-schema-v2-validator-and-spec.md",
-  "files": [
-   "tools/art/details.py",
-   "tests/fixtures/details_ok.json",
-   "tests/fixtures/details_bad.json",
-   "tests/run_details.sh",
-   "docs/CAR_DETAILS_SPEC.md"
-  ]
- },
- {
-  "id": "CA02",
-  "title": "Car body surface maths (pure python)",
-  "needs": [
-   "V01"
-  ],
-  "file": "CA02-car-body-surface-maths-pure-python.md",
-  "files": [
-   "tools/art/surface.py",
-   "tests/test_surface.py"
-  ]
- },
- {
-  "id": "CA03",
-  "title": "Parts framework: registry, helpers, materials and render hook",
-  "needs": [
-   "V06",
-   "CA01",
-   "CA02"
-  ],
-  "file": "CA03-parts-framework-registry-helpers-materia.md",
-  "files": [
-   "tools/art/parts/__init__.py",
-   "tools/art/parts/_common.py",
-   "tools/art/parts/_mats.py",
-   "tools/art/blender_car2.py",
-   "tests/run_ca03.sh"
-  ]
- },
- {
-  "id": "CA04",
-  "title": "Lofted car body instead of an extruded slab",
-  "needs": [
-   "CA02",
-   "CA03"
-  ],
-  "file": "CA04-lofted-car-body-instead-of-an-extruded-s.md",
-  "files": [
-   "tools/art/parts/body_loft.py",
-   "tests/run_ca04.sh"
-  ]
- },
- {
-  "id": "CA05",
-  "title": "Wheel arches cut into the body, with dark wheel wells",
-  "needs": [
-   "CA04"
-  ],
-  "file": "CA05-wheel-arches-cut-into-the-body-with-dark.md",
-  "files": [
-   "tools/art/parts/arches.py",
-   "tests/run_ca05.sh"
-  ]
- },
- {
-  "id": "CA06",
-  "title": "Windows, pillars and screens that follow the body surface",
-  "needs": [
-   "CA04"
-  ],
-  "file": "CA06-windows-pillars-and-screens-that-follow-.md",
-  "files": [
-   "tools/art/parts/windows.py",
-   "tests/fixtures/details_windows.json",
-   "tests/run_ca06.sh"
-  ]
- },
- {
-  "id": "CA07",
-  "title": "Wheels v2: round tyre, dished steel rim, hubcap, whitewall",
-  "needs": [
-   "CA03"
-  ],
-  "file": "CA07-wheels-v2-round-tyre-dished-steel-rim-hu.md",
-  "files": [
-   "tools/art/parts/wheels_a.py",
-   "tests/run_ca07.sh"
-  ]
- },
- {
-  "id": "CA08",
-  "title": "Wheels v2: wire, knock-off, alloy and spare wheels",
-  "needs": [
-   "CA07"
-  ],
-  "file": "CA08-wheels-v2-wire-knock-off-alloy-and-spare.md",
-  "files": [
-   "tools/art/parts/wheels_b.py",
-   "tools/art/parts/spare.py",
-   "tests/run_ca08.sh"
-  ]
- },
- {
-  "id": "CA09",
-  "title": "Front lamps: round, square, oval, slanted, pop-up, quad",
-  "needs": [
-   "CA03",
-   "CA02"
-  ],
-  "file": "CA09-front-lamps-round-square-oval-slanted-po.md",
-  "files": [
-   "tools/art/parts/lamps_front.py",
-   "tests/run_ca09.sh"
-  ]
- },
- {
-  "id": "CA10",
-  "title": "Rear lamps: round, rectangular, vertical, cat-eye, fin, wrap-round",
-  "needs": [
-   "CA03",
-   "CA02"
-  ],
-  "file": "CA10-rear-lamps-round-rectangular-vertical-ca.md",
-  "files": [
-   "tools/art/parts/lamps_rear.py",
-   "tests/run_ca10.sh"
-  ]
- },
- {
-  "id": "CA11",
-  "title": "Chrome bumpers: blade, wrap-round, overriders, US chunky, quarter bumpers",
-  "needs": [
-   "CA03",
-   "CA02"
-  ],
-  "file": "CA11-chrome-bumpers-blade-wrap-round-override.md",
-  "files": [
-   "tools/art/parts/bumpers.py",
-   "tests/run_ca11.sh"
-  ]
- },
- {
-  "id": "CA12",
-  "title": "Grilles per marque: bars, egg-crate, kidney, shield, mesh",
-  "needs": [
-   "CA03",
-   "CA02"
-  ],
-  "file": "CA12-grilles-per-marque-bars-egg-crate-kidney.md",
-  "files": [
-   "tools/art/parts/grilles.py",
-   "tests/run_ca12.sh"
-  ]
- },
- {
-  "id": "CA13",
-  "title": "Trim strips, body creases and shut lines that follow the body",
-  "needs": [
-   "CA04"
-  ],
-  "file": "CA13-trim-strips-body-creases-and-shut-lines-.md",
-  "files": [
-   "tools/art/parts/trim.py",
-   "tests/run_ca13.sh"
-  ]
- },
- {
-  "id": "CA14",
-  "title": "Small fittings: door handles, mirrors, badges, wipers, aerial, fuel cap",
-  "needs": [
-   "CA04"
-  ],
-  "file": "CA14-small-fittings-door-handles-mirrors-badg.md",
-  "files": [
-   "tools/art/parts/fittings.py",
-   "tests/run_ca14.sh"
-  ]
- },
- {
-  "id": "CA15",
-  "title": "Number plates and exhaust pipes",
-  "needs": [
-   "CA03",
-   "CA02"
-  ],
-  "file": "CA15-number-plates-and-exhaust-pipes.md",
-  "files": [
-   "tools/art/parts/plates_exhaust.py",
-   "tests/run_ca15.sh"
-  ]
- },
- {
-  "id": "CA16",
-  "title": "Big features: tail fins, running boards, vents and scoops, racks",
-  "needs": [
-   "CA04"
-  ],
-  "file": "CA16-big-features-tail-fins-running-boards-ve.md",
-  "files": [
-   "tools/art/parts/features.py",
-   "tests/run_ca16.sh"
-  ]
- },
- {
-  "id": "CA17",
-  "title": "Two-tone paint, stripes and vinyl roofs",
-  "needs": [
-   "CA04"
-  ],
-  "file": "CA17-two-tone-paint-stripes-and-vinyl-roofs.md",
-  "files": [
-   "tools/art/parts/paintzones.py",
-   "tests/run_ca17.sh"
-  ]
- },
- {
-  "id": "CA18",
-  "title": "Open cars: cockpit cut-out, seats, dash and windscreen",
-  "needs": [
-   "CA06"
-  ],
-  "file": "CA18-open-cars-cockpit-cut-out-seats-dash-and.md",
-  "files": [
-   "tools/art/parts/cockpit.py",
-   "tests/run_ca18.sh"
-  ]
- },
- {
-  "id": "CA19",
-  "title": "Soft tops: hood up, hood folded, vinyl roof variant",
-  "needs": [
-   "CA18"
-  ],
-  "file": "CA19-soft-tops-hood-up-hood-folded-vinyl-roof.md",
-  "files": [
-   "tools/art/parts/roofs.py",
-   "tests/run_ca19.sh"
-  ]
- },
- {
-  "id": "CA20",
-  "title": "Per-car Blender modules for the truly unique features",
-  "needs": [
-   "CA03"
-  ],
-  "file": "CA20-per-car-blender-modules-for-the-truly-un.md",
-  "files": [
-   "tools/art/parts/carmodule.py",
-   "tools/art/cars/__init__.py",
-   "tools/art/cars/t1_cooker.py",
-   "tests/run_ca20.sh"
-  ]
- },
- {
-  "id": "CA21",
-  "title": "Camera views: front three-quarter hero, front face, rear three-quarter",
-  "needs": [
-   "CA03"
-  ],
-  "file": "CA21-camera-views-front-three-quarter-hero-fr.md",
-  "files": [
-   "tools/art/blender_car2.py",
-   "tests/run_ca21.sh"
-  ]
- },
- {
-  "id": "CA22",
-  "title": "Contact sheet: every car, three views, one picture for QA",
-  "needs": [
-   "CA21",
-   "V07"
-  ],
-  "file": "CA22-contact-sheet-every-car-three-views-one-.md",
-  "files": [
-   "tools/art/montage.py",
-   "tools/art/contact_sheet.sh",
-   "tests/run_ca22.sh"
-  ]
- },
- {
-  "id": "CA23",
-  "title": "RSAMH pixel finish: heavy outline, dither shadows, punchy palette",
-  "needs": [
-   "V07"
-  ],
-  "file": "CA23-rsamh-pixel-finish-heavy-outline-dither-.md",
-  "files": [
-   "tools/art/rsamh_finish.py",
-   "tests/run_ca23.sh"
-  ]
- },
- {
-  "id": "CA24",
-  "title": "Sprite set per car: hero 3/4 sprite plus HUD face portrait",
-  "needs": [
-   "CA21",
-   "CA23",
-   "V07"
-  ],
-  "file": "CA24-sprite-set-per-car-hero-3-4-sprite-plus-.md",
-  "files": [
-   "tools/art/render_sprites.sh",
-   "tests/run_ca24.sh"
-  ]
- },
- {
-  "id": "CA25",
-  "title": "Details for t1_allergy (Austin Allegro, 4-door)",
-  "needs": [
-   "CA01",
-   "D01"
-  ],
-  "file": "CA25-details-for-t1-allergy-austin-allegro-4-.md",
-  "files": [
-   "docs/cars/details/t1_allergy.json"
-  ]
- },
- {
-  "id": "CA26",
-  "title": "Details for t1_robbin (Reliant Robin, three-wheeler)",
-  "needs": [
-   "CA01",
-   "D02"
-  ],
-  "file": "CA26-details-for-t1-robbin-reliant-robin-thre.md",
-  "files": [
-   "docs/cars/details/t1_robbin.json"
-  ]
- },
- {
-  "id": "CA27",
-  "title": "Details for t1_chimp (Hillman Imp)",
-  "needs": [
-   "CA01",
-   "D03"
-  ],
-  "file": "CA27-details-for-t1-chimp-hillman-imp.md",
-  "files": [
-   "docs/cars/details/t1_chimp.json"
-  ]
- },
- {
-  "id": "CA28",
-  "title": "Details for t1_maurice (Morris Minor 1000)",
-  "needs": [
-   "CA01",
-   "D04"
-  ],
-  "file": "CA28-details-for-t1-maurice-morris-minor-1000.md",
-  "files": [
-   "docs/cars/details/t1_maurice.json"
-  ]
- },
- {
-  "id": "CA29",
-  "title": "Details for t1_volksbeagle (VW Beetle 1968)",
-  "needs": [
-   "CA01",
-   "D05"
-  ],
-  "file": "CA29-details-for-t1-volksbeagle-vw-beetle-196.md",
-  "files": [
-   "docs/cars/details/t1_volksbeagle.json"
-  ]
- },
- {
-  "id": "CA30",
-  "title": "Details for t1_trumpet (Triumph Spitfire, open roadster)",
-  "needs": [
-   "CA01",
-   "D06"
-  ],
-  "file": "CA30-details-for-t1-trumpet-triumph-spitfire-.md",
-  "files": [
-   "docs/cars/details/t1_trumpet.json"
-  ]
- },
- {
-  "id": "CA31",
-  "title": "Details for t1_cooker (Mini Cooper Mk1)",
-  "needs": [
-   "CA01",
-   "D07"
-  ],
-  "file": "CA31-details-for-t1-cooker-mini-cooper-mk1.md",
-  "files": [
-   "docs/cars/details/t1_cooker.json"
-  ]
- },
- {
-  "id": "CA32",
-  "title": "Details for t1_fjord (Ford Escort Mk1 style)",
-  "needs": [
-   "CA01",
-   "D08"
-  ],
-  "file": "CA32-details-for-t1-fjord-ford-escort-mk1-sty.md",
-  "files": [
-   "docs/cars/details/t1_fjord.json"
-  ]
- },
- {
-  "id": "CA33",
-  "title": "Details for t1_mgbee (MGB roadster)",
-  "needs": [
-   "CA01",
-   "D09"
-  ],
-  "file": "CA33-details-for-t1-mgbee-mgb-roadster.md",
-  "files": [
-   "docs/cars/details/t1_mgbee.json"
-  ]
- },
- {
-  "id": "CA34",
-  "title": "Details for t1_alpaca (Sunbeam Alpine style roadster)",
-  "needs": [
-   "CA01",
-   "D10"
-  ],
-  "file": "CA34-details-for-t1-alpaca-sunbeam-alpine-sty.md",
-  "files": [
-   "docs/cars/details/t1_alpaca.json"
-  ]
- },
- {
-  "id": "CA35",
-  "title": "TEMPLATE: details for {car} (planner: copy this card once per car, replacing {car} and {dossier_card})",
-  "needs": [
-   "CA01"
-  ],
-  "file": "CA35-template-details-for-car-planner-copy-th.md",
-  "files": [
-   "docs/cars/details/{car}.json"
-  ]
- },
- {
-  "id": "CC01",
-  "title": "Pixel scale, snapping, car motion helpers",
-  "needs": [],
-  "file": "CC01-pixel-scale-snapping-car-motion-helpers.md",
-  "files": [
-   "src/art/pixelscale.js",
-   "tests/pixelscale.test.mjs"
-  ]
- },
- {
-  "id": "CC02",
-  "title": "Sprite loader v2: progress, timeout, meta, masks",
-  "needs": [
-   "S01"
-  ],
-  "file": "CC02-sprite-loader-v2-progress-timeout-meta-m.md",
-  "files": [
-   "src/art/sprites.js",
-   "tests/sprites.test.mjs"
-  ]
- },
- {
-  "id": "CC03",
-  "title": "Asset env for browser and iPhone WKWebView",
-  "needs": [
-   "CC02"
-  ],
-  "file": "CC03-asset-env-for-browser-and-iphone-wkwebvi.md",
-  "files": [
-   "src/art/assetenv.js",
-   "tests/assetenv.test.mjs"
-  ]
- },
- {
-  "id": "CC04",
-  "title": "Sprite paint: palette-swap recolour and wear states",
-  "needs": [],
-  "file": "CC04-sprite-paint-palette-swap-recolour-and-w.md",
-  "files": [
-   "src/art/sprite_paint.js",
-   "tests/sprite_paint.test.mjs"
-  ]
- },
- {
-  "id": "CC05",
-  "title": "Car variant cache (recoloured, worn sprites)",
-  "needs": [
-   "CC02",
-   "CC04"
-  ],
-  "file": "CC05-car-variant-cache-recoloured-worn-sprite.md",
-  "files": [
-   "src/art/carvariants.js",
-   "tests/carvariants.test.mjs"
-  ]
- },
- {
-  "id": "CC06",
-  "title": "Car effects: shadow, reflection, shine, steam, exhaust",
-  "needs": [],
-  "file": "CC06-car-effects-shadow-reflection-shine-stea.md",
-  "files": [
-   "src/art/carfx.js",
-   "tests/carfx.test.mjs"
-  ]
- },
- {
-  "id": "CC07",
-  "title": "drawModelCar: one entry point, sprite or code-drawn",
-  "needs": [
-   "CC01",
-   "CC05",
-   "CC06"
-  ],
-  "file": "CC07-drawmodelcar-one-entry-point-sprite-or-c.md",
-  "files": [
-   "src/art/modelcar.js",
-   "tests/modelcar.test.mjs",
-   "tests/fakecarart.js"
-  ]
- },
- {
-  "id": "CC08",
-  "title": "Stages: showroom, garage and auction sets",
-  "needs": [
-   "CC06"
-  ],
-  "file": "CC08-stages-showroom-garage-and-auction-sets.md",
-  "files": [
-   "src/art/stage.js",
-   "tests/stage.test.mjs"
-  ]
- },
- {
-  "id": "CC09",
-  "title": "Loading scene with a car as the progress marker",
-  "needs": [
-   "CC02"
-  ],
-  "file": "CC09-loading-scene-with-a-car-as-the-progress.md",
-  "files": [
-   "src/ui/scenes/loading.js",
-   "tests/scene_loading.test.mjs"
-  ]
- },
- {
-  "id": "CC10",
-  "title": "Boot flow: device scale, asset loading, loading scene",
-  "needs": [
-   "CC01",
-   "CC03",
-   "CC07",
-   "CC09",
-   "W68d"
-  ],
-  "file": "CC10-boot-flow-device-scale-asset-loading-loa.md",
-  "files": [
-   "src/boot.js",
-   "src/main.js",
-   "tests/boot.test.mjs"
-  ]
- },
- {
-  "id": "CC11",
-  "title": "Car portrait card and HUD car cluster",
-  "needs": [
-   "CC07",
-   "CC08"
-  ],
-  "file": "CC11-car-portrait-card-and-hud-car-cluster.md",
-  "files": [
-   "src/art/carportrait.js",
-   "tests/carportrait.test.mjs"
-  ]
- },
- {
-  "id": "CC12",
-  "title": "Webb TV screen car display",
-  "needs": [
-   "CC07",
-   "CC11"
-  ],
-  "file": "CC12-webb-tv-screen-car-display.md",
-  "files": [
-   "src/art/tvcar.js",
-   "tests/tvcar.test.mjs"
-  ]
- },
- {
-  "id": "CC13",
-  "title": "Office: car on the telly and HUD car portrait",
-  "needs": [
-   "CC11",
-   "CC12",
-   "W58"
-  ],
-  "file": "CC13-office-car-on-the-telly-and-hud-car-port.md",
-  "files": [
-   "src/ui/scenes/office.js",
-   "src/art/officelayout.js",
-   "tests/scene_office.test.mjs"
-  ]
- },
- {
-  "id": "CC14",
-  "title": "TV shop: the car on a showroom stage",
-  "needs": [
-   "CC01",
-   "CC07",
-   "CC08",
-   "W59b"
-  ],
-  "file": "CC14-tv-shop-the-car-on-a-showroom-stage.md",
-  "files": [
-   "src/ui/scenes/tvshop.js",
-   "tests/scene_tvshop_draw.test.mjs"
-  ]
- },
- {
-  "id": "CC15",
-  "title": "Garage: car on a workshop stage with wear and fault",
-  "needs": [
-   "CC01",
-   "CC07",
-   "CC08",
-   "CC11",
-   "W60"
-  ],
-  "file": "CC15-garage-car-on-a-workshop-stage-with-wear.md",
-  "files": [
-   "src/ui/scenes/garage.js",
-   "tests/scene_garage.test.mjs"
-  ]
- },
- {
-  "id": "CC16",
-  "title": "Auction: lot on a curtained stage, no text on the car",
-  "needs": [
-   "CC01",
-   "CC07",
-   "CC08",
-   "W65b"
-  ],
-  "file": "CC16-auction-lot-on-a-curtained-stage-no-text.md",
-  "files": [
-   "src/ui/scenes/auction.js",
-   "tests/scene_auction_a.test.mjs"
-  ]
- },
- {
-  "id": "CC17",
-  "title": "Bookings: car thumbnails in the strip",
-  "needs": [
-   "CC07",
-   "W62"
-  ],
-  "file": "CC17-bookings-car-thumbnails-in-the-strip.md",
-  "files": [
-   "src/ui/scenes/bookings.js",
-   "tests/scene_bookings.test.mjs"
-  ]
- },
- {
-  "id": "CC18",
-  "title": "Title drive-by of real classic cars",
-  "needs": [
-   "CC01",
-   "CC07",
-   "W57"
-  ],
-  "file": "CC18-title-drive-by-of-real-classic-cars.md",
-  "files": [
-   "src/ui/scenes/title.js",
-   "tests/scene_title.test.mjs"
-  ]
- },
- {
-  "id": "CC19",
-  "title": "Blender paint mask pass and pixelate mask output",
-  "needs": [
-   "V06",
-   "A04"
-  ],
-  "file": "CC19-blender-paint-mask-pass-and-pixelate-mas.md",
-  "files": [
-   "tools/art/blender_car2.py",
-   "tools/art/pixelate.py",
-   "tests/run_mask.sh"
-  ]
- },
- {
-  "id": "CC20",
-  "title": "Render all v2: densities, thumbnails, masks, manifest",
-  "needs": [
-   "V07",
-   "CC19",
-   "CC02"
-  ],
-  "file": "CC20-render-all-v2-densities-thumbnails-masks.md",
-  "files": [
-   "tools/art/render_all.sh",
-   "tests/run_render_all.sh"
-  ]
- },
- {
   "id": "GU01",
   "title": "UI tokens: colours, spacing, type scale, motion, easing",
   "needs": [],
@@ -3497,6 +2791,909 @@
   "files": [
    "src/boot.js",
    "tests/boot.test.mjs"
+  ]
+ },
+ {
+  "id": "CA01",
+  "title": "Car details schema v2: validator and spec doc",
+  "needs": [
+   "R00"
+  ],
+  "file": "CA01-car-details-schema-v2-validator-and-spec.md",
+  "files": [
+   "tools/art/details.py",
+   "tests/fixtures/details_ok.json",
+   "tests/fixtures/details_bad.json",
+   "tests/run_details.sh",
+   "docs/CAR_DETAILS_SPEC.md"
+  ]
+ },
+ {
+  "id": "CA02",
+  "title": "Car body surface maths (pure python)",
+  "needs": [
+   "V01"
+  ],
+  "file": "CA02-car-body-surface-maths-pure-python.md",
+  "files": [
+   "tools/art/surface.py",
+   "tests/test_surface.py"
+  ]
+ },
+ {
+  "id": "CA03",
+  "title": "Parts framework: registry, helpers, materials and render hook",
+  "needs": [
+   "V06",
+   "CA01",
+   "CA02",
+   "CB01"
+  ],
+  "file": "CA03-parts-framework-registry-helpers-materia.md",
+  "files": [
+   "tools/art/parts/__init__.py",
+   "tools/art/parts/_common.py",
+   "tools/art/parts/_mats.py",
+   "tools/art/blender_car2.py",
+   "tests/run_ca03.sh"
+  ]
+ },
+ {
+  "id": "CA04",
+  "title": "Lofted car body instead of an extruded slab",
+  "needs": [
+   "CA02",
+   "CA03"
+  ],
+  "file": "CA04-lofted-car-body-instead-of-an-extruded-s.md",
+  "files": [
+   "tools/art/parts/body_loft.py",
+   "tests/run_ca04.sh"
+  ]
+ },
+ {
+  "id": "CA05",
+  "title": "Wheel arches cut into the body, with dark wheel wells",
+  "needs": [
+   "CA04"
+  ],
+  "file": "CA05-wheel-arches-cut-into-the-body-with-dark.md",
+  "files": [
+   "tools/art/parts/arches.py",
+   "tests/run_ca05.sh"
+  ]
+ },
+ {
+  "id": "CA06",
+  "title": "Windows, pillars and screens that follow the body surface",
+  "needs": [
+   "CA04"
+  ],
+  "file": "CA06-windows-pillars-and-screens-that-follow-.md",
+  "files": [
+   "tools/art/parts/windows.py",
+   "tests/fixtures/details_windows.json",
+   "tests/run_ca06.sh"
+  ]
+ },
+ {
+  "id": "CA07",
+  "title": "Wheels v2: round tyre, dished steel rim, hubcap, whitewall",
+  "needs": [
+   "CA03"
+  ],
+  "file": "CA07-wheels-v2-round-tyre-dished-steel-rim-hu.md",
+  "files": [
+   "tools/art/parts/wheels_a.py",
+   "tests/run_ca07.sh"
+  ]
+ },
+ {
+  "id": "CA08",
+  "title": "Wheels v2: wire, knock-off, alloy and spare wheels",
+  "needs": [
+   "CA07"
+  ],
+  "file": "CA08-wheels-v2-wire-knock-off-alloy-and-spare.md",
+  "files": [
+   "tools/art/parts/wheels_b.py",
+   "tools/art/parts/spare.py",
+   "tests/run_ca08.sh"
+  ]
+ },
+ {
+  "id": "CA09",
+  "title": "Front lamps: round, square, oval, slanted, pop-up, quad",
+  "needs": [
+   "CA03",
+   "CA02"
+  ],
+  "file": "CA09-front-lamps-round-square-oval-slanted-po.md",
+  "files": [
+   "tools/art/parts/lamps_front.py",
+   "tests/run_ca09.sh"
+  ]
+ },
+ {
+  "id": "CA10",
+  "title": "Rear lamps: round, rectangular, vertical, cat-eye, fin, wrap-round",
+  "needs": [
+   "CA03",
+   "CA02"
+  ],
+  "file": "CA10-rear-lamps-round-rectangular-vertical-ca.md",
+  "files": [
+   "tools/art/parts/lamps_rear.py",
+   "tests/run_ca10.sh"
+  ]
+ },
+ {
+  "id": "CA11",
+  "title": "Chrome bumpers: blade, wrap-round, overriders, US chunky, quarter bumpers",
+  "needs": [
+   "CA03",
+   "CA02"
+  ],
+  "file": "CA11-chrome-bumpers-blade-wrap-round-override.md",
+  "files": [
+   "tools/art/parts/bumpers.py",
+   "tests/run_ca11.sh"
+  ]
+ },
+ {
+  "id": "CA12",
+  "title": "Grilles per marque: bars, egg-crate, kidney, shield, mesh",
+  "needs": [
+   "CA03",
+   "CA02"
+  ],
+  "file": "CA12-grilles-per-marque-bars-egg-crate-kidney.md",
+  "files": [
+   "tools/art/parts/grilles.py",
+   "tests/run_ca12.sh"
+  ]
+ },
+ {
+  "id": "CA13",
+  "title": "Trim strips, body creases and shut lines that follow the body",
+  "needs": [
+   "CA04"
+  ],
+  "file": "CA13-trim-strips-body-creases-and-shut-lines-.md",
+  "files": [
+   "tools/art/parts/trim.py",
+   "tests/run_ca13.sh"
+  ]
+ },
+ {
+  "id": "CA14",
+  "title": "Small fittings: door handles, mirrors, badges, wipers, aerial, fuel cap",
+  "needs": [
+   "CA04"
+  ],
+  "file": "CA14-small-fittings-door-handles-mirrors-badg.md",
+  "files": [
+   "tools/art/parts/fittings.py",
+   "tests/run_ca14.sh"
+  ]
+ },
+ {
+  "id": "CA15",
+  "title": "Number plates and exhaust pipes",
+  "needs": [
+   "CA03",
+   "CA02"
+  ],
+  "file": "CA15-number-plates-and-exhaust-pipes.md",
+  "files": [
+   "tools/art/parts/plates_exhaust.py",
+   "tests/run_ca15.sh"
+  ]
+ },
+ {
+  "id": "CA16",
+  "title": "Big features: tail fins, running boards, vents and scoops, racks",
+  "needs": [
+   "CA04"
+  ],
+  "file": "CA16-big-features-tail-fins-running-boards-ve.md",
+  "files": [
+   "tools/art/parts/features.py",
+   "tests/run_ca16.sh"
+  ]
+ },
+ {
+  "id": "CA17",
+  "title": "Two-tone paint, stripes and vinyl roofs",
+  "needs": [
+   "CA04"
+  ],
+  "file": "CA17-two-tone-paint-stripes-and-vinyl-roofs.md",
+  "files": [
+   "tools/art/parts/paintzones.py",
+   "tests/run_ca17.sh"
+  ]
+ },
+ {
+  "id": "CA18",
+  "title": "Open cars: cockpit cut-out, seats, dash and windscreen",
+  "needs": [
+   "CA06"
+  ],
+  "file": "CA18-open-cars-cockpit-cut-out-seats-dash-and.md",
+  "files": [
+   "tools/art/parts/cockpit.py",
+   "tests/run_ca18.sh"
+  ]
+ },
+ {
+  "id": "CA19",
+  "title": "Soft tops: hood up, hood folded, vinyl roof variant",
+  "needs": [
+   "CA18"
+  ],
+  "file": "CA19-soft-tops-hood-up-hood-folded-vinyl-roof.md",
+  "files": [
+   "tools/art/parts/roofs.py",
+   "tests/run_ca19.sh"
+  ]
+ },
+ {
+  "id": "CA20",
+  "title": "Per-car Blender modules for the truly unique features",
+  "needs": [
+   "CA03"
+  ],
+  "file": "CA20-per-car-blender-modules-for-the-truly-un.md",
+  "files": [
+   "tools/art/parts/carmodule.py",
+   "tools/art/cars/__init__.py",
+   "tools/art/cars/t1_cooker.py",
+   "tests/run_ca20.sh"
+  ]
+ },
+ {
+  "id": "CA25",
+  "title": "Details for t1_allergy (Austin Allegro, 4-door)",
+  "needs": [
+   "CA01",
+   "D01"
+  ],
+  "file": "CA25-details-for-t1-allergy-austin-allegro-4-.md",
+  "files": [
+   "docs/cars/details/t1_allergy.json"
+  ]
+ },
+ {
+  "id": "CA26",
+  "title": "Details for t1_robbin (Reliant Robin, three-wheeler)",
+  "needs": [
+   "CA01",
+   "D02"
+  ],
+  "file": "CA26-details-for-t1-robbin-reliant-robin-thre.md",
+  "files": [
+   "docs/cars/details/t1_robbin.json"
+  ]
+ },
+ {
+  "id": "CA27",
+  "title": "Details for t1_chimp (Hillman Imp)",
+  "needs": [
+   "CA01",
+   "D03"
+  ],
+  "file": "CA27-details-for-t1-chimp-hillman-imp.md",
+  "files": [
+   "docs/cars/details/t1_chimp.json"
+  ]
+ },
+ {
+  "id": "CA28",
+  "title": "Details for t1_maurice (Morris Minor 1000)",
+  "needs": [
+   "CA01",
+   "D04"
+  ],
+  "file": "CA28-details-for-t1-maurice-morris-minor-1000.md",
+  "files": [
+   "docs/cars/details/t1_maurice.json"
+  ]
+ },
+ {
+  "id": "CA29",
+  "title": "Details for t1_volksbeagle (VW Beetle 1968)",
+  "needs": [
+   "CA01",
+   "D05"
+  ],
+  "file": "CA29-details-for-t1-volksbeagle-vw-beetle-196.md",
+  "files": [
+   "docs/cars/details/t1_volksbeagle.json"
+  ]
+ },
+ {
+  "id": "CA30",
+  "title": "Details for t1_trumpet (Triumph Spitfire, open roadster)",
+  "needs": [
+   "CA01",
+   "D06"
+  ],
+  "file": "CA30-details-for-t1-trumpet-triumph-spitfire-.md",
+  "files": [
+   "docs/cars/details/t1_trumpet.json"
+  ]
+ },
+ {
+  "id": "CA31",
+  "title": "Details for t1_cooker (Mini Cooper Mk1)",
+  "needs": [
+   "CA01",
+   "D07"
+  ],
+  "file": "CA31-details-for-t1-cooker-mini-cooper-mk1.md",
+  "files": [
+   "docs/cars/details/t1_cooker.json"
+  ]
+ },
+ {
+  "id": "CA32",
+  "title": "Details for t1_fjord (Ford Escort Mk1 style)",
+  "needs": [
+   "CA01",
+   "D08"
+  ],
+  "file": "CA32-details-for-t1-fjord-ford-escort-mk1-sty.md",
+  "files": [
+   "docs/cars/details/t1_fjord.json"
+  ]
+ },
+ {
+  "id": "CA33",
+  "title": "Details for t1_mgbee (MGB roadster)",
+  "needs": [
+   "CA01",
+   "D09"
+  ],
+  "file": "CA33-details-for-t1-mgbee-mgb-roadster.md",
+  "files": [
+   "docs/cars/details/t1_mgbee.json"
+  ]
+ },
+ {
+  "id": "CA34",
+  "title": "Details for t1_alpaca (Sunbeam Alpine style roadster)",
+  "needs": [
+   "CA01",
+   "D10"
+  ],
+  "file": "CA34-details-for-t1-alpaca-sunbeam-alpine-sty.md",
+  "files": [
+   "docs/cars/details/t1_alpaca.json"
+  ]
+ },
+ {
+  "id": "CA35",
+  "title": "TEMPLATE: details for {car} (planner: copy this card once per car, replacing {car} and {dossier_card})",
+  "needs": [
+   "CA01"
+  ],
+  "file": "CA35-template-details-for-car-planner-copy-th.md",
+  "files": [
+   "docs/cars/details/{car}.json"
+  ]
+ },
+ {
+  "id": "CB01",
+  "title": "Car materials: paint, chrome, glass, rubber, lamps",
+  "needs": [
+   "V01"
+  ],
+  "file": "CB01-car-materials-paint-chrome-glass-rubber-.md",
+  "files": [
+   "tools/art/cbmat.py",
+   "tests/cb_mat_test.py"
+  ]
+ },
+ {
+  "id": "CB02",
+  "title": "Studio world and colour management",
+  "needs": [
+   "V01"
+  ],
+  "file": "CB02-studio-world-and-colour-management.md",
+  "files": [
+   "tools/art/cbrig.py",
+   "tests/cb_rig_test.py"
+  ]
+ },
+ {
+  "id": "CB03",
+  "title": "Studio light rig and chrome probe test",
+  "needs": [
+   "CB01",
+   "CB02"
+  ],
+  "file": "CB03-studio-light-rig-and-chrome-probe-test.md",
+  "files": [
+   "tools/art/cbrig.py",
+   "tests/cb_rig_test.py"
+  ]
+ },
+ {
+  "id": "CB04",
+  "title": "Fixed-scale studio camera",
+  "needs": [
+   "CB02"
+  ],
+  "file": "CB04-fixed-scale-studio-camera.md",
+  "files": [
+   "tools/art/cbrig.py",
+   "tests/cb_cam_test.py"
+  ]
+ },
+ {
+  "id": "CB05",
+  "title": "Material mask render pass",
+  "needs": [
+   "CB01"
+  ],
+  "file": "CB05-material-mask-render-pass.md",
+  "files": [
+   "tools/art/cbrig.py",
+   "tests/cb_mask_test.py"
+  ]
+ },
+ {
+  "id": "CB06",
+  "title": "Soft ground shadow render pass",
+  "needs": [
+   "CB03"
+  ],
+  "file": "CB06-soft-ground-shadow-render-pass.md",
+  "files": [
+   "tools/art/cbrig.py",
+   "tests/cb_shadow_test.py"
+  ]
+ },
+ {
+  "id": "CB09",
+  "title": "blender_car2: studio rig, views, materials",
+  "needs": [
+   "V06",
+   "CA03",
+   "CB01",
+   "CB02",
+   "CB03",
+   "CB04"
+  ],
+  "file": "CB09-blender-car2-studio-rig-views-materials.md",
+  "files": [
+   "tools/art/blender_car2.py",
+   "tests/run_blender_car2g.sh"
+  ]
+ },
+ {
+  "id": "CB10",
+  "title": "blender_car2: views, mask and shadow outputs",
+  "needs": [
+   "CB05",
+   "CB06",
+   "CB09",
+   "CA05",
+   "CA06"
+  ],
+  "file": "CB10-blender-car2-views-mask-and-shadow-outpu.md",
+  "files": [
+   "tools/art/blender_car2.py",
+   "tests/run_blender_car2h.sh",
+   "tests/cb_fractions.py"
+  ]
+ },
+ {
+  "id": "CB11",
+  "title": "Pixel stage: palette ramps",
+  "needs": [
+   "A04"
+  ],
+  "file": "CB11-pixel-stage-palette-ramps.md",
+  "files": [
+   "tools/art/pixramp.py",
+   "tests/pixramp_test.py"
+  ]
+ },
+ {
+  "id": "CB12",
+  "title": "Pixel stage: material class map",
+  "needs": [
+   "CB01",
+   "CB11"
+  ],
+  "file": "CB12-pixel-stage-material-class-map.md",
+  "files": [
+   "tools/art/pixramp.py",
+   "tests/pixramp_class_test.py"
+  ]
+ },
+ {
+  "id": "CB13",
+  "title": "Pixel stage: ramp quantiser with ordered dither",
+  "needs": [
+   "CB11",
+   "CB12"
+  ],
+  "file": "CB13-pixel-stage-ramp-quantiser-with-ordered-.md",
+  "files": [
+   "tools/art/pixramp.py",
+   "tests/pixramp_quant_test.py"
+  ]
+ },
+ {
+  "id": "CB14",
+  "title": "Pixel stage: selective outlines",
+  "needs": [
+   "CB13"
+  ],
+  "file": "CB14-pixel-stage-selective-outlines.md",
+  "files": [
+   "tools/art/pixramp.py",
+   "tests/pixramp_outline_test.py"
+  ]
+ },
+ {
+  "id": "CB15",
+  "title": "pixelate2: render + mask to a ramp-palette sprite",
+  "needs": [
+   "CB12",
+   "CB13",
+   "CB14"
+  ],
+  "file": "CB15-pixelate2-render-mask-to-a-ramp-palette-.md",
+  "files": [
+   "tools/art/pixelate2.py",
+   "tests/pixelate2_fixture.py",
+   "tests/run_pixelate2.sh"
+  ]
+ },
+ {
+  "id": "CB16",
+  "title": "pixelate2: fixed scale, crop and anchor, sprite profiles",
+  "needs": [
+   "CB04",
+   "CB15"
+  ],
+  "file": "CB16-pixelate2-fixed-scale-crop-and-anchor-sp.md",
+  "files": [
+   "tools/art/pixelate2.py",
+   "tests/run_pixelate2b.sh",
+   "tests/pixelate2b_check.py"
+  ]
+ },
+ {
+  "id": "CB17",
+  "title": "Pixel stage: shadow levels, lamp positions and game mask",
+  "needs": [
+   "CB12"
+  ],
+  "file": "CB17-pixel-stage-shadow-levels-lamp-positions.md",
+  "files": [
+   "tools/art/pixramp.py",
+   "tests/pixramp_extra_test.py"
+  ]
+ },
+ {
+  "id": "CB20",
+  "title": "pixelate2: shadow sprite, lamp list and game mask",
+  "needs": [
+   "CB16",
+   "CB17"
+  ],
+  "file": "CB20-pixelate2-shadow-sprite-lamp-list-and-ga.md",
+  "files": [
+   "tools/art/pixelate2.py",
+   "tests/run_pixelate2c.sh",
+   "tests/pixelate2c_check.py"
+  ]
+ },
+ {
+  "id": "CB21",
+  "title": "Pixel stage: all sprites for one car",
+  "needs": [
+   "CB20",
+   "CB10"
+  ],
+  "file": "CB21-pixel-stage-all-sprites-for-one-car.md",
+  "files": [
+   "tools/art/pixelate_all.py",
+   "tests/run_pixelate_all.sh"
+  ]
+ },
+ {
+  "id": "CB22",
+  "title": "render_all: studio pipeline, cache and manifest v2",
+  "needs": [
+   "V07",
+   "CB21"
+  ],
+  "file": "CB22-render-all-studio-pipeline-cache-and-man.md",
+  "files": [
+   "tools/art/render_all.sh",
+   "tools/art/carmanifest.py",
+   "tests/run_render_all.sh"
+  ]
+ },
+ {
+  "id": "CB23",
+  "title": "Sprite checker v2: palette budget, outline and shadow rules",
+  "needs": [
+   "CB14"
+  ],
+  "file": "CB23-sprite-checker-v2-palette-budget-outline.md",
+  "files": [
+   "tools/art/check_sprite2.py",
+   "tests/run_check_sprite2.sh"
+  ]
+ },
+ {
+  "id": "CB24",
+  "title": "Contact sheet for visual QA",
+  "needs": [
+   "CB21"
+  ],
+  "file": "CB24-contact-sheet-for-visual-qa.md",
+  "files": [
+   "tools/art/carsheet.py",
+   "tests/run_carsheet.sh"
+  ]
+ },
+ {
+  "id": "CC01",
+  "title": "Pixel scale, snapping, car motion helpers",
+  "needs": [],
+  "file": "CC01-pixel-scale-snapping-car-motion-helpers.md",
+  "files": [
+   "src/art/pixelscale.js",
+   "tests/pixelscale.test.mjs"
+  ]
+ },
+ {
+  "id": "CC02",
+  "title": "Sprite loader v2: progress, timeout, meta, masks, shadows",
+  "needs": [
+   "S01"
+  ],
+  "file": "CC02-sprite-loader-v2-progress-timeout-meta-m.md",
+  "files": [
+   "src/art/sprites.js",
+   "tests/sprites.test.mjs"
+  ]
+ },
+ {
+  "id": "CC03",
+  "title": "Asset env for browser and iPhone WKWebView",
+  "needs": [
+   "CC02"
+  ],
+  "file": "CC03-asset-env-for-browser-and-iphone-wkwebvi.md",
+  "files": [
+   "src/art/assetenv.js",
+   "tests/assetenv.test.mjs"
+  ]
+ },
+ {
+  "id": "CC04",
+  "title": "Sprite paint: repaint a car from its game mask",
+  "needs": [],
+  "file": "CC04-sprite-paint-repaint-a-car-from-its-game.md",
+  "files": [
+   "src/art/sprite_paint.js",
+   "tests/sprite_paint.test.mjs"
+  ]
+ },
+ {
+  "id": "CC21",
+  "title": "Sprite wear: dirt, rust, dents, chrome pitting, cracked screen",
+  "needs": [
+   "CC04"
+  ],
+  "file": "CC21-sprite-wear-dirt-rust-dents-chrome-pitti.md",
+  "files": [
+   "src/art/sprite_wear.js",
+   "tests/sprite_wear.test.mjs"
+  ]
+ },
+ {
+  "id": "CC05",
+  "title": "Car variant cache (repainted, weathered sprites)",
+  "needs": [
+   "CC02",
+   "CC04",
+   "CC21"
+  ],
+  "file": "CC05-car-variant-cache-repainted-weathered-sp.md",
+  "files": [
+   "src/art/carvariants.js",
+   "tests/carvariants.test.mjs"
+  ]
+ },
+ {
+  "id": "CC06",
+  "title": "Car effects: shadow, reflection, shine, steam, exhaust",
+  "needs": [],
+  "file": "CC06-car-effects-shadow-reflection-shine-stea.md",
+  "files": [
+   "src/art/carfx.js",
+   "tests/carfx.test.mjs"
+  ]
+ },
+ {
+  "id": "CC07",
+  "title": "drawModelCar: one entry point, sprite or code-drawn",
+  "needs": [
+   "CC01",
+   "CC05",
+   "CC06"
+  ],
+  "file": "CC07-drawmodelcar-one-entry-point-sprite-or-c.md",
+  "files": [
+   "src/art/modelcar.js",
+   "tests/modelcar.test.mjs",
+   "tests/fakecarart.js"
+  ]
+ },
+ {
+  "id": "CC08",
+  "title": "Stages: showroom, garage and auction sets",
+  "needs": [
+   "CC06"
+  ],
+  "file": "CC08-stages-showroom-garage-and-auction-sets.md",
+  "files": [
+   "src/art/stage.js",
+   "tests/stage.test.mjs"
+  ]
+ },
+ {
+  "id": "CC09",
+  "title": "Loading scene with a car as the progress marker",
+  "needs": [
+   "CC02"
+  ],
+  "file": "CC09-loading-scene-with-a-car-as-the-progress.md",
+  "files": [
+   "src/ui/scenes/loading.js",
+   "tests/scene_loading.test.mjs"
+  ]
+ },
+ {
+  "id": "CC10",
+  "title": "Boot flow: device scale, asset loading, loading scene",
+  "needs": [
+   "CC01",
+   "CC03",
+   "CC07",
+   "CC09",
+   "W68d"
+  ],
+  "file": "CC10-boot-flow-device-scale-asset-loading-loa.md",
+  "files": [
+   "src/boot.js",
+   "src/main.js",
+   "tests/boot.test.mjs"
+  ]
+ },
+ {
+  "id": "CC11",
+  "title": "Car portrait card and HUD car cluster",
+  "needs": [
+   "CC07",
+   "CC08"
+  ],
+  "file": "CC11-car-portrait-card-and-hud-car-cluster.md",
+  "files": [
+   "src/art/carportrait.js",
+   "tests/carportrait.test.mjs"
+  ]
+ },
+ {
+  "id": "CC12",
+  "title": "Webb TV screen car display",
+  "needs": [
+   "CC07",
+   "CC11"
+  ],
+  "file": "CC12-webb-tv-screen-car-display.md",
+  "files": [
+   "src/art/tvcar.js",
+   "tests/tvcar.test.mjs"
+  ]
+ },
+ {
+  "id": "CC13",
+  "title": "Office: car on the telly and HUD car portrait",
+  "needs": [
+   "CC11",
+   "CC12",
+   "W58"
+  ],
+  "file": "CC13-office-car-on-the-telly-and-hud-car-port.md",
+  "files": [
+   "src/ui/scenes/office.js",
+   "src/art/officelayout.js",
+   "tests/scene_office.test.mjs"
+  ]
+ },
+ {
+  "id": "CC14",
+  "title": "TV shop: the car on a showroom stage",
+  "needs": [
+   "CC01",
+   "CC07",
+   "CC08",
+   "W59b"
+  ],
+  "file": "CC14-tv-shop-the-car-on-a-showroom-stage.md",
+  "files": [
+   "src/ui/scenes/tvshop.js",
+   "tests/scene_tvshop_draw.test.mjs"
+  ]
+ },
+ {
+  "id": "CC15",
+  "title": "Garage: car on a workshop stage with wear and fault",
+  "needs": [
+   "CC01",
+   "CC07",
+   "CC08",
+   "CC11",
+   "W60"
+  ],
+  "file": "CC15-garage-car-on-a-workshop-stage-with-wear.md",
+  "files": [
+   "src/ui/scenes/garage.js",
+   "tests/scene_garage.test.mjs"
+  ]
+ },
+ {
+  "id": "CC16",
+  "title": "Auction: lot on a curtained stage, no text on the car",
+  "needs": [
+   "CC01",
+   "CC07",
+   "CC08",
+   "W65b"
+  ],
+  "file": "CC16-auction-lot-on-a-curtained-stage-no-text.md",
+  "files": [
+   "src/ui/scenes/auction.js",
+   "tests/scene_auction_a.test.mjs"
+  ]
+ },
+ {
+  "id": "CC17",
+  "title": "Bookings: car thumbnails in the strip",
+  "needs": [
+   "CC07",
+   "W62"
+  ],
+  "file": "CC17-bookings-car-thumbnails-in-the-strip.md",
+  "files": [
+   "src/ui/scenes/bookings.js",
+   "tests/scene_bookings.test.mjs"
+  ]
+ },
+ {
+  "id": "CC18",
+  "title": "Title drive-by of real classic cars",
+  "needs": [
+   "CC01",
+   "CC07",
+   "W57"
+  ],
+  "file": "CC18-title-drive-by-of-real-classic-cars.md",
+  "files": [
+   "src/ui/scenes/title.js",
+   "tests/scene_title.test.mjs"
   ]
  }
 ]

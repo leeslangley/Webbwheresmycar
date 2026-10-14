@@ -17,7 +17,7 @@ Deploy: no
 The garage detail panel shows the selected car on a workshop stage: its real condition shows as a wear state (mint, worn, tatty, wreck), a faulty car steams, and the selection is published so the office HUD can show it.
 
 ## Read first
-- docs/art/CC.md (the plan: sheets, sizes, API names; read the 'Sprite contract' and 'API' sections)
+- docs/art/CARS_ALIGN.md (THE sprite contract: views, densities, file names, manifest v2, game mask; it wins over any other text) and docs/art/CC.md (API names and background; its 'Sprite contract' section is superseded)
 - src/ui/scenes/garage.js (drawDetail, LAYOUT, how selId is set in enter, row tap and keys)
 - tests/scene_garage.test.mjs
 - src/art/modelcar.js, src/art/stage.js, src/art/pixelscale.js

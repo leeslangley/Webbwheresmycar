@@ -17,7 +17,7 @@ Deploy: no
 A first scene shown while the car sprites and fonts load: it never blocks for more than a few seconds and works with no sprites at all. Uses only the code-drawn car (sprites are what it is waiting for).
 
 ## Read first
-- docs/art/CC.md (the plan: sheets, sizes, API names; read the 'Sprite contract' and 'API' sections)
+- docs/art/CARS_ALIGN.md (THE sprite contract: views, densities, file names, manifest v2, game mask; it wins over any other text) and docs/art/CC.md (API names and background; its 'Sprite contract' section is superseded)
 - docs/SCENE_RULES.md (tap rule; do not change hit handling)
 - src/ui/scenes/title.js (structure, label and PALETTE use)
 - src/art/cardraw.js (drawCar)

@@ -14,10 +14,10 @@ Commit: local only
 Deploy: no
 
 ## Goal
-`drawStage(ctx, r, kind, t)`: the head-on tableau the car stands in (like the fixed stage sets of the original game): back wall, floor band, light, drawn inside rect `r`. Three kinds: showroom, garage, auction. Returns where to stand the car.
+`drawStage(ctx, r, kind, t)`: the fixed tableau the car stands in (like the fixed stage sets of the original game): back wall, floor band, light, drawn inside rect `r`. Three kinds: showroom, garage, auction. Returns where to stand the car.
 
 ## Read first
-- docs/art/CC.md (the plan: sheets, sizes, API names; read the 'Sprite contract' and 'API' sections)
+- docs/art/CARS_ALIGN.md (THE sprite contract: views, densities, file names, manifest v2, game mask; it wins over any other text) and docs/art/CC.md (API names and background; its 'Sprite contract' section is superseded)
 - src/ui/theme.js (PALETTE, shade, rgba)
 - src/ui/scenes/auction.js function drawHall (the plank stage and spotlight to be replaced)
 

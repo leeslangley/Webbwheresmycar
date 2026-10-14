@@ -17,7 +17,7 @@ Deploy: no
 One tiny pure module that makes pixel art stay crisp on any screen (1280x720 desktop, retina iPhone) and gives scenes the drive-in/drive-out and idle-bob maths. Boot sets the device scale; everything else asks this module.
 
 ## Read first
-- docs/art/CC.md (the plan: sheets, sizes, API names; read the 'Sprite contract' and 'API' sections)
+- docs/art/CARS_ALIGN.md (THE sprite contract: views, densities, file names, manifest v2, game mask; it wins over any other text) and docs/art/CC.md (API names and background; its 'Sprite contract' section is superseded)
 - src/ui/canvas.js (applyLayout: logical 1280x720 is scaled by layout.scale * dpr; that product is the DEVICE SCALE: device pixels per logical pixel)
 
 ## Files you may change (and nothing else)

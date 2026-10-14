@@ -17,7 +17,7 @@ Deploy: no
 The title screen drive-by shows six real catalogue cars, big (2x pixels), one every 9 seconds, with a speed streak and exhaust puff, instead of four generic red shapes.
 
 ## Read first
-- docs/art/CC.md (the plan: sheets, sizes, API names; read the 'Sprite contract' and 'API' sections)
+- docs/art/CARS_ALIGN.md (THE sprite contract: views, densities, file names, manifest v2, game mask; it wins over any other text) and docs/art/CC.md (API names and background; its 'Sprite contract' section is superseded)
 - src/ui/scenes/title.js (CAR_ARCHETYPES and the drawCar call)
 - tests/scene_title.test.mjs
 - src/art/modelcar.js (measureModelCar, drawModelCar)
@@ -28,7 +28,7 @@ The title screen drive-by shows six real catalogue cars, big (2x pixels), one ev
 - `tests/scene_title.test.mjs`
 
 ## Steps
-1. Replace `CAR_ARCHETYPES` with `DRIVE_CARS = ['t1_cooker','t2_spyder','t3_dinosore','t1_chimp','t3_cloudy','t2_eclair']`, `PERIOD = 9`. `idx = Math.floor(t / PERIOD) % DRIVE_CARS.length`; `m = measureModelCar(id, 2, {})`; `carX = -m.w / 2 + ((t % PERIOD) / PERIOD) * (1280 + m.w)` (the car enters fully off-screen and leaves fully off-screen). Draw `drawModelCar(ctx, id, carX, 668, 2, {cond: 10, t, bob: true, reflect: false})` and, behind it, three speed streaks: `fillRect(carX - m.w/2 - 20 - i*34, 668 - 14 - i*10, 24 + i*10, 3)` colour `rgba(255,255,255,0.35 - i*0.1)` for i = 0..2. Keep the road, stars, logo and buttons exactly as they are. Export `DRIVE_CARS`.
+1. Replace `CAR_ARCHETYPES` with `DRIVE_CARS = ['t1_cooker','t2_spyder','t3_dinosore','t1_chimp','t3_cloudy','t2_eclair']`, `PERIOD = 9`. `idx = Math.floor(t / PERIOD) % DRIVE_CARS.length`; `m = measureModelCar(id, 2)`; `carX = -m.w / 2 + ((t % PERIOD) / PERIOD) * (1280 + m.w)` (the car enters fully off-screen and leaves fully off-screen). Draw `drawModelCar(ctx, id, carX, 668, 2, {cond: 10, t, bob: true, reflect: false})` (the default side view, nose to the right) and, behind it, three speed streaks: `fillRect(carX - m.w/2 - 20 - i*34, 668 - 14 - i*10, 24 + i*10, 3)` colour `rgba(255,255,255,0.35 - i*0.1)` for i = 0..2. Keep the road, stars, logo and buttons exactly as they are. Export `DRIVE_CARS`.
 2. Remove the unused `drawCar` import. Keep `LAYOUT` and all button code.
 3. Tests: keep all. Add with fake art (L 200x70): at t=0 the drawn image id starts with `t1_cooker|` and its right edge is at most 0 + 1 (off-screen left, since the car starts at x = -w/2 and w = 400); at t=4.5 the image centre is within 2 px of 640 (it is mid-screen at half the period); at t=9.2 the id starts with `t2_spyder|`; uninstalled art: no `drawImage` and the old code-drawn path still draws (`arc` calls present); button texts unchanged.
 

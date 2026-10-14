@@ -1,5 +1,7 @@
 # CB: car materials, lighting, rendering and the pixel stage (review of 14 Oct 2026)
 
+> **Alignment note (14 Oct 2026):** Parts of this plan are superseded by docs/art/CARS_ALIGN.md (density 48/24/40 px/m instead of 56/26/34, baked wear and CB07/CB08 dropped, runtime repaint from a game mask, manifest v2, file names carmanifest.py and carsheet.py). Lee's 14 Oct decision: the DEFAULT/HERO view is the side view `s` (key `<id>`), `q` is an extra (`<id>_q`), the mini is the side view, and the hero density is 48 px/m (192 px/m in Blender) so a 5.7 m limo fits the TV shop slot; where this plan says q is the hero or says 56/52 px/m, CARS_ALIGN.md wins.
+
 Cards: `tools/cards/CB.py` (CB01-CB24). Scratch experiments behind every number: Cycles renders of t1_chimp with a test rig, then a numpy prototype of the pixel stage, looked at as sprites at x2 and x3.
 
 ## What I looked at, and what is wrong (honest)
@@ -18,8 +20,8 @@ Cards: `tools/cards/CB.py` (CB01-CB24). Scratch experiments behind every number:
 - **Studio rig** (all in CB02/CB03): gradient sky (dark floor, warm horizon band #e9dcc4, blue zenith) at strength 0.22 plus six rectangular area lights: 9x1.6 m overhead strip (the long highlight on the shoulder), warm key 4.5x3 front-left-high, cool rim behind-right, low fill, two tall white strips for chrome. View transform Standard, exposure -0.2. Probe: a chrome ball must have upper half >= 2x lower half (measured 3.5), 15 percent pixels > 0.9, 40 percent < 0.1.
 - **Glass is opaque dark** (`#1b2830`, coat 1.0) with the sky reflected: crisp 4-step glass with one bright streak, no unmodelled interior to show.
 - **Metallic flake**: skipped, it vanishes at 240 px. Instead `finish: metallic` adds 0.25 metallic and a facing colour flop.
-- **Camera**: fixed-scale orthographic, 56 sprite px per metre (so a 3.5 m car is smaller than a 5.5 m car and cars sit together believably), rendered at 4x (1600x800). Three views per car: **q** = front three-quarter (yaw 25, pitch 10; sells grille, lamps, volume: the hero), **s** = pure side (best profile, driving and garage), **front** = head-on crop (the car as a character FACE for the HUD portrait, see RSAMH below). Yaw 38 foreshortens the length too much; pure side alone looks like a toy.
-- **Sizes**: hero 400x200 canvas (Imp about 200 px wide, limo about 300) drawn at x2 on the 1280x720 canvas; mini 26 px/m (Imp about 93 px) for lists and HUD; face 34 px/m (about 105 px square) for the HUD portrait. 96 px wide hero lost the whitewalls, 128 was soft, 192-240 was the sweet spot, 320 at x2 filled the screen.
+- **Camera**: fixed-scale orthographic, 48 sprite px per metre (so a 3.5 m car is smaller than a 5.5 m car and cars sit together believably), rendered at 4x (192 px/m, 1600x800). Views per car: **s** = pure side (best profile; THE hero and default picture of every car, Lee 14 Oct), **q** = front three-quarter (yaw 25, pitch 10; sells grille, lamps, volume: an extra), **front** = head-on crop (the car as a character FACE for the HUD portrait, see RSAMH below). Yaw 38 foreshortens the length too much; pure side alone looks like a toy.
+- **Sizes**: hero 48 px/m, 400x200 canvas (side view: Imp about 173 px wide, limo about 276) drawn at x2 on the 1280x720 canvas; mini 24 px/m (the side view, Imp about 87 px) for lists; face 40 px/m (about 144 px wide) for the HUD portrait. 96 px wide hero lost the whitewalls, 128 was soft, 192-240 was the sweet spot, 320 at x2 filled the screen.
 - **Shadow** is a separate sprite: sun-lit shadow-only render (sun 18 degree soft, nearly overhead), quantised to alpha levels 0/40/90/150 in `#120a1e`, same size and offset as the car sprite. The game draws it under the car on any floor.
 - **Lamps**: pixel stage lists lamp and tail-lamp centroids/radii in the manifest so the game adds additive glow (bloom) at night.
 - **Condition 0-10 to 4 baked states** (0 mint, 1 good, 2 tired, 3 wreck), made at the pixel stage, seeded by car id so a car always rots the same way: paint fades toward chalk `#b8aa96` (0/12/30/50 percent), dirt creeps up from the sill (0/10/24/40 percent of height), rust blobs (0/0/5/14, 3 colours), dents (ramp shifts, no new colours), chrome pitting (0/0/8/18 percent), a cracked windscreen in state 3. Game maps condition 8-10 to 0, 5-7 to 1, 3-4 to 2, 0-2 to 3. Mini and hero get all four, side gets 0 and 3.
@@ -28,7 +30,7 @@ Cards: `tools/cards/CB.py` (CB01-CB24). Scratch experiments behind every number:
 
 ## RSAMH echo (Lee, 14 Oct, see docs/art/RSAMH_STYLE.md)
 - Thick dark outlines, ordered dither in big gradients, saturated period paint from a hand-authored ramp (not whatever the renderer felt like): the 1989 grammar at today's richness (clearcoat streak, chrome horizon, soft shadow).
-- The cars are the "band": the HUD portrait cluster shows the selected car as a FACE (head-on view, lamps as eyes, grille as mouth), 105 px square, dark outline, same ramp rules: card CB16 profile `face`. The three-quarter hero sits on the telly, the side view in the garage.
+- The cars are the "band": the HUD portrait cluster shows the selected car as a FACE (head-on view, lamps as eyes, grille as mouth), about 144 px wide, dark outline, same ramp rules: card CB16 profile `face`. The side view is the hero everywhere (telly, garage, shops); the head-on face is the HUD portrait; the three-quarter is an extra.
 - Fixed-tableau friendliness: constant px/m and a recorded ground anchor (`ax`,`ay`) mean any scene can plant a car on its floor line with no per-car fiddling.
 - Not done here (belongs to scene cards): HUD portrait frame, bloom, parallax, grain.
 
@@ -41,6 +43,6 @@ Visual QA after CB22: run `sh tools/art/render_all.sh t1_chimp`, then the contac
 ## Decisions for Lee / the planner
 1. Whitewalls need a dossier field `wheels[i].whitewall` (optional bool). Which classics had them? The dossier cards do not say; default is none.
 2. `finish: metallic` and two-tone (`roof.colour_split` plus a 2nd `typical_paint`) are read from the dossiers; check the 31 dossiers set them for the right cars.
-3. The pixel size: x2 on a 1280x720 canvas (hero about 400 logical px wide for an Imp) is my recommendation. Lee may prefer chunkier (x3 of a 133 px sprite: cheaper, more 1989). It is one number (PROFILES ppm) in CB16.
+3. The pixel size: x2 on a 1280x720 canvas (hero about 350 logical px wide for an Imp in side view) is my recommendation; the density is now 48 px/m, chosen so a 5.7 m limo fits the TV shop slot (CARS_ALIGN.md). Lee may prefer chunkier (x3 of a 133 px sprite: cheaper, more 1989). It is one number (PROFILES ppm) in CB16.
 4. If the shape reviewer's cards cut arches/windows, delete CB07 and keep the rest.
 5. Condition thresholds (0-2 / 3-4 / 5-7 / 8-10) are a game-design call; the pixel stage only supplies four looks.
