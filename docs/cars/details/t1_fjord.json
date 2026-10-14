@@ -20,19 +20,19 @@
   {"kind": "lamp", "x": 47.5, "y": 16.0, "lat": 15.5, "r": 1.2, "role": "indicator", "side": "both", "note": "indicator outboard of the headlamps (estimate). Amber colour is not a schema field"},
   {"kind": "grille", "x": 47.0, "y": 15.6, "w": 14.0, "h": 3.2, "style": "slat_panel", "bars": 6, "surround": "chrome", "end": "front", "note": "dossier: plain rectangular aperture 14 wide x 3.2 high with a black slatted insert"},
   {"kind": "grille", "x": 49.0, "y": 4.0, "w": 3.0, "h": 1.5, "style": "horizontal_bars", "bars": 3, "surround": "paint", "end": "front", "lat": 9.0, "side": "both", "note": "dossier: two small pressed vents low in the front panel (no front vent kind, so a small grille is used; size is an estimate)"},
-  {"kind": "bumper", "end": "front", "x": 49.0, "y": 9.25, "h": 2.5, "style": "blade", "overriders": 0, "note": "dossier: chrome blade x 48..50, y 8..10.5, no over-riders"},
+  {"kind": "bumper", "end": "front", "x": 49.0, "y": 8.0, "h": 2.5, "style": "blade", "overriders": 0, "note": "dossier: chrome blade x 48..50, y 8..10.5, no over-riders"},
   {"kind": "plate", "end": "front", "x": 49.5, "y": 6.5, "w": 12, "h": 3, "colour": "white", "note": "no front plate figure in dossier; placed under the bumper (estimate)"},
   {"kind": "badge", "x": 47.5, "y": 15.6, "shape": "disc", "end": "front", "size": 1.0, "colour": "chrome", "side": "centre", "note": "dossier: small oval badge in the grille centre; oval is not a badge shape so disc is used"},
   {"kind": "strip", "x": 46.0, "x2": 48.0, "y": 17.2, "h": 0.3, "role": "sweep", "colour": "chrome", "side": "centre", "note": "dossier: thin chrome strip along the top edge of the grille aperture"},
   {"kind": "crease", "x": 20.0, "x2": 40.0, "y": 23.6, "depth": 0.1, "side": "centre", "note": "dossier: shallow pressed centre crease on the flat bonnet. Schema is horizontal, so y is a mid height while the bonnet slopes"},
   {"kind": "taillamp", "x": -49.0, "y": 15.0, "lat": 13.0, "shape": "rect", "w": 4.0, "h": 2.0, "side": "both", "note": "dossier: two rectangular upright lamps about 4 wide x 2 high at x -49 y 15; lat 13 is an estimate"},
   {"kind": "grille", "x": -49.6, "y": 15.0, "w": 30.0, "h": 5.0, "style": "none", "surround": "black", "end": "rear", "note": "card recogniser: wide black rear panel behind the tail lamps. Not in the dossier, so the size is an estimate"},
-  {"kind": "bumper", "end": "rear", "x": -49.0, "y": 9.25, "h": 2.5, "style": "blade", "overriders": 0, "note": "dossier: chrome blade x -50..-48, y 8..10.5, no over-riders"},
+  {"kind": "bumper", "end": "rear", "x": -49.0, "y": 8.0, "h": 2.5, "style": "blade", "overriders": 0, "note": "dossier: chrome blade x -50..-48, y 8..10.5, no over-riders"},
   {"kind": "plate", "end": "rear", "x": -50.0, "y": 6.5, "w": 12, "h": 3, "colour": "white", "note": "no rear plate figure in dossier; placed under the bumper (estimate)"},
   {"kind": "exhaust", "style": "round", "x": -50.0, "y": 6.0, "lat": 6.0, "r": 1.0, "side": "near", "note": "dossier: one exhaust"},
   {"kind": "handle", "x": -48.0, "y": 22.0, "style": "boot", "side": "centre", "note": "dossier: small chrome boot-lid handle at x -48 y 22"},
   {"kind": "badge", "x": -49.0, "y": 19.0, "shape": "bar", "end": "rear", "size": 1.5, "colour": "chrome", "side": "centre", "note": "card recogniser: small chrome boot-lid badge. The dossier lists none, so position and size are estimates"},
-  {"kind": "fuelcap", "x": -40.0, "y": 12.0, "r": 1.0, "side": "near", "note": "dossier: petrol filler cap low on the left rear quarter at x -40 y 12"},
+  {"kind": "fuelcap", "x": -40.0, "y": 12.0, "r": 1.0, "side": "far", "note": "dossier: petrol filler cap low on the left rear quarter at x -40 y 12"},
   {"kind": "strip", "x": -24.0, "x2": 18.0, "y": 25.4, "h": 0.4, "role": "window", "colour": "chrome", "side": "both", "note": "thin chrome window surround along the belt line"},
   {"kind": "strip", "x": -34.0, "x2": 34.0, "y": 4.0, "h": 0.6, "role": "sill", "colour": "chrome", "side": "both", "note": "dossier: chrome sill strip along the lower body x -34..34 y 4"},
   {"kind": "crease", "x": -46.0, "x2": -24.0, "y": 24.5, "depth": 0.15, "side": "both", "note": "dossier: small pressed seam along the top of the rear quarter"},
@@ -42,6 +42,6 @@
   {"kind": "shutline", "path": [[-4.0, 5.0], [21.0, 5.0]], "role": "door", "side": "both", "note": "door bottom edge (estimate)"},
   {"kind": "shutline", "path": [[18.0, 23.6], [46.0, 19.6]], "role": "bonnet", "side": "both", "note": "bonnet side edge (estimate)"},
   {"kind": "shutline", "path": [[-46.0, 23.9], [-46.0, 17.0]], "role": "boot", "side": "both", "note": "boot lid edge above the near-vertical box tail (estimate)"},
-  {"kind": "shutline", "path": [[-42.0, 10.5], [-38.0, 10.5], [-38.0, 13.5], [-42.0, 13.5], [-42.0, 10.5]], "role": "fuel", "side": "near", "note": "fuel flap around the filler cap (estimate)"}
+  {"kind": "shutline", "path": [[-42.0, 10.5], [-38.0, 10.5], [-38.0, 13.5], [-42.0, 13.5], [-42.0, 10.5]], "role": "fuel", "side": "far", "note": "fuel flap around the filler cap (estimate)"}
  ]
 }
