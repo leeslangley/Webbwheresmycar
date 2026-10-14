@@ -176,4 +176,50 @@ test('booting is tolerant of every fonts shape', () => {
 	}
 });
 
+function makeImageClass() {
+	return function FakeImage() {
+		this.onload = null;
+		this.onerror = null;
+		this.src = '';
+	};
+}
+
+test('without fetch or Image the room loader is absent and look is centred', () => {
+	const w = makeWindow(1280, 720);
+	const c = makeCanvas();
+	const b = bootGame({ window: w, document: makeDocument(c), storage: null });
+	ok(b.app.rooms === undefined, 'app.rooms undefined with no fetch or Image');
+	eq(b.app.look, { x: 0, y: 0 }, 'look starts at 0,0');
+});
+
+test('with fetch and Image the room loader is created and started', () => {
+	const w = makeWindow(1280, 720);
+	w.fetch = function () {
+		return Promise.resolve({ ok: true, json: function () { return {}; } });
+	};
+	w.Image = makeImageClass();
+	const c = makeCanvas();
+	const b = bootGame({ window: w, document: makeDocument(c), storage: null });
+	ok(b.app.rooms !== undefined, 'app.rooms exists');
+	ok(typeof b.app.rooms.has === 'function', 'app.rooms.has is a function');
+	ok(b.app.rooms.has('no_such_room') === false, 'unknown room is not loaded');
+	eq(b.app.look, { x: 0, y: 0 }, 'look starts at 0,0');
+});
+
+test('pointer moves set app.look to -1..1 from the view centre', () => {
+	const w = makeWindow(1280, 720);
+	w.fetch = function () {
+		return Promise.resolve({ ok: true, json: function () { return {}; } });
+	};
+	w.Image = makeImageClass();
+	const c = makeCanvas();
+	const b = bootGame({ window: w, document: makeDocument(c), storage: null });
+	c.handlers.pointermove[0](makeEvent(1280, 720));
+	eq(b.app.look, { x: 1, y: 1 }, 'bottom-right gives 1,1');
+	c.handlers.pointerdown[0](makeEvent(0, 0));
+	eq(b.app.look, { x: -1, y: -1 }, 'top-left gives -1,-1 on a down');
+	c.handlers.pointerup[0](makeEvent(640, 360));
+	eq(b.app.look, { x: 0, y: 0 }, 'centre gives 0,0 on an up');
+});
+
 done();

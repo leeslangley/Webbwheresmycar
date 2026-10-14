@@ -5,6 +5,7 @@
 
 import { applyLayout, toLogical } from './ui/canvas.js';
 import { createGame } from './game.js';
+import { createRooms } from './art/rooms.js';
 
 // bootGame(env) -> {app, getLayout}. env = {window, document, storage}.
 export function bootGame(env) {
@@ -27,12 +28,46 @@ export function bootGame(env) {
 	});
 	app.go('title');
 
+	// Room plates (GE13): only when the browser has fetch and Image. Tests and
+	// old browsers leave app.rooms undefined. look is the pointer as -1..1 from
+	// the centre of the game view; it stays 0,0 until the pointer moves.
+	app.look = { x: 0, y: 0 };
+	if (typeof win.fetch === 'function' && typeof win.Image === 'function') {
+		const loadJson = function (url) {
+			return win.fetch(url).then(function (r) {
+				if (!r.ok) {
+					throw new Error('http ' + r.status);
+				}
+				return r.json();
+			});
+		};
+		const loadImage = function (url) {
+			return new Promise(function (res, rej) {
+				const im = new win.Image();
+				im.onload = function () {
+					res(im);
+				};
+				im.onerror = function () {
+					rej(new Error('image'));
+				};
+				im.src = url;
+			});
+		};
+		app.rooms = createRooms({ loadJson: loadJson, loadImage: loadImage });
+		app.rooms.load();
+	}
+
 	// Pointer events: convert screen coordinates to logical game coordinates
 	// and hand them to the current scene. pointercancel counts as an 'up'.
+	// Every pointer type also moves app.look (the parallax direction).
 	function onPointer(type, e) {
 		e.preventDefault();
 		const p = toLogical(layoutInfo.layout, e.clientX, e.clientY);
 		if (p) {
+			app.look = {
+				x: Math.max(-1, Math.min(1, (p.x - 640) / 640)),
+				y: Math.max(-1, Math.min(1, (p.y - 360) / 360)),
+			};
 			app.pointer(type, p.x, p.y);
 		}
 	}
