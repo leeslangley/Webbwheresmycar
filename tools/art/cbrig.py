@@ -9,6 +9,7 @@ from bpy_extras.object_utils import world_to_camera_view
 from mathutils import Vector
 
 import carlib  # noqa: F401  (shared helpers; the rig builders use them)
+import cbmat  # noqa: F401  (MASK_RGB and class_of for render_mask)
 
 
 def _lin(hexs):
@@ -178,3 +179,115 @@ def project(scene, point):
     """World point -> (px, py) canvas pixel from the top-left, using the scene camera."""
     co = world_to_camera_view(scene, scene.camera, Vector(point))
     return (co.x * CANVAS_W, (1.0 - co.y) * CANVAS_H)
+def _flat_mat(name, rgb8):
+    """Emission -> Material Output, strength 1.0. rgb8 is the 8-bit FILE colour."""
+    mat = bpy.data.materials.new(name)
+    mat.use_nodes = True
+    nt = mat.node_tree
+    for node in list(nt.nodes):
+        nt.nodes.remove(node)
+    out = nt.nodes.new('ShaderNodeOutputMaterial')
+    em = nt.nodes.new('ShaderNodeEmission')
+    em.inputs['Color'].default_value = (*cbmat.hex_lin('#%02x%02x%02x' % rgb8), 1.0)
+    em.inputs['Strength'].default_value = 1.0
+    nt.links.new(em.outputs['Emission'], out.inputs['Surface'])
+    return mat
+
+
+def render_mask(scene, out_png):
+    """Game-mask pass (CB05): every mesh material becomes a flat emission colour
+    of its class (cbmat.MASK_RGB), so out_png holds exact class colours.
+    Every setting and material changed here is restored before returning."""
+    rs = scene.render
+    cy = scene.cycles
+    vs = scene.view_settings
+    bg = None
+    if scene.world is not None and scene.world.use_nodes:
+        bgs = [n for n in scene.world.node_tree.nodes
+               if n.bl_idname == 'ShaderNodeBackground']
+        bg = bgs[0] if bgs else None
+
+    saved = {
+        'engine': rs.engine,
+        'film_transparent': rs.film_transparent,
+        'dither': rs.dither_intensity,
+        'file_format': rs.image_settings.file_format,
+        'color_mode': rs.image_settings.color_mode,
+        'color_depth': rs.image_settings.color_depth,
+        'samples': cy.samples,
+        'use_denoising': cy.use_denoising,
+        'filter_width': cy.filter_width,
+        'view_transform': vs.view_transform,
+        'look': vs.look,
+        'exposure': vs.exposure,
+        'bg_strength': bg.inputs['Strength'].default_value if bg else None,
+    }
+
+    swaps = []        # (object, slot index, original material)
+    added = []        # objects that got a temporary slot
+    flat = {}         # class -> temporary emission material
+    catchers = []     # (object, previous visible_camera)
+    seen_meshes = set()
+    try:
+        for ob in scene.objects:
+            if ob.type != 'MESH':
+                continue
+            if ob.name == 'shadow_catcher':
+                catchers.append((ob, ob.visible_camera))
+                ob.visible_camera = False
+                continue
+            if ob.name.startswith('cut_') or ob.data.name in seen_meshes:
+                continue
+            seen_meshes.add(ob.data.name)
+            if len(ob.data.materials) == 0:
+                ob.data.materials.append(None)
+                added.append(ob)
+            for idx, slot in enumerate(ob.material_slots):
+                orig = slot.material
+                cls = cbmat.class_of(orig.name if orig is not None else '')
+                if cls not in flat:
+                    flat[cls] = _flat_mat('mask_' + cls, cbmat.MASK_RGB[cls])
+                swaps.append((ob, idx, orig))
+                slot.material = flat[cls]
+
+        rs.engine = 'CYCLES'
+        cy.samples = 1
+        cy.use_denoising = False
+        cy.filter_width = 0.01
+        vs.view_transform = 'Standard'
+        vs.look = 'None'
+        vs.exposure = 0.0
+        rs.dither_intensity = 0.0
+        rs.film_transparent = True
+        if bg is not None:
+            bg.inputs['Strength'].default_value = 0.0
+        rs.image_settings.file_format = 'PNG'
+        rs.image_settings.color_mode = 'RGBA'
+        rs.image_settings.color_depth = '8'
+
+        bpy.ops.render.render(write_still=False)
+        bpy.data.images['Render Result'].save_render(out_png, scene=scene)
+    finally:
+        for ob, idx, orig in reversed(swaps):
+            ob.material_slots[idx].material = orig
+        for ob in added:
+            ob.data.materials.pop()
+        for mat in flat.values():
+            bpy.data.materials.remove(mat)
+        for ob, vis in catchers:
+            ob.visible_camera = vis
+        rs.engine = saved['engine']
+        rs.film_transparent = saved['film_transparent']
+        rs.dither_intensity = saved['dither']
+        rs.image_settings.file_format = saved['file_format']
+        rs.image_settings.color_mode = saved['color_mode']
+        rs.image_settings.color_depth = saved['color_depth']
+        cy.samples = saved['samples']
+        cy.use_denoising = saved['use_denoising']
+        cy.filter_width = saved['filter_width']
+        vs.view_transform = saved['view_transform']
+        vs.look = saved['look']
+        vs.exposure = saved['exposure']
+        if bg is not None:
+            bg.inputs['Strength'].default_value = saved['bg_strength']
+    return out_png
