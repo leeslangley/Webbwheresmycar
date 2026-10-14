@@ -8,6 +8,7 @@ import { PALETTE, font, rgba } from '../theme.js';
 import { button, label } from '../kit_draw.js';
 import { makeHits } from '../kit_hits.js';
 import { drawCar } from '../../art/cardraw.js';
+import { lampGlow, vignette } from '../../art/roomfx_light.js';
 
 // Button rectangles in logical 1280x720 coordinates.
 export const LAYOUT = {
@@ -60,10 +61,19 @@ export const titleScene = {
 			ctx.fillRect(s.x, s.y, 2, 2);
 		}
 
-		// Road strip along the bottom with a dashed centre line that
-		// scrolls left as t grows.
-		ctx.fillStyle = PALETTE.darkgrey;
-		ctx.fillRect(0, ROAD_TOP, app.w, ROAD_BOTTOM - ROAD_TOP);
+		// Night shop row plate (card GE23): when the 'title' room plate has
+		// loaded it is drawn over the sky and stars, and it replaces the
+		// darkgrey road fill. Without it the old road strip is kept.
+		const plate = !!(app.rooms && app.rooms.has('title'));
+		if (plate) {
+			app.rooms.draw(ctx, 'title', { look: app.look || { x: 0, y: 0 } });
+		} else {
+			// Road strip along the bottom.
+			ctx.fillStyle = PALETTE.darkgrey;
+			ctx.fillRect(0, ROAD_TOP, app.w, ROAD_BOTTOM - ROAD_TOP);
+		}
+
+		// Dashed centre line that scrolls left as t grows.
 		const dash = 60;
 		const gap = 40;
 		const period = dash + gap;
@@ -79,6 +89,13 @@ export const titleScene = {
 		const arch = CAR_ARCHETYPES[Math.floor(t / 6) % CAR_ARCHETYPES.length];
 		const carX = -300 + ((t % 6) / 6) * 1900;
 		drawCar(ctx, arch, carX, 660, 1, { body: '#9a2a2a', cond: 10 });
+
+		// Warm lamp glows over the plate's lamp posts.
+		if (plate) {
+			lampGlow(ctx, 250, 296, t);
+			lampGlow(ctx, 700, 296, t);
+			lampGlow(ctx, 1180, 296, t);
+		}
 
 		// Logo: the whole block bobs gently.
 		const bob = Math.sin(t * 1.5) * 4;
@@ -123,6 +140,10 @@ export const titleScene = {
 		hits.add('settings', LAYOUT.settings.x, LAYOUT.settings.y, LAYOUT.settings.w, LAYOUT.settings.h, function () {
 			app.push('settings');
 		});
+
+		if (plate) {
+			vignette(ctx, 1280, 720, 0.3);
+		}
 	},
 
 	// 'down' presses a button, 'up' commits the tap when it lands on the
