@@ -1741,5 +1741,70 @@
    "src/art/sprites.js",
    "tests/sprites.test.mjs"
   ]
+ },
+ {
+  "id": "I01",
+  "title": "iOS wrapper: Swift sources",
+  "needs": [
+   "W51"
+  ],
+  "file": "I01-ios-wrapper-swift-sources.md",
+  "files": [
+   "ios/Sources/AppDelegate.swift",
+   "ios/Sources/GameViewController.swift",
+   "ios/Sources/AssetSchemeHandler.swift",
+   "ios/Info.plist"
+  ]
+ },
+ {
+  "id": "I02",
+  "title": "iOS wrapper: Xcode project generator",
+  "needs": [
+   "I01"
+  ],
+  "file": "I02-ios-wrapper-xcode-project-generator.md",
+  "files": [
+   "ios/make_project.py",
+   "ios/Assets.xcassets/Contents.json",
+   "ios/Assets.xcassets/AppIcon.appiconset/Contents.json",
+   "ios/.gitignore"
+  ]
+ },
+ {
+  "id": "I03",
+  "title": "iOS wrapper: copy the game into the app",
+  "needs": [
+   "I01",
+   "W51"
+  ],
+  "file": "I03-ios-wrapper-copy-the-game-into-the-app.md",
+  "files": [
+   "tools/ios/sync_www.sh",
+   "tests/run_sync_www.sh"
+  ]
+ },
+ {
+  "id": "I04",
+  "title": "iOS wrapper: TestFlight build script",
+  "needs": [
+   "I02",
+   "I03"
+  ],
+  "file": "I04-ios-wrapper-testflight-build-script.md",
+  "files": [
+   "tools/ios/testflight.sh",
+   "tools/ios/ExportOptions.plist"
+  ]
+ },
+ {
+  "id": "I05",
+  "title": "iOS wrapper: instructions for Lee",
+  "needs": [
+   "I04"
+  ],
+  "file": "I05-ios-wrapper-instructions-for-lee.md",
+  "files": [
+   "docs/IOS.md"
+  ]
  }
 ]
