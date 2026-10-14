@@ -9,12 +9,16 @@ extends Control
 const STAGE := Vector2(1280, 720)
 
 var stage_safe: Dictionary = {"left": 0.0, "top": 0.0, "right": 0.0, "bottom": 0.0}
+var auto_start := true
+var flow: Flow = null
 
 
 func _ready() -> void:
 	build()
 	layout()
 	if not is_inside_tree():
+		# Headless tests run outside the tree, so the flow is made here too.
+		make_flow()
 		return
 	var vp := get_viewport()
 	if not vp.size_changed.is_connected(layout):
@@ -22,6 +26,18 @@ func _ready() -> void:
 	var g := get_node_or_null("/root/Game")
 	if g != null and g.get("state") != null:
 		bind_game(g)
+	make_flow()
+
+
+# Creates the Flow child once and hands it this Main (which starts the first room when auto_start is set).
+func make_flow() -> void:
+	if flow != null:
+		return
+	flow = Flow.new()
+	flow.name = "Flow"
+	flow.auto_start = auto_start
+	add_child(flow)
+	flow.attach(self)
 
 
 # Creates the layers once. Does nothing when they already exist.
