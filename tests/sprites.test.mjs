@@ -103,6 +103,14 @@ test('draw() keeps whole-pixel scale and never goes below 1', () => {
 	const ctx2 = makeCtx();
 	sprites.draw(ctx2, 'a', 10, 20, 3, {});
 	eq(drawArgs(ctx2).slice(1), [10 - 60, -40, 120, 60], 'scale 3');
+	// rounding is half-up, not truncating: 1.6 -> 2 (this kills Math.floor)
+	const ctx3 = makeCtx();
+	sprites.draw(ctx3, 'a', 100, 200, 1.6, {});
+	eq(drawArgs(ctx3).slice(1), [60, 160, 80, 40], 'scale 1.6 rounds up to 2');
+	// ...and not rounding up past the nearest integer: 2.4 -> 2 (kills Math.ceil)
+	const ctx4 = makeCtx();
+	sprites.draw(ctx4, 'a', 100, 200, 2.4, {});
+	eq(drawArgs(ctx4).slice(1), [60, 160, 80, 40], 'scale 2.4 rounds down to 2');
 });
 
 test('draw() with opts.flip mirrors the sprite about its own centre', () => {
