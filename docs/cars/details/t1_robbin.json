@@ -1,0 +1,43 @@
+{
+ "version": 2,
+ "id": "t1_robbin",
+ "belt_y": 30.0,
+ "window_frame": "chrome",
+ "caricature": {"eyes": 1.15, "mouth": 1.1, "wheels": 1.05, "bumper": 1.1},
+ "wheel": {"style": "steel", "hub": "paint", "whitewall": false, "trim_ring": false},
+ "roof": {"variant": "hard"},
+ "windows": [
+  [[-27.5, 30.0], [-20.0, 38.8], [-17.0, 39.0], [-17.0, 30.0]],
+  [[-16.2, 30.0], [-16.2, 39.0], [8.0, 40.3], [14.0, 30.0]]
+ ],
+ "pillars": [
+  {"poly": [[15.5, 30.4], [9.5, 40.4], [8.0, 40.3], [14.0, 30.0]], "lat_from": 0.82},
+  {"poly": [[-17.0, 30.0], [-17.0, 39.0], [-16.2, 39.0], [-16.2, 30.0]], "lat_from": 0.82}
+ ],
+ "parts": [
+  {"kind": "headlamp", "x": 46, "y": 15, "lat": 9, "r": 2.3, "shape": "round", "bezel": "chrome", "side": "both", "note": "dossier front.headlamps: 2 round, x 46, y 15, r 2.3, offset 9 from centre"},
+  {"kind": "grille", "x": 48, "y": 9, "w": 13, "h": 4, "style": "horizontal_bars", "bars": 3, "surround": "chrome", "end": "front", "note": "dossier: small rounded grille 13 wide by 4 high, chrome surround, 3 bars"},
+  {"kind": "bumper", "end": "front", "x": 48.5, "y": 5, "h": 2, "w": 0, "style": "blade", "note": "dossier: thin chrome strip across x 47..50 at y 5"},
+  {"kind": "plate", "end": "front", "x": 49, "y": 6, "w": 12, "h": 3, "note": "dossier: small round plate at x 49, y 6; round shape is not in the schema, size is the schema default"},
+  {"kind": "badge", "x": 47.5, "y": 17, "shape": "bar", "end": "front", "size": 2, "colour": "chrome", "note": "placement invented: the dossier names no badge"},
+  {"kind": "taillamp", "x": -49, "y": 14, "lat": 8, "r": 1.8, "shape": "round", "w": 3.6, "h": 3.6, "side": "both", "note": "dossier: two small round lamps r 1.8 at x -49, y 14, 8 either side; w and h are the diameter"},
+  {"kind": "bumper", "end": "rear", "x": -48.5, "y": 5, "h": 2, "w": 0, "style": "blade", "note": "dossier: thin chrome strip across x -50..-47 at y 5"},
+  {"kind": "plate", "end": "rear", "x": -49, "y": 6, "w": 12, "h": 3, "note": "rear plate is not in the dossier: placed to mirror the front plate"},
+  {"kind": "exhaust", "style": "round", "x": -50, "y": 6, "lat": 6, "r": 1.0, "side": "near", "note": "dossier says one exhaust with no position: schema defaults kept"},
+  {"kind": "handle", "x": -38, "y": 29.5, "style": "boot", "side": "centre", "note": "dossier chrome boot handle. Its y 29.5 sits just above side_profile at x -38 (about 28.5); kept as given"},
+  {"kind": "lamp", "x": -49, "y": 8, "role": "reverse", "shape": "round", "r": 1.2, "side": "centre", "note": "dossier: small round reversing lamp at x -49, y 8; r is the schema default"},
+  {"kind": "badge", "x": -46.5, "y": 19, "shape": "bar", "end": "rear", "size": 2, "colour": "chrome", "note": "placement invented: the dossier names no badge"},
+  {"kind": "fuelcap", "x": -38, "y": 18, "r": 1.0, "side": "near", "note": "fuel filler is not in the dossier: placed on the near rear quarter"},
+  {"kind": "strip", "role": "sill", "x": -45, "x2": 45, "y": 5.5, "h": 0.5, "colour": "chrome", "side": "both", "note": "dossier: chrome sill seam line"},
+  {"kind": "strip", "role": "window", "x": -27.5, "x2": 15.5, "y": 30.0, "h": 0.5, "colour": "chrome", "side": "both", "note": "dossier: chrome surround of the side glass band"},
+  {"kind": "crease", "x": -20, "x2": 18, "y": 30.0, "depth": 0.15, "side": "both", "note": "dossier: body waist crease"},
+  {"kind": "shutline", "role": "door", "path": [[14.0, 6.0], [14.0, 30.0], [8.0, 40.3]], "side": "both", "note": "door front edge running up the A pillar; door size is not in the dossier, taken from the glass band"},
+  {"kind": "shutline", "role": "door", "path": [[-16.6, 6.0], [-16.6, 39.0]], "side": "both", "note": "door rear edge on the B pillar"},
+  {"kind": "shutline", "role": "door", "path": [[-16.6, 7.0], [14.0, 7.0]], "side": "both", "note": "door bottom edge"},
+  {"kind": "shutline", "role": "bonnet", "path": [[17.0, 29.2], [22.0, 28.8], [28.0, 28.2], [34.0, 27.0], [39.0, 24.8]], "side": "both", "note": "nose cone seam over the single front wheel, inset from side_profile"},
+  {"kind": "shutline", "role": "boot", "path": [[-45.5, 7.0], [-45.5, 22.5]], "side": "both", "note": "hatch back vertical seam"},
+  {"kind": "shutline", "role": "boot", "path": [[-27.5, 29.8], [-34.0, 29.0], [-40.0, 27.6], [-45.5, 22.5]], "side": "both", "note": "rear deck to hatch seam"},
+  {"kind": "handle", "x": 10.5, "y": 20, "style": "flap", "len": 2.5, "side": "both", "note": "door handle, position invented (dossier gives none). No mirror part: the dossier says nothing on mirrors and the 1974 fit is unconfirmed"},
+  {"kind": "wiper", "x": 13.5, "y": 31.5, "len": 10, "n": 1, "note": "windscreen wiper is not in the dossier: one arm assumed, placed at the screen base"}
+ ]
+}
