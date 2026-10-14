@@ -126,6 +126,19 @@ test('woodPanel draws 28 fillRects: frame, 3 seams, 12 streaks', () => {
 	eq(streaks.length, 12, 'twelve streaks');
 });
 
+test('woodPanel at 40px content width keeps seams and draws no streaks', () => {
+	const ctx = makeCtx();
+	// w = 54 gives a content width of 54 - 14 = 40; h = 100 gives 86, so 3 seams.
+	const c = woodPanel(ctx, 10, 20, 54, 100);
+	eq(c.w, 40, 'content width 40');
+	const r = rectsWithStyle(ctx);
+	const seams = r.filter(function (e) { return e.style === COLOR.woodDark; });
+	eq(seams.length, 3, 'three plank lines at 40px');
+	eq(seams[0].r[2], 40, 'seam spans content width');
+	const streaks = r.filter(function (e) { return e.style === COLOR.woodGrain; });
+	eq(streaks.length, 0, 'no streaks at 40px');
+});
+
 test('enamelSign draws 4 arcs, one fillText, one closePath', () => {
 	const ctx = makeCtx();
 	enamelSign(ctx, 0, 0, 200, 80, { text: 'GARAGE' });

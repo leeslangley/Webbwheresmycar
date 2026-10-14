@@ -89,19 +89,18 @@ export function woodPanel(ctx, x, y, w, h, opts) {
 		shadow: src.shadow,
 	};
 	const c = chunkyPanel(ctx, x, y, w, h, o);
-	if (c.w <= 40) {
-		return c;
-	}
 	const planks = Math.ceil(c.h / 28);
 	ctx.fillStyle = COLOR.woodDark;
 	for (let k = 1; k <= Math.floor((c.h - 1) / 28); k++) {
 		ctx.fillRect(c.x, c.y + 28 * k, c.w, 2);
 	}
-	ctx.fillStyle = COLOR.woodGrain;
-	for (let p = 0; p < planks; p++) {
-		for (let j = 0; j < 3; j++) {
-			const sx = lcg(p * 7 + j + 1);
-			ctx.fillRect(c.x + (sx % (c.w - 40)), c.y + 28 * p + 6 + j * 8, 24 + (sx % 32), 1);
+	if (c.w > 40) {
+		ctx.fillStyle = COLOR.woodGrain;
+		for (let p = 0; p < planks; p++) {
+			for (let j = 0; j < 3; j++) {
+				const sx = lcg(p * 7 + j + 1);
+				ctx.fillRect(c.x + (sx % (c.w - 40)), c.y + 28 * p + 6 + j * 8, 24 + (sx % 32), 1);
+			}
 		}
 	}
 	return c;
