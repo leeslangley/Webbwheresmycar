@@ -5,7 +5,6 @@ extends RefCounted
 # the job at once. A refusal changes nothing and costs no day; an acceptance pays out, marks the car up or
 # down, and costs exactly one day (advance_day as the very last step). Pure: randomness only through
 # state.rng (CoreRng), no node access, no dates.
-# The disaster branch is a stub here; it is finished by card GDS16.
 
 # Outcome odds for the customer event roll (DESIGN.md section 4.7).
 const DISASTER_P := 0.007
@@ -122,7 +121,7 @@ static func accept_job(state: Dictionary, request_id: Variant, car_id: Variant) 
 		state["sit"].append("breakdown")
 		text = str(model["name"]) + " broke down: " + str(fault["label"]) + ". " + customer + " is not impressed."
 	else:
-		# Disaster: stub until GDS16 ports the branch (no fee, four lots of wear, one of three ruins).
+		# Disaster: no fee, four lots of wear, and one of three ruins (see _apply_disaster).
 		var d: Dictionary = _apply_disaster(state, req, car, model, job, fee, wear)
 		paid = int(d["paid"])
 		fault_label = d["faultLabel"]
@@ -138,7 +137,37 @@ static func accept_job(state: Dictionary, request_id: Variant, car_id: Variant) 
 	return {"ok": true, "msg": text, "outcome": {"type": type, "paid": paid, "wear": wear, "faultLabel": fault_label}}
 
 
-# Disaster branch (DESIGN.md 4.7). STUB: finished by card GDS16. Returns {paid, faultLabel, text}.
+# Disaster branch (DESIGN.md 4.7, JS acceptJob disaster else-branch). Four lots of wear, reputation -6,
+# one failed job, then one of three flavours: 1 = truck (a major fault), 2 = compensation (cash back out),
+# 3 = police (impounded for three days). Returns {paid, faultLabel, text}.
 static func _apply_disaster(state: Dictionary, req: Dictionary, car: Dictionary, model: Dictionary, job: Dictionary, fee: int, wear: float) -> Dictionary:
-	push_error("disaster branch not ported yet (card GDS16)")
-	return {"paid": 0, "faultLabel": null, "text": ""}
+	SimCarStats.change_condition(car, -wear * 4.0)
+	_bump_reputation(state, -6)
+	state["stats"]["jobsFailed"] = int(state["stats"]["jobsFailed"]) + 1
+	state["sit"].append("breakdown")
+	var customer: String = str(req["customer"])
+	var model_name: String = str(model["name"])
+	var flavour: int = CoreRng.rand_int(state, 1, 3)
+	var paid: int = 0
+	var fault_label: Variant = null
+	var text: String = ""
+	if flavour == 1:
+		var major: Dictionary = CoreRng.pick(state, SimData.faults_of_severity("major"))
+		var major_fault := {
+			"faultId": major["id"],
+			"label": major["label"],
+			"cost": int(CoreRng.round_to(float(major["baseCost"]) * SimData.tier_mult(model["tier"]), 10.0)),
+			"severity": "major",
+		}
+		SimFaultSim.apply_fault(car, major_fault)
+		fault_label = major_fault["label"]
+		text = SimData.fill_text(str(CoreRng.pick(state, job["disaster"])), {"customer": customer, "car": model_name}) + " The " + model_name + " went home on the back of a truck: " + str(major_fault["label"]) + "."
+	elif flavour == 2:
+		var compensation: int = SimUtil.jround(float(fee) * 0.5)
+		state["cash"] = int(state["cash"]) - compensation
+		paid = -compensation
+		text = SimData.fill_text(str(CoreRng.pick(state, job["disaster"])), {"customer": customer, "car": model_name}) + " " + customer + " demanded " + CoreFormat.money(float(compensation)) + " in compensation before the kettle boiled."
+	else:
+		car["impoundedUntil"] = int(state["day"]) + 3
+		text = SimData.fill_text(str(CoreRng.pick(state, job["disaster"])), {"customer": customer, "car": model_name}) + " The police impounded the " + model_name + " for three days."
+	return {"paid": paid, "faultLabel": fault_label, "text": text}

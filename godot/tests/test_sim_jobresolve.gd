@@ -23,10 +23,19 @@ func test_accept_job() -> void:
 	for c: Dictionary in cs:
 		var a: Array = c["args"]
 		var st: Dictionary = GoldenUtil.copy(c["state"])
-		var skip: bool = c["result"].has("outcome") and c["result"]["outcome"]["type"] == "disaster"
-		if skip:
-			continue
 		_check(c, SimJobResolve.accept_job(st, a[0], a[1]), st)
+
+
+func test_disaster_flavours() -> void:
+	var names: Array = []
+	for c: Dictionary in _cases("accept_job"):
+		names.append(str(c["name"]))
+	for prefix in ["disaster_truck", "disaster_comp", "disaster_impound"]:
+		var found := false
+		for n in names:
+			if str(n).begins_with(prefix):
+				found = true
+		ok(found, "golden has a %s case" % prefix)
 
 
 func test_golden_has_all_kinds() -> void:
