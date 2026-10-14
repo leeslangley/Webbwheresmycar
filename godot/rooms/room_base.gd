@@ -17,6 +17,7 @@ signal toast(text: String)
 var game = null
 var hotspots: Dictionary = {}
 var strip_color := Color("14102A")
+var parallax: RoomParallax = null
 
 
 func get_game() -> Object:
@@ -75,6 +76,10 @@ func build_layers() -> void:
 	hot_node.size = STAGE_SIZE
 	hot_node.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(hot_node)
+	parallax = RoomParallax.new()
+	parallax.name = "Parallax"
+	add_child(parallax)
+	parallax.attach(self)
 
 
 func layer(layer_name: String) -> Node2D:

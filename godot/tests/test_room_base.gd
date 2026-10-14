@@ -19,7 +19,7 @@ func test_build_layers() -> void:
 	var names: Array = []
 	for c in r.get_children():
 		names.append(c.name)
-	eq(names, ["Background", "Props", "Characters", "Lights", "Front", "Ui", "Hotspots"], "child order of the root")
+	eq(names, ["Background", "Props", "Characters", "Lights", "Front", "Ui", "Hotspots", "Parallax"], "child order of the root")
 	for layer_name in LAYERS:
 		var l := r.get_node(layer_name) as Node2D
 		ok(l != null, layer_name + " is a Node2D")
@@ -29,7 +29,7 @@ func test_build_layers() -> void:
 		ok(l.get_node_or_null("Placeholder") is Node2D, layer_name + " has a Placeholder")
 	eq(r.size, Vector2(1280, 720), "root size is the stage")
 	r.build_layers()
-	eq(r.get_child_count(), 7, "a second build_layers adds no children")
+	eq(r.get_child_count(), 8, "a second build_layers adds no children")
 	r.free()
 
 
