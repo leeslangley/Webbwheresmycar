@@ -63,14 +63,77 @@ func attach(main_node: Main) -> void:
 		transitions = script.new() as Node
 		transitions.name = "Transitions"
 		main.add_child(transitions)
+	bind_game(_autoload_game())
 	if auto_start:
 		go(&"loading", {}, "")
+
+
+# The Game autoload, looked up from the root with a relative name (absolute paths fail outside an active tree).
+func _autoload_game() -> Node:
+	var tree := Engine.get_main_loop() as SceneTree
+	if tree == null:
+		return null
+	return tree.root.get_node_or_null("Game")
+
+
+func _exit_tree() -> void:
+	_unbind_game()
 
 
 func get_game() -> Object:
 	if game != null:
 		return game
 	return get_node_or_null("/root/Game")
+
+
+# Points the flow at a Game (the autoload, or a test instance). Disconnects the old one first.
+func bind_game(g) -> void:
+	_unbind_game()
+	game = g
+	if game == null:
+		return
+	if not game.is_connected("day_advanced", _on_day_advanced):
+		game.connect("day_advanced", _on_day_advanced)
+	if not game.is_connected("game_over", _on_game_over):
+		game.connect("game_over", _on_game_over)
+
+
+func _unbind_game() -> void:
+	if game == null or not is_instance_valid(game):
+		return
+	if game.is_connected("day_advanced", _on_day_advanced):
+		game.disconnect("day_advanced", _on_day_advanced)
+	if game.is_connected("game_over", _on_game_over):
+		game.disconnect("game_over", _on_game_over)
+
+
+# NEW GAME: a fresh game through the Game (it saves and emits changed), then the office.
+func new_game(seed_value: int = -1) -> void:
+	get_game().new_game(seed_value)
+	go(&"office", {}, "fade")
+
+
+# CONTINUE: the Game toasts "No saved game" itself when there is nothing to load.
+func continue_game() -> bool:
+	if get_game().continue_game():
+		go(&"office", {}, "fade")
+		return true
+	return false
+
+
+func to_title() -> void:
+	go(&"title", {}, "fade")
+
+
+# Every day that passes: the room in front shows the news, when it can.
+func _on_day_advanced() -> void:
+	if current != null and current.has_method("show_news"):
+		current.show_news()
+
+
+# Empty for now; GDR31 fills it in (the game over redirect).
+func _on_game_over() -> void:
+	pass
 
 
 func go(id: StringName, params: Dictionary = {}, kind := "default") -> bool:
@@ -158,6 +221,16 @@ func _wire(node: Node, is_overlay: bool) -> void:
 		node.connect("closed", func() -> void: close_overlay())
 	if node.has_signal("finished"):
 		node.connect("finished", func() -> void: go(&"title"))
+	if node.has_signal("new_game"):
+		node.connect("new_game", func() -> void: new_game())
+	if node.has_signal("continue_game"):
+		node.connect("continue_game", func() -> void: continue_game())
+	if node.has_signal("open_settings"):
+		node.connect("open_settings", func() -> void: open_overlay(&"settings", {}))
+	if node.has_signal("play_again"):
+		node.connect("play_again", func() -> void: new_game())
+	if node.has_signal("to_title"):
+		node.connect("to_title", func() -> void: to_title())
 
 
 func _on_request_scene(scene_id: StringName, params: Dictionary) -> void:

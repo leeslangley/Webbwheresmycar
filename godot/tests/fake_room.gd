@@ -6,6 +6,11 @@ extends RoomBase
 signal finished
 signal closed
 signal news_closed
+signal new_game
+signal continue_game
+signal open_settings
+signal play_again
+signal to_title
 
 var entered_with: Dictionary = {}
 var left := false
