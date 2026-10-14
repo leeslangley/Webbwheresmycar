@@ -348,3 +348,95 @@ def add_outlines(out, cls, idx, opaque, color, color2=None):
     idx2 = pidx.copy()
     idx2[paint_inner | paint2_inner] = 0
     return rgb, alpha, cls2, idx2
+# ------------------------------------------- shadow, lamps, game mask (CB17)
+
+PAINT_CLASS = CLASS_NAMES.index('paint')
+CHROME_CLASS = CLASS_NAMES.index('chrome')
+GLASS_CLASS = CLASS_NAMES.index('glass')
+LAMP_CLASS = CLASS_NAMES.index('lamp')
+TAIL_CLASS = CLASS_NAMES.index('tail')
+PAINT2_CLASS = CLASS_NAMES.index('paint2')
+
+
+def shadow_levels(alpha):
+    """Area-averaged shadow alpha (float 0..1) -> uint8 levels 0, 40, 90 or 150.
+
+    Thresholds are strict: > 0.75 -> 150, > 0.35 -> 90, > 0.08 -> 40, else 0.
+    The sprite colour is OUTLINE; the writer lives in CB20.
+    """
+    a = np.asarray(alpha, dtype=np.float64)
+    out = np.zeros(a.shape, dtype=np.uint8)
+    out[a > 0.08] = 40
+    out[a > 0.35] = 90
+    out[a > 0.75] = 150
+    return out
+
+
+def find_lamps(cls, opaque, min_px=2):
+    """Headlamp (class lamp -> 'head') and tail lamp (class tail -> 'tail') blobs.
+
+    4-neighbour connected components of opaque pixels of one class. Components
+    smaller than min_px are skipped. x, y = centroid (pixel centres at +0.5),
+    rounded to 0.1; r = max(1.0, sqrt(area / pi)) rounded to 0.5. Sorted by
+    (kind, x). Returns a list of {'x', 'y', 'r', 'kind'} dicts.
+    """
+    cls = np.asarray(cls, dtype=np.int64)
+    opaque = np.asarray(opaque, dtype=bool)
+    if cls.ndim != 2 or cls.shape != opaque.shape:
+        raise ValueError('pixramp: find_lamps wants matching (h, w) arrays')
+    h, w = cls.shape
+    kind_of = {LAMP_CLASS: 'head', TAIL_CLASS: 'tail'}
+    seen = np.zeros((h, w), dtype=bool)
+    lamps = []
+    for y0 in range(h):
+        for x0 in range(w):
+            if seen[y0, x0] or not opaque[y0, x0]:
+                continue
+            want = int(cls[y0, x0])
+            kind = kind_of.get(want)
+            if kind is None:
+                continue
+            seen[y0, x0] = True
+            stack = [(y0, x0)]
+            pixels = []
+            while stack:
+                y, x = stack.pop()
+                pixels.append((y, x))
+                for ny, nx in ((y - 1, x), (y + 1, x), (y, x - 1), (y, x + 1)):
+                    if (0 <= ny < h and 0 <= nx < w and not seen[ny, nx]
+                            and opaque[ny, nx] and int(cls[ny, nx]) == want):
+                        seen[ny, nx] = True
+                        stack.append((ny, nx))
+            if len(pixels) < min_px:
+                continue
+            area = float(len(pixels))
+            cx = sum(x + 0.5 for _, x in pixels) / area
+            cy = sum(y + 0.5 for y, _ in pixels) / area
+            radius = max(1.0, float(np.sqrt(area / np.pi)))
+            radius = float(np.floor(radius * 2.0 + 0.5)) / 2.0
+            lamps.append({'x': round(cx, 1), 'y': round(cy, 1),
+                          'r': radius, 'kind': kind})
+    lamps.sort(key=lambda d: (d['kind'], d['x']))
+    return lamps
+
+
+def game_mask(cls2, idx2):
+    """Game mask (h, w, 4) uint8 from the padded class map and ramp index map.
+
+    R = 1 paint, 2 paint2, 3 chrome, 4 glass (A 255); G = ramp step idx2 for
+    paint and paint2, else 0; B 0. Everything else is (0, 0, 0, 0).
+    """
+    cls2 = np.asarray(cls2, dtype=np.int64)
+    idx2 = np.asarray(idx2, dtype=np.int64)
+    if cls2.ndim != 2 or cls2.shape != idx2.shape:
+        raise ValueError('pixramp: game_mask wants matching (h, w) arrays')
+    out = np.zeros((cls2.shape[0], cls2.shape[1], 4), dtype=np.uint8)
+    red = {PAINT_CLASS: 1, PAINT2_CLASS: 2, CHROME_CLASS: 3, GLASS_CLASS: 4}
+    for cls_index, value in red.items():
+        m = cls2 == cls_index
+        out[m, 0] = value
+        out[m, 3] = 255
+    for cls_index in (PAINT_CLASS, PAINT2_CLASS):
+        m = cls2 == cls_index
+        out[m, 1] = idx2[m].astype(np.uint8)
+    return out
