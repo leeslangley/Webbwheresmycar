@@ -21,6 +21,7 @@ var _tear: float = 1.0
 func _init() -> void:
 	size = SHEET_SIZE
 	mouse_filter = MOUSE_FILTER_IGNORE
+	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 
 
 # Month (1..12), day of month (1..31) and weekday (0 = MON) for a day of the year (clamped to 1..365).
@@ -69,24 +70,29 @@ func number_for(d: int) -> String:
 	return str(date_parts(d)["dom"])
 
 
+# The current sheet, and while tearing the old one flipping up and away (rotating, fading).
 func _draw() -> void:
-	_sheet(Vector2.ZERO, day, 1.0)
+	_sheet(day, 1.0)
 	if _tear < 1.0:
-		_sheet(Vector2(70.0 * _tear, 50.0 * _tear), _prev_day, 1.0 - _tear)
+		var e := UiTokens.ease_named("outQuad", _tear)
+		var pivot := Vector2(SHEET_SIZE.x * 0.5, 4.0)
+		draw_set_transform(pivot + Vector2(90.0 * e, -30.0 * e + 120.0 * e * e), -0.9 * e, Vector2.ONE * (1.0 - 0.2 * e))
+		_sheet(_prev_day, 1.0 - _tear, -pivot)
+		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 
 
-func _sheet(offset: Vector2, d: int, alpha: float) -> void:
-	var paper: Color = _a(UiTheme.color("paper"), alpha)
+func _sheet(d: int, alpha: float, offset: Vector2 = Vector2.ZERO) -> void:
 	var ink: Color = _a(UiTheme.color("ink"), alpha)
-	UiTheme.draw_box(self, Rect2(offset, SHEET_SIZE), paper, ink, 4, false)
-	for k in range(13):
-		draw_rect(Rect2(offset.x + k * 10.0, offset.y + (k % 2) * 4.0, 10.0, 4.0), ink)
-	var band := Rect2(offset + Vector2(4, 12), Vector2(122, 28))
-	draw_rect(band, _a(UiTheme.color("enamelRed"), alpha))
-	var band_text_y: float = band.position.y + (band.size.y - float(UiTheme.size_for("h3"))) * 0.5
-	UiTheme.draw_text(self, label_for(d), Vector2(band.position.x, band_text_y), "h3", _a(UiTheme.color("white"), alpha), band.size.x, HORIZONTAL_ALIGNMENT_CENTER)
-	UiTheme.draw_text(self, number_for(d), offset + Vector2(0, 48), "number", ink, SHEET_SIZE.x, HORIZONTAL_ALIGNMENT_CENTER)
-	UiTheme.draw_text(self, "DAY %d" % d, offset + Vector2(0, 92), "caption", _a(UiTheme.color("midgrey"), alpha), SHEET_SIZE.x, HORIZONTAL_ALIGNMENT_CENTER)
+	if UiSkin.tex("calendar") == null:
+		UiTheme.draw_box(self, Rect2(offset, SHEET_SIZE), _a(UiTheme.color("paper"), alpha), ink, 4, false)
+	else:
+		UiSkin.blit(self, "calendar", offset - Vector2(8, 8), Color(1, 1, 1, alpha))
+	var band := Rect2(offset + Vector2(6, 15), Vector2(118, 26))
+	var band_text_y: float = band.position.y + (band.size.y - float(UiTheme.size_for("h3"))) * 0.5 + 1.0
+	UiSkin.role_text(self, label_for(d), Vector2(band.position.x, band_text_y), "h3", _a(UiTheme.color("white"), alpha), _a(Color("5E0E12"), alpha), 4, band.size.x, HORIZONTAL_ALIGNMENT_CENTER)
+	var big := UiSkin.display_font(900)
+	UiSkin.text(self, big, number_for(d), offset + Vector2(0, 38), 50, ink, ink, 0, SHEET_SIZE.x, HORIZONTAL_ALIGNMENT_CENTER)
+	UiTheme.draw_text(self, "DAY %d" % d, offset + Vector2(0, 86), "caption", _a(Color("8A7A5C"), alpha), SHEET_SIZE.x, HORIZONTAL_ALIGNMENT_CENTER)
 
 
 static func _a(c: Color, alpha: float) -> Color:

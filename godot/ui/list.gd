@@ -187,4 +187,5 @@ func _draw() -> void:
 	if max_offset() > 0.0:
 		var thumb_h := maxf(24.0, size.y * size.y / (count * row_h))
 		var thumb_y := offset / max_offset() * (size.y - thumb_h)
-		draw_rect(Rect2(size.x - 6.0, thumb_y, 6.0, thumb_h), UiTheme.color("midgrey"))
+		UiSkin.rrect(self, Rect2(size.x - 8.0, 0.0, 8.0, size.y), Color(0, 0, 0, 0.18), 4)
+		UiSkin.rrect(self, Rect2(size.x - 8.0, thumb_y, 8.0, thumb_h), Color("C9A24A"), 4, UiTheme.INK, 2)

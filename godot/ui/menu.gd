@@ -23,6 +23,7 @@ var _tap := UiTap.new()
 func _init() -> void:
 	visible = false
 	mouse_filter = Control.MOUSE_FILTER_STOP
+	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 
 
 func _process(dt: float) -> void:
@@ -141,16 +142,24 @@ func handle_event(ev: InputEvent) -> void:
 				cancel()
 
 
+# A paper card with a soft shadow; the selected row glows lamp-yellow and a glossy red arrow bobs beside it.
 func _draw() -> void:
-	UiTheme.draw_box(self, Rect2(Vector2.ZERO, size), UiTheme.color("paper"), UiTheme.color("ink"), 4, true)
+	var rect := Rect2(Vector2.ZERO, size)
+	if UiSkin.tex("panel_paper9") == null:
+		UiTheme.draw_box(self, rect, UiTheme.color("paper"), UiTheme.color("ink"), 4, true)
+	else:
+		UiSkin.nine(self, "shadow9", Rect2(rect.position + Vector2(-12, -6), rect.size + Vector2(24, 28)))
+		UiSkin.nine(self, "panel_paper9", rect)
 	for i in range(items.size()):
 		var row := row_rect(i)
-		if i == selected:
-			var lamp := UiTheme.color("lamp")
-			lamp.a = 0.35
-			draw_rect(row, lamp)
-		var text_col := UiTheme.color("lightgrey") if disabled.has(i) else UiTheme.color("ink")
-		UiTheme.draw_text(self, items[i], row.position + Vector2(36, 18), "body", text_col)
-	if items.size() > 0 and blink_on() and not disabled.has(selected):
+		if i == selected and not disabled.has(i):
+			UiSkin.nine(self, "row_hot9", row.grow_individual(-2, 0, -2, 0))
+		var text_col := Color("A39C8C") if disabled.has(i) else UiTheme.color("ink")
+		UiTheme.draw_text(self, items[i], row.position + Vector2(40, 17), "body", text_col)
+		if i < items.size() - 1:
+			var ly := row.end.y
+			draw_line(Vector2(row.position.x + 14, ly), Vector2(row.end.x - 14, ly), Color(0.55, 0.42, 0.25, 0.25), 2.0)
+	if items.size() > 0 and not disabled.has(selected):
 		var cy := row_rect(selected).get_center().y
-		draw_colored_polygon(PackedVector2Array([Vector2(12, cy - 10), Vector2(12, cy + 10), Vector2(30, cy)]), UiTheme.color("ink"))
+		var bob := 3.0 * sin(_t * 9.0)
+		UiSkin.blit(self, "cursor", Vector2(6.0 + bob, cy - 16.0))

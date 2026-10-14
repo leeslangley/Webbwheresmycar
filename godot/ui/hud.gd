@@ -17,6 +17,7 @@ var _selected_id: String = ""
 func _init() -> void:
 	size = Vector2(1280, 130)
 	mouse_filter = MOUSE_FILTER_PASS
+	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 
 
 func _ready() -> void:
@@ -128,10 +129,36 @@ func _pick_car(cars: Array) -> Dictionary:
 	return {}
 
 
+# The walnut-and-brass control panel (baked, with a soft shadow cast 16 px up onto the room) and the
+# REP / BUZZ LED gauges in their brass-bezelled well.
 func _draw() -> void:
-	draw_rect(Rect2(Vector2.ZERO, size), UiTheme.color("hudBg"))
-	draw_rect(Rect2(Vector2.ZERO, Vector2(size.x, 4.0)), UiTheme.color("hudEdge"))
-	UiTheme.draw_text(self, "REP %d" % int(round(_rep)), Vector2(1122, 12), "h3", UiTheme.color("white"))
-	UiTheme.draw_bar(self, Rect2(1122, 36, 134, 14), _rep / 100.0, UiTheme.color("good"))
-	UiTheme.draw_text(self, "BUZZ %d" % int(round(_buzz)), Vector2(1122, 62), "h3", UiTheme.color("white"))
-	UiTheme.draw_bar(self, Rect2(1122, 86, 134, 14), _buzz / 100.0, UiTheme.color("warn"))
+	if UiSkin.tex("hud_panel") != null:
+		UiSkin.blit(self, "hud_panel", Vector2(0, -16))
+	else:
+		draw_rect(Rect2(Vector2.ZERO, size), UiTheme.color("hudBg"))
+	_gauge("REP", _rep, 20.0, UiTheme.color("phosphor"), Color("1E5A2C"))
+	_gauge("BUZZ", _buzz, 70.0, UiTheme.color("amber"), Color("5A3A10"))
+
+
+const GAUGE_X := 1124.0
+const GAUGE_W := 134.0
+const SEGMENTS := 10
+
+
+static func lit_segments(v: float) -> int:
+	return clampi(int(round(v / 100.0 * SEGMENTS)), 0, SEGMENTS)
+
+
+func _gauge(label: String, v: float, y: float, on: Color, off: Color) -> void:
+	UiSkin.role_text(self, label, Vector2(GAUGE_X, y), "h3", UiTheme.color("cream"), UiTheme.INK, 4)
+	UiSkin.role_text(self, str(int(round(v))), Vector2(GAUGE_X, y), "h3", on, UiTheme.INK, 4, GAUGE_W, HORIZONTAL_ALIGNMENT_RIGHT)
+	var n := lit_segments(v)
+	var seg_w := (GAUGE_W - float(SEGMENTS - 1) * 3.0) / float(SEGMENTS)
+	for i in range(SEGMENTS):
+		var r := Rect2(GAUGE_X + float(i) * (seg_w + 3.0), y + 24.0, seg_w, 14.0)
+		if i < n:
+			UiSkin.rrect(self, r.grow(2.0), UiSkin.fade(on, 0.25), 5)
+			UiSkin.rrect(self, r, on.lerp(Color.WHITE, 0.15), 3, UiTheme.INK, 1)
+			draw_rect(Rect2(r.position + Vector2(2, 2), Vector2(r.size.x - 4, 3)), Color(1, 1, 1, 0.55))
+		else:
+			UiSkin.rrect(self, r, off, 3, UiTheme.INK, 1)

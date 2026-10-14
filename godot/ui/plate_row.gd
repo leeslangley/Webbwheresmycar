@@ -12,11 +12,21 @@ const CODES := {"fatcat": "FC", "stable": "SB", "household": "HN", "hammer": "HT
 
 var plates: Dictionary = {}
 var _tap := UiTap.new()
+var _t: float = 0.0
 
 
 func _init() -> void:
 	size = Vector2(280, 64)
 	mouse_filter = MOUSE_FILTER_STOP
+	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+
+
+func _process(dt: float) -> void:
+	_t += dt
+	for k in KEYS:
+		if is_won(k):
+			queue_redraw()
+			return
 
 
 func _gui_input(event: InputEvent) -> void:
@@ -56,16 +66,30 @@ func handle_event(ev: InputEvent) -> void:
 		plate_tapped.emit(KEYS[slot])
 
 
+# Each slot shows its baked disc: a gold record with the plate's embossed icon, or a dull pewter one.
+# Won plates catch a travelling glint now and then.
 func _draw() -> void:
 	for i in KEYS.size():
 		var key: String = KEYS[i]
-		var code: String = CODES[key]
-		var plate := Rect2(slot_rect(i).position + Vector2(4.0, 12.0), Vector2(56.0, 40.0))
 		var won := is_won(key)
-		if won:
-			UiTheme.draw_box(self, plate, UiTheme.color("gold"), UiTheme.color("ink"), 4, true)
-			draw_rect(Rect2(plate.position + Vector2(4.0, 4.0), Vector2(plate.size.x - 8.0, 2.0)), UiTheme.color("brassLight"))
+		var at := slot_rect(i).position
+		var tex_name := "plate_%s_%s" % [key, "gold" if won else "dull"]
+		if UiSkin.tex(tex_name) != null:
+			UiSkin.blit(self, tex_name, at)
 		else:
-			UiTheme.draw_box(self, plate, UiTheme.color("midgrey"), UiTheme.color("ink"), 4, true)
-		var col: Color = UiTheme.color("ink") if won else UiTheme.color("darkgrey")
-		UiTheme.draw_text(self, code, plate.position + Vector2(0.0, 12.0), "h3", col, plate.size.x, HORIZONTAL_ALIGNMENT_CENTER)
+			var plate := Rect2(at + Vector2(4.0, 12.0), Vector2(56.0, 40.0))
+			UiTheme.draw_box(self, plate, UiTheme.color("gold") if won else UiTheme.color("midgrey"))
+			UiTheme.draw_text(self, CODES[key], plate.position + Vector2(0.0, 12.0), "h3", UiTheme.color("ink"), plate.size.x, HORIZONTAL_ALIGNMENT_CENTER)
+		if won:
+			_glint(at + Vector2(32, 32), float(i))
+
+
+func _glint(c: Vector2, phase: float) -> void:
+	var u := fposmod(_t * 0.5 - phase * 0.37, 2.2)
+	if u > 1.0:
+		return
+	var a := sin(u * PI)
+	var p := c + Vector2(-14, -16) + Vector2(20, 8) * u
+	var r := 4.0 + 6.0 * a
+	var star := PackedVector2Array([p + Vector2(0, -r), p + Vector2(r * 0.22, -r * 0.22), p + Vector2(r, 0), p + Vector2(r * 0.22, r * 0.22), p + Vector2(0, r), p + Vector2(-r * 0.22, r * 0.22), p + Vector2(-r, 0), p + Vector2(-r * 0.22, -r * 0.22)])
+	draw_colored_polygon(star, Color(1, 1, 1, a))

@@ -17,6 +17,7 @@ var _anchor: Rect2 = Rect2()
 
 func _init() -> void:
 	mouse_filter = MOUSE_FILTER_IGNORE
+	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	visible = false
 
 
@@ -64,5 +65,9 @@ func hide_tip() -> void:
 
 
 func _draw() -> void:
-	UiTheme.draw_box(self, Rect2(Vector2.ZERO, size), UiTheme.color("night"), UiTheme.color("lamp"), 2, true)
+	if UiSkin.tex("tip9") != null:
+		UiSkin.nine(self, "shadow9", Rect2(Vector2(-12, -6), size + Vector2(24, 26)), Color(1, 1, 1, 0.7))
+		UiSkin.nine(self, "tip9", Rect2(Vector2.ZERO, size))
+	else:
+		UiTheme.draw_box(self, Rect2(Vector2.ZERO, size), UiTheme.color("night"), UiTheme.color("lamp"), 2, true)
 	UiTheme.draw_text(self, text, Vector2(12, 8), "caption", UiTheme.color("cream"))

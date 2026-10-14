@@ -60,3 +60,46 @@ func test_empty() -> void:
 	ok(b.is_done(), "empty text is done at once")
 	eq(b.total_chars(), 0, "no chars")
 	b.free()
+
+
+# The banner is transient: hidden with nothing to say, fades in on say(), holds HOLD s after typing ends,
+# then fades out. It never takes input.
+func test_fade_in_hold_out() -> void:
+	var b := UiBanner.new()
+	eq(b.fade_alpha(), 0.0, "hidden at start")
+	eq(b.modulate.a, 0.0, "modulate alpha 0 at start")
+	eq(b.mouse_filter, Control.MOUSE_FILTER_IGNORE, "banner never takes taps")
+	ok(not b.wants_show(), "nothing to say, nothing to show")
+	b.advance(0.5)
+	eq(b.fade_alpha(), 0.0, "stays hidden without text")
+	b.say("abcd")
+	ok(b.wants_show(), "wants to show once it has text")
+	b.advance(UiBanner.FADE_IN * 0.5)
+	near(b.fade_alpha(), 0.5, 1e-6, "half faded in")
+	b.advance(UiBanner.FADE_IN)
+	eq(b.fade_alpha(), 1.0, "fully shown")
+	eq(b.modulate.a, 1.0, "modulate follows the fade")
+	ok(b.is_done(), "typing finished (4 chars at 40 cps)")
+	b.advance(UiBanner.HOLD - 0.1)
+	eq(b.fade_alpha(), 1.0, "still shown inside the hold")
+	b.advance(0.2)
+	ok(not b.wants_show(), "hold is over")
+	ok(b.fade_alpha() < 1.0, "fading out after the hold")
+	b.advance(UiBanner.FADE_OUT)
+	eq(b.fade_alpha(), 0.0, "hidden again")
+	b.free()
+
+
+func test_say_again_reshows() -> void:
+	var b := UiBanner.new()
+	b.say("first")
+	b.skip()
+	b.advance(UiBanner.HOLD + UiBanner.FADE_OUT + 1.0)
+	eq(b.fade_alpha(), 0.0, "first line has faded out")
+	b.say("second")
+	b.advance(UiBanner.FADE_IN)
+	eq(b.fade_alpha(), 1.0, "a new line fades the banner back in")
+	b.clear()
+	b.advance(UiBanner.FADE_OUT)
+	eq(b.fade_alpha(), 0.0, "clear hides it")
+	b.free()

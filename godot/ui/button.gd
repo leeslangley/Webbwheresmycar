@@ -1,7 +1,9 @@
 class_name UiButton
 extends Control
 
-# The stock touch button (port of kit_draw.js button, with the tap rule from UiTap).
+# The stock touch button (port of kit_draw.js button, with the tap rule from UiTap), painted as a chunky
+# glossy key: ink outline, gradient face, a darker lip that squashes when pressed, a soft drop shadow and a
+# warm glow ring when hot. Kinds: normal, primary, remote, card (and danger); disabled greys it out.
 # Emits activated on a tap that starts and ends on this control while enabled, blocked on a
 # tap while disabled. Public handle_event(ev) is the entry point; _gui_input forwards to it.
 
@@ -42,6 +44,7 @@ func _init() -> void:
 	size = Vector2(64, 64)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	focus_mode = Control.FOCUS_NONE
+	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 
 
 func _gui_input(event: InputEvent) -> void:
@@ -73,44 +76,63 @@ func activate() -> void:
 		blocked.emit()
 
 
-func _draw() -> void:
-	var fill: Color
-	var border: Color = UiTheme.color("ink")
-	var text_col: Color
+# The baked face texture for the current kind and state.
+func face_name() -> String:
+	var k := kind
 	if not enabled:
-		fill = UiTheme.color("lightgrey")
-		text_col = UiTheme.color("midgrey")
-	elif kind == "primary":
-		fill = UiTheme.color("good")
-		text_col = UiTheme.color("white")
+		k = "disabled"
+	elif not ["normal", "primary", "remote", "card", "danger"].has(k):
+		k = "normal"
+	return "btn_" + k + ("_down" if down else "")
+
+
+func _draw() -> void:
+	var rect := Rect2(Vector2.ZERO, size)
+	if UiSkin.tex(face_name()) == null:
+		_draw_flat()
+		return
+	if hot and enabled:
+		UiSkin.nine(self, "glow9", rect.grow(16.0))
+	if not down:
+		UiSkin.nine(self, "shadow9", Rect2(rect.position + Vector2(-14, -10), rect.size + Vector2(28, 30)), Color(1, 1, 1, 0.8))
+	UiSkin.nine(self, face_name(), rect, Color.WHITE, "btn")
+
+	var text_col: Color
+	var outline := Color(0, 0, 0, 0)
+	var opx := 0
+	if not enabled:
+		text_col = Color("8A857C")
+	elif kind == "primary" or kind == "danger":
+		text_col = Color.WHITE
+		outline = UiTheme.INK
+		opx = 6
 	elif kind == "remote":
-		fill = UiTheme.color("darkgrey")
-		border = UiTheme.color("black")
 		text_col = UiTheme.color("cream")
-	elif kind == "card":
-		fill = UiTheme.color("cream")
-		text_col = UiTheme.color("ink")
+		outline = UiTheme.INK
+		opx = 5
 	else:
-		fill = UiTheme.color("paper")
 		text_col = UiTheme.color("ink")
-	if down:
-		fill = fill.darkened(0.15)
-
-	UiTheme.draw_box(self, Rect2(Vector2.ZERO, size), fill, border, 4, not down)
-
-	if hot:
-		var lamp := UiTheme.color("lamp")
-		draw_rect(Rect2(4, 4, size.x - 8, 4), lamp)
-		draw_rect(Rect2(4, size.y - 8, size.x - 8, 4), lamp)
-		draw_rect(Rect2(4, 4, 4, size.y - 8), lamp)
-		draw_rect(Rect2(size.x - 8, 4, 4, size.y - 8), lamp)
-
 	var lines: PackedStringArray = text.split("\n")
 	var px: int = UiTheme.size_for(role)
-	var pitch: int = px + 4
+	var pitch: int = px + 6
 	var block: float = float((lines.size() - 1) * pitch + px)
-	var top: float = (size.y - block) * 0.5
+	var top: float = (size.y - 4.0 - block) * 0.5
 	if down:
-		top += 2.0
+		top += 3.0
 	for i in range(lines.size()):
-		UiTheme.draw_text(self, lines[i], Vector2(0, top + float(i * pitch)), role, text_col, size.x, HORIZONTAL_ALIGNMENT_CENTER)
+		UiSkin.role_text(self, lines[i], Vector2(0, top + float(i * pitch)), role, text_col, outline, opx, size.x, HORIZONTAL_ALIGNMENT_CENTER)
+
+
+# Fallback when the baked textures are missing: the old flat box.
+func _draw_flat() -> void:
+	var fill: Color = UiTheme.color("paper")
+	if not enabled:
+		fill = UiTheme.color("lightgrey")
+	elif kind == "primary":
+		fill = UiTheme.color("good")
+	elif kind == "remote":
+		fill = UiTheme.color("darkgrey")
+	if down:
+		fill = fill.darkened(0.15)
+	UiTheme.draw_box(self, Rect2(Vector2.ZERO, size), fill, UiTheme.color("ink"), 4, not down)
+	UiTheme.draw_text(self, text, Vector2(0, (size.y - UiTheme.size_for(role)) * 0.5), role, UiTheme.color("ink"), size.x, HORIZONTAL_ALIGNMENT_CENTER)

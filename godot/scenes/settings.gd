@@ -1,8 +1,9 @@
 class_name SettingsPanel
 extends RoomBase
 
-# The settings overlay (port of src/ui/scenes/settings.js). A dimmed panel with three toggles (CRT FILTER,
-# SOUND, MUSIC), a two-tap ERASE SAVED GAME and BACK. It only edits Game.settings and announces the change
+# The settings overlay (port of src/ui/scenes/settings.js). A dimmed, blurred-dark backdrop and a brass-edged
+# night-blue panel with the outlined title, three toggles (CRT FILTER, SOUND, MUSIC; green when ON, each with
+# a little switch), a two-tap ERASE SAVED GAME (red) and BACK. It only edits Game.settings and announces the change
 # (setting_changed); the Flow applies it (GDR31). Erase needs a second tap within CONFIRM_MS.
 
 signal closed
@@ -27,15 +28,47 @@ func _ready() -> void:
 	dim.color = Color(0, 0, 0, 0.6)
 	dim.mouse_filter = Control.MOUSE_FILTER_STOP
 	u.add_child(dim)
-	RoomBase.add_panel(u, "Panel", R_PANEL, Color("14102A"))
-	var title := RoomBase.add_label(u, "Title", "SETTINGS", Vector2(240, 76), 32, Color("FFD27A"), 800.0, true)
-	title.add_theme_font_override("font", RoomBase.pixel_font("title"))
+	u.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	var panel := RoomBase.add_panel(u, "Panel", R_PANEL, Color("14102A"))
+	if UiSkin.box("panel_night9") != null:
+		var sh := RoomBase.add_panel(u, "PanelShadow", Rect2(R_PANEL.position + Vector2(-16, -6), R_PANEL.size + Vector2(32, 34)))
+		sh.add_theme_stylebox_override("panel", UiSkin.box("shadow9"))
+		u.move_child(sh, panel.get_index())
+		panel.add_theme_stylebox_override("panel", UiSkin.box("panel_night9"))
+	var title := RoomBase.add_label(u, "Title", "SETTINGS", Vector2(240, 70), 32, Color("FFD27A"), 800.0, true)
+	title.add_theme_font_override("font", UiSkin.display_font(900))
+	title.add_theme_font_size_override("font_size", 48)
+	title.add_theme_constant_override("outline_size", 14)
+	title.add_theme_color_override("font_outline_color", UiTheme.INK)
+	title.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.5))
+	title.add_theme_constant_override("shadow_offset_y", 5)
+	title.add_theme_constant_override("shadow_outline_size", 14)
+	title.size.y = 72.0
 	for i in range(ROWS.size()):
 		var row: Dictionary = ROWS[i]
 		add_button(row["id"], Rect2(340, 150 + 76 * i, 600, 64), "", "normal")
 	add_button(&"erase", R_ERASE, "", "normal")
 	add_button(&"back", R_BACK, "BACK", "normal")
+	get_node("Hotspots").add_child(UiPainter.make("Switches", _draw_switches))
 	refresh()
+
+
+# A little sliding switch at the right end of each toggle row (knob right and lit when ON).
+func _draw_switches(on: CanvasItem) -> void:
+	var s := settings()
+	for i in range(ROWS.size()):
+		var row: Dictionary = ROWS[i]
+		var key := String(row["id"])
+		var lit := bool(s.get(key, key != "crt"))
+		var btn := hotspots.get(row["id"]) as UiButton
+		if btn == null:
+			continue
+		var r := Rect2(btn.position.x + btn.size.x - 84.0, btn.position.y + 18.0 + (3.0 if btn.down else 0.0), 60.0, 26.0)
+		UiSkin.rrect(on, r, Color("0E3B1E") if lit else Color("3A3550"), 13, UiTheme.INK, 3)
+		var kx := r.end.x - 13.0 if lit else r.position.x + 13.0
+		on.draw_circle(Vector2(kx, r.get_center().y), 10.0, UiTheme.INK)
+		on.draw_circle(Vector2(kx, r.get_center().y), 8.0, Color("7CFF8A") if lit else Color("D8D4CC"))
+		on.draw_circle(Vector2(kx - 3.0, r.get_center().y - 3.0), 3.0, Color(1, 1, 1, 0.7))
 
 
 func settings() -> Dictionary:
@@ -55,8 +88,13 @@ func refresh(now_ms := -1) -> void:
 		var on := bool(s.get(key, key != "crt"))
 		var btn := hotspots[id] as UiButton
 		btn.text = String(row["name"]) + ": " + ("ON" if on else "OFF")
+		btn.kind = "primary" if on else "normal"
 	var erase_btn := hotspots[&"erase"] as UiButton
 	erase_btn.text = "TAP AGAIN TO CONFIRM" if erase_armed(now) else "ERASE SAVED GAME"
+	erase_btn.kind = "danger"
+	var sw := get_node_or_null("Hotspots/Switches") as CanvasItem
+	if sw != null:
+		sw.queue_redraw()
 
 
 func erase_armed(now_ms: int) -> bool:

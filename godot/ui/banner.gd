@@ -1,9 +1,12 @@
 class_name UiBanner
 extends Control
 
-# Dave's big peach speech banner (port of src/art/banner.js): four peach bands with dithered
-# boundaries, an ink outline cut at the corners, a tail pointing at the speaker, and text typed out
-# at CPS characters per second. Time is stepped with advance(dt); _process calls it in the scene tree.
+# Dave's big peach speech banner (port of src/art/banner.js), painted: a rounded glossy peach bubble with
+# a thick ink outline, soft halftone shading and a drop shadow (baked by tools/art/ui_bake.py), a comic
+# tail pointing at the speaker, text typed out at CPS characters per second and a bouncing "more" arrow.
+# The banner is TRANSIENT: it is invisible (alpha 0) while it has nothing to say, fades in on say(), and
+# fades out HOLD seconds after the typing finishes, so it never hides the room for long. It never takes
+# input (MOUSE_FILTER_IGNORE). Time is stepped with advance(dt); _process calls it in the scene tree.
 
 signal char_revealed(count: int)
 signal finished
@@ -14,6 +17,12 @@ const LINE_H := 30
 const MAX_LINES := 3
 const CPS := 40.0
 const PEACH := ["#F8DCB8", "#F2C9A0", "#E8B085", "#D99A6C"]
+const FADE_IN := 0.18
+const FADE_OUT := 0.35
+const HOLD := 1.2
+const TEXT_X := 26
+const TEXT_Y := 12
+const TAIL_J := 10
 
 var full_text: String = ""
 var lines: Array[String] = []
@@ -21,11 +30,15 @@ var tail_x: float = -1.0
 var _reveal: float = 0.0
 var _done: bool = true
 var _t: float = 0.0
+var _alpha: float = 0.0
+var _since_done: float = 0.0
 
 
 func _init() -> void:
 	size = Vector2(1232, 112)
 	mouse_filter = MOUSE_FILTER_IGNORE
+	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	modulate.a = 0.0
 
 
 func max_chars() -> int:
@@ -38,6 +51,7 @@ func say(text: String, tail: float = -1.0) -> void:
 	lines = UiText.wrap(full_text, max_chars(), MAX_LINES)
 	_reveal = 0.0
 	_done = (total_chars() == 0)
+	_since_done = 0.0
 	queue_redraw()
 
 
@@ -62,7 +76,30 @@ func advance(dt: float) -> void:
 		if visible_chars() >= total_chars():
 			_done = true
 			finished.emit()
+	else:
+		_since_done += dt
+	_step_fade(dt)
 	queue_redraw()
+
+
+# True while the banner wants to be on screen: it has text and is typing, or finished less than HOLD ago.
+func wants_show() -> bool:
+	if total_chars() == 0:
+		return false
+	return not _done or _since_done < HOLD
+
+
+# 0 = hidden, 1 = fully shown.
+func fade_alpha() -> float:
+	return _alpha
+
+
+func _step_fade(dt: float) -> void:
+	if wants_show():
+		_alpha = minf(1.0, _alpha + dt / FADE_IN)
+	else:
+		_alpha = maxf(0.0, _alpha - dt / FADE_OUT)
+	modulate.a = _alpha
 
 
 func _process(dt: float) -> void:
@@ -87,6 +124,7 @@ func clear() -> void:
 	lines.clear()
 	_reveal = 0.0
 	_done = true
+	_since_done = HOLD
 	queue_redraw()
 
 
@@ -97,57 +135,49 @@ static func tail_bx(tail: float, w: float) -> int:
 
 
 func _draw() -> void:
-	var band_h := size.y / 4.0
+	if _alpha <= 0.0:
+		return
 	var ink := UiTheme.color("ink")
+	if UiSkin.tex("banner") != null:
+		UiSkin.three(self, "banner", Rect2(-16, -16, size.x + 32.0, size.y + 32.0), 80.0)
+		var bx := tail_bx(tail_x if tail_x >= 0.0 else size.x / 2.0, size.x)
+		UiSkin.blit(self, "banner_tail", Vector2(bx - 2.0, size.y - 4.0 - TAIL_J))
+	else:
+		draw_rect(Rect2(Vector2.ZERO, size), Color(PEACH[1]))
 
-	# (1) shadow
-	draw_rect(Rect2(G, G, size.x, size.y), Color(0, 0, 0, 0.35))
-
-	# (2) body: four peach bands, then a dithered row of squares on each boundary
-	for i in range(4):
-		draw_rect(Rect2(0, i * band_h, size.x, band_h), Color(PEACH[i]))
-	for i in range(3):
-		var y: float = (i + 1) * band_h
-		for j in range(int(ceil(size.x / (2.0 * G)))):
-			var col := Color(PEACH[i]) if (j + i) % 2 == 0 else Color(PEACH[i + 1])
-			draw_rect(Rect2(j * 2 * G, y, G, G), col)
-
-	# (3) ink outline, G px thick, cut at the corners
-	draw_rect(Rect2(G, 0, size.x - 2 * G, G), ink)
-	draw_rect(Rect2(G, size.y - G, size.x - 2 * G, G), ink)
-	draw_rect(Rect2(0, G, G, size.y - 2 * G), ink)
-	draw_rect(Rect2(size.x - G, G, G, size.y - 2 * G), ink)
-	draw_rect(Rect2(G, G, G, G), ink)
-	draw_rect(Rect2(size.x - 2 * G, G, G, G), ink)
-	draw_rect(Rect2(G, size.y - 2 * G, G, G), ink)
-	draw_rect(Rect2(size.x - 2 * G, size.y - 2 * G, G, G), ink)
-
-	# (4) tail, leaning right, 5 * G tall
-	var bx := tail_bx(tail_x if tail_x >= 0.0 else size.x / 2.0, size.x)
-	for i in range(5):
-		var ty: float = size.y + i * G
-		draw_rect(Rect2(bx + i * G, ty, (5 - i) * G, G), Color(PEACH[3]))
-		draw_rect(Rect2(bx + i * G, ty, G, G), ink)
-		draw_rect(Rect2(bx + 4 * G, ty, G, G), ink)
-
-	# (5) text: the first visible_chars() characters, line by line
+	# text: the first visible_chars() characters, line by line
 	var remaining := visible_chars()
 	for k in range(lines.size()):
 		var line: String = lines[k]
 		var shown := mini(remaining, line.length())
 		if shown > 0:
-			UiTheme.draw_text(self, line.substr(0, shown), Vector2(3 * G, 3 * G + k * LINE_H), "body", ink)
+			UiTheme.draw_text(self, line.substr(0, shown), Vector2(TEXT_X, TEXT_Y + k * LINE_H), "body", ink)
 		remaining = maxi(0, remaining - line.length())
 
-	# (6) blinking cursor at the end of the text typed so far, while still typing
-	if not _done and int(_t * 4.0) % 2 == 0:
-		var left := visible_chars()
-		var cur_line := 0
-		var cur_x := 0
-		for k in range(lines.size()):
-			cur_line = k
-			cur_x = mini(left, lines[k].length())
-			left -= lines[k].length()
-			if left <= 0:
-				break
-		draw_rect(Rect2(3 * G + cur_x * CHAR_W, 3 * G + cur_line * LINE_H, 2 * G, 2 * G), ink)
+	if not _done:
+		# a chunky caret at the end of the text typed so far
+		if int(_t * 4.0) % 2 == 0:
+			var left := visible_chars()
+			var cur_line := 0
+			var cur_x := 0
+			for k in range(lines.size()):
+				cur_line = k
+				cur_x = mini(left, lines[k].length())
+				left -= lines[k].length()
+				if left <= 0:
+					break
+			UiSkin.rrect(self, Rect2(TEXT_X + cur_x * CHAR_W + 2, TEXT_Y + 4 + cur_line * LINE_H, 10, 20), Color("D9483B"), 3)
+	elif total_chars() > 0:
+		_draw_more_arrow()
+
+
+# The bouncing "more" arrow in the bottom-right corner once the line is fully typed.
+func _draw_more_arrow() -> void:
+	var bounce := absf(sin(_t * 5.0)) * 5.0
+	var c := Vector2(size.x - 36.0, size.y - 24.0 + bounce)
+	var tri := PackedVector2Array([c + Vector2(-10, -7), c + Vector2(10, -7), c + Vector2(0, 7)])
+	var ring := PackedVector2Array(tri)
+	ring.append(tri[0])
+	draw_polyline(ring, UiTheme.color("ink"), 6.0, true)
+	draw_colored_polygon(tri, Color("D9483B"))
+	draw_colored_polygon(PackedVector2Array([c + Vector2(-6, -5), c + Vector2(1, -5), c + Vector2(-2, 0)]), Color(1, 1, 1, 0.6))

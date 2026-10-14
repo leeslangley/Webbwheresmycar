@@ -17,12 +17,29 @@ var _paint: Color = Color(0.53, 0.53, 0.53)
 var _wear: float = 0.0
 var _shown: bool = false
 var _cv: CarView
+var _bezel: Bezel
+
+
+# The gold frame and the name plaque, drawn on a child kept above the car view.
+class Bezel extends Control:
+	var painter: Callable
+
+	func _draw() -> void:
+		if painter.is_valid():
+			painter.call(self)
 
 
 func _init() -> void:
 	size = Vector2(200, 114)
 	mouse_filter = MOUSE_FILTER_IGNORE
 	clip_contents = true
+	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	_bezel = Bezel.new()
+	_bezel.name = "Bezel"
+	_bezel.painter = draw_bezel
+	_bezel.mouse_filter = MOUSE_FILTER_IGNORE
+	_bezel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	add_child(_bezel)
 
 
 func set_car(id: String, paint, wear: float = 0.0) -> bool:
@@ -36,6 +53,7 @@ func set_car(id: String, paint, wear: float = 0.0) -> bool:
 	_cv.set_wear(wear)
 	_cv.visible = _shown
 	queue_redraw()
+	_bezel.queue_redraw()
 	return _shown
 
 
@@ -45,6 +63,7 @@ func clear() -> void:
 	if _cv != null:
 		_cv.visible = false
 	queue_redraw()
+	_bezel.queue_redraw()
 
 
 func set_portrait_view(v: String) -> bool:
@@ -101,31 +120,56 @@ func _ensure_view() -> void:
 	_cv.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_cv.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_cv.visible = false
+	move_child(_bezel, -1)
 
 
+# Behind the car: the showroom backdrop (spotlit wall, glossy floor). Over it, on the Bezel child: the gold
+# frame and a brass name plaque.
 func _draw() -> void:
-	var frame := Rect2(Vector2.ZERO, size)
-	var sky: Color = UiTheme.color("lightblue")
-	UiTheme.draw_box(self, frame, sky, UiTheme.color("ink"), FRAME_BW, true)
-	_draw_dither()
+	var inner := Rect2(Vector2(6, 6), size - Vector2(12, 12))
+	if UiSkin.tex("portrait_bg") != null:
+		draw_texture_rect(UiSkin.tex("portrait_bg"), inner, false)
+	else:
+		UiTheme.draw_box(self, Rect2(Vector2.ZERO, size), UiTheme.color("lightblue"), UiTheme.color("ink"), FRAME_BW, true)
 	if not _shown:
-		UiTheme.draw_text(self, "NO CAR", Vector2(0, size.y * 0.5 - UiTheme.size_for("h3") * 0.5), "h3", UiTheme.color("cream"), size.x, HORIZONTAL_ALIGNMENT_CENTER)
+		_draw_empty()
+
+
+func _draw_empty() -> void:
+	# A dashed parking bay and the caption.
+	var cy := size.y * 0.5 - 6.0
+	var col := Color(0.75, 0.85, 1.0, 0.35)
+	var x := size.x * 0.5 - 70.0
+	while x < size.x * 0.5 + 70.0:
+		draw_line(Vector2(x, cy + 30.0), Vector2(x + 10.0, cy + 30.0), col, 3.0)
+		x += 18.0
+	UiSkin.role_text(self, "NO CAR", Vector2(0, cy - UiTheme.size_for("h3") * 0.5), "h3", UiTheme.color("cream"), UiTheme.INK, 4, size.x, HORIZONTAL_ALIGNMENT_CENTER)
+
+
+func draw_bezel(on: Control) -> void:
+	var frame := Rect2(Vector2.ZERO, size)
+	if UiSkin.box("frame9") != null:
+		UiSkin.nine(on, "frame9", frame)
+	else:
+		on.draw_rect(frame, UiTheme.color("ink"), false, float(FRAME_BW))
 	if _id != "":
-		_draw_plaque()
+		_draw_plaque(on)
 
 
-func _draw_dither() -> void:
-	var dot: Color = UiTheme.color("lightblue").lightened(0.18)
-	for k in range(1, 4):
-		var y: float = size.y * float(k) / 4.0
-		var offset: float = float(DITHER_SQ) if k % 2 == 0 else 0.0
-		var x: float = offset
-		while x < size.x:
-			draw_rect(Rect2(x, y, DITHER_SQ, DITHER_SQ), dot)
-			x += DITHER_PITCH
-
-
-func _draw_plaque() -> void:
-	var plaque := Rect2(0, size.y - PLAQUE_H, size.x, PLAQUE_H)
-	draw_rect(plaque, UiTheme.color("cream"))
-	UiTheme.draw_text(self, display_name(), plaque.position, "caption", UiTheme.color("ink"), size.x, HORIZONTAL_ALIGNMENT_CENTER)
+func _draw_plaque(on: Control) -> void:
+	var name_text := display_name()
+	var f := UiTheme.body_font()
+	var px := 22
+	var tw := f.get_string_size(name_text, HORIZONTAL_ALIGNMENT_LEFT, -1, px).x
+	var w := minf(size.x - 16.0, tw + 34.0)
+	var plaque := Rect2((size.x - w) * 0.5, size.y - PLAQUE_H - 3.0, w, PLAQUE_H + 2.0)
+	if UiSkin.tex("plaque") != null:
+		UiSkin.nine(on, "plaque", plaque)
+	else:
+		on.draw_rect(plaque, UiTheme.color("cream"))
+	var label := name_text
+	if tw + 34.0 > size.x - 16.0:
+		label = UiText.ellipsize(name_text, int(float(name_text.length()) * (size.x - 50.0) / maxf(tw, 1.0)))
+	var at := plaque.position + Vector2(0, 1)
+	UiSkin.text(on, f, label, at + Vector2(0, 1), px, Color(1, 0.97, 0.82, 0.8), UiTheme.INK, 0, plaque.size.x, HORIZONTAL_ALIGNMENT_CENTER)
+	UiSkin.text(on, f, label, at, px, Color("3A2506"), UiTheme.INK, 0, plaque.size.x, HORIZONTAL_ALIGNMENT_CENTER)
