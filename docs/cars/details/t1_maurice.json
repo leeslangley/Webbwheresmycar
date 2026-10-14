@@ -1,0 +1,46 @@
+{
+ "version": 2,
+ "id": "t1_maurice",
+ "belt_y": 27.2,
+ "window_frame": "chrome",
+ "caricature": {"eyes": 1.15, "mouth": 1.1, "wheels": 1.05, "bumper": 1.1},
+ "wheel": {"style": "steel", "hub": "chrome", "whitewall": false, "trim_ring": false, "hubcap_r": 5.4, "spokes": 0},
+ "paint": {"finish": "solid"},
+ "roof": {"variant": "hard"},
+ "windows": [
+  [[13.0, 27.2], [6.2, 39.2], [-6.0, 39.2], [-6.0, 27.2]],
+  [[-6.0, 39.2], [-12.6, 39.2], [-21.0, 27.5], [-6.0, 27.2]]
+ ],
+ "pillars": [
+  {"poly": [[13.0, 27.2], [6.2, 39.2], [5.2, 39.2], [12.0, 27.2]], "lat_from": 0.82},
+  {"poly": [[-6.0, 39.2], [-6.0, 27.2], [-5.0, 27.2], [-5.0, 39.2]], "lat_from": 0.82, "note": "B pillar at x -6, between the door pane and the quarter pane. Placement is my estimate."}
+ ],
+ "parts": [
+  {"kind": "headlamp", "x": 46.5, "y": 17.5, "lat": 12.5, "r": 2.4, "shape": "round", "bezel": "chrome", "side": "both", "note": "Dossier: 2 round headlamps, y_offset_from_centre 12.5. Bulged wing cheeks have no part kind."},
+  {"kind": "lamp", "role": "sidelamp", "x": 47, "y": 14, "lat": 12.5, "r": 1.2, "shape": "round", "side": "both", "note": "Small round sidelamp below each headlamp. r 1.2 is the schema default."},
+  {"kind": "grille", "style": "vertical_bars", "x": 49, "y": 13, "w": 10, "h": 3, "surround": "chrome", "end": "front", "lat": 0, "note": "Brief says tall and narrow, but the dossier gives 10 wide by 3 high with vertical chrome slats. Dossier numbers kept."},
+  {"kind": "badge", "shape": "shield", "x": 48.5, "y": 16.5, "end": "front", "size": 2, "colour": "chrome", "note": "Shield badge above the grille. Dossier gives no exact position."},
+  {"kind": "bumper", "end": "front", "style": "blade", "y": 7.0, "h": 3.0, "w": 0, "overriders": 2, "note": "Dossier chrome blade y 5.5 to 8.5: centre 7.0, h 3.0. Two overriders."},
+  {"kind": "plate", "end": "front", "note": "Dossier gives no plate position: schema defaults."},
+  {"kind": "taillamp", "shape": "vertical", "x": -47.5, "y": 20.5, "lat": 12.5, "w": 2, "h": 4, "side": "both", "note": "Dossier: x -48.5 to -46.5, y 18.5 to 22.5, so centre -47.5, 20.5, 2 wide, 4 tall. lat 12.5 is my choice (matches headlamps). Chrome rim has no field."},
+  {"kind": "bumper", "end": "rear", "style": "blade", "y": 7.0, "h": 3.0, "w": 0, "overriders": 2, "note": "Dossier chrome blade y 5.5 to 8.5: centre 7.0, h 3.0. Two overriders."},
+  {"kind": "plate", "end": "rear", "note": "Dossier gives no plate position: schema defaults."},
+  {"kind": "lamp", "role": "reverse", "x": -50, "y": 12, "lat": 0, "r": 1.2, "shape": "round", "side": "centre", "note": "Small round reversing lamp low on the tail, dossier y 12."},
+  {"kind": "handle", "style": "boot", "x": -50, "y": 9.8, "side": "centre", "note": "Chrome boot-lid handle just above the bumper centre. Dossier lists no rear badge, so none is added."},
+  {"kind": "fuelcap", "x": -38, "y": 26.5, "r": 1.0, "side": "near", "note": "Flush filler cap on the rear wing top. Dossier gives no side, so the schema default near is kept."},
+  {"kind": "exhaust", "style": "round", "x": -50, "y": 6, "lat": 6, "r": 1.0, "side": "near", "note": "Dossier: one exhaust."},
+  {"kind": "handle", "style": "flap", "x": -4, "y": 24, "side": "both", "note": "Chrome door handle at dossier x -4, y 24. No mirror part: dossier lists no door or wing mirror."},
+  {"kind": "strip", "role": "sweep", "colour": "chrome", "x": 45.5, "x2": 48.8, "y": 24.4, "h": 0.5, "side": "both", "note": "Thin chrome strip on the bonnet front edge. The strip kind is horizontal, so this is an approximation along the nose top."},
+  {"kind": "strip", "role": "window", "colour": "chrome", "x": -21.0, "x2": 13.0, "y": 27.2, "h": 0.5, "side": "both", "note": "Chrome window frame along the belt line, from window_frame chrome."},
+  {"kind": "crease", "x": 13.0, "x2": 46.0, "y": 24.5, "depth": 0.15, "side": "both", "note": "Slight swage below the bonnet seam, dossier y 24.5."},
+  {"kind": "crease", "x": 26.3, "x2": 45.7, "y": 17.9, "depth": 0.15, "side": "both", "note": "Top edge of the front wheel arch opening (dossier). The spec has no arch kind."},
+  {"kind": "crease", "x": -31.8, "x2": -12.4, "y": 17.9, "depth": 0.15, "side": "both", "note": "Top edge of the rear wheel arch opening (dossier). The spec has no arch kind."},
+  {"kind": "shutline", "role": "door", "path": [[11.5, 4.5], [11.5, 27.0]], "side": "both", "note": "Front edge of the front door, at the A pillar. Placement is my estimate."},
+  {"kind": "shutline", "role": "door", "path": [[-6.0, 4.5], [-6.0, 27.0]], "side": "both", "note": "Rear edge of the front door, at the B pillar. Placement is my estimate."},
+  {"kind": "shutline", "role": "door", "path": [[-6.0, 5.0], [11.5, 5.0]], "side": "both", "note": "Bottom edge of the door along the sill."},
+  {"kind": "shutline", "role": "bonnet", "path": [[13.0, 26.0], [46.0, 26.0]], "side": "both", "note": "Bonnet-to-wing seam, dossier x 13 to 46 at y 26."},
+  {"kind": "shutline", "role": "bonnet", "path": [[46.0, 26.0], [49.6, 22.5], [50.0, 19.0]], "side": "both", "note": "Bonnet front edge down to the nose. Placement is my estimate."},
+  {"kind": "shutline", "role": "boot", "path": [[-21.0, 27.6], [-45.0, 25.6]], "side": "both", "note": "Boot lid top edge, from the dossier boot lid edge."},
+  {"kind": "shutline", "role": "boot", "path": [[-45.0, 25.6], [-48.8, 19.0], [-48.8, 8.5]], "side": "both", "note": "Boot lid rear edge down to the bumper. Placement is my estimate."}
+ ]
+}
