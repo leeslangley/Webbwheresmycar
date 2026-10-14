@@ -137,6 +137,15 @@ def _frame_mat(ctx):
     return mats['chrome']
 
 
+def _usable(poly, label):
+    """True when poly has at least 3 points, a face needs that many. A shorter
+    polygon (a bare line in the dossier) prints a WARN and is skipped."""
+    if len(poly) >= 3:
+        return True
+    print('WARN %s degenerate' % label)
+    return False
+
+
 @stage('windows')
 def build_windows(ctx):
     details = ctx['details'] or {}
@@ -147,6 +156,8 @@ def build_windows(ctx):
 
     # Frame first, glass on top: the glass shell stands proud of the frame.
     for k, poly in enumerate(details.get('windows') or []):
+        if not _usable(poly, 'window %d' % k):
+            continue
         rim = carlib.extrude_polygon(offset_polygon(poly, FRAME_OFFSET),
                                      2.0 * width, frame_mat, 'prism')
         _piece(ctx, rim, FRAME_SHELL, frame_mat, 'frame_%d' % k)
@@ -155,6 +166,8 @@ def build_windows(ctx):
 
     for k, pillar in enumerate(details.get('pillars') or []):
         poly = pillar['poly']
+        if not _usable(poly, 'pillar %d' % k):
+            continue
         lat_from = float(pillar.get('lat_from', 0.0))
         sides = (
             ('n', -PILLAR_OUT * half, -lat_from * half),

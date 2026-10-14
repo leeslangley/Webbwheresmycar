@@ -76,6 +76,25 @@ if run_car "t1_chimp" docs/cars/t1_chimp.json /tmp/ca06_t1_chimp.png; then
 	fi
 fi
 
+# 3. A degenerate window (2 points, not a face) is skipped with a WARN line, and
+#    the rest of the car still builds: window_0 from the fixture must still appear.
+degen=$(mktemp /tmp/ca06_degenerate.XXXXXX)
+python3 -c 'import json, sys
+d = json.load(open(sys.argv[1]))
+d["windows"].append([[0, 26.5], [1, 27.5]])
+json.dump(d, open(sys.argv[2], "w"))' tests/fixtures/details_windows.json "$degen"
+if run_car "degenerate window" tests/fixtures/dossier_ok.json /tmp/ca06_degenerate.png --details "$degen"; then
+	if ! printf '%s\n' "$res" | grep -q '^WARN window 1 degenerate$'; then
+		echo "FAIL: degenerate window output has no 'WARN window 1 degenerate' line"
+		ok=0
+	fi
+	if ! printf '%s\n' "$res" | grep -q '^REPORT window_0 '; then
+		echo "FAIL: degenerate window: window_0 missing, the car did not build the rest"
+		ok=0
+	fi
+fi
+rm -f "$degen"
+
 if [ "$ok" -eq 1 ]; then
 	echo "CA06 OK"
 	exit 0
