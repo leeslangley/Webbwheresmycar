@@ -1,0 +1,277 @@
+{
+ "cars": {
+  "t1_allergy": {
+   "bbox_max": [
+    5.12,
+    3.61,
+    2.495
+   ],
+   "bbox_min": [
+    -5.12,
+    0.0,
+    -2.495
+   ],
+   "classes": {
+    "chrome": 10,
+    "glass": 1,
+    "lamp": 2,
+    "paint": 1,
+    "tail": 2,
+    "tyre": 8,
+    "wall": 2
+   },
+   "file": "t1_allergy.glb",
+   "finish": "solid",
+   "game_name": "Austen Allergy",
+   "len_mm": 3860,
+   "paint2": "",
+   "paints": [
+    "#d9a520",
+    "#3a5f8a",
+    "#7a3b2e",
+    "#e8e4d8"
+   ],
+   "wheelbase_units": 61.8,
+   "wheels": 2
+  },
+  "t1_alpaca": {
+   "bbox_max": [
+    5.12,
+    3.14,
+    2.382
+   ],
+   "bbox_min": [
+    -5.12,
+    0.0,
+    -2.382
+   ],
+   "classes": {
+    "chrome": 10,
+    "glass": 1,
+    "lamp": 2,
+    "paint": 1,
+    "tail": 2,
+    "tyre": 8,
+    "wall": 2
+   },
+   "file": "t1_alpaca.glb",
+   "finish": "solid",
+   "game_name": "Sunbeem Alpaca",
+   "len_mm": 3960,
+   "paint2": "",
+   "paints": [
+    "#1a3a26",
+    "#f0f0ea",
+    "#8c1f1f",
+    "#6f8fa8"
+   ],
+   "wheelbase_units": 55.8,
+   "wheels": 2
+  },
+  "t1_chimp": {
+   "bbox_max": [
+    5.12,
+    3.8,
+    2.475
+   ],
+   "bbox_min": [
+    -5.12,
+    0.46,
+    -2.475
+   ],
+   "classes": {
+    "chrome": 10,
+    "glass": 1,
+    "lamp": 2,
+    "paint": 1,
+    "tail": 2,
+    "tyre": 8,
+    "wall": 2
+   },
+   "file": "t1_chimp.glb",
+   "finish": "solid",
+   "game_name": "Hillbilly Chimp",
+   "len_mm": 3556,
+   "paint2": "",
+   "paints": [
+    "#C96F32",
+    "#6f9fc9",
+    "#e5e0cf",
+    "#3b4a2f"
+   ],
+   "wheelbase_units": 57.2,
+   "wheels": 2
+  },
+  "t1_cooker": {
+   "bbox_max": [
+    5.12,
+    4.41,
+    2.719
+   ],
+   "bbox_min": [
+    -5.12,
+    0.464,
+    -2.719
+   ],
+   "classes": {
+    "chrome": 10,
+    "glass": 1,
+    "lamp": 2,
+    "paint": 1,
+    "tail": 2,
+    "tyre": 8,
+    "wall": 2
+   },
+   "file": "t1_cooker.glb",
+   "finish": "solid",
+   "game_name": "Minnie Cooker",
+   "len_mm": 3054,
+   "paint2": "",
+   "paints": [
+    "#a51c1c",
+    "#eae6dd",
+    "#1f4b2a",
+    "#34558b"
+   ],
+   "wheelbase_units": 66.5,
+   "wheels": 2
+  },
+  "t1_maurice": {
+   "bbox_max": [
+    5.12,
+    4.05,
+    2.512
+   ],
+   "bbox_min": [
+    -5.12,
+    0.3127,
+    -2.512
+   ],
+   "classes": {
+    "chrome": 10,
+    "glass": 1,
+    "lamp": 2,
+    "paint": 1,
+    "tail": 2,
+    "tyre": 8,
+    "wall": 2
+   },
+   "file": "t1_maurice.glb",
+   "finish": "solid",
+   "game_name": "Maurice Minor",
+   "len_mm": 3759,
+   "paint2": "",
+   "paints": [
+    "#f2f0e6",
+    "#2e5f96",
+    "#6e2233",
+    "#4f6b4a"
+   ],
+   "wheelbase_units": 58.1,
+   "wheels": 2
+  },
+  "t1_robbin": {
+   "bbox_max": [
+    5.12,
+    4.24,
+    2.524
+   ],
+   "bbox_min": [
+    -5.12,
+    0.4,
+    -2.524
+   ],
+   "classes": {
+    "chrome": 12,
+    "glass": 1,
+    "lamp": 2,
+    "paint": 1,
+    "tail": 2,
+    "tyre": 10,
+    "wall": 2
+   },
+   "file": "t1_robbin.glb",
+   "finish": "solid",
+   "game_name": "Reliable Robbin",
+   "len_mm": 3300,
+   "paint2": "",
+   "paints": [
+    "#c9a227",
+    "#e8e3d3",
+    "#8fb3d9",
+    "#a8352b"
+   ],
+   "wheelbase_units": 61.6,
+   "wheels": 3
+  },
+  "t1_trumpet": {
+   "bbox_max": [
+    5.12,
+    3.05,
+    2.325
+   ],
+   "bbox_min": [
+    -5.12,
+    0.44,
+    -2.325
+   ],
+   "classes": {
+    "chrome": 10,
+    "glass": 1,
+    "lamp": 2,
+    "paint": 1,
+    "tail": 2,
+    "tyre": 8,
+    "wall": 2
+   },
+   "file": "t1_trumpet.glb",
+   "finish": "solid",
+   "game_name": "Trumpet Spitfarm",
+   "len_mm": 3785,
+   "paint2": "",
+   "paints": [
+    "#c8102e",
+    "#e8c331",
+    "#2f5f8f",
+    "#eceae4"
+   ],
+   "wheelbase_units": 56.4,
+   "wheels": 2
+  },
+  "t1_volksbeagle": {
+   "bbox_max": [
+    5.12,
+    3.68,
+    2.334
+   ],
+   "bbox_min": [
+    -5.12,
+    0.464,
+    -2.334
+   ],
+   "classes": {
+    "chrome": 10,
+    "glass": 1,
+    "lamp": 2,
+    "paint": 1,
+    "tail": 2,
+    "tyre": 8,
+    "wall": 2
+   },
+   "file": "t1_volksbeagle.glb",
+   "finish": "solid",
+   "game_name": "Volksbeagle Bug",
+   "len_mm": 4070,
+   "paint2": "",
+   "paints": [
+    "#8f2a20",
+    "#3c5f8c",
+    "#d8c48a",
+    "#1b1b1b"
+   ],
+   "wheelbase_units": 59.0,
+   "wheels": 2
+  }
+ },
+ "version": 1
+}
