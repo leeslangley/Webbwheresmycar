@@ -1,0 +1,49 @@
+{
+ "version": 2,
+ "id": "t1_cooker",
+ "belt_y": 30.3,
+ "window_frame": "chrome",
+ "caricature": {"eyes": 1.15, "mouth": 1.1, "wheels": 1.05, "bumper": 1.1},
+ "wheel": {"style": "steel", "hub": "chrome", "whitewall": false, "trim_ring": false, "hubcap_r": 4.0, "spokes": 0},
+ "paint": {
+  "colour2": "#eae6dd",
+  "finish": "solid",
+  "zones": [{"region": "roof", "use": "paint2"}]
+ },
+ "roof": {"variant": "hard"},
+ "windows": [
+  [[21.4, 32.3], [15.7, 41.0], [-0.6, 41.0], [-0.6, 32.3]],
+  [[-3.4, 32.3], [-3.4, 41.0], [-20.5, 41.0], [-27.5, 33.0], [-27.5, 32.3]]
+ ],
+ "pillars": [
+  {"poly": [[24.5, 30.3], [16.5, 42.6], [15.0, 42.6], [23.0, 30.3]], "lat_from": 0.82},
+  {"poly": [[-3.4, 42.6], [-3.4, 31.0], [-0.6, 31.0], [-0.6, 42.6]], "lat_from": 0.82}
+ ],
+ "parts": [
+  {"kind": "headlamp", "x": 48.5, "y": 19.0, "lat": 13.0, "r": 2.9, "shape": "round", "bezel": "chrome", "side": "both", "note": "Dossier: round headlamps r 2.9 at the wing tops, y_offset_from_centre 13.0 used as lat."},
+  {"kind": "grille", "x": 49.5, "y": 12.0, "w": 9, "h": 3.5, "style": "horizontal_bars", "bars": 5, "surround": "chrome", "end": "front", "lat": 0, "note": "Dossier: small rounded grille, 9 wide by 3.5 high, horizontal slats, chrome surround."},
+  {"kind": "bumper", "end": "front", "style": "blade", "y": 8.5, "h": 1.6, "w": 0, "overriders": 2, "note": "Dossier: thin chrome strip across the nose at y 8.5 with two over-riders. Chrome is not a bumper field."},
+  {"kind": "plate", "end": "front", "y": 8.5, "w": 12, "h": 3, "lat": 0, "colour": "white", "note": "Position estimated, not in dossier."},
+  {"kind": "badge", "x": 49.5, "y": 14.9, "shape": "disc", "end": "front", "size": 2, "colour": "chrome", "note": "Position estimated, not in dossier."},
+  {"kind": "taillamp", "x": -49.5, "y": 20.5, "lat": 15.5, "shape": "round", "w": 2.8, "h": 2.8, "side": "both", "note": "Dossier: two small round red lamps, r 1.4 (w and h = 2 x r), x -49.5 y 20.5. Lateral lat 15.5 is an estimate; the dossier gives no sideways position."},
+  {"kind": "bumper", "end": "rear", "style": "blade", "y": 8.5, "h": 1.6, "w": 0, "overriders": 2, "note": "Dossier: thin chrome strip across the tail at y 8.5. Two over-riders per the card."},
+  {"kind": "plate", "end": "rear", "y": 8.5, "w": 12, "h": 3, "lat": 0, "colour": "white", "note": "Position estimated, not in dossier."},
+  {"kind": "exhaust", "style": "round", "x": -50, "y": 6.0, "lat": 6, "r": 1.0, "side": "near", "note": "Dossier: one exhaust."},
+  {"kind": "handle", "x": -44, "y": 28.0, "style": "boot", "side": "centre", "note": "Dossier: short flat boot lid with chrome handle at x -44 y 28."},
+  {"kind": "badge", "x": -45.5, "y": 23.0, "shape": "disc", "end": "rear", "size": 2, "colour": "chrome", "note": "Position estimated, not in dossier."},
+  {"kind": "fuelcap", "x": -49.5, "y": 13.0, "r": 1.0, "side": "near", "note": "Position estimated, not in dossier (requested by the card)."},
+  {"kind": "lamp", "x": -49.8, "y": 16.0, "role": "reverse", "lat": 0, "r": 1.0, "shape": "round", "side": "centre", "note": "Reversing lamp requested by the card; not in dossier, position estimated."},
+  {"kind": "strip", "x": -49.0, "x2": 49.0, "y": 6.8, "h": 0.5, "role": "sill", "colour": "black", "side": "both", "note": "Lower sill rubbing strip. Addition, not in dossier."},
+  {"kind": "strip", "x": -30.0, "x2": 24.0, "y": 30.0, "h": 0.5, "role": "window", "colour": "chrome", "side": "both", "note": "Dossier: chrome window surround, bottom edge x -30..24. The sliding-window divider the card asks for is not added: the strip kind is horizontal only, so a vertical strip is not expressible."},
+  {"kind": "strip", "x": -20.0, "x2": 15.5, "y": 43.0, "h": 0.5, "role": "window", "colour": "chrome", "side": "both", "note": "Dossier: chrome window surround, top edge over the flat roof line x -20..15.5."},
+  {"kind": "crease", "x": -20.0, "x2": 15.5, "y": 44.1, "depth": 0.15, "side": "both", "note": "Dossier: flat roof line x -20..15.5 at y 44.1."},
+  {"kind": "shutline", "path": [[24.0, 30.0], [24.0, 7.0]], "role": "door", "side": "both", "note": "Dossier: door shut line at x 24 from y 30 down to y 7 (front edge of the door)."},
+  {"kind": "shutline", "path": [[-2.0, 31.0], [-2.0, 8.0]], "role": "door", "side": "both", "note": "Rear edge of the door at the B pillar. Position estimated."},
+  {"kind": "shutline", "path": [[-2.0, 8.0], [24.0, 8.0]], "role": "door", "side": "both", "note": "Door bottom edge. Estimated."},
+  {"kind": "shutline", "path": [[24.5, 29.6], [47.5, 26.8]], "role": "bonnet", "across_x": 24.5, "side": "both", "note": "Bonnet side edge from the windscreen base to the nose. Estimated."},
+  {"kind": "shutline", "path": [[-36.0, 29.7], [-36.0, 8.0]], "role": "boot", "across_x": -36.0, "side": "both", "note": "Boot lid front edge with across shut line at x -36. Estimated: boot lid spans about x -36 to -50."},
+  {"kind": "shutline", "path": [[47.5, 26.8], [47.5, 10.0]], "role": "bonnet", "side": "both", "note": "Bonnet front edge at the nose. Estimated."},
+  {"kind": "handle", "x": 8.0, "y": 18.5, "style": "flap", "side": "both", "note": "Dossier: single chrome door handle at x 8 y 18.5. No door mirrors added: the dossier lists none."},
+  {"kind": "strip", "x": 44.0, "x2": 47.5, "y": 26.8, "h": 0.5, "role": "sweep", "colour": "chrome", "side": "both", "note": "Dossier: short chrome bonnet front lip at x 47.5 y 26.8. Start x 44 is estimated."}
+ ]
+}
