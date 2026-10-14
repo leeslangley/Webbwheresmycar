@@ -181,4 +181,143 @@ test('load() can be called twice and the sprites stay loaded', () => {
 	eq(e2.seen.length, 8, 're-fetches but does not break');
 });
 
+// --- manifest v2: _meta, entry fields, masks, shadows, progress (CC02) ------
+
+const META_MANIFEST = {
+	_meta: { version: 2, ppm_hero: 48, ppm_mini: 24, ppm_face: 40, supersample: 4, outline: '#120a1e' },
+	a: { car: 'a', view: 's', file: 'a.png', w: 40, h: 20, ax: 10, ay: 7, paint: '#c81e1e', mask: 'a_mask.png', shadow: 'a_sh.png' },
+	b: { car: 'b', view: 's', file: 'b.png', w: 60, h: 30, ax: 30, ay: 15, paint: '#1e5fc8', mask: 'b_mask.png', shadow: null },
+};
+
+const META_IMAGES = {
+	'assets/art/cars/a.png': { width: 40, height: 20, name: 'a' },
+	'assets/art/cars/b.png': { width: 60, height: 30, name: 'b' },
+	'assets/art/cars/b_mask.png': { name: 'b_mask' },
+	'assets/art/cars/a_sh.png': { name: 'a_sh' },
+};
+
+// a_mask.png is corrupt: its load always rejects.
+function metaEnv() {
+	const seen = [];
+	return {
+		seen: seen,
+		loadJson: function (url) {
+			seen.push(['json', url]);
+			return Promise.resolve(META_MANIFEST);
+		},
+		loadImage: function (url) {
+			seen.push(['img', url]);
+			if (url === 'assets/art/cars/a_mask.png') {
+				return Promise.reject(new Error('corrupt mask'));
+			}
+			if (META_IMAGES[url]) {
+				return Promise.resolve(META_IMAGES[url]);
+			}
+			return Promise.reject(new Error('missing ' + url));
+		},
+	};
+}
+
+const menv = metaEnv();
+const msp = createSprites(menv);
+eq(msp.progress(), { done: 0, total: 0 }, 'progress is zero before load');
+eq(msp.keys(), [], 'no keys before load');
+const ticks = [];
+await msp.load({
+	onProgress: function (d, t) {
+		ticks.push([d, t]);
+	},
+});
+
+test('onProgress is called once per finished download, done counts 1..total', () => {
+	eq(
+		ticks.map((x) => x[0]),
+		[1, 2, 3, 4, 5],
+		'done values'
+	);
+	eq(
+		ticks.every((x) => x[1] === 5),
+		true,
+		'total is 5 on every call'
+	);
+	eq(msp.progress(), { done: 5, total: 5 }, 'progress() after load');
+	eq(msp.timedOut, false, 'no timeout without timeoutMs');
+	eq(msp.ready, true, 'ready after load');
+});
+
+test('keys() lists the loaded sprites in manifest order and _meta is never loaded', () => {
+	eq(msp.keys(), ['a', 'b'], 'keys are a and b');
+	eq(menv.seen.length, 6, 'manifest plus 5 image files (a, a mask, a shadow, b, b mask)');
+	eq(msp.has('_meta'), false, '_meta is not a sprite');
+});
+
+test('meta(id) is a shallow copy of the manifest entry, or null', () => {
+	eq(msp.meta('a').ax, 10, 'ax of a');
+	eq(msp.meta('a').ay, 7, 'ay of a');
+	eq(msp.meta('a').paint, '#c81e1e', 'paint of a');
+	const copy = msp.meta('a');
+	copy.ax = 99;
+	eq(msp.meta('a').ax, 10, 'changing the copy leaves the table alone');
+	eq(msp.meta('_meta'), null, '_meta is not a sprite');
+	eq(msp.meta('zzz'), null, 'unknown id');
+});
+
+test('image, maskImage and shadowImage return the loaded image or null', () => {
+	ok(msp.image('a') === META_IMAGES['assets/art/cars/a.png'], 'image of a');
+	ok(msp.maskImage('a') === null, 'a mask failed: null');
+	ok(msp.shadowImage('a') === META_IMAGES['assets/art/cars/a_sh.png'], 'shadow of a');
+	ok(msp.maskImage('b') === META_IMAGES['assets/art/cars/b_mask.png'], 'mask of b');
+	ok(msp.shadowImage('b') === null, 'b has no shadow');
+	ok(msp.image('zzz') === null, 'unknown id');
+	ok(msp.maskImage('constructor') === null, 'prototype names are not loaded');
+	eq(msp.size('a'), { w: 40, h: 20 }, 'size of a is unchanged by its masks');
+});
+
+// --- timeout: a slow image never blocks the game ----------------------------
+
+const timers = [];
+let releaseSlow = null;
+const slowImage = new Promise(function (resolve) {
+	releaseSlow = resolve;
+});
+const slowEnv = {
+	loadJson: function () {
+		return Promise.resolve({
+			slow: { file: 'slow.png', w: 10, h: 10 },
+			quick: { file: 'quick.png', w: 10, h: 10 },
+		});
+	},
+	loadImage: function (url) {
+		if (url === 'assets/art/cars/slow.png') {
+			return slowImage; // stays pending until releaseSlow is called
+		}
+		return Promise.resolve({ width: 10, height: 10 });
+	},
+	setTimeout: function (fn) {
+		timers.push(fn);
+	},
+};
+const ssp = createSprites(slowEnv);
+const timedLoad = ssp.load({ timeoutMs: 100 });
+eq(timers.length, 1, 'one timer is started at the start of load()');
+timers[0]();
+await timedLoad;
+
+test('a timed-out load resolves with ready and timedOut set, slow sprite not loaded', () => {
+	eq(ssp.ready, true, 'ready after the timeout');
+	eq(ssp.timedOut, true, 'timedOut after the timeout');
+	eq(ssp.has('slow'), false, 'the slow sprite is not loaded yet');
+});
+
+// The slow image arrives after the timeout and still lands in the table.
+releaseSlow({ width: 10, height: 10 });
+for (let i = 0; i < 10; i++) {
+	await null;
+}
+
+test('an image that arrives after the timeout still lands', () => {
+	eq(ssp.has('slow'), true, 'late sprite is loaded');
+	eq(ssp.size('slow'), { w: 10, h: 10 }, 'late sprite size');
+});
+
 done();

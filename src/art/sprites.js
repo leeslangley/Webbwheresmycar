@@ -1,9 +1,12 @@
-// Car sprite loader and drawer (card S01). Loads the pixel-art car PNGs listed
-// in assets/art/cars/manifest.json (written by tools/art/render_all.sh, card V07:
-// `{ "<id>": {"file": "<id>.png", "w": <width>, "h": <height>} }`) and draws
-// them crisp: whole-number pixel scale with imageSmoothingEnabled = false, so the
-// chunky pixels stay chunky. Pure: no DOM, no fetch, no Date -- the browser
-// passes loadJson/loadImage in through env, so tests run under `jsc -m` with fakes.
+// Car sprite loader and drawer (card S01, extended by CC02). Loads the pixel-art
+// car PNGs listed in assets/art/cars/manifest.json (written by tools/art/render_all.sh;
+// manifest v2 in docs/art/CARS_ALIGN.md: `{ "_meta": {...}, "<key>": {file, w, h,
+// ax, ay, mask, shadow, ...} }`; the old `{ "<id>": {"file", "w", "h"} }` still
+// works) and draws them crisp: whole-number pixel scale with
+// imageSmoothingEnabled = false, so the chunky pixels stay chunky. Keys starting
+// with `_` are not sprites. Pure: no DOM, no fetch, no Date -- the browser passes
+// loadJson/loadImage (and setTimeout) in through env, so tests run under `jsc -m`
+// with fakes.
 
 const MANIFEST_URL = 'assets/art/cars/manifest.json';
 const SPRITE_DIR = 'assets/art/cars/';
@@ -23,49 +26,148 @@ function spriteSize(img, entry) {
 	return null;
 }
 
-// createSprites(env) -> {ready, load, has, size, draw}; env = {loadJson, loadImage}.
+// nameOf(x): x when it is a non-empty file name, else null.
+function nameOf(x) {
+	return typeof x === 'string' && x !== '' ? x : null;
+}
+
+// copyOf(entry): a shallow copy of a manifest entry ({} for anything else).
+function copyOf(entry) {
+	const c = {};
+	if (entry && typeof entry === 'object') {
+		for (const k in entry) {
+			c[k] = entry[k];
+		}
+	}
+	return c;
+}
+
+// createSprites(env) -> {ready, timedOut, load, progress, has, size, meta, image,
+// maskImage, shadowImage, keys, draw}; env = {loadJson, loadImage, setTimeout?}.
 export function createSprites(env) {
-	const sprites = {}; // id -> {img, w, h}
+	// Plain tables with no prototype, so an id such as 'constructor' is not "loaded".
+	const sprites = Object.create(null); // id -> {img, w, h, entry}
+	const masks = Object.create(null); // id -> game mask image (RGBA, see CARS_ALIGN)
+	const shadows = Object.create(null); // id -> baked shadow image
+	let prog = { done: 0, total: 0 }; // progress of the latest load()
+	let order = []; // sprite ids of the latest manifest, in manifest order
 	const api = {
 		ready: false,
+		timedOut: false,
 
-		// load(): fetch the manifest, then every listed image. A failing image is
-		// skipped, not fatal, so one broken PNG cannot stop the game booting; a
-		// failing manifest leaves the sprite table empty. Either way load() resolves
-		// (it never rejects) and ready becomes true once loading is finished.
-		load: function () {
+		// load(opts): opts = {onProgress, timeoutMs}, both optional. Fetch the
+		// manifest, then every listed sprite, game mask and shadow image. Each
+		// finished download (loaded or failed) calls onProgress(done, total). A
+		// failing image is skipped, not fatal, so one broken PNG cannot stop the game
+		// booting; a failing manifest leaves the sprite table empty. load() never
+		// rejects. With timeoutMs > 0 and env.setTimeout, the promise also resolves
+		// when that time is up: if loading is still going, timedOut and ready become
+		// true, and images that arrive later still land in the tables.
+		load: function (opts) {
+			const o = opts || {};
+			const onProgress = typeof o.onProgress === 'function' ? o.onProgress : null;
+			const p = { done: 0, total: 0 };
+			let loaded = false;
+			prog = p;
+
+			function tick() {
+				p.done += 1;
+				if (onProgress) {
+					try {
+						onProgress(p.done, p.total);
+					} catch (e) {
+						// a throwing progress callback must not stop loading
+					}
+				}
+			}
+
+			function store(job, img) {
+				if (!img) {
+					return;
+				}
+				if (job.kind === 'mask') {
+					masks[job.id] = img;
+				} else if (job.kind === 'shadow') {
+					shadows[job.id] = img;
+				} else {
+					const sz = spriteSize(img, job.entry);
+					if (sz) {
+						sprites[job.id] = { img: img, w: sz.w, h: sz.h, entry: job.entry };
+					}
+				}
+			}
+
 			function finish() {
+				loaded = true;
 				api.ready = true;
 			}
-			return Promise.resolve()
+
+			const loading = Promise.resolve()
 				.then(function () {
 					return env.loadJson(MANIFEST_URL);
 				})
 				.then(function (man) {
-					const list = [];
+					const jobs = [];
+					order = [];
 					for (const id in man) {
+						if (id.charAt(0) === '_') {
+							continue; // _meta and other non-sprite keys
+						}
 						const entry = man[id];
-						const file = entry && typeof entry === 'object' ? entry.file : entry;
-						if (typeof file === 'string' && file !== '') {
-							list.push({ id: id, file: file, entry: entry });
+						const isObj = entry !== null && typeof entry === 'object';
+						const file = nameOf(isObj ? entry.file : entry);
+						if (file === null) {
+							continue;
+						}
+						order.push(id);
+						jobs.push({ kind: 'sprite', id: id, name: file, entry: entry });
+						if (isObj && nameOf(entry.mask) !== null) {
+							jobs.push({ kind: 'mask', id: id, name: entry.mask });
+						}
+						if (isObj && nameOf(entry.shadow) !== null) {
+							jobs.push({ kind: 'shadow', id: id, name: entry.shadow });
 						}
 					}
+					p.total = jobs.length;
 					return Promise.all(
-						list.map(function (it) {
+						jobs.map(function (job) {
 							return Promise.resolve()
 								.then(function () {
-									return env.loadImage(SPRITE_DIR + it.file);
+									return env.loadImage(SPRITE_DIR + job.name);
 								})
 								.then(function (img) {
-									const sz = spriteSize(img, it.entry);
-									if (sz) {
-										sprites[it.id] = { img: img, w: sz.w, h: sz.h };
-									}
-								}, function () {}); // skipped: image missing or corrupt
+									store(job, img);
+									tick();
+								}, function () {
+									tick(); // skipped: image missing or corrupt
+								});
 						})
 					);
 				})
 				.then(finish, finish);
+
+			if (typeof o.timeoutMs === 'number' && o.timeoutMs > 0 && typeof env.setTimeout === 'function') {
+				return new Promise(function (resolve) {
+					try {
+						env.setTimeout(function () {
+							if (!loaded) {
+								api.timedOut = true;
+								api.ready = true;
+							}
+							resolve();
+						}, o.timeoutMs);
+					} catch (e) {
+						// no timer available: just wait for the loading to finish
+					}
+					loading.then(resolve);
+				});
+			}
+			return loading;
+		},
+
+		// progress(): {done, total} of the latest load(); zeros before any load.
+		progress: function () {
+			return { done: prog.done, total: prog.total };
 		},
 
 		// has(id): true when that sprite loaded and is drawable.
@@ -77,6 +179,31 @@ export function createSprites(env) {
 		size: function (id) {
 			const s = sprites[id];
 			return s ? { w: s.w, h: s.h } : null;
+		},
+
+		// meta(id): a shallow copy of the manifest entry of a loaded sprite, else null.
+		meta: function (id) {
+			const s = sprites[id];
+			return s ? copyOf(s.entry) : null;
+		},
+
+		// image(id), maskImage(id), shadowImage(id): the loaded image, or null.
+		image: function (id) {
+			const s = sprites[id];
+			return s ? s.img : null;
+		},
+		maskImage: function (id) {
+			return masks[id] !== undefined ? masks[id] : null;
+		},
+		shadowImage: function (id) {
+			return shadows[id] !== undefined ? shadows[id] : null;
+		},
+
+		// keys(): the ids of the sprites that loaded, in manifest order.
+		keys: function () {
+			return order.filter(function (id) {
+				return sprites[id] !== undefined;
+			});
 		},
 
 		// draw(ctx, id, x, y, scale, opts): draw the sprite with its bottom
