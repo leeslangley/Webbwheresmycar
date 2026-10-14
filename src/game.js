@@ -116,5 +116,18 @@ export function createGame(env) {
 		.register(endgameScene)
 		.register(settingsScene);
 
+	// After the newspaper closes, a finished game goes to the end screen.
+	// Every other pop behaves as before.
+	const originalPop = app.pop;
+	app.pop = function () {
+		const top = app.current();
+		const poppedId = top ? top.id : null;
+		originalPop();
+		if (poppedId === 'news' && app.state && app.state.flags && app.state.flags.gameOver === true) {
+			saveTo(storage, app.state);
+			app.go('endgame');
+		}
+	};
+
 	return app;
 }
