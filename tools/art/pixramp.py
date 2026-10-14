@@ -164,3 +164,104 @@ def class_map(mask_rgba, out_w, out_h):
     alpha = wy @ (mask[:, :, 3] @ wx.T)                        # (out_h, out_w)
     classes = np.argmax(votes, axis=2).astype(np.int64)
     return classes, alpha >= 0.5
+
+
+# ------------------------------------------------------- ramp quantiser (CB13)
+
+# The 4x4 Bayer matrix of tools/art/pixelate.py (BAYER4), copied not imported.
+_BAYER4 = np.array([[0, 8, 2, 10],
+                    [12, 4, 14, 6],
+                    [3, 11, 1, 9],
+                    [15, 7, 13, 5]], dtype=np.float64) / 16.0
+
+CHROME_EDGES = [0.10, 0.25, 0.50, 0.72, 0.92]   # sRGB edges, 6 steps
+
+
+def bayer4():
+    """The 4x4 ordered-dither matrix as floats, centred on 0 (-0.5..0.44)."""
+    return _BAYER4 - 0.5
+
+
+def _dither_field(h, w):
+    """Bayer value for every pixel, from its position on the sprite grid."""
+    rows = np.arange(h)[:, None] % 4
+    cols = np.arange(w)[None, :] % 4
+    return bayer4()[rows, cols]
+
+
+def _paint_index(luma, median, field, dither, steps):
+    """Ramp step 0..6 for each pixel of one paint class (log-luma bands)."""
+    ln_mult = np.log(np.array(MULT, dtype=np.float64))
+    bnd = (ln_mult[:-1] + ln_mult[1:]) / 2.0
+    bw = float(np.mean(np.diff(ln_mult)))
+    r = np.log(np.maximum(luma, 1e-5) / median)
+    i = np.searchsorted(bnd, r + field * dither * bw)
+    i = np.clip(i, 0, 6)
+    allowed = np.array(sorted(set(steps)), dtype=np.int64)
+    if len(allowed) < 7:
+        nearest = np.argmin(np.abs(i[..., None] - allowed), axis=-1)
+        i = allowed[nearest]
+    return i
+
+
+def quantise(rgb, opaque, cls, color, color2=None, dither=0.5,
+             steps=(0, 1, 2, 3, 4, 5, 6), glass_dither=0.3):
+    """Snap every material pixel onto its material's ramp (card CB13).
+
+    rgb: (h, w, 3) LINEAR area-averaged render colour. opaque: bool (h, w).
+    cls: int class map (CLASS_NAMES order). color: paint hex; color2: hex for
+    class 8 (paint2), or the paint hex when None.
+
+    Returns (out, idx): out (h, w, 3) linear colours, idx (h, w) int with the
+    ramp step 0..6 for paint and paint2 pixels, -1 everywhere else.
+    """
+    arr = np.asarray(rgb, dtype=np.float64)
+    if arr.ndim != 3 or arr.shape[2] != 3:
+        raise ValueError('pixramp: quantise wants a (h, w, 3) array')
+    h, w = arr.shape[0], arr.shape[1]
+    opq = np.asarray(opaque, dtype=bool)
+    cls = np.asarray(cls, dtype=np.int64)
+    steps = tuple(steps)
+    if not steps or any(s not in range(7) for s in steps):
+        raise ValueError('pixramp: steps must be indices in 0..6, got %r' % (steps,))
+    luma = arr @ LUMA
+    field = _dither_field(h, w)
+    out = np.zeros((h, w, 3), dtype=np.float64)
+    idx = np.full((h, w), -1, dtype=np.int64)
+
+    # Paint (class 0) and paint2 (class 8): each with its own ramp and median.
+    paint_ramps = {
+        0: paint_ramp(color),
+        8: paint_ramp(color2 if color2 is not None else color),
+    }
+    for k, rows in paint_ramps.items():
+        m = opq & (cls == k)
+        if not m.any():
+            continue
+        median = max(float(np.median(luma[m])), 1e-5)
+        i = _paint_index(luma, median, field, dither, steps)
+        idx[m] = i[m]
+        out[m] = rows[i[m]]
+
+    # Every other class: fixed ramp, classes with fewer than 4 pixels stay black.
+    for k, name in enumerate(CLASS_NAMES):
+        if k in paint_ramps:
+            continue
+        m = opq & (cls == k)
+        if int(m.sum()) < 4:
+            continue
+        ramp = fixed_ramp(name)
+        n_steps = ramp.shape[0]
+        s = linear_to_srgb(luma[m])
+        if name == 'chrome':
+            edges = np.array(CHROME_EDGES, dtype=np.float64)
+            s_used = s
+        else:
+            edges = np.linspace(np.percentile(s, 2), np.percentile(s, 99),
+                                n_steps + 1)[1:-1]
+            s_used = s
+            if name in ('glass', 'tyre'):
+                s_used = s + field[m] * 0.08 * glass_dither
+        j = np.clip(np.searchsorted(edges, s_used), 0, n_steps - 1)
+        out[m] = ramp[j]
+    return out, idx
