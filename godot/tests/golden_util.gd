@@ -98,3 +98,8 @@ static func same(got: Variant, want: Variant) -> bool:
 
 static func _is_number(v: Variant) -> bool:
 	return typeof(v) == TYPE_INT or typeof(v) == TYPE_FLOAT
+
+
+# Fixture by name (GDF04 API): res://tests/golden/<name>.json parsed with CoreJson (integral floats become ints).
+static func fixture(name: String) -> Variant:
+	return CoreJson.load_file("res://tests/golden/" + name + ".json")
