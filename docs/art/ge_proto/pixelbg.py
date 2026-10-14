@@ -1,7 +1,7 @@
 # GE reference prototype: pixel stage for room plates (becomes tools/art/pixelbg.py). Reuses tools/art/pixelate.py helpers.
 # blender --background --python pixelbg.py -- <in.png> <out.png> <width> <colors> <dither>
 import sys, os
-sys.path.insert(0, os.path.expanduser('~/wt/webbwheresmycar/_dev/tools/art'))
+sys.path.insert(0, os.path.join(os.getcwd(), 'tools', 'art'))
 import numpy as np, pixelate as P
 a = sys.argv[sys.argv.index('--') + 1:]
 src, out, width, colors, dither = a[0], a[1], int(a[2]), int(a[3]), float(a[4])

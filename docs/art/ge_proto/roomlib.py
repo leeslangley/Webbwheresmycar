@@ -16,6 +16,15 @@ FLOOR_PY = 480.0          # screen y where the wall meets the floor
 FRAME_W, FRAME_H = 1280, 720
 
 
+def set_view(tilt_deg=16.0, floor_py=480.0):
+    """Change the camera tilt and where the wall meets the floor (default room view: 16 deg, 480).
+    Top-down table scenes use tilt 60 and a floor_py below the frame."""
+    global TILT, CT, ST, FLOOR_PY
+    TILT = math.radians(tilt_deg)
+    CT, ST = math.cos(TILT), math.sin(TILT)
+    FLOOR_PY = float(floor_py)
+
+
 def wx(px):
     return px / 100.0
 
@@ -201,7 +210,7 @@ def setup_camera(scene, w=FRAME_W, h=FRAME_H):
     scene.collection.objects.link(o)
     scene.camera = o
     f = Vector((0, CT, -ST))
-    target = Vector((6.4, 0, ((FLOOR_PY - h / 2) / 100.0) / CT))
+    target = Vector((6.4, 0, ((FLOOR_PY - FRAME_H / 2) / 100.0) / CT))   # always frame the 1280x720 view; w,h only set the render size
     o.location = target - f * 30
     o.rotation_euler = f.to_track_quat('-Z', 'Y').to_euler()
     cam.clip_start = 0.1

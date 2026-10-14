@@ -3177,5 +3177,326 @@
    "src/ui/scenes/office.js",
    "tests/scene_office_chars.test.mjs"
   ]
+ },
+ {
+  "id": "GE01",
+  "title": "Stage zones: banner, tableau, HUD constants",
+  "needs": [],
+  "file": "GE01-stage-zones-banner-tableau-hud-constants.md",
+  "files": [
+   "src/art/stage.js",
+   "tests/stage.test.mjs"
+  ]
+ },
+ {
+  "id": "GE02",
+  "title": "Blender room kit core: camera maths, materials, primitives",
+  "needs": [],
+  "file": "GE02-blender-room-kit-core-camera-maths-mater.md",
+  "files": [
+   "tools/art/roomlib.py",
+   "tests/run_roomlib.sh"
+  ]
+ },
+ {
+  "id": "GE03",
+  "title": "Room pixel stage and numeric checker",
+  "needs": [
+   "A04"
+  ],
+  "file": "GE03-room-pixel-stage-and-numeric-checker.md",
+  "files": [
+   "tools/art/pixelbg.py",
+   "tools/art/check_room.py",
+   "tests/run_pixelbg.sh"
+  ]
+ },
+ {
+  "id": "GE04",
+  "title": "Room kit: shell (wall, floor, window, frames, bunting)",
+  "needs": [
+   "GE02"
+  ],
+  "file": "GE04-room-kit-shell-wall-floor-window-frames-.md",
+  "files": [
+   "tools/art/roomkit_shell.py",
+   "tests/run_roomkit_shell.sh"
+  ]
+ },
+ {
+  "id": "GE05",
+  "title": "Room kit: furniture A (desk, lamp, side table, cabinet, chair)",
+  "needs": [
+   "GE04"
+  ],
+  "file": "GE05-room-kit-furniture-a-desk-lamp-side-tabl.md",
+  "files": [
+   "tools/art/roomkit_furn.py",
+   "tests/run_roomkit_furn.sh"
+  ]
+ },
+ {
+  "id": "GE06",
+  "title": "Room kit: props B (CRT TV, cabinet, rug, tyres, plant, roller door)",
+  "needs": [
+   "GE04"
+  ],
+  "file": "GE06-room-kit-props-b-crt-tv-cabinet-rug-tyre.md",
+  "files": [
+   "tools/art/roomkit_props.py",
+   "tests/run_roomkit_props.sh"
+  ]
+ },
+ {
+  "id": "GE07",
+  "title": "Office plate: Blender room, lights, two layers",
+  "needs": [
+   "GE03",
+   "GE05",
+   "GE06"
+  ],
+  "file": "GE07-office-plate-blender-room-lights-two-lay.md",
+  "files": [
+   "tools/art/room_office.py",
+   "tests/run_room_office.sh",
+   "assets/art/rooms/office.png",
+   "assets/art/rooms/office_front.png"
+  ]
+ },
+ {
+  "id": "GE08",
+  "title": "Garage plate: strip lights, pegboard, bays",
+  "needs": [
+   "GE03",
+   "GE04",
+   "GE06"
+  ],
+  "file": "GE08-garage-plate-strip-lights-pegboard-bays.md",
+  "files": [
+   "tools/art/roomkit_garage.py",
+   "tools/art/room_garage.py",
+   "tests/run_room_garage.sh",
+   "assets/art/rooms/garage.png"
+  ]
+ },
+ {
+  "id": "GE09",
+  "title": "Auction hall plate: curtains, stage, podium, spotlight",
+  "needs": [
+   "GE03",
+   "GE04"
+  ],
+  "file": "GE09-auction-hall-plate-curtains-stage-podium.md",
+  "files": [
+   "tools/art/roomkit_auction.py",
+   "tools/art/room_auction.py",
+   "tests/run_room_auction.sh",
+   "assets/art/rooms/auction.png"
+  ]
+ },
+ {
+  "id": "GE10",
+  "title": "Title plate: night shop row with a transparent sky",
+  "needs": [
+   "GE03",
+   "GE04"
+  ],
+  "file": "GE10-title-plate-night-shop-row-with-a-transp.md",
+  "files": [
+   "tools/art/roomkit_title.py",
+   "tools/art/room_title.py",
+   "tests/run_room_title.sh",
+   "assets/art/rooms/title.png"
+  ]
+ },
+ {
+  "id": "GE11",
+  "title": "Desk plates: ledger and bookings (top-down desk with lamp)",
+  "needs": [
+   "GE03",
+   "GE04"
+  ],
+  "file": "GE11-desk-plates-ledger-and-bookings-top-down.md",
+  "files": [
+   "tools/art/room_desk.py",
+   "tests/run_room_desk.sh",
+   "assets/art/rooms/ledger.png",
+   "assets/art/rooms/bookings.png"
+  ]
+ },
+ {
+  "id": "GE12",
+  "title": "Build every room plate and write the manifest",
+  "needs": [
+   "GE07",
+   "GE08",
+   "GE09",
+   "GE10",
+   "GE11"
+  ],
+  "file": "GE12-build-every-room-plate-and-write-the-man.md",
+  "files": [
+   "tools/art/build_rooms.sh",
+   "tests/run_build_rooms.sh",
+   "assets/art/rooms/manifest.json"
+  ]
+ },
+ {
+  "id": "GE13",
+  "title": "Game side: room plate loader and compositor",
+  "needs": [
+   "S01",
+   "GE01"
+  ],
+  "file": "GE13-game-side-room-plate-loader-and-composit.md",
+  "files": [
+   "src/art/rooms.js",
+   "tests/rooms.test.mjs"
+  ]
+ },
+ {
+  "id": "GE14",
+  "title": "Game side: light effects (glow, flicker, shaft, vignette, grain, glass)",
+  "needs": [
+   "W43"
+  ],
+  "file": "GE14-game-side-light-effects-glow-flicker-sha.md",
+  "files": [
+   "src/art/roomfx_light.js",
+   "tests/roomfx_light.test.mjs"
+  ]
+ },
+ {
+  "id": "GE15",
+  "title": "Game side: living window sky, dust motes, steam",
+  "needs": [
+   "W43"
+  ],
+  "file": "GE15-game-side-living-window-sky-dust-motes-s.md",
+  "files": [
+   "src/art/roomfx_world.js",
+   "tests/roomfx_world.test.mjs"
+  ]
+ },
+ {
+  "id": "GE16",
+  "title": "Office layout: move every hotspot onto the new room (tableau)",
+  "needs": [
+   "GE01"
+  ],
+  "file": "GE16-office-layout-move-every-hotspot-onto-th.md",
+  "files": [
+   "src/art/officelayout.js",
+   "tests/office_art.test.mjs",
+   "tests/scene_office.test.mjs"
+  ]
+ },
+ {
+  "id": "GE17",
+  "title": "Office scene: draw the plate, chairs, lights and sky",
+  "needs": [
+   "GE13",
+   "GE14",
+   "GE15",
+   "GE16"
+  ],
+  "file": "GE17-office-scene-draw-the-plate-chairs-light.md",
+  "files": [
+   "src/ui/scenes/office.js",
+   "tests/scene_office_plate.test.mjs"
+  ]
+ },
+ {
+  "id": "GE18",
+  "title": "Tellies and laptops: glass glare, scanlines, vignette",
+  "needs": [
+   "GE14"
+  ],
+  "file": "GE18-tellies-and-laptops-glass-glare-scanline.md",
+  "files": [
+   "src/ui/scenes/tvshop.js",
+   "src/ui/scenes/adverts.js",
+   "tests/scene_device_glass.test.mjs"
+  ]
+ },
+ {
+  "id": "GE19",
+  "title": "Garage scene: plate, flickering strip lights, dust",
+  "needs": [
+   "GE13",
+   "GE14",
+   "GE15"
+  ],
+  "file": "GE19-garage-scene-plate-flickering-strip-ligh.md",
+  "files": [
+   "src/ui/scenes/garage.js",
+   "tests/scene_garage_plate.test.mjs"
+  ]
+ },
+ {
+  "id": "GE20",
+  "title": "Bookings scene: desk plate and lamp glow",
+  "needs": [
+   "GE13",
+   "GE14"
+  ],
+  "file": "GE20-bookings-scene-desk-plate-and-lamp-glow.md",
+  "files": [
+   "src/ui/scenes/bookings.js",
+   "tests/scene_bookings_plate.test.mjs"
+  ]
+ },
+ {
+  "id": "GE21",
+  "title": "Auction scene: hall plate, spotlight cone, bobbing crowd kept",
+  "needs": [
+   "GE13",
+   "GE14"
+  ],
+  "file": "GE21-auction-scene-hall-plate-spotlight-cone-.md",
+  "files": [
+   "src/ui/scenes/auction.js",
+   "tests/scene_auction_plate.test.mjs"
+  ]
+ },
+ {
+  "id": "GE22",
+  "title": "Ledger scene: desk plate, lamp glow, mug steam",
+  "needs": [
+   "GE13",
+   "GE14",
+   "GE15"
+  ],
+  "file": "GE22-ledger-scene-desk-plate-lamp-glow-mug-st.md",
+  "files": [
+   "src/ui/scenes/ledger.js",
+   "tests/scene_ledger_plate.test.mjs"
+  ]
+ },
+ {
+  "id": "GE23",
+  "title": "Title scene: night shop row plate with road, lamps and stars behind",
+  "needs": [
+   "GE13",
+   "GE14"
+  ],
+  "file": "GE23-title-scene-night-shop-row-plate-with-ro.md",
+  "files": [
+   "src/ui/scenes/title.js",
+   "tests/scene_title_plate.test.mjs"
+  ]
+ },
+ {
+  "id": "GE24",
+  "title": "Boot: load the room plates and track the pointer for parallax",
+  "needs": [
+   "GE13",
+   "W68d"
+  ],
+  "file": "GE24-boot-load-the-room-plates-and-track-the-.md",
+  "files": [
+   "src/boot.js",
+   "tests/boot.test.mjs"
+  ]
  }
 ]
