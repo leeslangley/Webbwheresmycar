@@ -101,9 +101,16 @@ func _install(id: StringName, params: Dictionary) -> void:
 	scene_changed.emit(id)
 
 
-# Empty for now; later cards fill it in after a room is installed.
-func _after_install(_node: Node) -> void:
-	pass
+# Fills the wide-screen strips around the stage for every room installed by go().
+func _after_install(node: Node) -> void:
+	var room := node as RoomBase
+	if room != null:
+		StageFit.add_strips(room, room.strip_color)
+
+
+# The safe-area insets (left, right, top, bottom) that rooms may use to keep edge buttons clear of a notch.
+func stage_safe() -> Dictionary:
+	return main.stage_safe
 
 
 func open_overlay(id: StringName, params: Dictionary = {}) -> bool:
