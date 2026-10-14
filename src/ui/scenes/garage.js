@@ -19,6 +19,8 @@ import { effD, effR, marketValue, runningCost } from '../../sim/carstats.js';
 import { serviceCar, fixFault, restoreCar } from '../../sim/garage.js';
 import { sellToDealer, returnRental } from '../../sim/actions.js';
 import { consignCar, unconsign } from '../../sim/auction.js';
+import { glow, flicker, vignette } from '../../art/roomfx_light.js';
+import { drawDust } from '../../art/roomfx_world.js';
 
 export const LAYOUT = {
 	list: { x: 40, y: 100, w: 420, h: 520 },
@@ -87,6 +89,18 @@ function drawRoom(ctx, app) {
 	ctx.fillRect(app.w / 2 - 90, 16, 180, 28);
 	ctx.fillStyle = PALETTE.lamp;
 	ctx.fillRect(app.w / 2 - 70, 24, 140, 12);
+}
+
+// The garage as a Blender plate (card GE19): the room plate, three flickering
+// strip lights, floating dust and a vignette on top.
+function drawGaragePlate(ctx, app, t) {
+	app.rooms.draw(ctx, 'garage', {look: app.look || {x: 0, y: 0}});
+	const lights = [290, 640, 990];
+	for (let i = 0; i < lights.length; i++) {
+		glow(ctx, lights[i], 18, 150, '#dff1ff', 0.22 * flicker(t, i * 2.1, 0.18));
+	}
+	drawDust(ctx, {x: 0, y: 100, w: 1280, h: 400}, t, 24);
+	vignette(ctx, 1280, 720, 0.3);
 }
 
 // One list row: name, OWN/RENT tag, condition, FAULT and IMPOUNDED tags.
@@ -303,7 +317,11 @@ export const garageScene = {
 		const cars = state.cars;
 		this.scroll.setCount(cars.length);
 		this.hits.clear();
-		drawRoom(ctx, app);
+		if (app.rooms && app.rooms.has('garage')) {
+			drawGaragePlate(ctx, app, t);
+		} else {
+			drawRoom(ctx, app);
+		}
 		label(ctx, 'THE STABLE  ' + cars.length + '/' + state.garageSlots, 40, 40, {
 			size: 22, font: 'title', color: PALETTE.cream, shadow: true,
 		});
