@@ -1,0 +1,10 @@
+{
+ "version": 2,
+ "id": "bad_car",
+ "belt_y": 26.5,
+ "parts": [
+  {"kind": "tailfin", "x": -40, "y": 20, "h": 8},
+  {"kind": "headlamp", "x": 47, "y": 16, "lat": 5, "shape": "round"},
+  {"kind": "bumper", "end": "front", "style": "chrome_plated", "y": 6}
+ ]
+}

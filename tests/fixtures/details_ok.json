@@ -1,0 +1,19 @@
+{
+ "version": 2,
+ "id": "dossier_ok",
+ "belt_y": 26.5,
+ "window_frame": "chrome",
+ "windows": [[[-12, 26.5], [-9, 29], [6, 29], [10, 26.5]]],
+ "roof": {"variant": "hard", "colour": "#1f3a5f"},
+ "wheel": {"style": "steel", "hub": "chrome", "whitewall": false, "trim_ring": false, "hubcap_r": 4.0, "spokes": 0},
+ "parts": [
+  {"kind": "headlamp", "x": 47, "y": 16, "lat": 5, "r": 1.5, "shape": "round", "side": "both"},
+  {"kind": "headlamp", "x": 46, "y": 11, "lat": 5, "r": 1.0, "shape": "round", "side": "both"},
+  {"kind": "taillamp", "x": -49, "y": 14, "lat": 5, "side": "both"},
+  {"kind": "bumper", "end": "front", "y": 6, "h": 2, "style": "blade"},
+  {"kind": "bumper", "end": "rear", "y": 6, "h": 2, "style": "blade"},
+  {"kind": "plate", "end": "front"},
+  {"kind": "plate", "end": "rear"},
+  {"kind": "shutline", "path": [[-20, 8], [-20, 24]], "role": "door", "side": "both"}
+ ]
+}
