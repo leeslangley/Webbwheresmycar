@@ -1,0 +1,89 @@
+{
+  "character": "mark",
+  "view": "front",
+  "defaults": {
+    "shoulder_L": [-30, 6, 0],
+    "shoulder_R": [-30, -6, 0],
+    "elbow_L": [-60, 0, 0],
+    "elbow_R": [-60, 0, 0],
+    "hand_L": "relaxed",
+    "hand_R": "relaxed",
+    "prop_L": "none",
+    "prop_R": "none"
+  },
+  "clips": {
+    "shrug": {
+      "fps": 8,
+      "loop": false,
+      "hold": 0.6,
+      "frames": 5,
+      "keys": [
+        {},
+        {"hand_L": "open", "hand_R": "open", "shoulder_L": [-20, 20, 0], "shoulder_R": [-20, -20, 0], "elbow_L": [-70, 0, 0], "elbow_R": [-70, 0, 0], "root": [0, 0, 0.01]},
+        {"hand_L": "open", "hand_R": "open", "shoulder_L": [-20, 35, 0], "shoulder_R": [-20, -35, 0], "elbow_L": [-90, 0, 0], "elbow_R": [-90, 0, 0], "root": [0, 0, 0.02], "head": [0, 6, 0]}
+      ]
+    },
+    "point": {
+      "fps": 8,
+      "loop": false,
+      "hold": 0.8,
+      "frames": 4,
+      "keys": [
+        {},
+        {"hand_R": "point", "shoulder_R": [-70, -35, 0], "elbow_R": [-10, 0, 0], "wrist_R": [0, 0, 0], "head": [0, 0, 8]}
+      ]
+    },
+    "thumbs": {
+      "fps": 8,
+      "loop": false,
+      "hold": 0.8,
+      "frames": 4,
+      "keys": [
+        {},
+        {"hand_R": "thumbs", "shoulder_R": [-55, -20, 0], "elbow_R": [-100, 0, 0], "wrist_R": [0, 0, 10], "head": [-3, 0, 0]}
+      ]
+    },
+    "panic": {
+      "fps": 12,
+      "loop": true,
+      "hold": 0,
+      "frames": 6,
+      "keys": [
+        {"hand_L": "open", "hand_R": "open", "shoulder_L": [-35, 50, 0], "shoulder_R": [-35, -50, 0], "elbow_L": [-140, 0, 0], "elbow_R": [-140, 0, 0], "root": [0.02, 0, 0], "head": [0, 6, 0]},
+        {"hand_L": "open", "hand_R": "open", "shoulder_L": [-35, 50, 0], "shoulder_R": [-35, -50, 0], "elbow_L": [-140, 0, 0], "elbow_R": [-140, 0, 0], "root": [-0.02, 0, 0], "head": [0, -6, 0]},
+        {"hand_L": "open", "hand_R": "open", "shoulder_L": [-35, 50, 0], "shoulder_R": [-35, -50, 0], "elbow_L": [-140, 0, 0], "elbow_R": [-140, 0, 0], "root": [0.02, 0, 0], "head": [0, 6, 0]},
+        {"hand_L": "open", "hand_R": "open", "shoulder_L": [-35, 50, 0], "shoulder_R": [-35, -50, 0], "elbow_L": [-140, 0, 0], "elbow_R": [-140, 0, 0], "root": [-0.02, 0, 0], "head": [0, -6, 0]}
+      ]
+    },
+    "facepalm": {
+      "fps": 8,
+      "loop": false,
+      "hold": 0.8,
+      "frames": 5,
+      "keys": [
+        {},
+        {"hand_R": "flat", "shoulder_R": [-60, -10, 0], "elbow_R": [-140, 0, 0], "wrist_R": [-30, 0, 0], "head": [20, 0, 0], "chest": [10, 0, 0]}
+      ]
+    },
+    "celebrate": {
+      "fps": 10,
+      "loop": true,
+      "hold": 0,
+      "frames": 6,
+      "keys": [
+        {"hand_L": "fist", "hand_R": "fist", "shoulder_L": [-10, 160, 0], "shoulder_R": [-30, -20, 0], "elbow_L": [-15, 0, 0], "elbow_R": [-80, 0, 0], "root": [0, 0, 0.03], "head": [-6, 0, 0]},
+        {"hand_L": "fist", "hand_R": "fist", "shoulder_L": [-30, 20, 0], "shoulder_R": [-10, -160, 0], "elbow_L": [-80, 0, 0], "elbow_R": [-15, 0, 0], "root": [0, 0, 0.0], "head": [-6, 0, 0]}
+      ]
+    },
+    "slump": {
+      "fps": 6,
+      "loop": false,
+      "hold": 1.0,
+      "frames": 4,
+      "keys": [
+        {},
+        {"head": [28, 0, 0], "chest": [14, 0, 0], "root": [0, 0, -0.03], "shoulder_L": [-10, 4, 0], "shoulder_R": [-10, -4, 0], "elbow_L": [-30, 0, 0], "elbow_R": [-30, 0, 0]}
+      ]
+    }
+  }
+}
