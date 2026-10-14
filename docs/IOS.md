@@ -32,10 +32,16 @@ Make a `git worktree` of the commit to ship, then from it:
 
 ## 3. Simulator check (no Apple account needed)
 
+Run from the worktree. The first line copies the game into `ios/www` (git
+ignores that folder, so a fresh worktree needs it). To pick another phone,
+run `xcrun simctl list devices available` and use any listed iPhone name
+in place of `iPhone 17`.
+
+    sh tools/ios/sync_www.sh
     xcodebuild -project ios/WebbWheresMyCar.xcodeproj -scheme WebbWheresMyCar \
       -configuration Debug -sdk iphonesimulator \
       -derivedDataPath /tmp/wmc-sim build
-    xcrun simctl boot "iPhone 16"
+    xcrun simctl boot "iPhone 17"
     xcrun simctl install booted /tmp/wmc-sim/Build/Products/Debug-iphonesimulator/WebbWheresMyCar.app
     xcrun simctl launch booted com.leelangley.webbwheresmycar
 
