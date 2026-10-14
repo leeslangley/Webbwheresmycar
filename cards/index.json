@@ -2247,5 +2247,270 @@
   "files": [
    "docs/cars/details/{car}.json"
   ]
+ },
+ {
+  "id": "CC01",
+  "title": "Pixel scale, snapping, car motion helpers",
+  "needs": [],
+  "file": "CC01-pixel-scale-snapping-car-motion-helpers.md",
+  "files": [
+   "src/art/pixelscale.js",
+   "tests/pixelscale.test.mjs"
+  ]
+ },
+ {
+  "id": "CC02",
+  "title": "Sprite loader v2: progress, timeout, meta, masks",
+  "needs": [
+   "S01"
+  ],
+  "file": "CC02-sprite-loader-v2-progress-timeout-meta-m.md",
+  "files": [
+   "src/art/sprites.js",
+   "tests/sprites.test.mjs"
+  ]
+ },
+ {
+  "id": "CC03",
+  "title": "Asset env for browser and iPhone WKWebView",
+  "needs": [
+   "CC02"
+  ],
+  "file": "CC03-asset-env-for-browser-and-iphone-wkwebvi.md",
+  "files": [
+   "src/art/assetenv.js",
+   "tests/assetenv.test.mjs"
+  ]
+ },
+ {
+  "id": "CC04",
+  "title": "Sprite paint: palette-swap recolour and wear states",
+  "needs": [],
+  "file": "CC04-sprite-paint-palette-swap-recolour-and-w.md",
+  "files": [
+   "src/art/sprite_paint.js",
+   "tests/sprite_paint.test.mjs"
+  ]
+ },
+ {
+  "id": "CC05",
+  "title": "Car variant cache (recoloured, worn sprites)",
+  "needs": [
+   "CC02",
+   "CC04"
+  ],
+  "file": "CC05-car-variant-cache-recoloured-worn-sprite.md",
+  "files": [
+   "src/art/carvariants.js",
+   "tests/carvariants.test.mjs"
+  ]
+ },
+ {
+  "id": "CC06",
+  "title": "Car effects: shadow, reflection, shine, steam, exhaust",
+  "needs": [],
+  "file": "CC06-car-effects-shadow-reflection-shine-stea.md",
+  "files": [
+   "src/art/carfx.js",
+   "tests/carfx.test.mjs"
+  ]
+ },
+ {
+  "id": "CC07",
+  "title": "drawModelCar: one entry point, sprite or code-drawn",
+  "needs": [
+   "CC01",
+   "CC05",
+   "CC06"
+  ],
+  "file": "CC07-drawmodelcar-one-entry-point-sprite-or-c.md",
+  "files": [
+   "src/art/modelcar.js",
+   "tests/modelcar.test.mjs",
+   "tests/fakecarart.js"
+  ]
+ },
+ {
+  "id": "CC08",
+  "title": "Stages: showroom, garage and auction sets",
+  "needs": [
+   "CC06"
+  ],
+  "file": "CC08-stages-showroom-garage-and-auction-sets.md",
+  "files": [
+   "src/art/stage.js",
+   "tests/stage.test.mjs"
+  ]
+ },
+ {
+  "id": "CC09",
+  "title": "Loading scene with a car as the progress marker",
+  "needs": [
+   "CC02"
+  ],
+  "file": "CC09-loading-scene-with-a-car-as-the-progress.md",
+  "files": [
+   "src/ui/scenes/loading.js",
+   "tests/scene_loading.test.mjs"
+  ]
+ },
+ {
+  "id": "CC10",
+  "title": "Boot flow: device scale, asset loading, loading scene",
+  "needs": [
+   "CC01",
+   "CC03",
+   "CC07",
+   "CC09",
+   "W68d"
+  ],
+  "file": "CC10-boot-flow-device-scale-asset-loading-loa.md",
+  "files": [
+   "src/boot.js",
+   "src/main.js",
+   "tests/boot.test.mjs"
+  ]
+ },
+ {
+  "id": "CC11",
+  "title": "Car portrait card and HUD car cluster",
+  "needs": [
+   "CC07",
+   "CC08"
+  ],
+  "file": "CC11-car-portrait-card-and-hud-car-cluster.md",
+  "files": [
+   "src/art/carportrait.js",
+   "tests/carportrait.test.mjs"
+  ]
+ },
+ {
+  "id": "CC12",
+  "title": "Webb TV screen car display",
+  "needs": [
+   "CC07",
+   "CC11"
+  ],
+  "file": "CC12-webb-tv-screen-car-display.md",
+  "files": [
+   "src/art/tvcar.js",
+   "tests/tvcar.test.mjs"
+  ]
+ },
+ {
+  "id": "CC13",
+  "title": "Office: car on the telly and HUD car portrait",
+  "needs": [
+   "CC11",
+   "CC12",
+   "W58"
+  ],
+  "file": "CC13-office-car-on-the-telly-and-hud-car-port.md",
+  "files": [
+   "src/ui/scenes/office.js",
+   "src/art/officelayout.js",
+   "tests/scene_office.test.mjs"
+  ]
+ },
+ {
+  "id": "CC14",
+  "title": "TV shop: the car on a showroom stage",
+  "needs": [
+   "CC01",
+   "CC07",
+   "CC08",
+   "W59b"
+  ],
+  "file": "CC14-tv-shop-the-car-on-a-showroom-stage.md",
+  "files": [
+   "src/ui/scenes/tvshop.js",
+   "tests/scene_tvshop_draw.test.mjs"
+  ]
+ },
+ {
+  "id": "CC15",
+  "title": "Garage: car on a workshop stage with wear and fault",
+  "needs": [
+   "CC01",
+   "CC07",
+   "CC08",
+   "CC11",
+   "W60"
+  ],
+  "file": "CC15-garage-car-on-a-workshop-stage-with-wear.md",
+  "files": [
+   "src/ui/scenes/garage.js",
+   "tests/scene_garage.test.mjs"
+  ]
+ },
+ {
+  "id": "CC16",
+  "title": "Auction: lot on a curtained stage, no text on the car",
+  "needs": [
+   "CC01",
+   "CC07",
+   "CC08",
+   "W65b"
+  ],
+  "file": "CC16-auction-lot-on-a-curtained-stage-no-text.md",
+  "files": [
+   "src/ui/scenes/auction.js",
+   "tests/scene_auction_a.test.mjs"
+  ]
+ },
+ {
+  "id": "CC17",
+  "title": "Bookings: car thumbnails in the strip",
+  "needs": [
+   "CC07",
+   "W62"
+  ],
+  "file": "CC17-bookings-car-thumbnails-in-the-strip.md",
+  "files": [
+   "src/ui/scenes/bookings.js",
+   "tests/scene_bookings.test.mjs"
+  ]
+ },
+ {
+  "id": "CC18",
+  "title": "Title drive-by of real classic cars",
+  "needs": [
+   "CC01",
+   "CC07",
+   "W57"
+  ],
+  "file": "CC18-title-drive-by-of-real-classic-cars.md",
+  "files": [
+   "src/ui/scenes/title.js",
+   "tests/scene_title.test.mjs"
+  ]
+ },
+ {
+  "id": "CC19",
+  "title": "Blender paint mask pass and pixelate mask output",
+  "needs": [
+   "V06",
+   "A04"
+  ],
+  "file": "CC19-blender-paint-mask-pass-and-pixelate-mas.md",
+  "files": [
+   "tools/art/blender_car2.py",
+   "tools/art/pixelate.py",
+   "tests/run_mask.sh"
+  ]
+ },
+ {
+  "id": "CC20",
+  "title": "Render all v2: densities, thumbnails, masks, manifest",
+  "needs": [
+   "V07",
+   "CC19",
+   "CC02"
+  ],
+  "file": "CC20-render-all-v2-densities-thumbnails-masks.md",
+  "files": [
+   "tools/art/render_all.sh",
+   "tests/run_render_all.sh"
+  ]
  }
 ]
