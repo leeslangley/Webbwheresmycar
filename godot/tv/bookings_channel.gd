@@ -3,13 +3,16 @@ extends ChannelBase
 
 # The BOOKINGS channel, display half (port of src/ui/scenes/bookings.js): the hire diary. A scrolling list of
 # customer requests, a detail panel (fee and needs, OK or NO for the chosen car) and a strip of the player's own
-# cars, three per page, greyed out with the reason when a car cannot take the job. Accepting is GDU25.
+# cars, three per page, greyed out with the reason when a car cannot take the job. ACCEPT JOB (GDU25) explains
+# every refusal with a toast, then runs the job and shows its result on a panel that OK or BACK dismisses.
 
 const PER_PAGE := 3
 
 var sel_req: String = ""
 var sel_car: String = ""
 var car_page: int = 0
+# Empty = no result showing. Otherwise {"text", "type", "paid"} from the last accepted job.
+var result: Dictionary = {}
 
 var Requests: UiList
 var PrevBtn: UiButton
@@ -17,6 +20,8 @@ var NextBtn: UiButton
 var Car0: UiButton
 var Car1: UiButton
 var Car2: UiButton
+var AcceptBtn: UiButton
+var OkBtn: UiButton
 var _slots: Array[UiButton] = []
 
 
@@ -46,6 +51,13 @@ func _ready() -> void:
 	for s in range(PER_PAGE):
 		_slots[s].activated.connect(_on_car.bind(s))
 		_slots[s].blocked.connect(_on_car.bind(s))
+
+	AcceptBtn = _make_btn("ACCEPT JOB", Rect2(8, 376, 624, 72), "button", "primary")
+	AcceptBtn.activated.connect(_accept)
+	AcceptBtn.blocked.connect(_accept)
+	OkBtn = _make_btn("OK", Rect2(8, 376, 624, 72), "button", "primary")
+	OkBtn.visible = false
+	OkBtn.activated.connect(dismiss)
 
 
 func _make_btn(label_text: String, r: Rect2, role: String, kind: String) -> UiButton:
@@ -114,6 +126,95 @@ func _on_car(slot: int) -> void:
 	refresh()
 
 
+# The reason ACCEPT JOB cannot run yet, checked in the order of the JS onAccept; "" = fine to accept.
+static func accept_refusal(st: Dictionary, req: Dictionary, car: Dictionary, model: Dictionary) -> String:
+	if car.is_empty():
+		return "Pick a car first"
+	if BookingsMath.block_reason(st, car, {}, model) != "":
+		return "That car is not fit to go out"
+	if req.is_empty():
+		return "Pick a booking first"
+	if BookingsMath.eff_d(model, car) < float(req.minDesirability):
+		return "That car is too plain for this booking"
+	if BookingsMath.eff_r(model, car) < float(req.minReliability):
+		return "That car is too flaky for this booking"
+	if float(car.condition) < float(req.minCondition):
+		return "That car is too scruffy for this booking"
+	return ""
+
+
+func _accept() -> void:
+	var req := req_by_id(sel_req)
+	var car := car_by_id(sel_car)
+	var model := ChannelBase.model_of(str(car.get("modelId", "")))
+	var why := BookingsChannel.accept_refusal(state(), req, car, model)
+	if why != "":
+		toast(why)
+		return
+	var res: Dictionary = game.act("accept_job", {"request_id": req.id, "car_id": car.id})
+	if not res.get("ok", false):
+		return
+	var outcome: Dictionary = res.get("outcome", {})
+	result = {
+		"text": str(res.get("msg", "")),
+		"type": str(outcome.get("type", "success")),
+		"paid": int(outcome.get("paid", 0)),
+	}
+	sel_req = ""
+	sel_car = ""
+	refresh()
+	queue_redraw()
+
+
+func dismiss() -> void:
+	result = {}
+	refresh()
+	queue_redraw()
+
+
+# Screenshot and test hook: shows a result panel exactly as an accepted job does.
+func _test_show_result(r: Dictionary) -> void:
+	result = r
+	refresh()
+	queue_redraw()
+
+
+func on_ok() -> void:
+	if result.is_empty():
+		_accept()
+	else:
+		dismiss()
+
+
+func on_back() -> bool:
+	if not result.is_empty():
+		dismiss()
+		return true
+	return false
+
+
+static func type_label(t: String) -> String:
+	var labels := {"success": "JOB DONE", "mishap": "MISHAP", "breakdown": "BREAKDOWN", "disaster": "DISASTER"}
+	return str(labels.get(t, "JOB DONE"))
+
+
+static func paid_text(paid: int) -> String:
+	if paid > 0:
+		return "Paid " + CoreFormat.money(paid)
+	if paid < 0:
+		return "Compensation " + CoreFormat.money(-paid)
+	return "Paid nothing"
+
+
+static func type_color_name(t: String) -> String:
+	match t:
+		"mishap":
+			return "warn"
+		"breakdown", "disaster":
+			return "bad"
+	return "good"
+
+
 func refresh() -> void:
 	if req_by_id(sel_req).is_empty():
 		sel_req = ""
@@ -123,8 +224,10 @@ func refresh() -> void:
 	var n := list.size()
 	var pages := maxi(1, int(ceil(n / float(PER_PAGE))))
 	car_page = clampi(car_page, 0, pages - 1)
+	var showing := not result.is_empty()
 
 	var reqs := requests()
+	Requests.visible = not showing
 	Requests.set_count(reqs.size())
 	Requests.selected = -1
 	for i in range(reqs.size()):
@@ -137,7 +240,7 @@ func refresh() -> void:
 	for s in range(PER_PAGE):
 		var idx := car_page * PER_PAGE + s
 		var slot: UiButton = _slots[s]
-		if idx >= n:
+		if showing or idx >= n:
 			slot.text = ""
 			slot.visible = false
 			continue
@@ -149,8 +252,17 @@ func refresh() -> void:
 		slot.text = UiText.ellipsize(str(model.name), 12) + "\n" + bottom
 		slot.enabled = why == ""
 		slot.hot = str(car.id) == sel_car
+	PrevBtn.visible = not showing
+	NextBtn.visible = not showing
 	PrevBtn.enabled = car_page > 0
 	NextBtn.enabled = (car_page + 1) * PER_PAGE < n
+
+	var car_now := car_by_id(sel_car)
+	var model_now := ChannelBase.model_of(str(car_now.get("modelId", "")))
+	AcceptBtn.visible = not showing
+	OkBtn.visible = showing
+	AcceptBtn.text = "ACCEPT JOB " + (CoreFormat.money(float(req.fee)) if not req.is_empty() else "")
+	AcceptBtn.enabled = accept_refusal(state(), req, car_now, model_now) == ""
 	queue_redraw()
 
 
@@ -179,6 +291,9 @@ func _paint_req_row(list: Control, i: int, r: Rect2, sel: bool) -> void:
 
 
 func _paint() -> void:
+	if not result.is_empty():
+		_paint_result()
+		return
 	var paper := UiTheme.color("paper")
 	var ink := UiTheme.color("ink")
 	var good := UiTheme.color("good")
@@ -216,6 +331,17 @@ func _paint() -> void:
 			var pass_ok := vals[i] >= needs[i]
 			UiTheme.draw_text(self, "OK" if pass_ok else "NO", Vector2(470, y), "h3", good if pass_ok else bad)
 			UiTheme.draw_text(self, CoreFormat.one_dp(vals[i]), Vector2(530, y), "caption", ink)
+
+
+# The job result panel: shown alone until OK or BACK dismisses it.
+func _paint_result() -> void:
+	var paper := UiTheme.color("paper")
+	var ink := UiTheme.color("ink")
+	var t := str(result.get("type", "success"))
+	UiTheme.draw_box(self, Rect2(8, 48, 624, 316), paper, ink, 4, true)
+	UiTheme.draw_text(self, type_label(t), Vector2(0, 62), "h1", UiTheme.color(type_color_name(t)), 640.0, HORIZONTAL_ALIGNMENT_CENTER)
+	UiTheme.draw_text(self, paid_text(int(result.get("paid", 0))), Vector2(0, 108), "h2", ink, 640.0, HORIZONTAL_ALIGNMENT_CENTER)
+	_text_lines(UiText.wrap(str(result.get("text", "")), 48, 6), Vector2(28, 156), 26.0, "caption", ink)
 
 
 func _text_lines(lines: Array[String], pos: Vector2, pitch: float, role: String, col: Color) -> void:
