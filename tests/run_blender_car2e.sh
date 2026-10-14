@@ -18,7 +18,7 @@ ok=1
 rm -f "$out"
 if res=$("$BLENDER" --background --python-exit-code 1 \
         --python tools/art/blender_car2.py -- \
-        --dossier tests/fixtures/dossier_ok.json --out "$out" --report 2>&1); then
+        --dossier tests/fixtures/dossier_ok.json --out "$out" --details none --report 2>&1); then
 	case "$res" in
 	*"RENDERED $out"*) ;;
 	*) echo "FAIL: dossier_ok.json exited 0 but output missing 'RENDERED $out'"; ok=0 ;;
@@ -56,7 +56,7 @@ fi
 rm -f "$empty_out"
 if res=$("$BLENDER" --background --python-exit-code 1 \
         --python tools/art/blender_car2.py -- \
-        --dossier "$empty" --out "$empty_out" --report 2>&1); then
+        --dossier "$empty" --out "$empty_out" --details none --report 2>&1); then
 	case "$res" in
 	*"RENDERED $empty_out"*) ;;
 	*) echo "FAIL: empty-front dossier exited 0 but output missing 'RENDERED $empty_out'"; ok=0 ;;
