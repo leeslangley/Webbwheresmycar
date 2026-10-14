@@ -15,6 +15,7 @@ signal to_title
 var entered_with: Dictionary = {}
 var left := false
 var news_calls := 0
+var crt_calls: Array = []
 
 
 func enter(p: Dictionary = {}) -> void:
@@ -27,3 +28,7 @@ func exit() -> void:
 
 func show_news() -> void:
 	news_calls += 1
+
+
+func set_crt(on: bool) -> void:
+	crt_calls.append(on)

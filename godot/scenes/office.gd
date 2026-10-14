@@ -149,6 +149,13 @@ func _setup_tv() -> void:
 		tv.closed.connect(_on_tv_closed)
 
 
+# The CRT filter setting (Flow.apply_settings): passed on to the TV.
+func set_crt(on: bool) -> void:
+	var tv = _tv()
+	if tv != null and tv.has_method("set_crt"):
+		tv.set_crt(on)
+
+
 func show_channel(channel: String) -> void:
 	var tv = _tv()
 	if tv != null and tv.has_method("tune"):

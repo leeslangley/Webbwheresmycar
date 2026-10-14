@@ -34,6 +34,7 @@ var current: Node = null
 var overlay_id: StringName = &""
 var overlay: Node = null
 var transitions: Node = null
+var _end_pending := false
 
 
 # Transition kind for a move between two rooms. "" for the first room (no transition).
@@ -64,6 +65,11 @@ func attach(main_node: Main) -> void:
 		transitions.name = "Transitions"
 		main.add_child(transitions)
 	bind_game(_autoload_game())
+	scene_changed.connect(func(_id: StringName) -> void: apply_settings())
+	var g = get_game()
+	if g != null:
+		g.load_settings()
+	apply_settings()
 	if auto_start:
 		go(&"loading", {}, "")
 
@@ -127,16 +133,58 @@ func to_title() -> void:
 
 # Every day that passes: the room in front shows the news, when it can.
 func _on_day_advanced() -> void:
+	if _is_game_over():
+		_on_game_over()
+		return
 	if current != null and current.has_method("show_news"):
 		current.show_news()
 
 
-# Empty for now; GDR31 fills it in (the game over redirect).
+# True when the Game's state has ended the year (flags.gameOver).
+func _is_game_over() -> bool:
+	var g = get_game()
+	if g == null:
+		return false
+	var s: Dictionary = g.state
+	var flags: Dictionary = s.get("flags", {})
+	return flags.get("gameOver", false) == true
+
+
+# The game is over: the news (on the TV) comes first, and only when it closes does the endgame show.
 func _on_game_over() -> void:
-	pass
+	if _end_pending:
+		return
+	_end_pending = true
+	if current != null and current.has_signal("news_closed") and current.has_method("show_news"):
+		current.news_closed.connect(_goto_endgame, CONNECT_ONE_SHOT)
+		current.show_news()
+	else:
+		_goto_endgame()
+
+
+func _goto_endgame() -> void:
+	_end_pending = false
+	go(&"endgame", {}, "default")
+
+
+# Applies the saved settings to the room in front (CRT filter) and to the Sfx autoload (sound).
+func apply_settings() -> void:
+	var g = get_game()
+	if g == null:
+		return
+	var s: Dictionary = g.settings
+	if current != null and current.has_method("set_crt"):
+		current.set_crt(bool(s.get("crt", false)))
+	var tree := Engine.get_main_loop() as SceneTree
+	var sfx: Node = tree.root.get_node_or_null("Sfx") if tree != null else null
+	if sfx != null and sfx.has_method("set_muted"):
+		sfx.set_muted(not bool(s.get("sound", true)))
 
 
 func go(id: StringName, params: Dictionary = {}, kind := "default") -> bool:
+	# The wrapped pop: once the year is over, the office is never shown again, the endgame is.
+	if id == &"office" and _is_game_over():
+		id = &"endgame"
 	if not room_paths.has(id) or not ResourceLoader.exists(room_paths[id]):
 		push_error("Flow.go: unknown room " + String(id))
 		return false
@@ -231,6 +279,8 @@ func _wire(node: Node, is_overlay: bool) -> void:
 		node.connect("play_again", func() -> void: new_game())
 	if node.has_signal("to_title"):
 		node.connect("to_title", func() -> void: to_title())
+	if node.has_signal("setting_changed"):
+		node.connect("setting_changed", func(_key: String, _value: bool) -> void: apply_settings())
 
 
 func _on_request_scene(scene_id: StringName, params: Dictionary) -> void:
