@@ -51,6 +51,11 @@ func _add_cell(k: int, car_id: String, view: String, wear: float, cell: Vector2,
 	cv.set_view(view)
 	(cv.get_node("Box") as SubViewportContainer).stretch_shrink = 2
 	cv.set_car(car_id)
+	var cars: Dictionary = CarView.manifest().get("cars", {})
+	var entry: Dictionary = cars.get(car_id, {})
+	var paints: Array = entry.get("paints", [])
+	if not paints.is_empty():
+		cv.set_paint(Color(str(paints[0])))
 	cv.set_wear(wear)
 
 	var tag := Label.new()

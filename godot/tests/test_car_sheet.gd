@@ -64,6 +64,27 @@ func test_wear_and_views_by_index() -> void:
 	sheet.free()
 
 
+func test_paint_applied() -> void:
+	var sheet := _make()
+	var cars := _cars()
+	var ids := _ids()
+	var cell := _cell(sheet, 0)
+	ok(cell != null, "Cell_0 is a CarView")
+	if cell != null:
+		var paints: Array = (cars[cell.car_id] as Dictionary).get("paints", [])
+		ok(not paints.is_empty(), "Cell_0 car has manifest paints")
+		if not paints.is_empty():
+			var want := Color(str(paints[0]))
+			near(cell.paint.r, want.r, 0.003, "Cell_0 paint red")
+			near(cell.paint.g, want.g, 0.003, "Cell_0 paint green")
+			near(cell.paint.b, want.b, 0.003, "Cell_0 paint blue")
+	var distinct := {}
+	for k in range(2 * ids.size()):
+		distinct[_cell(sheet, k).paint.to_html()] = true
+	ok(distinct.size() >= 2, "at least two cells have different paint colours")
+	sheet.free()
+
+
 func test_every_cell_has_tag_and_shrink() -> void:
 	var sheet := _make()
 	var ids := _ids()
