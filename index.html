@@ -8,6 +8,8 @@
 	<meta name="apple-mobile-web-app-title" content="Webb Wheels">
 	<meta name="theme-color" content="#14102a">
 	<title>Webb, where's my car?</title>
+	<link rel="manifest" href="manifest.webmanifest">
+	<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
 	<style>
 		@font-face {
 			font-family: 'Press Start 2P';
@@ -57,5 +59,17 @@
 	<canvas id="game"></canvas>
 	<div id="rotate">TURN YOUR PHONE SIDEWAYS</div>
 	<script type="module" src="src/main.js"></script>
+	<script>
+		if ('serviceWorker' in navigator) {
+			try {
+				var host = location.hostname;
+				if (host !== 'localhost' && host !== '127.0.0.1') {
+					navigator.serviceWorker.register('sw.js');
+				}
+			} catch (err) {
+				// Offline support is optional: ignore registration failures.
+			}
+		}
+	</script>
 </body>
 </html>
