@@ -1,0 +1,77 @@
+{
+    "id": "dave",
+    "name": "Dave Spanner Dobbs",
+    "head_scale": 1.25,
+    "frames": {
+        "world": {"w": 144, "h": 144, "ortho": 2.25, "center": [0.0, 0.95]},
+        "head": {"w": 80, "h": 80, "ortho": 1.25, "pivot_px": [40, 66]},
+        "bust": {"w": 96, "h": 96, "ortho": 1.6, "center": [0.0, 1.40]}
+    },
+    "render": {
+        "supersample": 4,
+        "outline": "#14102a",
+        "outline_px": 1,
+        "dither": 0.18,
+        "colors": 32
+    },
+    "palette": {
+        "skin": "#e8bf98",
+        "skin_shade": "#d8a67e",
+        "ear": "#d9a37c",
+        "nose": "#d98a78",
+        "cap": "#4a4a52",
+        "cap_dark": "#33333a",
+        "hair_grey": "#bdb6a8",
+        "moustache": "#6b4a2e",
+        "overalls": "#2f5d9e",
+        "overalls_dark": "#223f70",
+        "bib": "#3a6fb5",
+        "sleeve": "#d9d2c0",
+        "boot": "#222222",
+        "stain": "#1d2b45",
+        "brass": "#c9a227",
+        "mug": "#e8e0cc",
+        "tea": "#8a5a2a",
+        "spanner": "#9aa0aa",
+        "white": "#ffffff",
+        "pupil": "#14141c",
+        "lip": "#8a3b2b",
+        "stool": "#6a4a2a",
+        "phone": "#2a2a32"
+    },
+    "body": {
+        "torso_size": [0.92, 0.52, 0.95],
+        "torso_center": [0, 0, 1.05],
+        "neck_pivot": [0, 0, 1.58],
+        "shoulder_x": 0.5,
+        "shoulder_z": 1.45,
+        "upper_arm": 0.40,
+        "forearm": 0.36,
+        "hand": 0.12,
+        "hip_x": 0.2,
+        "hip_z": 0.62,
+        "thigh": 0.36,
+        "shin": 0.36
+    },
+    "head": {
+        "radii": [0.28, 0.26, 0.30],
+        "center_offset": 0.30
+    },
+    "hair": null,
+    "glasses": null,
+    "face": {
+        "eye_x": 0.095,
+        "eye_y": -0.215,
+        "eye_z": 0.03,
+        "eye_radii": [0.05, 0.028, 0.055],
+        "brow_thick": 0.024,
+        "brow_color": "hair_grey",
+        "mouth_z": -0.17,
+        "mouth_y": -0.235
+    },
+    "bust_faces": ["neutral", "happy", "grin", "worried", "panic", "shock"],
+    "moustache": {
+        "color": "moustache",
+        "span": 0.13
+    }
+}

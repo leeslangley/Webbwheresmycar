@@ -1,0 +1,76 @@
+{
+    "id": "mark",
+    "name": "Mark Webb",
+    "head_scale": 1.3,
+    "frames": {
+        "world": {"w": 144, "h": 144, "ortho": 2.25, "center": [0.0, 1.17]},
+        "head": {"w": 80, "h": 80, "ortho": 1.25, "pivot_px": [40, 66]},
+        "bust": {"w": 96, "h": 96, "ortho": 1.6, "center": [0.0, 1.40]}
+    },
+    "render": {
+        "supersample": 4,
+        "outline": "#14102a",
+        "outline_px": 1,
+        "dither": 0.18,
+        "colors": 32
+    },
+    "palette": {
+        "skin": "#f1c9a5",
+        "skin_shade": "#c7a083",
+        "ear": "#e4b793",
+        "hair": "#7a5430",
+        "hair_dark": "#5a3b24",
+        "hair_light": "#a07848",
+        "navy": "#243a66",
+        "navy_dark": "#1b2c50",
+        "shirt": "#f4e9c8",
+        "tie": "#7a1f2b",
+        "hood": "#6a1f2b",
+        "hood_tee": "#e8d44a",
+        "rim": "#15151d",
+        "white": "#ffffff",
+        "pupil": "#14141c",
+        "lip": "#b0524a",
+        "chair": "#6a1f2b",
+        "chair_dark": "#4a1420",
+        "phone": "#2a2a32",
+        "mug": "#e8e0cc",
+        "tea": "#8a5a2a",
+        "spanner": "#9aa0aa"
+    },
+    "body": {
+        "torso_size": [0.84, 0.44, 1.10],
+        "torso_center": [0, 0, 0.55],
+        "neck_pivot": [0, 0, 1.12],
+        "shoulder_x": 0.45,
+        "shoulder_z": 0.98,
+        "upper_arm": 0.42,
+        "forearm": 0.38,
+        "hand": 0.12,
+        "outfit": "suit"
+    },
+    "head": {
+        "radii": [0.265, 0.245, 0.31],
+        "center_offset": 0.31
+    },
+    "hair": {
+        "seed": 7,
+        "curls": 66,
+        "radius": [0.07, 0.105]
+    },
+    "glasses": {
+        "rim_radius": 0.088,
+        "rim_thickness": 0.0125
+    },
+    "face": {
+        "eye_x": 0.105,
+        "eye_y": -0.205,
+        "eye_z": 0.035,
+        "eye_radii": [0.058, 0.03, 0.062],
+        "brow_thick": 0.014,
+        "brow_color": "hair_dark",
+        "mouth_z": -0.165,
+        "mouth_y": -0.225
+    },
+    "bust_faces": ["neutral", "happy", "grin", "worried", "panic", "shock", "smug", "sad"]
+}
