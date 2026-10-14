@@ -2,14 +2,19 @@ class_name ShopChannel
 extends ChannelBase
 
 # SHOP channel (port of src/ui/scenes/tvshop.js, display half): the week's listings in a scrolling list on
-# the left, and the selected car with its portrait, quip and stat bars on the right. BUY and RENT come in GDU23.
+# the left, and the selected car with its portrait, quip and stat bars on the right, and BUY and RENT under it (GDU23).
 
 const LIST := Rect2(8, 48, 300, 320)
 const DETAIL := Rect2(316, 48, 316, 320)
 const ROW_H := 72
+const BUY_AT := Vector2(316, 376)
+const RENT_AT := Vector2(482, 376)
+const ACT_SIZE := Vector2(150, 72)
 
 var _list: UiList
 var _portrait: CarPortrait
+var _buy_btn: UiButton
+var _rent_btn: UiButton
 
 
 func _init() -> void:
@@ -31,10 +36,57 @@ func _ready() -> void:
 	_portrait.position = DETAIL.position
 	_portrait.size = Vector2(316, 150)
 	add_child(_portrait)
+	_buy_btn = _action_button("BuyBtn", "BUY", "primary", BUY_AT)
+	_buy_btn.activated.connect(_do_buy)
+	_buy_btn.blocked.connect(_do_buy)
+	_rent_btn = _action_button("RentBtn", "RENT", "normal", RENT_AT)
+	_rent_btn.activated.connect(_do_rent)
+	_rent_btn.blocked.connect(_do_rent)
+
+
+func _action_button(node_name: String, label: String, kind_name: String, at: Vector2) -> UiButton:
+	var b := UiButton.new()
+	b.name = node_name
+	b.text = label
+	b.kind = kind_name
+	b.position = at
+	b.size = ACT_SIZE
+	add_child(b)
+	return b
 
 
 func _on_row(_i: int) -> void:
 	_show_selected()
+
+
+func _do_buy() -> void:
+	_do("sale")
+
+
+func _do_rent() -> void:
+	_do("rent")
+
+
+# One path for BUY and RENT taps (enabled or not): a refusal is explained by a toast before any action is sent.
+# A failed action is toasted by Game itself, so only the success text is toasted here.
+func _do(mode: String) -> void:
+	var l := selected_listing()
+	var why := ShopChannel.refusal(state(), l, mode)
+	if why != "":
+		toast(why)
+		return
+	var action := "buy_car" if mode == "sale" else "rent_car"
+	var res: Dictionary = game.act(action, {"listing_id": l.listingId})
+	if res.get("ok", false) and str(res.get("msg", "")) != "":
+		toast(str(res.get("msg", "")))
+
+
+# OK on the remote: BUY or RENT the selected car, as the listing says.
+func on_ok() -> void:
+	var l := selected_listing()
+	if l.is_empty():
+		return
+	_do(str(l.mode))
 
 
 func listings() -> Array:
@@ -52,6 +104,18 @@ static func wear_for(condition: float) -> int:
 	return CarPortrait.wear_for(condition)
 
 
+# Why BUY (mode "sale") or RENT (mode "rent") must refuse, or "" when the deal may go ahead.
+# Same order as tvshop.js: the listing kind first, then the garage slot, then the money.
+static func refusal(st: Dictionary, listing: Dictionary, mode: String) -> String:
+	if listing.is_empty() or str(listing.get("mode", "")) != mode:
+		return "That one is not for sale" if mode == "sale" else "That one is not for rent"
+	if st.cars.size() >= int(st.garageSlots):
+		return "No free garage slot"
+	if float(st.cash) < float(listing.price):
+		return "Not enough money"
+	return ""
+
+
 func refresh() -> void:
 	_list.set_count(listings().size())
 	if _list.selected < 0 and listings().size() > 0:
@@ -67,6 +131,9 @@ func _show_selected() -> void:
 	else:
 		var id := str(l.modelId)
 		_portrait.set_car(id, ChannelBase.paint_of(id), wear_for(float(l.condition)))
+	# The flags follow the selection too (not only refresh), so the buttons grey out on any row change.
+	_buy_btn.enabled = ShopChannel.refusal(state(), l, "sale") == ""
+	_rent_btn.enabled = ShopChannel.refusal(state(), l, "rent") == ""
 	queue_redraw()
 
 
