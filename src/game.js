@@ -50,6 +50,26 @@ export function createGame(env) {
 	app.settings = loadSettings(storage);
 	app.dayChangedAt = null;
 
+	// The action runner (DESIGN.md 9.7): a successful action costs a day,
+	// so save, stamp the clock, play the cash sound and show the newspaper.
+	// A failed action only toasts. Anything without an ok field passes
+	// straight through untouched.
+	app.act = function (fn) {
+		const r = fn();
+		if (r && r.ok === true) {
+			saveTo(storage, app.state);
+			app.dayChangedAt = app.now();
+			if (!app.audio) {
+				app.audio = { play: function () {} };
+			}
+			app.audio.play('cash');
+			app.push('news');
+		} else if (r && r.ok === false && r.msg) {
+			app.toast(r.msg);
+		}
+		return r;
+	};
+
 	app.saveSettings = function () {
 		try {
 			storage.setItem(SETTINGS_KEY, JSON.stringify(app.settings));
