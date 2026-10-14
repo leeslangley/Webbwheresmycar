@@ -6,6 +6,7 @@ extends Control
 # are mapped through the curved glass into the screen. Remote buttons and channels come later.
 
 signal closed
+signal remote(action: String)
 
 const SIZE := Vector2(760, 560)
 const GLASS := Rect2(60, 50, 600, 420)
@@ -57,6 +58,12 @@ func _ready() -> void:
 	_glass.mouse_filter = MOUSE_FILTER_STOP
 	_glass.gui_input.connect(_on_glass_input)
 	add_child(_glass)
+
+	var r := TvRemote.new()
+	r.name = "Remote"
+	r.position = Vector2(152, 484)
+	add_child(r)
+	r.action.connect(func(a: String): remote.emit(a))
 
 	set_crt(true)
 
