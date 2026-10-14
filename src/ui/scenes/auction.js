@@ -16,6 +16,7 @@ import { money } from '../../core/format.js';
 import { lotView, revealStat, placeBid, minBid, bidStep, attendAuction, AUCTION_REVEAL_COST, STATS } from '../../sim/auction.js';
 import { isAuctionDay } from '../../core/clock.js';
 import { drawHud } from '../../art/hud.js';
+import { sunShaft, vignette } from '../../art/roomfx_light.js';
 
 // Rectangles in logical 1280x720 coordinates.
 export const LAYOUT = {
@@ -158,18 +159,7 @@ function drawHall(ctx, t, leading) {
 	ctx.fillRect(26, -4, 40, 8);
 	ctx.restore();
 
-	// The crowd: silhouettes along the bottom, bobbing gently. t drives the
-	// bob only, so a redraw with the same t always looks the same.
-	for (let i = 0; i < 16; i++) {
-		const x = 40 + i * 80;
-		const bob = Math.round(Math.sin(t * 2 + i) * 3);
-		const y = 660 + bob;
-		ctx.fillStyle = PALETTE.black;
-		ctx.beginPath();
-		ctx.arc(x, y - 10, 13, 0, Math.PI * 2);
-		ctx.fill();
-		ctx.fillRect(x - 18, y + 2, 36, 52);
-	}
+	drawCrowd(ctx, t);
 
 	// While the player leads, a few of the crowd wave paddles in the air,
 	// rocking with t so a redraw with the same t always looks the same.
@@ -187,6 +177,32 @@ function drawHall(ctx, t, leading) {
 			ctx.restore();
 		}
 	}
+}
+
+// The crowd: silhouettes along the bottom, bobbing gently. t drives the
+// bob only, so a redraw with the same t always looks the same.
+function drawCrowd(ctx, t) {
+	for (let i = 0; i < 16; i++) {
+		const x = 40 + i * 80;
+		const bob = Math.round(Math.sin(t * 2 + i) * 3);
+		const y = 660 + bob;
+		ctx.fillStyle = PALETTE.black;
+		ctx.beginPath();
+		ctx.arc(x, y - 10, 13, 0, Math.PI * 2);
+		ctx.fill();
+		ctx.fillRect(x - 18, y + 2, 36, 52);
+	}
+}
+
+// The hall when the Blender plate is loaded: the plate itself, the spotlight
+// light over the lot, the code-drawn crowd and a vignette. The lot picture,
+// buttons and hit areas stay where LAYOUT puts them.
+function drawHallPlate(ctx, app, t) {
+	const P = LAYOUT.picture;
+	app.rooms.draw(ctx, 'auction', { look: app.look || { x: 0, y: 0 } });
+	sunShaft(ctx, [[640, 0], [P.x + 180, P.y + P.h], [P.x + P.w - 180, P.y + P.h], [640, 0]], t);
+	drawCrowd(ctx, t);
+	vignette(ctx, 1280, 720, 0.3);
 }
 
 // The stage arrow button: a panel with a big glyph and a small caption under it.
@@ -370,7 +386,11 @@ export const auctionScene = {
 		}
 		this.hits = hits;
 
-		drawHall(ctx, t, view ? view.leader === 'player' : false);
+		if (app.rooms && app.rooms.has('auction')) {
+			drawHallPlate(ctx, app, t);
+		} else {
+			drawHall(ctx, t, view ? view.leader === 'player' : false);
+		}
 		arrowButton(ctx, LAYOUT.prev, '<', 'PREV');
 		arrowButton(ctx, LAYOUT.next, '>', 'NEXT');
 
