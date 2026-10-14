@@ -1,0 +1,33 @@
+{
+  "faces": {
+    "neutral": {"brow": {"inner": 0, "outer": 0}, "eye": {"open": 1, "dx": 0, "dz": 0, "pupil": 1}, "mouth": "closed"},
+    "blink": {"brow": {"inner": 0, "outer": 0}, "eye": {"open": 0.08, "dx": 0, "dz": 0, "pupil": 1}, "mouth": "closed"},
+    "happy": {"brow": {"inner": 0.01, "outer": 0.03}, "eye": {"open": 0.75, "dx": 0, "dz": 0, "pupil": 1}, "mouth": "smile"},
+    "grin": {"brow": {"inner": 0.01, "outer": 0.04}, "eye": {"open": 0.7, "dx": 0, "dz": 0, "pupil": 1}, "mouth": "grin"},
+    "laugh": {"brow": {"inner": 0.02, "outer": 0.05}, "eye": {"open": 0.25, "dx": 0, "dz": 0, "pupil": 1}, "mouth": "wide"},
+    "worried": {"brow": {"inner": 0.07, "outer": -0.01}, "eye": {"open": 1, "dx": 0, "dz": 0.005, "pupil": 0.9}, "mouth": "wobble"},
+    "panic": {"brow": {"inner": 0.09, "outer": 0.06}, "eye": {"open": 1, "dx": 0, "dz": 0, "pupil": 0.6}, "mouth": "wide"},
+    "shock": {"brow": {"inner": 0.08, "outer": 0.08}, "eye": {"open": 1, "dx": 0, "dz": 0, "pupil": 0.7}, "mouth": "O"},
+    "smug": {"brow": {"inner": 0, "outer": 0.02}, "eye": {"open": 0.6, "dx": 0.01, "dz": -0.005, "pupil": 1}, "mouth": "smirk"},
+    "sad": {"brow": {"inner": 0.06, "outer": -0.03}, "eye": {"open": 0.8, "dx": 0, "dz": -0.01, "pupil": 1}, "mouth": "frown"},
+    "angry": {"brow": {"inner": -0.05, "outer": 0.02}, "eye": {"open": 0.85, "dx": 0, "dz": 0, "pupil": 1}, "mouth": "frown"},
+    "think": {"brow": {"inner": 0.03, "outer": 0}, "eye": {"open": 1, "dx": 0.02, "dz": 0.02, "pupil": 1}, "mouth": "closed"},
+    "talk_A": {"brow": {"inner": 0.01, "outer": 0.02}, "eye": {"open": 1, "dx": 0, "dz": 0, "pupil": 1}, "mouth": "A"},
+    "talk_E": {"brow": {"inner": 0.01, "outer": 0.02}, "eye": {"open": 1, "dx": 0, "dz": 0, "pupil": 1}, "mouth": "E"},
+    "talk_O": {"brow": {"inner": 0.01, "outer": 0.02}, "eye": {"open": 1, "dx": 0, "dz": 0, "pupil": 1}, "mouth": "O"},
+    "talk_M": {"brow": {"inner": 0.01, "outer": 0.02}, "eye": {"open": 1, "dx": 0, "dz": 0, "pupil": 1}, "mouth": "M"}
+  },
+  "mouths": {
+    "closed": {"w": 0.05, "h": 0.004, "curve": 0, "teeth": false, "tongue": false},
+    "smile": {"w": 0.07, "h": 0.008, "curve": 0.6, "teeth": false, "tongue": false},
+    "grin": {"w": 0.085, "h": 0.03, "curve": 0.8, "teeth": true, "tongue": false},
+    "frown": {"w": 0.05, "h": 0.006, "curve": -0.7, "teeth": false, "tongue": false},
+    "A": {"w": 0.06, "h": 0.05, "curve": 0, "teeth": true, "tongue": true},
+    "E": {"w": 0.07, "h": 0.022, "curve": 0.2, "teeth": true, "tongue": false},
+    "O": {"w": 0.035, "h": 0.045, "curve": 0, "teeth": false, "tongue": true},
+    "M": {"w": 0.05, "h": 0.004, "curve": 0, "teeth": false, "tongue": false},
+    "wobble": {"w": 0.06, "h": 0.012, "curve": -0.3, "teeth": false, "tongue": false},
+    "wide": {"w": 0.08, "h": 0.07, "curve": 0.3, "teeth": true, "tongue": true},
+    "smirk": {"w": 0.07, "h": 0.008, "curve": 0.5, "teeth": false, "tongue": false}
+  }
+}
