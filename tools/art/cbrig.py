@@ -1,6 +1,12 @@
 # CB02: studio world and colour management for the CB render rig.
+# CB04: fixed-scale orthographic studio camera (same px per metre for every car).
 # Imports carlib; nothing runs on import.
+import math
+import sys
+
 import bpy
+from bpy_extras.object_utils import world_to_camera_view
+from mathutils import Vector
 
 import carlib  # noqa: F401  (shared helpers; the rig builders use them)
 
@@ -114,3 +120,61 @@ def setup_studio_lights(scene):
         scene.collection.objects.link(obj)
         objs.append(obj)
     return objs
+# CB04: fixed-scale studio camera. One orthographic camera with a fixed px per
+# metre, so a 3.5 m car is drawn smaller than a 5.5 m car, and the ground point
+# (world origin) always lands on the same canvas pixel (the sprite anchor).
+# (yaw degrees, pitch degrees). s = pure side, nose right: the DEFAULT hero view.
+VIEWS = {
+    's': (0.0, 6.0),
+    'q': (25.0, 10.0),
+    'front': (90.0, 4.0),
+    'r': (-25.0, 10.0),
+}
+CANVAS_W, CANVAS_H = 1600, 800
+PX_PER_M = 192            # 48 sprite px per metre x 4 supersampling
+ORIGIN_PX = (800, 680)    # where world (0, 0, 0), the car's ground centre, lands
+CAM_NAME = 'cbcam'
+CAM_DIST = 20.0
+
+# The world origin sits this many metres below the frame centre (in the view plane).
+_GROUND_DROP = (ORIGIN_PX[1] - CANVAS_H / 2.0) / PX_PER_M
+
+
+def setup_fixed_camera(scene, view):
+    """Aim the fixed-scale ortho camera at view `view` (a key of VIEWS) and make it
+    the scene camera. Reuses the 'cbcam' camera when it exists. Exits 2 on a bad view."""
+    if view not in VIEWS:
+        print('Unknown view %r, expected one of: %s' % (view, ', '.join(sorted(VIEWS))))
+        sys.exit(2)
+    yaw_deg, pitch_deg = VIEWS[view]
+    ya = math.radians(yaw_deg)
+    p = math.radians(pitch_deg)
+
+    scene.render.resolution_x = CANVAS_W
+    scene.render.resolution_y = CANVAS_H
+    scene.render.resolution_percentage = 100
+
+    cam = bpy.data.objects.get(CAM_NAME)
+    if cam is None or cam.type != 'CAMERA':
+        cam = bpy.data.objects.new(CAM_NAME, bpy.data.cameras.new(CAM_NAME))
+    cam.data.type = 'ORTHO'
+    cam.data.ortho_scale = CANVAS_W / PX_PER_M
+
+    target = (0.0, 0.0, _GROUND_DROP / math.cos(p))
+    d = (math.sin(ya) * math.cos(p), -math.cos(ya) * math.cos(p), math.sin(p))
+    cam.location = (target[0] + CAM_DIST * d[0],
+                    target[1] + CAM_DIST * d[1],
+                    target[2] + CAM_DIST * d[2])
+    carlib.look_at(cam, target)
+
+    if CAM_NAME not in scene.collection.objects:
+        scene.collection.objects.link(cam)
+    scene.camera = cam
+    bpy.context.view_layer.update()
+    return cam
+
+
+def project(scene, point):
+    """World point -> (px, py) canvas pixel from the top-left, using the scene camera."""
+    co = world_to_camera_view(scene, scene.camera, Vector(point))
+    return (co.x * CANVAS_W, (1.0 - co.y) * CANVAS_H)
