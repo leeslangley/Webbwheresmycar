@@ -17,7 +17,7 @@ Deploy: no
 The auction stage becomes a curtained hall with the lot as the star. Today the lot name, year and estimate are written across the top of the car. Move that text into a lot card on the left and stand the car right of it. A hidden condition must not leak through the wear state.
 
 ## Read first
-- docs/art/CC.md (the plan: sheets, sizes, API names; read the 'Sprite contract' and 'API' sections)
+- docs/art/CARS_ALIGN.md (THE sprite contract: views, densities, file names, manifest v2, game mask; it wins over any other text) and docs/art/CC.md (API names and background; its 'Sprite contract' section is superseded)
 - src/ui/scenes/auction.js (drawHall, the picture block in draw, LAYOUT.picture)
 - tests/scene_auction_a.test.mjs
 - src/art/modelcar.js, src/art/stage.js

@@ -14,10 +14,10 @@ Commit: local only
 Deploy: no
 
 ## Goal
-Show the cars in the office: the owned cars cycle on the Webb TV, and a framed portrait of the selected (or current) car sits in the room as the HUD car slot. Static telly and 'Tap me to shop!' stay when there is no car.
+Show the cars in the office: the owned cars cycle on the Webb TV (side view), and a framed portrait (the head-on face sprite) of the selected (or current) car sits in the room as the HUD car slot. Static telly and 'Tap me to shop!' stay when there is no car.
 
 ## Read first
-- docs/art/CC.md (the plan: sheets, sizes, API names; read the 'Sprite contract' and 'API' sections)
+- docs/art/CARS_ALIGN.md (THE sprite contract: views, densities, file names, manifest v2, game mask; it wins over any other text) and docs/art/CC.md (API names and background; its 'Sprite contract' section is superseded)
 - docs/art/RSAMH_STYLE.md
 - src/ui/scenes/office.js (the TV block that calls drawTvStatic)
 - src/art/officelayout.js

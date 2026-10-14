@@ -17,7 +17,7 @@ Deploy: no
 The real `env` for the sprite loader: `loadJson`, `loadImage`, `makeCanvas`, `setTimeout`, built from the page's window and document. It must work from http://localhost AND from the iPhone app's custom `webb://app/` scheme (ES modules + images served by AssetSchemeHandler), where fetch can return status 0.
 
 ## Read first
-- docs/art/CC.md (the plan: sheets, sizes, API names; read the 'Sprite contract' and 'API' sections)
+- docs/art/CARS_ALIGN.md (THE sprite contract: views, densities, file names, manifest v2, game mask; it wins over any other text) and docs/art/CC.md (API names and background; its 'Sprite contract' section is superseded)
 - cards/I01-ios-wrapper-swift-sources.md (the webb:// scheme handler: same-origin, sends Access-Control-Allow-Origin: *)
 - src/art/sprites.js (how env is used)
 

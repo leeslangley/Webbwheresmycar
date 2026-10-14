@@ -14,10 +14,10 @@ Commit: local only
 Deploy: no
 
 ## Goal
-The small drawing effects that make a car sit in a room: contact shadow, floor reflection, glossy shine sweep, bonnet steam for a faulty car, exhaust smoke for a wreck. Every function draws through ctx only, so fakectx can check them.
+The small drawing effects that make a car sit in a room: contact shadow (the fallback: the Blender sprites bring their own car-shaped shadow image, drawn by CC07 when the manifest has one), floor reflection, glossy shine sweep, bonnet steam for a faulty car, exhaust smoke for a wreck. Every function draws through ctx only, so fakectx can check them.
 
 ## Read first
-- docs/art/CC.md (the plan: sheets, sizes, API names; read the 'Sprite contract' and 'API' sections)
+- docs/art/CARS_ALIGN.md (THE sprite contract: views, densities, file names, manifest v2, game mask; it wins over any other text) and docs/art/CC.md (API names and background; its 'Sprite contract' section is superseded)
 - src/art/common.js (groundShadow, smokePuff for style)
 - tests/fakectx.js (makeCtx, count, anySet)
 

@@ -17,7 +17,7 @@ Deploy: no
 Wire everything at game start, in the browser and in the iPhone WKWebView: set the device scale, create the sprite loader and variant cache, configure the car art, start loading with a timeout, and show the loading scene before the title. Without `env.assetEnv` the game still starts directly on the title (code-drawn cars), so tests and old pages keep working.
 
 ## Read first
-- docs/art/CC.md (the plan: sheets, sizes, API names; read the 'Sprite contract' and 'API' sections)
+- docs/art/CARS_ALIGN.md (THE sprite contract: views, densities, file names, manifest v2, game mask; it wins over any other text) and docs/art/CC.md (API names and background; its 'Sprite contract' section is superseded)
 - src/boot.js (as changed by W68d: it builds the app with createGame)
 - src/main.js
 - tests/boot.test.mjs
