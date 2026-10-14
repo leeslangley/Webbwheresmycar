@@ -99,7 +99,7 @@ CARDS = [
   accept=["`make test 2>&1 | grep 'PASS tests/button2.test.mjs'` prints one line.", "`grep -c \"from './kit_draw.js'\" src/ui/button2.js src/ui/uistate.js` prints 0 for both files.", NOEDIT],
   oos=["src/ui/kit_draw.js (GU21)."]),
 
- dict(id="GU07", title="Animated counters and bars: tween, count-up, stat bar with ghost", needs=["GU01"],
+ dict(id="GU07", title="Animated counters and bars: tween, count-up, stat bar with ghost", needs=["GU01", "GU04"],
   files=["src/ui/anim.js", "src/ui/bars.js", "tests/anim_bars.test.mjs"],
   goal="Time-driven (no timers) tweens for money count-up and stat bars that fill and drain, and a bar drawing recipe whose inner fill keeps the exact geometry of the old `bar` so scene tests stay green.",
   read=[GUD, TOK, THEME, FK, "src/ui/kit_draw.js (`bar` and its tests: bar(ctx,10,10,100,20,5,10,'#f00') must still make fillRect [12,12,48,16])"],
