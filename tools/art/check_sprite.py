@@ -31,7 +31,10 @@ def parse_args(argv):
         if arg == "--max-colors":
             if i + 1 >= len(argv):
                 raise SystemExit("check_sprite: --max-colors needs a value")
-            max_colors = int(argv[i + 1])
+            try:
+                max_colors = int(argv[i + 1])
+            except ValueError:
+                raise SystemExit("check_sprite: --max-colors must be an integer")
             i += 2
             continue
         raise SystemExit("check_sprite: unexpected argument %s" % arg)
@@ -43,9 +46,17 @@ def main(argv):
     if not os.path.isfile(path):
         raise SystemExit("check_sprite: no such file: %s" % path)
 
-    image = bpy.data.images.load(path)
+    try:
+        image = bpy.data.images.load(path)
+    except RuntimeError as exc:
+        print("check_sprite: cannot load %s: %s" % (path, exc))
+        sys.exit(2)
     image.colorspace_settings.name = "Non-Color"
     w, h = image.size
+    if w < 1 or h < 1:
+        print("check_sprite: cannot read %s as an image (size %dx%d)"
+              % (path, w, h))
+        sys.exit(2)
     flat = np.array(image.pixels[:], dtype=np.float64).reshape(h, w, 4)
 
     alpha8 = np.round(np.clip(flat[:, :, 3], 0.0, 1.0) * 255.0).astype(np.uint8)

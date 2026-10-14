@@ -62,11 +62,27 @@ def parse_args(argv):
         raise SystemExit("pixelate: unexpected argument %s" % arg)
     if not opts["in"] or not opts["out"]:
         raise SystemExit("pixelate: --in and --out are required")
-    opts["width"] = int(opts["width"])
-    opts["colors"] = int(opts["colors"])
-    opts["dither"] = float(opts["dither"])
+    try:
+        opts["width"] = int(opts["width"])
+    except ValueError:
+        raise SystemExit("pixelate: --width must be an integer, got %r"
+                         % opts["width"])
+    try:
+        opts["colors"] = int(opts["colors"])
+    except ValueError:
+        raise SystemExit("pixelate: --colors must be an integer, got %r"
+                         % opts["colors"])
+    try:
+        opts["dither"] = float(opts["dither"])
+    except ValueError:
+        raise SystemExit("pixelate: --dither must be a number, got %r"
+                         % opts["dither"])
     if opts["scale"] is not None:
-        opts["scale"] = int(opts["scale"])
+        try:
+            opts["scale"] = int(opts["scale"])
+        except ValueError:
+            raise SystemExit("pixelate: --scale must be an integer, got %r"
+                             % opts["scale"])
         if opts["scale"] < 1:
             raise SystemExit("pixelate: --scale must be >= 1")
     if opts["width"] < 1:
@@ -111,9 +127,15 @@ def load_rgba(path):
     """Load a PNG as a top-to-bottom (h, w, 4) float array of LINEAR rgb."""
     if not os.path.isfile(path):
         raise SystemExit("pixelate: no such input file: %s" % path)
-    image = bpy.data.images.load(path)
+    try:
+        image = bpy.data.images.load(path)
+    except RuntimeError as exc:
+        raise SystemExit("pixelate: cannot load %s: %s" % (path, exc))
     image.colorspace_settings.name = "Non-Color"
     w, h = image.size
+    if w < 1 or h < 1:
+        raise SystemExit("pixelate: cannot read %s as an image (size %dx%d)"
+                         % (path, w, h))
     flat = np.array(image.pixels[:], dtype=np.float64).reshape(h, w, 4)
     flat = flat[::-1]  # Blender stores rows bottom-to-top
     flat[:, :, :3] = srgb_to_linear(flat[:, :, :3])
@@ -230,26 +252,30 @@ def add_outline(rgb, alpha, outline_colour):
     padded_alpha[1:-1, 1:-1] = alpha
 
     opaque = padded_alpha >= 0.5
-    neighbours = []
-    up = np.zeros_like(opaque); up[1:, :] = opaque[:-1, :]
-    down = np.zeros_like(opaque); down[:-1, :] = opaque[1:, :]
-    left = np.zeros_like(opaque); left[:, 1:] = opaque[:, :-1]
-    right = np.zeros_like(opaque); right[:, :-1] = opaque[:, 1:]
-    neighbours = [up, down, left, right]
-    touches = np.zeros_like(opaque)
-    for mask in neighbours:
-        touches |= mask
+    # Colour of the pixel on each side, all read from the ORIGINAL padded rgb so a
+    # darkened outline pixel is never used as a source for its neighbour.
+    up = np.zeros_like(padded_rgb); up[1:, :] = padded_rgb[:-1, :]
+    down = np.zeros_like(padded_rgb); down[:-1, :] = padded_rgb[1:, :]
+    left = np.zeros_like(padded_rgb); left[:, 1:] = padded_rgb[:, :-1]
+    right = np.zeros_like(padded_rgb); right[:, :-1] = padded_rgb[:, 1:]
+    mask_up = np.zeros_like(opaque); mask_up[1:, :] = opaque[:-1, :]
+    mask_down = np.zeros_like(opaque); mask_down[:-1, :] = opaque[1:, :]
+    mask_left = np.zeros_like(opaque); mask_left[:, 1:] = opaque[:, :-1]
+    mask_right = np.zeros_like(opaque); mask_right[:, :-1] = opaque[:, 1:]
+    pairs = [(mask_up, up), (mask_down, down), (mask_left, left),
+             (mask_right, right)]
 
-    ring = (~opaque) & touches
+    ring = (~opaque) & (mask_up | mask_down | mask_left | mask_right)
+    out_rgb = padded_rgb.copy()
     filled = np.zeros_like(opaque)
-    for mask in neighbours:
+    for mask, src in pairs:
         take = ring & mask & (~filled)
-        padded_rgb[take] = padded_rgb[take] * 0.30
+        out_rgb[take] = src[take] * 0.30
         filled |= take
-    padded_alpha[ring] = 1.0
     if outline_colour is not None:
-        padded_rgb[ring] = outline_colour
-    return padded_rgb, padded_alpha
+        out_rgb[ring] = outline_colour
+    padded_alpha[ring] = 1.0
+    return out_rgb, padded_alpha
 
 
 # -------------------------------------------------------------------- run ---
