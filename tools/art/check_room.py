@@ -1,8 +1,9 @@
 # Numeric checker for a room plate (card GE03). Lets cards test pictures without seeing them.
-# blender --background --python-exit-code 1 --python tools/art/check_room.py -- <png> [--size 640x360] [--max-colors 128]
+# blender --background --python-exit-code 1 --python tools/art/check_room.py -- <png> [--size 640x360] [--max-colors 128] [--wide <bleed px>]
 #     [--hole x,y,w,h] [--solid x,y,w,h] [--dark x,y,w,h,maxlum] [--bright x,y,w,h,minlum] [--calm x,y,w,h,maxstd]
 #     [--warm x,y,w,h,min] [--cold x,y,w,h,min]
-# Rectangles are SCREEN px (1280x720) and are scaled to the PNG size. luma is 0..255. warm = mean R - mean B, cold = mean B - mean R.
+# Rectangles are SCREEN px of the 1280x720 stage and are scaled to the PNG size. luma is 0..255. warm = mean R - mean B, cold = mean B - mean R.
+# --wide N (card WD09): the PNG is 1280+2N px wide and its left edge is stage x -N, so rectangles may have negative x (x=-N is the left edge).
 # Prints 'ROOM OK ...' (exit 0) or 'ROOM FAIL ...' plus 'ROOM REASONS ...' (exit 2).
 # Bad or missing arguments print 'check_room: <reason>' and exit 2.
 import os
@@ -12,7 +13,7 @@ import numpy as np
 
 CHECK_KINDS = ('--hole', '--solid', '--dark', '--bright', '--calm', '--warm', '--cold')
 LIMIT_KINDS = ('--dark', '--bright', '--calm', '--warm', '--cold')
-OPTION_KINDS = ('--size', '--max-colors')
+OPTION_KINDS = ('--size', '--max-colors', '--wide')
 
 
 def bad(reason):
@@ -26,7 +27,7 @@ if not a or a[0].startswith('--'):
 path = a[0]
 if not os.path.isfile(path):
     bad('no such image: %s' % path)
-opts = {'--size': '640x360', '--max-colors': '128'}
+opts = {'--size': '640x360', '--max-colors': '128', '--wide': '0'}
 checks = []
 i = 1
 while i < len(a):
@@ -59,19 +60,25 @@ fail = []
 ew, eh = [int(t) for t in opts['--size'].split('x')]
 if (w, h) != (ew, eh):
     fail.append('size %dx%d want %dx%d' % (w, h, ew, eh))
+try:
+    bleed = int(opts['--wide'])
+except ValueError:
+    bad('--wide wants a whole number of px, got %r' % opts['--wide'])
+if bleed < 0:
+    bad('--wide wants 0 or more px, got %d' % bleed)
 op = al >= 0.5
 if not np.all((al < 0.01) | (al > 0.99)):
     fail.append('alpha not 0/1')
 ncol = len(np.unique((rgb[op] / 4).astype(np.int64), axis=0)) if op.any() else 0   # quantised, tolerant of float rounding
 if ncol > int(opts['--max-colors']):
     fail.append('colors %d > %s' % (ncol, opts['--max-colors']))
-sx, sy = w / 1280.0, h / 720.0
+sx, sy = w / float(1280 + 2 * bleed), h / 720.0
 luma = rgb @ np.array([0.2126, 0.7152, 0.0722])
 out = []
 for kind, v in checks:
-    x0, y0, rw, rh = int(v[0] * sx), int(v[1] * sy), max(1, int(v[2] * sx)), max(1, int(v[3] * sy))
+    x0, y0, rw, rh = int((v[0] + bleed) * sx), int(v[1] * sy), max(1, int(v[2] * sx)), max(1, int(v[3] * sy))
     sl = (slice(y0, y0 + rh), slice(x0, x0 + rw))
-    if al[sl].size == 0:
+    if x0 < 0 or y0 < 0 or al[sl].size == 0:
         bad('region %s is outside the %dx%d image' % (v[:4], w, h))
     if kind == 'solid':
         m = float(al[sl].min())
