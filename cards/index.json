@@ -2851,5 +2851,331 @@
    "src/ui/scenes/tvshop.js",
    "tests/scene_tvshop_layout.test.mjs"
   ]
+ },
+ {
+  "id": "GC01",
+  "title": "Character Blender helpers: toon material, shapes, camera",
+  "needs": [
+   "A04"
+  ],
+  "file": "GC01-character-blender-helpers-toon-material-.md",
+  "files": [
+   "tools/art/charlib.py",
+   "tests/charlib_check.py",
+   "tests/run_charlib.sh"
+  ]
+ },
+ {
+  "id": "GC02",
+  "title": "Character spec files for Mark and Dave plus checker",
+  "needs": [
+   "A04"
+  ],
+  "file": "GC02-character-spec-files-for-mark-and-dave-p.md",
+  "files": [
+   "docs/characters/mark.json",
+   "docs/characters/dave.json",
+   "tools/check_charspec.py"
+  ]
+ },
+ {
+  "id": "GC03",
+  "title": "Expression table and pose library (pure python)",
+  "needs": [
+   "GC02"
+  ],
+  "file": "GC03-expression-table-and-pose-library-pure-p.md",
+  "files": [
+   "docs/characters/expressions.json",
+   "tools/art/poselib.py",
+   "tests/run_poselib.sh"
+  ]
+ },
+ {
+  "id": "GC04",
+  "title": "Mark head and neck in Blender",
+  "needs": [
+   "GC01",
+   "GC02"
+  ],
+  "file": "GC04-mark-head-and-neck-in-blender.md",
+  "files": [
+   "tools/art/mark_head.py"
+  ]
+ },
+ {
+  "id": "GC05",
+  "title": "Mark curly hair in Blender",
+  "needs": [
+   "GC04"
+  ],
+  "file": "GC05-mark-curly-hair-in-blender.md",
+  "files": [
+   "tools/art/mark_hair.py"
+  ]
+ },
+ {
+  "id": "GC06",
+  "title": "Face parts for both characters: eyes, brows, mouths, glasses",
+  "needs": [
+   "GC03",
+   "GC04"
+  ],
+  "file": "GC06-face-parts-for-both-characters-eyes-brow.md",
+  "files": [
+   "tools/art/charface.py"
+  ]
+ },
+ {
+  "id": "GC07",
+  "title": "Mark torso, suit, shirt, tie and the office chair",
+  "needs": [
+   "GC01",
+   "GC02"
+  ],
+  "file": "GC07-mark-torso-suit-shirt-tie-and-the-office.md",
+  "files": [
+   "tools/art/mark_torso.py"
+  ]
+ },
+ {
+  "id": "GC08",
+  "title": "Arms, hands, finger shapes and props for both characters",
+  "needs": [
+   "GC01",
+   "GC03"
+  ],
+  "file": "GC08-arms-hands-finger-shapes-and-props-for-b.md",
+  "files": [
+   "tools/art/chararms.py"
+  ]
+ },
+ {
+  "id": "GC09",
+  "title": "Mark rig: assemble the model and apply poses",
+  "needs": [
+   "GC05",
+   "GC06",
+   "GC07",
+   "GC08"
+  ],
+  "file": "GC09-mark-rig-assemble-the-model-and-apply-po.md",
+  "files": [
+   "tools/art/mark_rig.py"
+  ]
+ },
+ {
+  "id": "GC10",
+  "title": "Dave head: bald, flat cap, moustache, big nose",
+  "needs": [
+   "GC06"
+  ],
+  "file": "GC10-dave-head-bald-flat-cap-moustache-big-no.md",
+  "files": [
+   "tools/art/dave_head.py"
+  ]
+ },
+ {
+  "id": "GC11",
+  "title": "Dave body, legs, overalls and rig",
+  "needs": [
+   "GC08",
+   "GC10"
+  ],
+  "file": "GC11-dave-body-legs-overalls-and-rig.md",
+  "files": [
+   "tools/art/dave_rig.py"
+  ]
+ },
+ {
+  "id": "GC12",
+  "title": "Mark poses A: idle, tap, three talk gestures, phone, reading",
+  "needs": [
+   "GC03"
+  ],
+  "file": "GC12-mark-poses-a-idle-tap-three-talk-gesture.md",
+  "files": [
+   "docs/characters/poses_mark_front_a.json"
+  ]
+ },
+ {
+  "id": "GC13",
+  "title": "Mark poses B: shrug, point, thumbs up, panic, facepalm, celebrate, slump",
+  "needs": [
+   "GC12"
+  ],
+  "file": "GC13-mark-poses-b-shrug-point-thumbs-up-panic.md",
+  "files": [
+   "docs/characters/poses_mark_front_b.json"
+  ]
+ },
+ {
+  "id": "GC14",
+  "title": "Back-view poses: Mark and Dave seated watching the telly",
+  "needs": [
+   "GC03"
+  ],
+  "file": "GC14-back-view-poses-mark-and-dave-seated-wat.md",
+  "files": [
+   "docs/characters/poses_mark_back.json",
+   "docs/characters/poses_dave_back.json"
+  ]
+ },
+ {
+  "id": "GC15",
+  "title": "Dave front poses: lean, tea sip, talk, shrug, point, thumbs, panic, facepalm, celebrate",
+  "needs": [
+   "GC03"
+  ],
+  "file": "GC15-dave-front-poses-lean-tea-sip-talk-shrug.md",
+  "files": [
+   "docs/characters/poses_dave_front.json"
+  ]
+ },
+ {
+  "id": "GC16",
+  "title": "Render body frames: pose files to raw Blender renders",
+  "needs": [
+   "GC09",
+   "GC11",
+   "GC12",
+   "GC14",
+   "GC15"
+  ],
+  "file": "GC16-render-body-frames-pose-files-to-raw-ble.md",
+  "files": [
+   "tools/art/render_frames.py"
+  ]
+ },
+ {
+  "id": "GC17",
+  "title": "Pixel stage for characters: one shared palette per character, dither, outline",
+  "needs": [
+   "GC02",
+   "A04"
+  ],
+  "file": "GC17-pixel-stage-for-characters-one-shared-pa.md",
+  "files": [
+   "tools/art/charpix.py"
+  ]
+ },
+ {
+  "id": "GC18",
+  "title": "Render head sprites (16 faces, 7 angles) and bust portraits",
+  "needs": [
+   "GC06",
+   "GC09",
+   "GC10",
+   "GC11"
+  ],
+  "file": "GC18-render-head-sprites-16-faces-7-angles-an.md",
+  "files": [
+   "tools/art/render_heads.py"
+  ]
+ },
+ {
+  "id": "GC19",
+  "title": "Character manifest, contact sheets and the one-command render script",
+  "needs": [
+   "GC16",
+   "GC17",
+   "GC18"
+  ],
+  "file": "GC19-character-manifest-contact-sheets-and-th.md",
+  "files": [
+   "tools/art/build_manifest.py",
+   "tools/art/contact_sheet.py",
+   "tools/art/render_chars.sh"
+  ]
+ },
+ {
+  "id": "GC20",
+  "title": "Customer builder: heads, skin tones, hair styles, hats, accessories",
+  "needs": [
+   "GC01",
+   "GC06"
+  ],
+  "file": "GC20-customer-builder-heads-skin-tones-hair-s.md",
+  "files": [
+   "tools/art/customerlib.py"
+  ]
+ },
+ {
+  "id": "GC21",
+  "title": "Customer archetypes A (8 jobs) and the customer render script",
+  "needs": [
+   "GC20",
+   "GC17",
+   "GC19"
+  ],
+  "file": "GC21-customer-archetypes-a-8-jobs-and-the-cus.md",
+  "files": [
+   "docs/characters/customers_a.json",
+   "tools/art/render_customers.py",
+   "tools/art/render_customers.sh"
+  ]
+ },
+ {
+  "id": "GC22",
+  "title": "Customer archetypes B (8 jobs) and 8 silly extras",
+  "needs": [
+   "GC21"
+  ],
+  "file": "GC22-customer-archetypes-b-8-jobs-and-8-silly.md",
+  "files": [
+   "docs/characters/customers_b.json"
+  ]
+ },
+ {
+  "id": "GC23",
+  "title": "Game: animation clock, blink, mouth shapes and the actor state machine",
+  "needs": [
+   "W44"
+  ],
+  "file": "GC23-game-animation-clock-blink-mouth-shapes-.md",
+  "files": [
+   "src/art/anim.js",
+   "tests/anim.test.mjs"
+  ]
+ },
+ {
+  "id": "GC24",
+  "title": "Game: character sprite loader, actor drawing and customer portrait pick",
+  "needs": [
+   "GC23",
+   "S01"
+  ],
+  "file": "GC24-game-character-sprite-loader-actor-drawi.md",
+  "files": [
+   "src/art/charsprites.js",
+   "tests/charsprites.test.mjs"
+  ]
+ },
+ {
+  "id": "GC25",
+  "title": "Game: speech banner and portrait frame in the Rock Star Ate My Hamster style",
+  "needs": [
+   "W43",
+   "W44"
+  ],
+  "file": "GC25-game-speech-banner-and-portrait-frame-in.md",
+  "files": [
+   "src/art/banner.js",
+   "tests/banner.test.mjs"
+  ]
+ },
+ {
+  "id": "GC26",
+  "title": "Office scene: draw Mark and Dave from sprites (vector fallback, hit areas unchanged)",
+  "needs": [
+   "GC23",
+   "GC24",
+   "W58"
+  ],
+  "file": "GC26-office-scene-draw-mark-and-dave-from-spr.md",
+  "files": [
+   "src/ui/scenes/office.js",
+   "tests/scene_office_chars.test.mjs"
+  ]
  }
 ]
