@@ -13,7 +13,7 @@ import { drawCar } from '../../art/cardraw.js';
 import { paintOf } from '../../data/paint.js';
 import { modelOf } from '../../data/cars.js';
 import { money } from '../../core/format.js';
-import { lotView, revealStat, placeBid, minBid, bidStep, AUCTION_REVEAL_COST, STATS } from '../../sim/auction.js';
+import { lotView, revealStat, placeBid, minBid, bidStep, attendAuction, AUCTION_REVEAL_COST, STATS } from '../../sim/auction.js';
 import { isAuctionDay } from '../../core/clock.js';
 import { drawHud } from '../../art/hud.js';
 
@@ -41,6 +41,77 @@ export const STAT_LABELS = ['STYLE', 'UPKEEP', 'GRIT', 'CONDITION'];
 const STAT_COLORS = [PALETTE.lamp, PALETTE.lightred, PALETTE.lightgreen, PALETTE.cyan];
 
 const STAT_MAX = 10;
+
+// The YOUR LOTS panel, between the stat rows and the bid block. Kept out of
+// the exported LAYOUT, whose shape the scene contract pins down.
+const YOURS = { x: 370, y: 390, w: 300, h: 190 };
+
+// True when the player currently leads at least one lot, and so must
+// settle the day before leaving the hall.
+function playerLeads(state) {
+	const lots = state.auction.lots;
+	for (let i = 0; i < lots.length; i++) {
+		if (lots[i].leader === 'player') {
+			return true;
+		}
+	}
+	return false;
+}
+
+// The consigned cars as names and reserves, in consign order. A consigned
+// car that is no longer in the stable is skipped.
+function consignedViews(state) {
+	const views = [];
+	const consigned = state.auction.consigned;
+	for (let i = 0; i < consigned.length; i++) {
+		const carId = consigned[i].carId;
+		for (let j = 0; j < state.cars.length; j++) {
+			if (state.cars[j].id === carId) {
+				views.push({ name: modelOf(state.cars[j].modelId).name, reserve: consigned[i].reserve });
+				break;
+			}
+		}
+	}
+	return views;
+}
+
+// The YOUR LOTS panel: one row per consigned car (name left, reserve
+// right), or Nothing consigned. Rows that do not fit are left out.
+function drawYourLots(ctx, state) {
+	const R = YOURS;
+	panel(ctx, R.x, R.y, R.w, R.h, { fill: PALETTE.darkgrey });
+	label(ctx, 'YOUR LOTS', R.x + 12, R.y + 10, {
+		size: 16,
+		font: 'title',
+		color: PALETTE.lamp,
+		shadow: true,
+	});
+	const mine = consignedViews(state);
+	const rows = Math.floor((R.h - 46) / 28);
+	if (mine.length === 0) {
+		label(ctx, 'Nothing consigned', R.x + 12, R.y + 44, {
+			size: 14,
+			color: PALETTE.lightgrey,
+			shadow: true,
+		});
+		return;
+	}
+	for (let i = 0; i < mine.length && i < rows; i++) {
+		const rowY = R.y + 44 + i * 28;
+		label(ctx, mine[i].name, R.x + 12, rowY, {
+			size: 14,
+			color: PALETTE.white,
+			shadow: true,
+			maxW: R.w - 110,
+		});
+		label(ctx, money(mine[i].reserve), R.x + R.w - 12, rowY, {
+			size: 14,
+			align: 'right',
+			color: PALETTE.cream,
+			shadow: true,
+		});
+	}
+}
 
 // The hall: dark room, a plank stage under the picture, a spotlight cone and a
 // line of silhouette bidders along the bottom. Drawn back to front.
@@ -239,7 +310,23 @@ export const auctionScene = {
 			this.step(n, 1);
 		});
 		hits.add('back', LAYOUT.back.x, LAYOUT.back.y, LAYOUT.back.w, LAYOUT.back.h, () => {
+			// While the player leads a lot they must settle the day first.
+			if (playerLeads(state)) {
+				app.toast('You are winning a lot. Settle first');
+				return;
+			}
 			app.pop();
+		});
+		// Leaving the hall settles the whole day: consigned cars under the
+		// hammer, then lots the player leads. The app handles the day from
+		// there, so nothing else is shown here.
+		hits.add('leave', LAYOUT.leave.x, LAYOUT.leave.y, LAYOUT.leave.w, LAYOUT.leave.h, () => {
+			const res = app.act(function () {
+				return attendAuction(app.state);
+			});
+			if (res && res.ok === false) {
+				app.toast(res.msg);
+			}
 		});
 		if (view) {
 			// The two bid buttons. A bid costs no day, so it is not an app.act:
@@ -382,7 +469,17 @@ export const auctionScene = {
 			});
 		}
 
-		// The hall's own buttons, then the HUD strip on top of everything.
+		// The player's consigned cars, then the hall's own buttons and the
+		// leave-and-settle button, then the HUD strip on top of everything.
+		drawYourLots(ctx, state);
+		button(ctx, {
+			x: LAYOUT.leave.x,
+			y: LAYOUT.leave.y,
+			w: LAYOUT.leave.w,
+			h: LAYOUT.leave.h,
+			label: 'LEAVE & SETTLE',
+			kind: 'primary',
+		});
 		arrowButton(ctx, LAYOUT.back, '<', 'BACK');
 		drawHud(ctx, state, t);
 	},
@@ -425,6 +522,11 @@ export const auctionScene = {
 			return;
 		}
 		if (k === 'Escape') {
+			// Same rule as the BACK button: no leaving while leading a lot.
+			if (playerLeads(state)) {
+				app.toast('You are winning a lot. Settle first');
+				return;
+			}
 			app.pop();
 			return;
 		}
