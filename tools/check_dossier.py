@@ -75,6 +75,14 @@ def check_file(path, problems):
         elif not isinstance(d[key], str):
             fail("key %s must be a string" % key)
 
+    # (9) game_name must be a real game name, not the fixture's game title
+    game_name = d.get("game_name")
+    if isinstance(game_name, str):
+        if not game_name or not game_name.isascii():
+            fail("game_name must be a non-empty ASCII string")
+        elif "Webb" in game_name or game_name == "wheres my car":
+            fail("game_name looks copied from the fixture")
+
     if "id" in d and isinstance(d["id"], str):
         car_id = d["id"]
     else:

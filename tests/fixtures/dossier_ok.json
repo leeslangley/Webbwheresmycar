@@ -1,7 +1,7 @@
 {
  "id": "dossier_ok",
  "real_car": "Test Car 1970",
- "game_name": "Webb, wheres my car?",
+ "game_name": "Test Car",
  "dims_mm": {"length": 4000, "width": 1600, "height": 1200, "wheelbase": 2400, "track_front": 1300, "track_rear": 1340, "tyre_overall_diameter": 640},
  "dims_confidence": "high",
  "body_style": "2-door saloon",

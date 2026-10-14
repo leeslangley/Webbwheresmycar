@@ -46,6 +46,19 @@ else
 fi
 rm -f /tmp/wrongname.json
 
+# 4. game_name copied from the fixture must be rejected
+python3 -c 'import json; d=json.load(open("tests/fixtures/dossier_ok.json")); d["game_name"]="Webb, wheres my car?"; json.dump(d, open("/tmp/fixture_name.json","w"))'
+if out=$(python3 tools/check_dossier.py /tmp/fixture_name.json 2>&1); then
+	echo "FAIL: fixture_name.json exited 0 (should be 1): $out"
+	ok=0
+else
+	case "$out" in
+	*game_name*) ;;
+	*) echo "FAIL: fixture_name.json failure does not mention game_name: $out"; ok=0 ;;
+	esac
+fi
+rm -f /tmp/fixture_name.json
+
 if [ "$ok" -eq 1 ]; then
 	echo "DOSSIER CHECKER OK"
 	exit 0

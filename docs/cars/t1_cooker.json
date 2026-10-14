@@ -1,7 +1,7 @@
 {
  "id": "t1_cooker",
  "real_car": "Mini Cooper Mk1 1966 (original Mini saloon, 10-inch wheels)",
- "game_name": "Webb, wheres my car?",
+ "game_name": "Minnie Cooker",
  "dims_mm": {"length": 3054, "width": 1397, "height": 1346, "wheelbase": 2032, "track_front": 1220, "track_rear": 1180, "tyre_overall_diameter": 480},
  "dims_confidence": "medium",
  "body_style": "2-door saloon, wheel-at-each-corner box with rounded corners",
