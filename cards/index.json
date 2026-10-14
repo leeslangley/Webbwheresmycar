@@ -4450,7 +4450,8 @@
    "GDS05",
    "GDS06",
    "GDS07",
-   "GDS09"
+   "GDS09",
+   "GDF08"
   ],
   "file": "GDS19-sim-port-newgame.md",
   "files": [
@@ -5041,7 +5042,8 @@
   "id": "GDA18",
   "title": "CarMats: material per car part class",
   "needs": [
-   "GDA04"
+   "GDA04",
+   "GDA01"
   ],
   "file": "GDA18-carmats-material-per-car-part-class.md",
   "files": [
@@ -5054,7 +5056,8 @@
   "title": "CarView: 3D car in a pixel viewport",
   "needs": [
    "GDA02",
-   "GDA18"
+   "GDA18",
+   "GDA01"
   ],
   "file": "GDA03-carview-3d-car-in-a-pixel-viewport.md",
   "files": [
@@ -5068,7 +5071,9 @@
   "id": "GDA19",
   "title": "Test: every exported car loads with all part classes",
   "needs": [
-   "GDA03"
+   "GDA03",
+   "GDA01",
+   "GDA02"
   ],
   "file": "GDA19-test-every-exported-car-loads-with-all-p.md",
   "files": [
@@ -5252,7 +5257,8 @@
   "title": "RoomHotspot: invisible tap-rule rect",
   "needs": [
    "GDF02",
-   "GDU02"
+   "GDU02",
+   "GDR32"
   ],
   "file": "GDR18-roomhotspot-invisible-tap-rule-rect.md",
   "files": [
